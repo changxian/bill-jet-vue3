@@ -9,7 +9,7 @@ export default class signMd5Utils {
    */
 
   static sortAsc(jsonObj) {
-    let arr = new Array();
+    let arr = [];
     let num = 0;
     for (let i in jsonObj) {
       arr[num] = i;
@@ -33,8 +33,8 @@ export default class signMd5Utils {
     let urlParams = this.parseQueryString(url);
     let jsonObj = this.mergeObject(urlParams, requestParams);
     //update-begin---author:wangshuai---date:2024-04-16---for:【QQYUN-9005】发送短信加签---
-    if(requestBodyParams){
-      jsonObj = this.mergeObject(jsonObj, requestBodyParams)
+    if (requestBodyParams) {
+      jsonObj = this.mergeObject(jsonObj, requestBodyParams);
     }
     //update-end---author:wangshuai---date:2024-04-16---for:【QQYUN-9005】发送短信加签---
     let requestBody = this.sortAsc(jsonObj);
