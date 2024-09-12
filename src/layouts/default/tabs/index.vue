@@ -20,6 +20,10 @@
 
       <template #rightExtra v-if="getShowRedo || getShowQuick">
         <TabRedo v-if="getShowRedo" />
+        <!-- <TabContent isExtra :tabItem="$route" v-if="getShowQuick" /> -->
+        <!-- 列表页全屏 -->
+        <FoldButton v-if="getShowFold" />
+        <!-- <FullscreenOutlined /> -->
       </template>
     </Tabs>
   </div>
@@ -31,7 +35,7 @@
 
   import { Tabs } from 'ant-design-vue';
   import TabContent from './components/TabContent.vue';
-  // import FoldButton from './components/FoldButton.vue';
+  import FoldButton from './components/FoldButton.vue';
   import TabRedo from './components/TabRedo.vue';
 
   import { useGo } from '/@/hooks/web/usePage';
@@ -52,7 +56,7 @@
     name: 'MultipleTabs',
     components: {
       TabRedo,
-      // FoldButton,
+      FoldButton,
       Tabs,
       TabPane: Tabs.TabPane,
       TabContent,
@@ -144,21 +148,21 @@
   @import './tabs.theme.smooth.less';
 </style>
 <style lang="less" scoped>
-  @prefix-cls: ~'@{namespace}-multiple-tabs';
-  .@{prefix-cls} {
-    :deep(.anticon) {
-      display: inline-block;
-    }
-    .ai-icon {
-      float: right;
-      margin-top: 3px;
-      cursor: pointer;
-      width: 36px;
-      height: 50px;
-      line-height: 50px;
-      color: @text-color;
-      text-align: center;
-      border-left: 1px solid @border-color-base;
-    }
+@prefix-cls: ~'@{namespace}-multiple-tabs';
+.@{prefix-cls} {
+  :deep(.anticon) {
+    display: inline-block;
   }
+  .ai-icon{
+    float: right;
+    margin-top: 3px;
+    cursor: pointer;
+    width: 36px;
+    height: 50px;
+    line-height: 50px;
+    color: @text-color;
+    text-align: center;
+    border-left: 1px solid @border-color-base;
+  }
+}
 </style>
