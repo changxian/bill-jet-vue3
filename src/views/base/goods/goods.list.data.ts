@@ -117,7 +117,7 @@ export const departRoleModalFormSchema: FormSchema[] = [
               };
               duplicateCheckDelay(params)
                 .then((res: any) => {
-                  res.success ? resolve() : reject(res.message || '校验失败');
+                  res['success'] ? resolve() : reject(res['message'] || '校验失败');
                 })
                 .catch((err) => {
                   reject(err.message || '验证失败');

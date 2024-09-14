@@ -57,7 +57,7 @@ export const formSchema: FormSchema[] = [
     label: '类型名称',
     field: 'name',
     component: 'Input',
-    dynamicRules: ({ model, schema }) => {
+    dynamicRules: ({}) => {
       return [{ required: true, message: '请输入类型名称!' }];
     },
   },
@@ -66,7 +66,7 @@ export const formSchema: FormSchema[] = [
     label: '是否内置',
     field: 'def',
     component: 'JDictSelectTag',
-    dynamicRules: ({ model, schema }) => {
+    dynamicRules: ({}) => {
       return [{ required: true, message: '请选择是否内置!' }];
     },
     componentProps: {

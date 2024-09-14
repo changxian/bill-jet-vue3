@@ -1,42 +1,37 @@
-GoodsTree<template>
+<template>
   <div class="bg-white m-4 mr-0 overflow-hidden">
     <a-spin :spinning="loading">
-      <template v-if="userIdentity === '2'">
-        <!--组织机构树-->
-        <BasicTree
-          v-if="!treeReloading"
-          title="部门列表"
-          toolbar
-          search
-          showLine
-          :checkStrictly="true"
-          :clickRowToExpand="false"
-          :treeData="treeData"
-          :selectedKeys="selectedKeys"
-          :expandedKeys="expandedKeys"
-          :autoExpandParent="autoExpandParent"
-          @select="onSelect"
-          @expand="onExpand"
-          @search="onSearch"
-        />
-      </template>
-      <a-empty v-else description="普通员工无此权限" />
+      <!--商品类别, toolbar是展开全部和 折叠全部，本页面不需要-->
+      <BasicTree
+        v-if="!treeReloading"
+        title="商品类别"
+        search
+        showLine
+        :checkStrictly="true"
+        :clickRowToExpand="false"
+        :treeData="treeData"
+        :selectedKeys="selectedKeys"
+        :expandedKeys="expandedKeys"
+        :autoExpandParent="autoExpandParent"
+        @select="onSelect"
+        @expand="onExpand"
+        @search="onSearch"
+      />
     </a-spin>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { inject, nextTick, ref } from 'vue';
+  import { nextTick, ref } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTree } from '/@/components/Tree';
-  import { queryMyDepartTreeList, searchByKeywords } from '../depart.user.api';
+  import { queryGoodsCategoryList, searchByKeywords } from '../goods.list.api';
 
-  const prefixCls = inject('prefixCls');
   const emit = defineEmits(['select']);
   const { createMessage } = useMessage();
 
   let loading = ref<boolean>(false);
-  // 部门树列表数据
+  // 商品树列表数据
   let treeData = ref<any[]>([]);
   // 当前展开的项
   let expandedKeys = ref<any[]>([]);
@@ -53,7 +48,7 @@ GoodsTree<template>
   function loadDepartTreeData() {
     loading.value = true;
     treeData.value = [];
-    queryMyDepartTreeList()
+    queryGoodsCategoryList()
       .then((res) => {
         if (res.success) {
           if (Array.isArray(res.result)) {

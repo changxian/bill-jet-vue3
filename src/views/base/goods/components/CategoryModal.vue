@@ -8,8 +8,8 @@
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/src/components/Modal';
   import { BasicForm, useForm } from '/src/components/Form';
-  import { formSchema } from '../Category.data';
-  import { saveOrUpdate } from '../Category.api';
+  import { formSchema } from '../category.data';
+  import { saveOrUpdate } from '../category.api';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
