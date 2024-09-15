@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts" name="bill-goods" setup>
-  import { ref, reactive, computed, unref, watch } from 'vue';
-  import { BasicTable, useTable, TableAction, BasicColumn } from '/@/components/Table';
+  import { reactive, computed, watch } from 'vue';
+  import { BasicTable, TableAction, BasicColumn } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
@@ -44,7 +44,6 @@
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   const queryParam = reactive<any>({});
-  const checkedKeys = ref<Array<string | number>>([]);
   const userStore = useUserStore();
   //注册model
   const [registerModal, { openModal }] = useModal();
@@ -60,34 +59,14 @@
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
 
-  function find(arr: any, dataIndex: any) {
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i]['key'] == dataIndex) {
-        return arr[i]['value'];
-      }
-    }
-    return null;
-  }
-
-  // 表头添加列备注信息
-  let cols = userStore.getCols;
-  if (cols && 0 < cols.length) {
-    for (let i = 0; i < columns.length; i++) {
-      let column = columns[i];
-      let col = null,
-        remark = '';
-      if (null != (col = find(cols, column['dataIndex'])) && null != (remark = '(' + col + ')') && -1 == column.title?.indexOf(remark)) {
-        column.title = column.title + remark;
-      }
-    }
-  }
-
-  //注册table数据
-  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
+  // 注册table数据
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '商品信息',
       api: list,
       columns,
+      cols: userStore.getCols as Object[], // 添加列备注信息
       canResize: false,
       showTableSetting: false,
       clickToRowSelect: false,
@@ -102,7 +81,7 @@
       actionColumn: {
         width: 120,
         fixed: 'right',
-      },
+      } as BasicColumn,
       beforeFetch: (params) => {
         params['categoryId'] = categoryId.value;
         return Object.assign(params, queryParam);

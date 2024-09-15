@@ -190,6 +190,8 @@ export interface BasicTableProps<T = any> {
   formConfig?: Partial<FormProps>;
   // 列配置
   columns: BasicColumn[];
+  // 列备注
+  cols?: Object[];
   // 统一设置列最大宽度
   maxColumnWidth?: number;
   // 是否显示序号列
