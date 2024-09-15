@@ -111,6 +111,7 @@
     openModal(true, {
       isUpdate: false,
       showFooter: true,
+      categoryId: categoryId.value,
     });
   }
   /**
@@ -121,6 +122,7 @@
       record,
       isUpdate: true,
       showFooter: true,
+      categoryId: categoryId.value,
     });
   }
   /**

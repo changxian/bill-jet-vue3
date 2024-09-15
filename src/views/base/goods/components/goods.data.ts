@@ -68,22 +68,23 @@ export const columns: BasicColumn[] = [
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
+  // Input 是精确查询, JInput 是模糊查询
   {
     label: '编号(条码)',
     field: 'code',
-    component: 'Input',
+    component: 'JInput',
     //colProps: {span: 6},
   },
   {
     label: '名称',
     field: 'name',
-    component: 'Input',
+    component: 'JInput',
     //colProps: {span: 6},
   },
   {
     label: '规格型号',
     field: 'type',
-    component: 'Input',
+    component: 'JInput',
     //colProps: {span: 6},
   },
   {

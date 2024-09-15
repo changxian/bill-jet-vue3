@@ -6,8 +6,8 @@ const { createConfirm } = useMessage();
 
 enum Api {
   treeList = '/bill/goods/queryGoodsTreeList',
+  searchBy = '/bill/goods/category/searchBy',
   queryIdTree = '/sys/sysDepart/queryIdTree',
-  searchBy = '/sys/sysDepart/searchBy',
 }
 
 // 部门用户API

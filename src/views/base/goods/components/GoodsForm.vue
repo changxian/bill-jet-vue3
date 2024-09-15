@@ -1,12 +1,17 @@
 <template>
   <a-spin :spinning="confirmLoading">
-    <JFormContainer :disabled="disabled">
+    <JFormContainer :disabled="formData.disabled">
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="GoodsForm">
           <a-row>
             <a-col :span="12">
-              <a-form-item label="商品类型id" v-bind="validateInfos.categoryId" id="GoodsForm-categoryId" name="categoryId">
-                <a-input v-model:value="formData.categoryId" placeholder="请输入商品类型id" allow-clear />
+              <a-form-item label="商品类别" v-bind="validateInfos.categoryId" id="GoodsForm-categoryId" name="categoryId">
+                <JDictSelectTag
+                  v-model:value="formData.categoryId"
+                  placeholder="请选择商品类别"
+                  dictCode="jxc_goods_category,name,id,status=0 order by sort desc"
+                  :showChooseOption="false"
+                />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -31,12 +36,17 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="单位" v-bind="validateInfos.unit" id="GoodsForm-unit" name="unit">
-                <a-input v-model:value="formData.unit" placeholder="请输入单位" allow-clear />
+                <JDictSelectTag
+                  v-model:value="formData.unit"
+                  placeholder="请选择商品类别"
+                  dictCode="jxc_goods_units,name,id,status=0 order by sort desc"
+                  :showChooseOption="false"
+                />
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="进价（成本）" v-bind="validateInfos.cost" id="GoodsForm-cost" name="cost">
-                <a-input-number v-model:value="formData.cost" placeholder="请输入进价（成本）" style="width: 100%" />
+              <a-form-item label="进价" v-bind="validateInfos.cost" id="GoodsForm-cost" name="cost">
+                <a-input-number v-model:value="formData.cost" placeholder="请输入进价" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -45,18 +55,18 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="当前库存数量" v-bind="validateInfos.stock" id="GoodsForm-stock" name="stock">
-                <a-input-number v-model:value="formData.stock" placeholder="请输入当前库存数量" style="width: 100%" />
+              <a-form-item label="初始库存" v-bind="validateInfos.stock" id="GoodsForm-stock" name="stock">
+                <a-input-number v-model:value="formData.stock" placeholder="请输入初始库存" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="状态(1：正常，2：下架）" v-bind="validateInfos.status" id="GoodsForm-status" name="status">
-                <a-input v-model:value="formData.status" placeholder="请输入状态(1：正常，2：下架）" allow-clear />
+              <a-form-item label="状态" v-bind="validateInfos.status" id="GoodsForm-status" name="status">
+                <JDictSelectTag v-model:value="formData.status" placeholder="请选择状态" dictCode="jxc_goods_status" :showChooseOption="false" />
               </a-form-item>
             </a-col>
-            <a-col :span="12">
+            <a-col :span="12" style="width: 100%">
               <a-form-item label="备注" v-bind="validateInfos.remark" id="GoodsForm-remark" name="remark">
-                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
+                <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -67,20 +77,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch, unref} from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from './goods.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   const props = defineProps({
-    formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({}) },
     formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  // eslint-disable-next-line vue/no-dupe-keys
   const formData = reactive<Record<string, any>>({
     id: '',
     categoryId: '',
@@ -94,7 +105,22 @@
     stock: undefined,
     status: '',
     remark: '',
+    disabled: false,
   });
+
+
+  watch(
+    () => props.formData,
+    () => {
+      Object.keys(props.formData).forEach((key) => {
+        formData[key] = props.formData[key];
+      });
+    },
+    {
+      immediate: true,
+    }
+  );
+
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
@@ -110,18 +136,6 @@
     stock: [{ required: true, message: '请输入当前库存数量!' }],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
-
-  // 表单禁用
-  const disabled = computed(() => {
-    if (props.formBpm === true) {
-      if (props.formData.disabled === false) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return props.formDisabled;
-  });
 
   /**
    * 新增

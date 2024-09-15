@@ -105,7 +105,7 @@
   function onSearch(value: string) {
     if (value) {
       loading.value = true;
-      searchByKeywords({ keyWord: value, myDeptSearch: '1' })
+      searchByKeywords({ keyWord: value })
         .then((result) => {
           if (Array.isArray(result)) {
             treeData.value = result;
