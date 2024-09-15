@@ -1,13 +1,13 @@
 <template>
   <a-row :class="['p-4', `${prefixCls}--box`]" :gutter="10">
-    <a-col :xl="4" :lg="8" :md="10" :sm="24" style="flex: 1">
+    <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
         <GoodsTree @select="onTreeSelect" />
       </a-card>
     </a-col>
-    <a-col :xl="20" :lg="16" :md="14" :sm="24" style="flex: 1">
+    <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
-        <DepartUserInfoTab :data="departData" />
+        <GoodsList :data="departData" />
       </a-card>
     </a-col>
   </a-row>
@@ -18,7 +18,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import GoodsTree from './components/GoodsTree.vue';
-  import DepartUserInfoTab from './components/GoodsList.vue';
+  import GoodsList from './components/GoodsList.vue';
 
   const { prefixCls } = useDesign('depart-user');
   provide('prefixCls', prefixCls);
