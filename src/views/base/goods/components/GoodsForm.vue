@@ -60,8 +60,18 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
+              <!--
+              添加stringToNumber=true，可以解决因字典是字符串，而本表为int，导致string和int不匹配而反显不正常问题
+              添加stringToNumber=true后String转int 与本表int匹配，反显正常
+              -->
               <a-form-item label="状态" v-bind="validateInfos.status" id="GoodsForm-status" name="status">
-                <JDictSelectTag v-model:value="formData.status" placeholder="请选择状态" dictCode="jxc_goods_status" :showChooseOption="false" />
+                <JDictSelectTag
+                  v-model:value="formData.status"
+                  placeholder="请选择状态"
+                  dictCode="jxc_goods_status"
+                  :stringToNumber="true"
+                  :showChooseOption="false"
+                />
               </a-form-item>
             </a-col>
             <a-col :span="12" style="width: 100%">
@@ -77,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch, unref} from 'vue';
+  import { ref, reactive, defineExpose, nextTick, defineProps, watch } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from './goods.api';
@@ -107,7 +117,6 @@
     remark: '',
     disabled: false,
   });
-
 
   watch(
     () => props.formData,

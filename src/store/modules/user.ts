@@ -4,7 +4,16 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID, OAUTH2_THIRD_LOGIN_TENANT_ID } from '/@/enums/cacheEnum';
+import {
+  ROLES_KEY,
+  TOKEN_KEY,
+  USER_INFO_KEY,
+  LOGIN_INFO_KEY,
+  DB_DICT_DATA_KEY,
+  TENANT_ID,
+  OAUTH2_THIRD_LOGIN_TENANT_ID,
+  COLS_DATA,
+} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
@@ -25,6 +34,7 @@ interface UserState {
   token?: string;
   roleList: RoleEnum[];
   dictItems?: dictType | null;
+  cols: Object[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -43,6 +53,7 @@ export const useUserStore = defineStore({
     roleList: [],
     // 字典
     dictItems: null,
+    cols: [],
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
@@ -70,6 +81,12 @@ export const useUserStore = defineStore({
     },
     getAllDictItems(): unknown {
       return this.dictItems || getAuthCache(DB_DICT_DATA_KEY);
+    },
+    getCols(): unknown {
+      if (0 < this.cols.length) {
+        return this.cols;
+      }
+      return getAuthCache(COLS_DATA);
     },
     getRoleList(): RoleEnum[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
@@ -109,6 +126,10 @@ export const useUserStore = defineStore({
     setAllDictItems(dictItems) {
       this.dictItems = dictItems;
       setAuthCache(DB_DICT_DATA_KEY, dictItems);
+    },
+    setCols(cols) {
+      this.cols = cols;
+      setAuthCache(COLS_DATA, cols);
     },
     setAllDictItemsByLocal() {
       // update-begin--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
@@ -261,7 +282,8 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems } = await getUserInfo();
+      const { userInfo, sysAllDictItems, cols } = await getUserInfo();
+      debugger;
       if (userInfo) {
         const { roles = [] } = userInfo;
         if (isArray(roles)) {
@@ -280,6 +302,10 @@ export const useUserStore = defineStore({
        */
       if (sysAllDictItems) {
         this.setAllDictItems(sysAllDictItems);
+      }
+      // 添加备注列信息到缓存
+      if (cols) {
+        this.setCols(cols);
       }
       return userInfo;
     },

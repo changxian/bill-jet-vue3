@@ -11,7 +11,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'categoryId_dictText',
   },
   {
-    title: '商品编号（条码）',
+    title: '商品编号',
     align: 'center',
     dataIndex: 'code',
   },

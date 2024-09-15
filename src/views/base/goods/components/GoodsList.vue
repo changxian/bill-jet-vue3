@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts" name="bill-goods" setup>
-  import {ref, reactive, computed, unref, watch} from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { ref, reactive, computed, unref, watch } from 'vue';
+  import { BasicTable, useTable, TableAction, BasicColumn } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
@@ -59,6 +59,28 @@
 
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
+
+  function find(arr: any, dataIndex: any) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]['key'] == dataIndex) {
+        return arr[i]['value'];
+      }
+    }
+    return null;
+  }
+
+  // 表头添加列备注信息
+  let cols = userStore.getCols;
+  if (cols && 0 < cols.length) {
+    for (let i = 0; i < columns.length; i++) {
+      let column = columns[i];
+      let col = null,
+        remark = '';
+      if (null != (col = find(cols, column['dataIndex'])) && null != (remark = '(' + col + ')') && -1 == column.title?.indexOf(remark)) {
+        column.title = column.title + remark;
+      }
+    }
+  }
 
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
