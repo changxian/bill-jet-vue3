@@ -1,19 +1,35 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" destroyOnClose :title="title" :width="896" @ok="handleSubmit">
-    <BasicForm @register="registerForm" name="GoodsForm" />
+    <GoodsForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false" />
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './goods.data';
   import { saveOrUpdate } from './goods.api';
+  import GoodsForm from './GoodsForm.vue';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const isDetail = ref(false);
+  const disableSubmit = ref<boolean>(false);
+
+  /**
+   * form保存回调事件
+   */
+  function submitCallback() {
+    handleCancel();
+    emit('success');
+  }
+
+  /**
+   * 取消按钮回调事件
+   */
+  function handleCancel() {
+    closeModal();
+  }
 
   debugger;
   console.info(formSchema);
@@ -43,7 +59,7 @@
   //设置标题
   const title = computed(() => (!unref(isUpdate) ? '新增' : !unref(isDetail) ? '详情' : '编辑'));
   //表单提交事件
-  async function handleSubmit(v) {
+  async function handleSubmit() {
     try {
       let values = await validate();
       setModalProps({ confirmLoading: true });
