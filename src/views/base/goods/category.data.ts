@@ -15,7 +15,7 @@ export const columns: BasicColumn[] = [
   {
     title: '状态',
     align: 'center',
-    dataIndex: 'status_dictText',
+    dataIndex: 'delFlag_dictText',
   },
 ];
 //查询数据
@@ -60,6 +60,7 @@ export const formSchema: FormSchema[] = [
     dynamicRules: ({}) => {
       return [{ required: true, message: '请输入类型名称!' }];
     },
+    colProps: { span: 22 },
   },
   /* 从字典中取 */
   {
@@ -80,9 +81,22 @@ export const formSchema: FormSchema[] = [
       placeholder: '请选择',
       // 删除请选择选项
       showChooseOption: false,
+    },
+    colProps: { span: 14 },
+  },
+  {
+    label: '状态',
+    field: 'delFlag',
+    component: 'JDictSelectTag',
+    defaultValue: 0,
+    componentProps: {
+      dictCode: 'jxc_delete_status',
+      placeholder: '请选择',
+      // 删除请选择选项
+      showChooseOption: false,
       stringToNumber: true,
     },
-    //colProps: { span: 6 },
+    colProps: { span: 14 },
   },
   /* 前端配置
   {
@@ -115,13 +129,6 @@ export const formSchema: FormSchema[] = [
     label: '',
     field: 'id',
     component: 'Input',
-    show: false,
-  },
-  {
-    label: '',
-    field: 'status',
-    component: 'Input',
-    defaultValue: '0',
     show: false,
   },
 ];

@@ -192,6 +192,7 @@ export interface BasicTableProps<T = any> {
   columns: BasicColumn[];
   // 列备注
   cols?: Object[];
+  dynamicCols?: Object[];
   // 统一设置列最大宽度
   maxColumnWidth?: number;
   // 是否显示序号列

@@ -57,6 +57,7 @@
     } else {
       // 新增时，商品类型默认为选中的类型
       _d = {
+        ...data.record,
         categoryId: data?.categoryId,
       };
       isNew.value = true;
@@ -73,7 +74,6 @@
    * form保存回调事件
    */
   function submitCallback() {
-    debugger;
     closeModal();
     emit('success');
   }

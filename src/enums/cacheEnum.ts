@@ -12,6 +12,9 @@ export const ROLES_KEY = 'ROLES__KEY__';
 // dynamic cols
 export const COLS_DATA = 'COLS_DATA__';
 
+// dynamic cols
+export const DYNAMIC_COLS_DATA = 'DYNAMIC_COLS_DATA__';
+
 // dict info key
 export const DB_DICT_DATA_KEY = 'UI_CACHE_DB_DICT_DATA';
 

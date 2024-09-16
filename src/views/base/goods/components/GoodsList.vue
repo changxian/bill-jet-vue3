@@ -28,6 +28,26 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
+
+      <!-- 动态字段回显插槽-->
+      <template #dynamic1="{ record }">
+        {{ record.dynamicField.dynamic1 }}
+      </template>
+      <template #dynamic2="{ record }">
+        {{ record.dynamicField.dynamic2 }}
+      </template>
+      <template #dynamic3="{ record }">
+        {{ record.dynamicField.dynamic3 }}
+      </template>
+      <template #dynamic4="{ record }">
+        {{ record.dynamicField.dynamic4 }}
+      </template>
+      <template #dynamic5="{ record }">
+        {{ record.dynamicField.dynamic5 }}
+      </template>
+      <template #dynamic6="{ record }">
+        {{ record.dynamicField.dynamic6 }}
+      </template>
     </BasicTable>
     <!-- 表单区域 -->
     <GoodsModal @register="registerModal" @success="handleSuccess" />
@@ -66,7 +86,8 @@
       title: '商品信息',
       api: list,
       columns,
-      cols: userStore.getCols as Object[], // 添加列备注信息
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       canResize: false,
       showTableSetting: false,
       clickToRowSelect: false,
@@ -109,7 +130,11 @@
    * 新增事件
    */
   function handleAdd() {
+    let record = {
+      dynamicFields: userStore.getDynamicCols['jxc_goods'],
+    };
     openModal(true, {
+      record,
       isUpdate: false,
       showFooter: true,
       categoryId: categoryId.value,
@@ -162,7 +187,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'bill:jxc_goods:edit',
+        auth: 'bill:jxc_goods:edit', // 权限控制
       },
     ];
   }
@@ -182,7 +207,7 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'bill:jxc_goods:delete',
+        auth: 'bill:jxc_goods:delete', // 权限控制
       },
     ];
   }

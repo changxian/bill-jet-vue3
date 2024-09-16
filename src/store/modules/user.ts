@@ -13,6 +13,7 @@ import {
   TENANT_ID,
   OAUTH2_THIRD_LOGIN_TENANT_ID,
   COLS_DATA,
+  DYNAMIC_COLS_DATA,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
@@ -35,6 +36,7 @@ interface UserState {
   roleList: RoleEnum[];
   dictItems?: dictType | null;
   cols: Object[];
+  dynamicCols?: Object | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -53,7 +55,10 @@ export const useUserStore = defineStore({
     roleList: [],
     // 字典
     dictItems: null,
+    // 备注列
     cols: [],
+    // 扩展列
+    dynamicCols: null,
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
@@ -82,11 +87,17 @@ export const useUserStore = defineStore({
     getAllDictItems(): unknown {
       return this.dictItems || getAuthCache(DB_DICT_DATA_KEY);
     },
-    getCols(): unknown {
+    getCols(): Object[] {
       if (0 < this.cols.length) {
         return this.cols;
       }
       return getAuthCache(COLS_DATA);
+    },
+    getDynamicCols(): Object {
+      if (null != this.dynamicCols) {
+        return this.dynamicCols;
+      }
+      return getAuthCache(DYNAMIC_COLS_DATA);
     },
     getRoleList(): RoleEnum[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
@@ -130,6 +141,10 @@ export const useUserStore = defineStore({
     setCols(cols) {
       this.cols = cols;
       setAuthCache(COLS_DATA, cols);
+    },
+    setDynamicCols(dynamicCols) {
+      this.dynamicCols = dynamicCols;
+      setAuthCache(DYNAMIC_COLS_DATA, dynamicCols);
     },
     setAllDictItemsByLocal() {
       // update-begin--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
@@ -282,8 +297,8 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems, cols } = await getUserInfo();
-      debugger;
+      const { userInfo, sysAllDictItems, cols, dynamicCols } = await getUserInfo();
+
       if (userInfo) {
         const { roles = [] } = userInfo;
         if (isArray(roles)) {
@@ -306,6 +321,10 @@ export const useUserStore = defineStore({
       // 添加备注列信息到缓存
       if (cols) {
         this.setCols(cols);
+      }
+      // 添加备注列信息到缓存
+      if (dynamicCols) {
+        this.setDynamicCols(dynamicCols);
       }
       return userInfo;
     },

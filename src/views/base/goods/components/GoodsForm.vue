@@ -71,12 +71,28 @@
                   dictCode="jxc_goods_status"
                   :stringToNumber="true"
                   :showChooseOption="false"
+                  :defaultValue="0"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12" style="width: 100%">
               <a-form-item label="备注" v-bind="validateInfos.remark" id="GoodsForm-remark" name="remark">
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <span style="position: relative; margin-bottom: 20px; margin-left: 5.1%">更多信息（在系统参数中配置）</span>
+          </a-row>
+          <a-row v-if="formData.dynamicFields && 0 < formData.dynamicFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicFields" :key="item.id" :span="12">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -89,7 +105,6 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, watch } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getValueType } from '/@/utils';
   import { saveOrUpdate } from './goods.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
@@ -113,9 +128,10 @@
     cost: undefined,
     price: undefined,
     stock: undefined,
-    status: '',
+    status: 0,
     remark: '',
     disabled: false,
+    dynamicFields: undefined,
   });
 
   watch(
@@ -193,17 +209,7 @@
     if (model.id) {
       isUpdate.value = true;
     }
-    //循环数据
-    for (let data in model) {
-      //如果该数据是数组并且是字符串类型
-      if (model[data] instanceof Array) {
-        let valueType = getValueType(formRef.value.getProps, data);
-        //如果是字符串类型的需要变成以逗号分割的字符串
-        if (valueType === 'string') {
-          model[data] = model[data].join(',');
-        }
-      }
-    }
+
     await saveOrUpdate(model, isUpdate.value)
       .then((res) => {
         if (res.success) {

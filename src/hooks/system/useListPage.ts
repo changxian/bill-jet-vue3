@@ -280,18 +280,18 @@ export function useListTable(tableProps: TableProps): [
     if (tableProps.formConfig) {
       setTableProps(tableProps.formConfig);
     }
+    function find(arr: any, dataIndex: any) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i]['key'] == dataIndex) {
+          return arr[i]['value'];
+        }
+      }
+      return null;
+    }
 
     // 列添加列备注
     const cols = tableProps.cols;
     if (cols && 0 < cols.length && tableProps.columns) {
-      function find(arr: any, dataIndex: any) {
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i]['key'] == dataIndex) {
-            return arr[i]['value'];
-          }
-        }
-        return null;
-      }
       for (let i = 0; i < tableProps.columns.length; i++) {
         const column = tableProps.columns[i];
         let col = null,
@@ -299,6 +299,28 @@ export function useListTable(tableProps: TableProps): [
         if (null != (col = find(cols, column['dataIndex'])) && null != (remark = '(' + col + ')') && -1 == column.title?.indexOf(remark)) {
           column.title = column.title + remark;
         }
+      }
+    }
+
+    // 列添加列扩展
+    const dynamicCols = tableProps.dynamicCols;
+    if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
+      for (let i = 0; i < dynamicCols.length; i++) {
+        const dynamicCol = dynamicCols[i];
+        const fieldName = dynamicCol.fieldName;
+        if (!dynamicCol.fieldTitle || null != find(tableProps.columns, fieldName)) {
+          continue;
+        }
+        const col = {
+          title: dynamicCol.fieldTitle,
+          align: 'center',
+          key: fieldName,
+          value: fieldName,
+          dataIndex: fieldName,
+          slots: { customRender: fieldName },
+        };
+
+        tableProps.columns.push(col);
       }
     }
     //update-end---author:wangshuai---date:2024-04-28---for:【issues/6180】前端代码配置表变查询条件显示列不生效---
