@@ -23,7 +23,7 @@ export interface LoginResultModel {
   userId: string | number;
   token: string;
   role: RoleInfo;
-  userInfo?: any
+  userInfo?: any;
 }
 
 /**
@@ -45,6 +45,10 @@ export interface GetUserInfoModel {
   userInfo?: any;
   // 缓存字典项
   sysAllDictItems?: any;
+  // 备注列
+  cols?: any;
+  // 扩展列
+  dynamicCols?: any;
 }
 
 /**

@@ -109,14 +109,14 @@ export const departRoleModalFormSchema: FormSchema[] = [
               return Promise.reject('部门角色编码不可输入汉字！');
             }
             return new Promise((resolve, reject) => {
-              let params = {
+              const params = {
                 tableName: 'sys_depart_role',
                 fieldName: 'role_code',
                 fieldVal: value,
                 dataId: model.id,
               };
               duplicateCheckDelay(params)
-                .then((res) => {
+                .then((res: any) => {
                   res.success ? resolve() : reject(res.message || '校验失败');
                 })
                 .catch((err) => {
@@ -148,7 +148,7 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       label: '上级部门',
       render(val) {
         if (val) {
-          let data = findTree(treeData.value, (item) => item.key == val);
+          const data = findTree(treeData.value, (item) => item.key == val);
           return data?.title ?? val;
         }
         return val;

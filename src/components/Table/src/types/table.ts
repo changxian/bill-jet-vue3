@@ -190,6 +190,9 @@ export interface BasicTableProps<T = any> {
   formConfig?: Partial<FormProps>;
   // 列配置
   columns: BasicColumn[];
+  // 列备注
+  cols?: Object[];
+  dynamicCols?: Object[];
   // 统一设置列最大宽度
   maxColumnWidth?: number;
   // 是否显示序号列
@@ -426,6 +429,9 @@ export interface BasicColumn extends ColumnProps<Recordable> {
 
   //
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
+  // update-begin--author:liaozhiyang---date:20240724---for：【issues/6908】多语言无刷新切换时，BasicColumn和FormSchema里面的值不能正常切换
+  title: string | Fn;
+  // update-end--author:liaozhiyang---date:20240724---for：【issues/6908】多语言无刷新切换时，BasicColumn和FormSchema里面的值不能正常切换
   customTitle?: VueNode;
 
   slots?: Recordable;
@@ -465,6 +471,8 @@ export interface BasicColumn extends ColumnProps<Recordable> {
     column: BasicColumn;
   }) => any | VNodeChild | JSX.Element;
   // update-end--author:liaozhiyang---date:20240425---for：【pull/1201】添加antd的TableSummary功能兼容老的summary（表尾合计）
+  // 额外的属性
+  extraProps?: Recordable;
 }
 
 export type ColumnChangeParam = {
