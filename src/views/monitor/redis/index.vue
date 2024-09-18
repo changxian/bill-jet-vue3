@@ -148,20 +148,16 @@
     getMetricsHistory().then((res) => {
       let dbSizes = res.dbSize;
       let memories = res.memory;
-      if (dbSizes) {
-        dbSizes.forEach((dbSize) => {
-          key.xAxis.data.push(dayjs(dbSize.create_time).format('hh:mm:ss'));
-          key.series[0].data.push(dbSize.dbSize);
-        });
-        setOptions2(key, false);
-      }
-      if (!!memories) {
-        memories.forEach((memoryData) => {
-          memory.xAxis.data.push(dayjs(memoryData.create_time).format('hh:mm:ss'));
-          memory.series[0].data.push(memoryData.used_memory / 1000);
-        });
-        setOptions(memory, false);
-      }
+      dbSizes.forEach((dbSize) => {
+        key.xAxis.data.push(dayjs(dbSize.create_time).format('hh:mm:ss'));
+        key.series[0].data.push(dbSize.dbSize);
+      });
+      memories.forEach((memoryData) => {
+        memory.xAxis.data.push(dayjs(memoryData.create_time).format('hh:mm:ss'));
+        memory.series[0].data.push(memoryData.used_memory / 1000);
+      });
+      setOptions(memory, false);
+      setOptions2(key, false);
     });
   }
 

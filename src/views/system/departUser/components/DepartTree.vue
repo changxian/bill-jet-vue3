@@ -1,4 +1,4 @@
-<template>
+GoodsTree<template>
   <div class="bg-white m-4 mr-0 overflow-hidden">
     <a-spin :spinning="loading">
       <template v-if="userIdentity === '2'">
