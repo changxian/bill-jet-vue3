@@ -445,7 +445,8 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   helpMessage?: string | string[];
 
   format?: CellFormat;
-
+  align?:string,
+  dataIndex?:string | number,
   // Editable
   edit?: boolean;
   editRow?: boolean;
