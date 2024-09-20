@@ -27,11 +27,8 @@
                   <div class="aui-flex-box" :class="activeIndex === 'accountLogin' ? 'activeNav on' : ''" @click="loginClick('accountLogin')"
                     >{{ t('sys.login.signInFormTitle') }}
                   </div>
-                  <div class="aui-flex-box" :class="activeIndex === 'phoneLogin' ? 'activeNav on' : ''" @click="loginClick('phoneLogin')"
-                    >{{ t('sys.login.mobileSignInFormTitle') }}
-                  </div>
                 </div>
-                <div class="aui-form-box" style="height: 180px">
+                <div class="aui-form-box" style="height: 260px">
                   <a-form ref="loginRef" :model="formData" v-if="activeIndex === 'accountLogin'" @keyup.enter.native="loginHandleClick">
                     <div class="aui-account">
                       <div class="aui-inputClear">
@@ -56,7 +53,21 @@
                           <img v-else style="margin-top: 2px; max-width: initial" :src="codeImg" @click="handleChangeCheckCode" />
                         </div>
                       </div>
-                      <div class="aui-flex">
+                      <div class="aui-inputClear">
+                        <div class="aui-flex">
+                          <div class="aui-flex-box">
+                            <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" name="banben" checked/>送货单版</label>
+                            </div>
+                          </div>
+                          <div class="aui-flex-box">
+                            <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" name="banben" />进销存版</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="aui-flex" style="padding-top: 5px">
                         <div class="aui-flex-box">
                           <div class="aui-choice">
                             <a-input class="fix-auto-fill" type="checkbox" v-model:value="rememberMe" />
@@ -69,6 +80,7 @@
                       </div>
                     </div>
                   </a-form>
+                  <!--
                   <a-form v-else ref="phoneFormRef" :model="phoneFormData" @keyup.enter.native="loginHandleClick">
                     <div class="aui-account phone">
                       <div class="aui-inputClear phoneClear">
@@ -85,45 +97,39 @@
                       </div>
                     </div>
                   </a-form>
+                  -->
                 </div>
                 <div class="aui-formButton">
                   <div class="aui-flex">
                     <a-button :loading="loginLoading" class="aui-link-login" type="primary" @click="loginHandleClick">
                       {{ t('sys.login.loginButton') }}</a-button>
                   </div>
+                  <!-- 取消二维码登录
                   <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" @click="codeHandleClick">{{ t('sys.login.qrSignInFormTitle') }}</a>
                   </div>
+                  -->
                   <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" @click="registerHandleClick">{{ t('sys.login.registerButton') }}</a>
                   </div>
                 </div>
               </div>
+              <!-- 体验一下 -->
               <a-form @keyup.enter.native="loginHandleClick">
                 <div class="aui-flex aui-third-text">
                   <div class="aui-flex-box aui-third-border">
-                    <span>{{ t('sys.login.otherSignIn') }}</span>
+                    <span>体验一下</span>
                   </div>
                 </div>
                 <div class="aui-flex" :class="`${prefixCls}-sign-in-way`">
                   <div class="aui-flex-box">
                     <div class="aui-third-login">
-                      <a title="github" @click="onThirdLogin('github')"><GithubFilled /></a>
+                      <a title="送货单版" @click="onThirdLogin('github')">送货单版</a>
                     </div>
                   </div>
                   <div class="aui-flex-box">
                     <div class="aui-third-login">
-                      <a title="企业微信" @click="onThirdLogin('wechat_enterprise')"><icon-font class="item-icon" type="icon-qiyeweixin3" /></a>
-                    </div>
-                  </div>
-                  <div class="aui-flex-box">
-                    <div class="aui-third-login">
-                      <a title="钉钉" @click="onThirdLogin('dingtalk')"><DingtalkCircleFilled /></a>
-                    </div>
-                  </div>
-                  <div class="aui-flex-box">
-                    <div class="aui-third-login">
-                      <a title="微信" @click="onThirdLogin('wechat_open')"><WechatFilled /></a>
+                      <a title="进销存版" @click="onThirdLogin('wechat_enterprise')">进销存版</a>
                     </div>
                   </div>
                 </div>

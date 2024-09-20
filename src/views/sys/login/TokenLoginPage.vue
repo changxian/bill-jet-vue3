@@ -5,7 +5,7 @@
             <div class="app-loading-dots">
                 <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
             </div>
-            <div class="app-loading-title">Bill进销存平台</div>
+            <div class="app-loading-title">鑫泓进销存管理系统</div>
         </div>
     </div>
 </template>
