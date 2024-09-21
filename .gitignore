@@ -37,3 +37,4 @@ os_del.cmd
 /.settings/
 /.settings/*
 /.project
+*.baiduyun.uploading.cfg
