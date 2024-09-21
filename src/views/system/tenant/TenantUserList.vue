@@ -17,6 +17,8 @@
     <!--用户抽屉-->
     <TenantUserDrawer @register="registerDrawer" @success="handleSuccess" />
     <!-- 离职受理人弹窗 -->
+    <!--角色菜单授权抽屉-->
+    <UserPermissionDrawer @register="userPermissionDrawer" />
     <UserQuitAgentModal @register="registerQuitAgentModal" @success="handleQuitSuccess" />
     <!-- 离职人员列弹窗 -->
     <UserQuitModal @register="registerQuitModal" @success="reload" />
@@ -49,7 +51,7 @@
   import { getLoginTenantName } from "/@/views/system/tenant/tenant.api";
   import TenantUserDrawer from './components/TenantUserDrawer.vue';
   import { tenantSaasMessage } from "@/utils/common/compUtils";
-
+  import UserPermissionDrawer from './components/UserPermissionDrawer.vue';
   const { createMessage, createConfirm } = useMessage();
 
   //注册drawer
@@ -60,6 +62,7 @@
   const [registerQuitModal, { openModal: openQuitModal }] = useModal();
   const userStore = useUserStore();
   const createBy = userStore.getUserInfo.username;
+  const [userPermissionDrawer, { openDrawer: openUserPermissionDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -117,7 +120,12 @@
       tenantSaas: true,
     });
   }
-
+  /**
+   * 用户授权弹窗
+   */
+  function handlePerssion(record) {
+    openUserPermissionDrawer(true, { userId: record.id });
+  }
   /**
    * 成功回调
    */
@@ -144,6 +152,9 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
+      },{
+        label: '授权',
+        onClick: handlePerssion.bind(null, record),
       },
     ];
   }
