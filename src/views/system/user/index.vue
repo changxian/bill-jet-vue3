@@ -48,6 +48,8 @@
     <UserQuitAgentModal @register="registerQuitAgentModal" @success="reload" />
     <!-- 离职人员列弹窗 -->
     <UserQuitModal @register="registerQuitModal" @success="reload" />
+        <!--用户菜单授权抽屉-->
+    <UserPermissionDrawer @register="userPermissionDrawer" />
   </div>
 </template>
 
@@ -69,7 +71,7 @@
   import { columns, searchFormSchema } from './user.data';
   import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch } from './user.api';
   import {usePermission} from "/@/hooks/web/usePermission";
-
+  import UserPermissionDrawer from '/@/views/system/tenant/components/UserPermissionDrawer.vue';
   const { createMessage, createConfirm } = useMessage();
   const { isDisabledAuth } = usePermission();
   //注册drawer
@@ -84,7 +86,7 @@
   const [registerQuitAgentModal, { openModal: openQuitAgentModal }] = useModal();
   //离职用户列表model
   const [registerQuitModal, { openModal: openQuitModal }] = useModal();
-
+  const [userPermissionDrawer, { openDrawer: openUserPermissionDrawer }] = useDrawer();
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     designScope: 'user-list',
@@ -239,8 +241,17 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
+      },,{
+        label: '授权',
+        onClick: handlePerssion.bind(null, record),
       },
     ];
+  }
+   /**
+   * 用户授权弹窗
+   */
+  function handlePerssion(record) {
+    openUserPermissionDrawer(true, { userId: record.id });
   }
   /**
    * 下拉操作栏

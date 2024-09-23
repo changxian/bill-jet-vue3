@@ -17,7 +17,7 @@
     <!--用户抽屉-->
     <TenantUserDrawer @register="registerDrawer" @success="handleSuccess" />
     <!-- 离职受理人弹窗 -->
-    <!--角色菜单授权抽屉-->
+    <!--用户菜单授权抽屉-->
     <UserPermissionDrawer @register="userPermissionDrawer" />
     <UserQuitAgentModal @register="registerQuitAgentModal" @success="handleQuitSuccess" />
     <!-- 离职人员列弹窗 -->
