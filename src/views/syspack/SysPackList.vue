@@ -131,6 +131,8 @@
     </BasicTable>
     <!-- 表单区域 -->
     <SysPackModal ref="registerModal" @success="handleSuccess"></SysPackModal>
+    <!--产品包菜单授权抽屉-->
+    <PackPermissionDrawer @register="packPermissionDrawer" />
   </div>
 </template>
 
@@ -143,7 +145,9 @@
   import { downloadFile } from '/@/utils/common/renderUtils';
   import SysPackModal from './components/SysPackModal.vue'
   import { useUserStore } from '/@/store/modules/user';
-
+  import { useDrawer } from '/@/components/Drawer';
+  import PackPermissionDrawer from './components/PackPermissionDrawer.vue';
+  const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -254,10 +258,18 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         auth: 'syspack:sys_pack:edit'
+      },{
+        label: '授权',
+        onClick: handlePerssion.bind(null, record),
       },
     ];
   }
-   
+      /**
+   * 产品包授权弹窗
+   */
+  function handlePerssion(record) {
+    openPackPermissionDrawer(true, { packId: record.id });
+  }
   /**
    * 下拉操作栏
    */
