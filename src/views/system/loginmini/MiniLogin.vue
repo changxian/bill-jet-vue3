@@ -57,12 +57,12 @@
                         <div class="aui-flex">
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
-                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="1" v-model="formData.loginType"/>送货单版</label>
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="1" v-model="formData.businessType"/>送货单版</label>
                             </div>
                           </div>
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
-                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="2" v-model="formData.loginType"  />进销存版</label>
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="2" v-model="formData.businessType"  />进销存版</label>
                             </div>
                           </div>
                         </div>
@@ -202,7 +202,7 @@
     inputCode: '',
     username: 'admin',
     password: '123456',
-    loginType: '2',
+    businessType: '2',
   });
   //手机登录表单字段
   const phoneFormData = reactive<any>({
@@ -281,7 +281,7 @@
           password: formData.password,
           username: formData.username,
           captcha: formData.inputCode,
-          loginType: formData.loginType,
+          businessType: formData.businessType,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
         })
@@ -305,10 +305,10 @@
     }
   }
 
-  async function demoLogin(loginType) {
+  async function demoLogin(businessType) {
     formData.username='demo';
     formData.password='123456';
-    formData.loginType;
+    formData.businessType;
     try {
       loginLoading.value = true;
       const { userInfo } = await userStore.login(
@@ -316,7 +316,7 @@
           password: formData.password,
           username: formData.username,
           captcha: formData.inputCode,
-          loginType: formData.loginType,
+          businessType: formData.businessType,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
         })
