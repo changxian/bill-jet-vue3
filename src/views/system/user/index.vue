@@ -241,7 +241,7 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
-      },,{
+      },{
         label: '授权',
         onClick: handlePerssion.bind(null, record),
       },
