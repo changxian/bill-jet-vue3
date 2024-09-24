@@ -2,7 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
 
 enum Api {
-     queryDataRule = '/sys/role/datarule',
+  queryDataRule = '/sys/role/datarule',
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryUserPermission',
   saveRolePermission = '/sys/permission/saveUserPermission', 
