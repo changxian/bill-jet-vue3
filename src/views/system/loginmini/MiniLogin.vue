@@ -57,12 +57,12 @@
                         <div class="aui-flex">
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
-                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" name="banben" checked/>送货单版</label>
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="1" v-model="formData.loginType"/>送货单版</label>
                             </div>
                           </div>
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
-                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" name="banben" />进销存版</label>
+                              <label style="display: flex; font-size: 14px; cursor: pointer" ><input style="margin-right: 10px; width: 15px;" type="radio" value="2" v-model="formData.loginType"  />进销存版</label>
                             </div>
                           </div>
                         </div>
@@ -115,7 +115,7 @@
                 </div>
               </div>
               <!-- 体验一下 -->
-              <a-form @keyup.enter.native="loginHandleClick">
+              <a-form  >
                 <div class="aui-flex aui-third-text">
                   <div class="aui-flex-box aui-third-border">
                     <span>体验一下</span>
@@ -124,12 +124,12 @@
                 <div class="aui-flex" :class="`${prefixCls}-sign-in-way`">
                   <div class="aui-flex-box">
                     <div class="aui-third-login">
-                      <a title="送货单版" @click="onThirdLogin('github')">送货单版</a>
+                      <a title="送货单版" @click="demoLogin('1')">送货单版</a>
                     </div>
                   </div>
                   <div class="aui-flex-box">
                     <div class="aui-third-login">
-                      <a title="进销存版" @click="onThirdLogin('wechat_enterprise')">进销存版</a>
+                      <a title="进销存版" @click="demoLogin('2')">进销存版</a>
                     </div>
                   </div>
                 </div>
@@ -202,6 +202,7 @@
     inputCode: '',
     username: 'admin',
     password: '123456',
+    loginType: '2',
   });
   //手机登录表单字段
   const phoneFormData = reactive<any>({
@@ -280,6 +281,7 @@
           password: formData.password,
           username: formData.username,
           captcha: formData.inputCode,
+          loginType: formData.loginType,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
         })
@@ -303,6 +305,40 @@
     }
   }
 
+  async function demoLogin(loginType) {
+    formData.username='demo';
+    formData.password='123456';
+    formData.loginType;
+    try {
+      loginLoading.value = true;
+      const { userInfo } = await userStore.login(
+        toRaw({
+          password: formData.password,
+          username: formData.username,
+          captcha: formData.inputCode,
+          loginType: formData.loginType,
+          checkKey: randCodeData.checkKey,
+          mode: 'none', //不要默认的错误提示
+        })
+      );
+      if (userInfo) {
+        notification.success({
+          message: t('sys.login.loginSuccessTitle'),
+          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realname}`,
+          duration: 3,
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: t('sys.api.errorTip'),
+        description: error.message || t('sys.login.networkExceptionMsg'),
+        duration: 3,
+      });
+      handleChangeCheckCode();
+    } finally {
+      loginLoading.value = false;
+    }
+  }
   /**
    * 手机号登录
    */
