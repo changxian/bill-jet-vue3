@@ -25,7 +25,7 @@
     </BasicTable>
     <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk" />
     <TenantUserModal @register="registerTenUserModal" />
-    <!--  产品包  -->
+    <!--  套餐  -->
     <TenantPackList @register="registerPackModal" />
   </div>
 </template>
@@ -118,7 +118,7 @@
   }
 
   /**
-   * 新增产品包
+   * 新增套餐
    */
   async function handlePack() {
     if (unref(selectedRowKeys).length > 1) {
@@ -127,7 +127,7 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
-      //我的租户不显示新增和编辑产品包
+      //我的租户不显示新增和编辑套餐
       showPackAddAndEdit: false
     });
   }

@@ -131,7 +131,7 @@
     </BasicTable>
     <!-- 表单区域 -->
     <SysPackModal ref="registerModal" @success="handleSuccess"></SysPackModal>
-    <!--产品包菜单授权抽屉-->
+    <!--套餐菜单授权抽屉-->
     <PackPermissionDrawer @register="packPermissionDrawer" />
   </div>
 </template>
@@ -156,7 +156,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '系统产品包信息',
+      title: '系统套餐信息',
       api: list,
       columns,
       canResize:false,
@@ -170,7 +170,7 @@
       },
     },
     exportConfig: {
-      name: "系统产品包信息",
+      name: "系统套餐信息",
       url: getExportUrl,
       params: queryParam,
     },
@@ -265,7 +265,7 @@
     ];
   }
       /**
-   * 产品包授权弹窗
+   * 套餐授权弹窗
    */
   function handlePerssion(record) {
     openPackPermissionDrawer(true, { packId: record.id });

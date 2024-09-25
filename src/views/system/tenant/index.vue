@@ -42,7 +42,7 @@
     <TenantModal @register="registerModal" @success="reload" />
     <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk"/>
     <TenantUserModal @register="registerTenUserModal" />
-    <!--  产品包  -->
+    <!--  套餐  -->
     <TenantPackList @register="registerPackModal" />
     <!--  租户回收站  -->
     <TenantRecycleBinModal @register="registerRecycleBinModal" @success="reload" />
@@ -177,7 +177,7 @@
   }
 
   /**
-   * 新增产品包
+   * 新增套餐
    */
   function handlePack() {
     if (unref(selectedRowKeys).length > 1) {
@@ -186,7 +186,7 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
-      //我的租户显示新增和编辑产品包
+      //我的租户显示新增和编辑套餐
       showPackAddAndEdit: true
     });
   }

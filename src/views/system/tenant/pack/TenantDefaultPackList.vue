@@ -16,7 +16,7 @@
         <TableAction :actions="getActions(record)" />
       </template>
     </BasicTable>
-    <!--  产品包  -->
+    <!--  套餐  -->
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess"/>
   </div>
 </template>
@@ -47,7 +47,7 @@
         schemas: packFormSchema,
       },
       beforeFetch: (params) => {
-        return Object.assign(params, { packType: 'default' });
+        return Object.assign(params, { packType: '' });
       },
     },
   });
@@ -66,7 +66,7 @@
       {
         label: '删除',
         popConfirm: {
-          title: '是否确认删除租户产品包',
+          title: '是否确认删除租户套餐',
           confirm: handleDelete.bind(null, record.id),
         },
       },
@@ -74,19 +74,19 @@
   }
 
   /**
-   * 编辑产品包
+   * 编辑套餐
    */ 
   function handleAdd() {
     packModal(true, {
       isUpdate: false,
-      packType:'default',
+      packType:'',
       showFooter: true
     });
   }
   
   
   /**
-   * 删除默认产品包
+   * 删除默认套餐
    */ 
   async function handleDelete(id) {
     await deleteTenantPack({ ids: id }, handleSuccess);
@@ -98,13 +98,13 @@
     packModal(true, {     
       isUpdate: true,
       record: record,
-      packType:'default',
+      packType:'',
       showFooter: true
     });
   }
 
   /**
-   * 新增产品包
+   * 新增套餐
    */
   async function handlePack() {
     if (unref(selectedRowKeys).length > 1) {
@@ -124,12 +124,12 @@
   }
 
   /**
-   * 批量删除产品包
+   * 批量删除套餐
    */
   async function handlePackBatch() {
     Modal.confirm({
-      title: '删除租户产品包',
-      content: '是否删除租户产品包',
+      title: '删除租户套餐',
+      content: '是否删除租户套餐',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {

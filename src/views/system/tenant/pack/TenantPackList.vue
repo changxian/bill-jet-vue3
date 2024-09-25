@@ -64,7 +64,7 @@
   const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   // Emits声明
   const emit = defineEmits(['register', 'success']);
-  //是否显示新增和编辑产品包
+  //是否显示新增和编辑套餐
   const showPackAddAndEdit = ref<boolean>(false);
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
@@ -73,7 +73,7 @@
     success();
   });
   //设置标题
-  const title = '租户产品包列表';
+  const title = '租户套餐列表';
 
   //表单提交事件
   async function handleSubmit(v) {
@@ -110,45 +110,45 @@
       isUpdate: true,
       record: record,
       tenantId: unref(tenantId),
-      packType:'custom',
+      packType:'',
       showFooter: true
     });
   }
 
-  //默认系统产品包不允许删除,包含(超级管理员、组织账户管理员、组织应用管理员)
+  //默认系统套餐不允许删除,包含(超级管理员、组织账户管理员、组织应用管理员)
   const packCode = reactive<any>(['superAdmin','accountAdmin','appAdmin']);
   const { createMessage } = useMessage();
   
   /**
-   * 删除产品包
+   * 删除套餐
    * @param 删除
    */
   async function handleDelete(record) {
-    //update-begin---author:wangshuai ---date:20230222  for：系统默认产品包不允许删除------------
+    //update-begin---author:wangshuai ---date:20230222  for：系统默认套餐不允许删除------------
     if(packCode.indexOf(record.packCode) != -1){
-        createMessage.warning("默认系统产品包不允许删除");
+        createMessage.warning("默认系统套餐不允许删除");
        return;
     }
-    //update-end---author:wangshuai ---date:20230222  for：系统默认产品包不允许删除------------
+    //update-end---author:wangshuai ---date:20230222  for：系统默认套餐不允许删除------------
     await deleteTenantPack({ ids: record.id }, success);
   }
 
   /**
-   * 批量删除产品包
+   * 批量删除套餐
    */
   async function handlePackBatch() {
     let value = selectedRows.value;
     if(value && value.length>0){
       for (let i = 0; i < value.length; i++) {
         if(packCode.indexOf(value[i].packCode) != -1){
-          createMessage.warning("默认系统产品包不允许删除");
+          createMessage.warning("默认系统套餐不允许删除");
           return;
         }
       }
     }
     Modal.confirm({
-      title: '删除租户产品包',
-      content: '是否删除租户产品包',
+      title: '删除租户套餐',
+      content: '是否删除租户套餐',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {
@@ -165,13 +165,13 @@
     openModal(true, {
       isUpdate: false,
       tenantId: unref(tenantId),
-      packType:'custom',
+      packType:'',
       showFooter: true
     });
   }
 
   /**
-   * 产品包下面的用户
+   * 套餐下面的用户
    * @param record
    */
   function seeTenantPackUser(record) {
@@ -193,7 +193,7 @@
       {
         label: '删除',
         popConfirm: {
-          title: '是否确认删除租户产品包',
+          title: '是否确认删除租户套餐',
           confirm: handleDelete.bind(null, record),
         },
       },
@@ -209,7 +209,7 @@
       isUpdate: true,
       record: record,
       tenantId: unref(tenantId),
-      packType:'custom',
+      packType:'',
       showFooter: false
     });
   }

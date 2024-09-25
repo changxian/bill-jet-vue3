@@ -20,7 +20,7 @@ enum Api {
   recycleBinPageList = '/sys/tenant/recycleBinPageList',
   deleteLogicDeleted = '/sys/tenant/deleteLogicDeleted',
   revertTenantLogic = '/sys/tenant/revertTenantLogic',
-  //用户产品包关系api
+  //用户套餐关系api
   queryTenantPackUserList = '/sys/tenant/queryTenantPackUserList',
   deleteTenantPackUser = '/sys/tenant/deleteTenantPackUser',
   addTenantPackUser = '/sys/tenant/addTenantPackUser',
@@ -123,7 +123,7 @@ export const leaveTenant = (params, handleSuccess) => {
 };
 
 /**
- * 获取产品包列表
+ * 获取套餐列表
  * @param params
  */
 export const packList = (params) => {
@@ -187,7 +187,7 @@ export const revertTenantLogic = (params,handleSuccess) => {
 };
 
 /**
- * 获取租户产品包下面的用户
+ * 获取租户套餐下面的用户
  * @param params
  */
 export const queryTenantPackUserList = (params) => {
@@ -195,7 +195,7 @@ export const queryTenantPackUserList = (params) => {
 };
 
 /**
- * 移除用户和产品包的关系数据
+ * 移除用户和套餐的关系数据
  * @param params
  */
 export const deleteTenantPackUser = (params)=>{
@@ -203,7 +203,7 @@ export const deleteTenantPackUser = (params)=>{
 }
 
 /**
- * 添加用户和产品包的关系数据
+ * 添加用户和套餐的关系数据
  * @param params
  */
 export const addTenantPackUser = (params)=>{
