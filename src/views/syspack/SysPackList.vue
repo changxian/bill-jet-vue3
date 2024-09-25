@@ -26,7 +26,7 @@
             <a-col :lg="6">
               <a-form-item name="type">
                 <template #label><span title="产品类型(送货单版/进销存版)">产品类型</span></template>
-                <a-input placeholder="请输入产品类型(送货单版/进销存版)" v-model:value="queryParam.type" allow-clear ></a-input>
+                <a-input placeholder="请输入产品类型(送货单版/进销存版)" v-model:value="queryParam.packType" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">

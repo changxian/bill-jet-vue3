@@ -71,7 +71,7 @@ export const columns: BasicColumn[] = [
 export const superQuerySchema = {
   packName: {title: '产品名称',order: 0,view: 'text', type: 'string',},
   category: {title: '产品类别(单机版/云端版)',order: 2,view: 'list', type: 'string',dictCode: '',},
-  type: {title: '产品类型(送货单版/进销存版)',order: 3,view: 'list', type: 'string',dictCode: '',},
+  packType: {title: '产品类型(送货单版/进销存版)',order: 3,view: 'list', type: 'string',dictCode: '',},
   orgNum: {title: '支持企业数(单机1个公司、云端版支持4家公司切换开单)',order: 4,view: 'number', type: 'number',},
   accountNum: {title: '支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)',order: 5,view: 'number', type: 'number',},
   goodsNum: {title: '支持商品数量()',order: 6,view: 'number', type: 'number',},

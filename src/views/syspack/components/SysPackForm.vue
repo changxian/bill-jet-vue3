@@ -15,8 +15,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品类型(送货单版/进销存版)" v-bind="validateInfos.type" id="SysPackForm-type" name="type">
-								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择产品类型(送货单版/进销存版)"  allow-clear />
+							<a-form-item label="产品类型(送货单版/进销存版)" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
+								<j-dict-select-tag v-model:value="formData.packType" dictCode="" placeholder="请选择产品类型(送货单版/进销存版)"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -97,7 +97,7 @@
     id: '',
     packName: '',   
     category: '',   
-    type: '',   
+    packType: '',   
     orgNum: undefined,
     accountNum: undefined,
     goodsNum: undefined,
