@@ -18,6 +18,8 @@
     </BasicTable>
     <!--  套餐  -->
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess"/>
+      <!--套餐菜单授权抽屉-->
+    <PackPermissionDrawer @register="packPermissionDrawer" />
   </div>
 </template>
 <script lang="ts" name="tenant-default-pack" setup>
@@ -31,6 +33,11 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useUserStore } from '/@/store/modules/user';
   import {Modal} from "ant-design-vue";
+
+  import { useDrawer } from '/@/components/Drawer';
+  import PackPermissionDrawer from '../components/PackPermissionDrawer.vue';
+  const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
+
 
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
@@ -62,6 +69,9 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+      },{
+        label: '授权',
+        onClick: handlePerssion.bind(null, record),
       },
       {
         label: '删除',
@@ -72,7 +82,12 @@
       },
     ];
   }
-
+     /**
+   * 套餐授权弹窗
+   */
+  function handlePerssion(record) {
+    openPackPermissionDrawer(true, { packId: record.id });
+  }
   /**
    * 编辑套餐
    */ 

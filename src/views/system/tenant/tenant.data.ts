@@ -254,6 +254,11 @@ export const userSearchFormSchema: FormSchema[] = [
 //套餐列表
 export const packColumns: BasicColumn[] = [
   {
+    title: '企业名称',
+    dataIndex: 'tenantIdName',
+    width: 100,
+  },
+  {
     title: '套餐名称',
     dataIndex: 'packName',
     width: 100,
