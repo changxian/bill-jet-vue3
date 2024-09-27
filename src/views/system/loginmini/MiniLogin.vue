@@ -308,7 +308,7 @@
   async function demoLogin(businessType) {
     formData.username='demo';
     formData.password='123456';
-    formData.businessType;
+    formData.businessType=businessType;
     try {
       loginLoading.value = true;
       const { userInfo } = await userStore.login(
