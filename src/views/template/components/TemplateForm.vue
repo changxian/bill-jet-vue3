@@ -31,6 +31,8 @@
         <a-button type="text" icon="zoom-in" @click="changeScale(true)" />
         <a-button type="primary" icon="eye" @click="preView"> 预览 </a-button>
         <a-button type="primary" icon="printer" @click="print"> 直接打印 </a-button>
+      </a-space>
+      <a-space style="margin-bottom: 10px">
         <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
           <template #icon>
             <a-icon type="question-circle-o" style="color: red" />
@@ -41,26 +43,6 @@
         <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <div>元素参数操作:</div>
-        <a-button type="primary" @click="setOptionConfig(-1)"> 测试隐藏参数[看代码] </a-button>
-        <a-button type="primary" @click="setOptionConfig(1)"> 隐藏[文本] "边框"、"高级" </a-button>
-        <a-button type="primary" @click="setOptionConfig(2)"> [图片]不分组 </a-button>
-        <a-button type="primary" @click="setOptionConfig(3)"> 重写[文本] "字体大小"、"元素层级" </a-button>
-        <a-button type="primary" @click="setOptionConfig(4)"> [文本]新增 "缩放" </a-button>
-        <a-button type="primary" @click="setOptionConfig(0)"> 还原配置 </a-button>
-      </a-space>
-      <a-space style="margin-bottom: 10px">
-        <a-textarea style="width: 30vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
-        <a-button type="primary" @click="updateJson"> 更新json模板 </a-button>
-        <a-button type="primary" @click="exportJson"> 导出json模板到 textArea </a-button>
-        <a-textarea style="width: 30vw" v-model="jsonOut" placeholder="点击左侧导出json" allow-clear />
-      </a-space>
-      <a-space style="margin-bottom: 10px">
-        <a-button type="primary" @click="getSelectEls"> 获取选中元素 </a-button>
-        <a-button type="primary" @click="setEleSelectByField"> 设置根据field选中文本元素 </a-button>
-
-        <a-button type="primary" @click="updateFontSize"> 选中元素字体12pt </a-button>
-        <a-button type="primary" @click="updateFontWeight"> 选中元素字体Bolder </a-button>
         <div>选中元素后点击:</div>
         <a-button type="primary" @click="setElsSpace(true)"> 水平间距10 </a-button>
         <a-button type="primary" @click="setElsSpace(false)"> 垂直间距10 </a-button>
@@ -69,27 +51,33 @@
             <span class="glyphicon glyphicon-object-align-left">左对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('vertical')" title="居中">
-            <span class="glyphicon glyphicon-object-align-vertical"></span>
+            <span class="glyphicon glyphicon-object-align-vertical">居中</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('right')" title="右对齐">
-            <span class="glyphicon glyphicon-object-align-right"></span>
+            <span class="glyphicon glyphicon-object-align-right">右对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('top')" title="顶部对齐">
-            <span class="glyphicon glyphicon-object-align-top"></span>
+            <span class="glyphicon glyphicon-object-align-top">顶部对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('horizontal')" title="垂直居中">
-            <span class="glyphicon glyphicon-object-align-horizontal"></span>
+            <span class="glyphicon glyphicon-object-align-horizontal">垂直居中</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('bottom')" title="底部对齐">
-            <span class="glyphicon glyphicon-object-align-bottom"></span>
+            <span class="glyphicon glyphicon-object-align-bottom">底部对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('distributeHor')" title="横向分散">
-            <span class="glyphicon glyphicon-resize-horizontal"></span>
+            <span class="glyphicon glyphicon-resize-horizontal">横向分散</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('distributeVer')" title="纵向分散">
-            <span class="glyphicon glyphicon-resize-vertical"></span>
+            <span class="glyphicon glyphicon-resize-vertical">纵向分散</span>
           </a-radio-button>
         </a-radio-group>
+      </a-space>
+      <a-space style="margin-bottom: 10px">
+        <a-textarea style="width: 30vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
+        <a-button type="primary" @click="updateJson"> 更新json模板 </a-button>
+        <a-button type="primary" @click="exportJson"> 导出json模板到 textArea </a-button>
+        <a-textarea style="width: 30vw" v-model="jsonOut" placeholder="点击左侧导出json" allow-clear />
       </a-space>
     </div>
     <a-row :gutter="[8, 0]">
@@ -240,13 +228,13 @@
 </template>
 
 <script defer>
+  import '../public/css/bootstrap.min.css';
+  import '../public/css/print-lock.css';
   import * as vuePluginHiprint from './index';
   import panel from './panel';
   import printData from './print-data';
   import printPreview from './preview.vue';
   import jsonView from './json-view.vue';
-  import fontSize from './font-size.js';
-  import scale from './scale.js';
   import { decodeVer } from '../utils';
   // disAutoConnect();
   var hiprint, defaultElementTypeProvider;
@@ -439,221 +427,6 @@
         // 获取当前放大比例, 当zoom时传true 才会有
         this.scaleValue = hiprintTemplate.editingPanel.scale || 1;
       },
-      setOptionConfig(type) {
-        switch (type) {
-          case -1: // 测试
-            hiprint.setConfig({
-              movingDistance: 2.5,
-              text: {
-                tabs: [
-                  // 隐藏部分
-                  {
-                    // name: '测试', // tab名称 可忽略
-                    options: [
-                      {
-                        name: 'fixed',
-                        hidden: true,
-                      },
-                    ],
-                  },
-                  // 当修改第二个 tabs 时,必须把他之前的 tabs 都列举出来.
-                ],
-                supportOptions: [
-                  {
-                    name: 'styler',
-                    hidden: true,
-                  },
-                  {
-                    name: 'formatter',
-                    hidden: true,
-                  },
-                ],
-              },
-              image: {
-                tabs: [
-                  {
-                    // 整体替换
-                    replace: true,
-                    name: '基本',
-                    options: [
-                      {
-                        name: 'field',
-                        hidden: false,
-                      },
-                      {
-                        name: 'src',
-                        hidden: false,
-                      },
-                      {
-                        name: 'fit',
-                        hidden: false,
-                      },
-                    ],
-                  },
-                ],
-              },
-            });
-            hiprint.setConfig({
-              movingDistance: 2.5,
-              text: {
-                tabs: [
-                  // 隐藏部分
-                  {
-                    // name: '测试', // tab名称 可忽略
-                    options: [
-                      {
-                        name: 'fixed',
-                        hidden: true,
-                      },
-                    ],
-                  },
-                  // 当修改第二个 tabs 时,必须把他之前的 tabs 都列举出来.
-                ],
-                supportOptions: [
-                  {
-                    name: 'styler',
-                    hidden: true,
-                  },
-                  {
-                    name: 'formatter',
-                    hidden: true,
-                  },
-                ],
-              },
-              image: {
-                tabs: [
-                  {
-                    // 整体替换
-                    replace: true,
-                    name: '基本',
-                    options: [
-                      {
-                        name: 'field',
-                        hidden: false,
-                      },
-                      {
-                        name: 'src',
-                        hidden: false,
-                      },
-                      {
-                        name: 'fit',
-                        hidden: false,
-                      },
-                    ],
-                  },
-                ],
-              },
-            });
-            break;
-          case 0: // 还原配置
-            hiprint.setConfig();
-            break;
-          case 1: // 隐藏文本 边框、高级
-            hiprint.setConfig({
-              text: {
-                tabs: [
-                  {},
-                  {},
-                  // 隐藏边框
-                  {
-                    name: '边框',
-                    replace: true, // 整体替换
-                    options: [],
-                  },
-                  // 隐藏高级
-                  {
-                    name: '高级',
-                    replace: true, // 整体替换
-                    options: [],
-                  },
-                ],
-              },
-            });
-            break;
-          case 2: // 图片元素 参数不分组
-            hiprint.setConfig({
-              image: {
-                tabs: [],
-                supportOptions: [],
-              },
-            });
-            break;
-          case 3: // 重写字体大小、元素层级参数
-            hiprint.setConfig({
-              optionItems: [
-                fontSize,
-                (function () {
-                  function t() {
-                    this.name = 'zIndex';
-                  }
-
-                  return (
-                    (t.prototype.css = function (t, e) {
-                      if (t && t.length) {
-                        if (e) return t.css('z-index', e);
-                      }
-                      return null;
-                    }),
-                    (t.prototype.createTarget = function () {
-                      return (
-                        (this.target = $(
-                          '<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        元素层级2\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="number" class="auto-submit"/>\n        </div>\n    </div>'
-                        )),
-                        this.target
-                      );
-                    }),
-                    (t.prototype.getValue = function () {
-                      var t = this.target.find('input').val();
-                      if (t) return parseInt(t.toString());
-                    }),
-                    (t.prototype.setValue = function (t) {
-                      this.target.find('input').val(t);
-                    }),
-                    (t.prototype.destroy = function () {
-                      this.target.remove();
-                    }),
-                    t
-                  );
-                })(),
-              ],
-            });
-            break;
-          case 4: // 新增缩放参数
-            hiprint.setConfig({
-              optionItems: [scale],
-              movingDistance: 2.5,
-              text: {
-                tabs: [
-                  {},
-                  // 当修改第二个 tabs 时,必须把他之前的 tabs 都列举出来.
-                  {
-                    name: '样式',
-                    options: [
-                      {
-                        name: 'scale',
-                        after: 'transform', // 自定义参数，插入在 transform 之后
-                        hidden: false,
-                      },
-                    ],
-                  },
-                ],
-              },
-            });
-            break;
-        }
-        // 参数 tabs 会缓存. 这里演示: 手动清空一下, 再点击选中元素
-        console.log(hiprintTemplate);
-        hiprintTemplate.editingPanel.printElements.forEach((e) => {
-          if (e._printElementOptionTabs) {
-            delete e._printElementOptionTabs;
-          }
-          if (e._printElementOptionItems) {
-            delete e._printElementOptionItems;
-          }
-        });
-        let els = hiprintTemplate.getSelectEls();
-        els && els.length && els[0].designTarget.trigger($.Event('click'));
-      },
       /**
        * 设置纸张大小
        * @param type [A3, A4, A5, B3, B4, B5, other]
@@ -796,6 +569,7 @@
         }
       },
       exportJson() {
+        debugger
         if (hiprintTemplate) {
           this.jsonOut = JSON.stringify(hiprintTemplate.getJson() || {});
         }
@@ -861,7 +635,7 @@
   // 默认图片
   /deep/ .hiprint-printElement-image-content {
     img {
-      content: url('~@/assets/logo.png');
+      content: url('/public/logo.png');
     }
   }
 

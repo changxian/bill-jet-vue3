@@ -34,7 +34,7 @@ export default (function () {
     }),
     // 销毁 DOM
     (t.prototype.destroy = function () {
-      this.target.remove();
+      this.target && this.target.remove();
     }),
     t
   );

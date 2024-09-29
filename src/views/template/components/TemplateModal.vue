@@ -4,6 +4,7 @@
     @register="registerModal"
     destroyOnClose
     :title="title"
+    :width="1300"
     :canFullscreen="true"
     :defaultFullscreen="true"
     :showCancelBtn="false"
@@ -27,7 +28,7 @@
   const isUpdate = ref(true);
   const isDetail = ref(false);
   //表单配置
-  const [registerForm, { setProps, setFieldsValue, validate, scrollToField }] = useForm({
+  const [registerForm, { setFieldsValue, validate, scrollToField }] = useForm({
     labelWidth: 150,
     schemas: formSchema,
     showActionButtonGroup: false,
