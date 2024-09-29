@@ -286,7 +286,7 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
       bootstrap:
-        specifier: ^4.6.0
+        specifier: ^4.6.2
         version: 4.6.2(jquery@3.7.1)(popper.js@1.16.1)
       commitizen:
         specifier: ^4.3.1

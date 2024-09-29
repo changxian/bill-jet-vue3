@@ -115,6 +115,7 @@
     "@vue/compiler-sfc": "^3.5.10",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.20",
+    "bootstrap": "^4.6.2",
     "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^4.1.0",
     "cross-env": "^7.0.3",
@@ -167,8 +168,7 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-vue-setup-extend-plus": "^0.1.0",
     "vue-eslint-parser": "^9.4.3",
-    "vue-tsc": "^1.8.27",
-    "bootstrap": "^4.6.0"
+    "vue-tsc": "^1.8.27"
   },
   "repository": {
     "type": "git",
