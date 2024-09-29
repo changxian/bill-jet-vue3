@@ -12,66 +12,71 @@
     @ok="handleSubmit"
     :closeFunc="closeFunction"
   >
-    <TemplateForm @register="registerForm" name="TemplateForm" />
+    <TemplateForm ref="registerForm" @ok="submitCallback" name="TemplateForm" :formData="formData" />
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
+  import TemplateForm from './TemplateForm.vue';
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { useForm } from '@/components/Form';
-  import { formSchema } from '../Template.data';
-  import { saveOrUpdate } from '../Template.api';
-  import TemplateForm from './TemplateForm.vue';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const isDetail = ref(false);
-  //表单配置
-  const [registerForm, { setFieldsValue, validate, scrollToField }] = useForm({
-    labelWidth: 150,
-    schemas: formSchema,
-    showActionButtonGroup: false,
-    baseColProps: { span: 24 },
+  const registerForm = ref();
+  const isNew = ref(false);
+
+  let _d = {};
+  const formData = computed(() => {
+    if (unref(isUpdate)) {
+      // 结合（两种表单）使用传数据，带来的弊端，后做的处理
+      // 第一次编辑时 isUpdate 值为true
+      // 第二次编辑时 isUpdate 的默认值是 true, 编辑的逻辑显示为上一条的数据
+      // 修改为 false，才不影响其它数据编辑(在computed中修改isUpdate的值不触发重新计算)
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      isUpdate.value = false;
+      return {
+        ..._d,
+      };
+    } else if (unref(isNew)) {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      isNew.value = false;
+      return {
+        ..._d,
+      };
+    }
+    return {};
   });
-  //表单赋值
+
+  // 表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    //重置表单
     setModalProps({ confirmLoading: false, showCancelBtn: !!data?.showFooter, showOkBtn: !!data?.showFooter });
     isUpdate.value = !!data?.isUpdate;
     isDetail.value = !!data?.showFooter;
-    if (unref(isUpdate)) {
-      //表单赋值
-      await setFieldsValue({
+    if (!!data?.isUpdate) {
+      _d = {
         ...data.record,
-      });
+        disabled: !data?.showFooter, // 表单禁用
+      };
+      isUpdate.value = !!data?.isUpdate;
     }
   });
   //设置标题
   const title = computed(() => (!unref(isUpdate) ? '新增' : !unref(isDetail) ? '详情' : '编辑'));
-  //表单提交事件
+  // 表单提交事件
   async function handleSubmit() {
-    try {
-      let values = await validate();
-      setModalProps({ confirmLoading: true });
-      //提交表单
-      await saveOrUpdate(values, isUpdate.value);
-      //关闭弹窗
-      closeModal();
-      //刷新列表
-      emit('success');
-    } catch ({ errorFields }) {
-      if (errorFields) {
-        const firstField = errorFields[0];
-        if (firstField) {
-          scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
-        }
-      }
-      return Promise.reject(errorFields);
-    } finally {
-      setModalProps({ confirmLoading: false });
-    }
+    registerForm.value.submitForm();
   }
+
+  /**
+   * form保存回调事件
+   */
+  function submitCallback() {
+    closeModal();
+    emit('success');
+  }
+
   const closeFunction = () => {
     console.log('关闭前处理函数');
     return true;

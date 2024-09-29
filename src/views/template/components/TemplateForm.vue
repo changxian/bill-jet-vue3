@@ -11,9 +11,9 @@
             <template #content>
               <div>
                 <a-input-group compact style="margin: 10px 0px">
-                  <a-input type="number" v-model="paperWidth" style="width: 100px; text-align: center" placeholder="宽(mm)" />
+                  <a-input type="number" v-model:value="paperWidth" style="width: 100px; text-align: center" placeholder="宽(mm)" />
                   <a-input style="width: 30px; border-left: 0; pointer-events: none; backgroundcolor: #fff" placeholder="~" disabled />
-                  <a-input type="number" v-model="paperHeight" style="width: 100px; text-align: center; border-left: 0" placeholder="高(mm)" />
+                  <a-input type="number" v-model:value="paperHeight" style="width: 100px; text-align: center; border-left: 0" placeholder="高(mm)" />
                 </a-input-group>
                 <a-button style="width: 100%" @click="otherPaper">确定</a-button>
               </div>
@@ -40,24 +40,24 @@
       </a-space>
       <a-space style="margin-bottom: 10px">
         <div>选中设置:</div>
-        <a-popover v-model="paperPopVisible" title="设置水平间距(mm)" trigger="click">
+        <a-popover v-model:value="paperPopVisible" title="设置水平间距(mm)" trigger="click">
           <template #content>
             <div>
               <a-input-group compact style="margin: 5px 0">
-                <a-input type="number" v-model="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
+                <a-input type="number" v-model:value="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
               </a-input-group>
-              <a-button style="width: 100%" @click="setElsSpace(true)">确定</a-button>
+              <a-button style="width: 100%" @click="setElsSpace(true, elsSpace)">确定</a-button>
             </div>
           </template>
           <a-button type="primary">水平间距</a-button>
         </a-popover>
-        <a-popover v-model="paperPopVisible" title="设置水平间距(mm)" trigger="click">
+        <a-popover v-model:value="paperPopVisible" title="设置水平间距(mm)" trigger="click">
           <template #content>
             <div>
               <a-input-group compact style="margin: 5px 0">
-                <a-input type="number" v-model="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
+                <a-input type="number" v-model:value="verSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
               </a-input-group>
-              <a-button style="width: 100%" @click="setElsSpace(false)">确定</a-button>
+              <a-button style="width: 100%" @click="setElsSpace(false, verSpace)">确定</a-button>
             </div>
           </template>
           <a-button type="primary">垂直间距</a-button>
@@ -95,7 +95,13 @@
         <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
         <a-button type="primary" @click="preView">预览</a-button>
         <a-button type="primary" @click="print"> 直接打印 </a-button>
-        <a-textarea style="width: 24.2vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
+        <a-textarea
+          style="width: 24.2vw"
+          v-model:value="jsonIn"
+          @press-enter="updateJson"
+          placeholder="复制json模板到此后 点击右侧更新"
+          allow-clear
+        />
         <a-button type="primary" @click="updateJson"> 更新模板 </a-button>
         <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
           <template #icon>
@@ -114,7 +120,7 @@
               <a-row style="height: 100px">
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.text" style>
+                    <a class="ep-draggable-item" tid="defaultModule.text">
                       <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
                       <p class="glyphicon-class">文本</p>
                     </a>
@@ -122,7 +128,7 @@
                 </a-col>
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.image" style>
+                    <a class="ep-draggable-item" tid="defaultModule.image">
                       <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                       <p class="glyphicon-class">图片</p>
                     </a>
@@ -140,7 +146,7 @@
                 </a-col>
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.table" style>
+                    <a class="ep-draggable-item" tid="defaultModule.table">
                       <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                       <p class="glyphicon-class">表格</p>
                     </a>
@@ -150,7 +156,7 @@
               <a-row style="height: 100px">
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.emptyTable" style>
+                    <a class="ep-draggable-item" tid="defaultModule.emptyTable">
                       <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                       <p class="glyphicon-class">空白表格</p>
                     </a>
@@ -160,7 +166,7 @@
               <a-row style="height: 100px">
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.html" style="">
+                    <a class="ep-draggable-item" tid="defaultModule.html">
                       <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
                       <p class="glyphicon-class">html</p>
                     </a>
@@ -168,7 +174,7 @@
                 </a-col>
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.customText" style>
+                    <a class="ep-draggable-item" tid="defaultModule.customText">
                       <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
                       <p class="glyphicon-class">自定义</p>
                     </a>
@@ -179,7 +185,7 @@
               <a-row style="height: 100px">
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.hline" style>
+                    <a class="ep-draggable-item" tid="defaultModule.hline">
                       <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
                       <p class="glyphicon-class">横线</p>
                     </a>
@@ -187,7 +193,7 @@
                 </a-col>
                 <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a class="ep-draggable-item" tid="defaultModule.vline" style>
+                    <a class="ep-draggable-item" tid="defaultModule.vline">
                       <span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
                       <p class="glyphicon-class">竖线</p>
                     </a>
@@ -212,7 +218,7 @@
                   </div>
                 </a-col>
               </a-row>
-              <a-row v-if="currVerInfo.verVal >= 55.3" style="height: 100px">
+              <a-row style="height: 100px">
                 <a-col :span="12" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.barcode">
@@ -255,18 +261,21 @@
 <script defer>
   import '../public/css/bootstrap.min.css';
   import '../public/css/print-lock.css';
+  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import * as vuePluginHiprint from './index';
   import panel from './panel.empty';
   import printData from './print-data';
   import printPreview from './preview.vue';
   import jsonView from './json-view.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
   // disAutoConnect();
   var hiprint, defaultElementTypeProvider;
   let hiprintTemplate;
 
   export default {
     name: 'PrintDesign',
-    components: { printPreview, jsonView },
+    components: { printPreview, jsonView, JFormContainer },
     data() {
       return {
         template: null,
@@ -276,11 +285,11 @@
           height: 93,
         },
         paperTypes: {
-          '三等分': {
+          三等分: {
             width: 210,
             height: 93,
           },
-          '二等分': {
+          二等分: {
             width: 210,
             height: 140,
           },
@@ -310,8 +319,9 @@
           },
         },
         // 自定义纸张
-        paperPopVisible: false,
+        paperPopVisible: true,
         elsSpace: 10,
+        verSpace: 10,
         paperWidth: '210',
         paperHeight: '93',
         // 缩放
@@ -321,6 +331,12 @@
         // 导入导出json
         jsonIn: '',
         jsonOut: '',
+        confirmLoading: false,
+        formData: {
+          disabled: false,
+        },
+        labelCol: { xs: { span: 24 }, sm: { span: 5 } },
+        wrapperCol: { xs: { span: 24 }, sm: { span: 16 } },
       };
     },
     computed: {
@@ -335,15 +351,6 @@
           }
         }
         return type;
-      },
-      /**
-       * @description: 当前版本信息，用于 demo 页面根据版本控制功能
-       * @return {Object}
-       */
-      currVerInfo() {
-        return {
-          verVal: 9999,
-        };
       },
     },
     mounted() {
@@ -368,13 +375,6 @@
           onImageChooseClick: (target) => {
             // 测试 3秒后修改图片地址值
             setTimeout(() => {
-              // target.refresh(url,options,callback)
-              // callback(el, width, height) // 原元素,宽,高
-              // target.refresh(url,false,(el,width,height)=>{
-              //   el.options.width = width;
-              //   el.designTarget.css('width', width + "pt");
-              //   el.designTarget.children('.resize-panel').trigger($.Event('click'));
-              // })
               target.refresh(
                 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAIIAQMAAAB99EudAAAABlBMVEUmf8vG2O41LStnAAABD0lEQVR42u3XQQqCQBSAYcWFS4/QUTpaHa2jdISWLUJjjMpclJoPGvq+1WsYfiJCZ4oCAAAAAAAAAAAAAAAAAHin6pL9c6H/fOzHbRrP0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0u/SY9LS0tLS0tLS0tLS0n+edm+UlpaWlpaWlpaWlpaW/tl0Ndyzbno7/+tPTJdd1wal69dNa6abx+Lq6TSeYtK7BX/Diek0XULSZZrakPRtV0i6Hu/KIt30q4fM0pvBqvR9mvsQkZaW9gyJT+f5lsnzjR54xAk8mAUeJyMPwYFH98ALx5Jr0kRLLndT7b64UX9QR/0eAAAAAAAAAAAAAAAAAAD/4gpryzr/bja4QgAAAABJRU5ErkJggg==',
                 {
@@ -429,7 +429,7 @@
             hiprintTemplate.setPaper(value.width, value.height);
           }
         } catch (error) {
-          this.$message.error(`操作失败: ${error}`);
+          createMessage.error(`操作失败: ${error}`);
         }
       },
       otherPaper() {
@@ -511,7 +511,7 @@
         });
       },
       doOperationWhenClientConnected(operation) {
-        if (window.hiwebSocket.opened) {
+        if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
           operation?.();
           // return;
         }
@@ -534,11 +534,15 @@
         //   ),
         // });
       },
+      submitForm() {
+        createMessage.error(`操作操作submit`);
+        console.log('submit');
+      },
       clearPaper() {
         try {
           hiprintTemplate.clear();
         } catch (error) {
-          this.$message.error(`操作失败: ${error}`);
+          createMessage.error(`操作失败: ${error}`);
         }
       },
       exportPdf(type) {
@@ -552,7 +556,7 @@
           try {
             hiprintTemplate.update(JSON.parse(this.jsonIn));
           } catch (e) {
-            this.$message.error(`更新失败: ${e}`);
+            createMessage.error(`更新失败: ${e}`);
           }
         }
       },
@@ -565,8 +569,8 @@
       setElsAlign(e) {
         hiprintTemplate.setElsAlign(e);
       },
-      setElsSpace(h) {
-        hiprintTemplate.setElsSpace(this.elsSpace, h);
+      setElsSpace(h, size) {
+        hiprintTemplate.setElsSpace(size >>> 0, h);
       },
       setEleSelectByField() {
         hiprintTemplate.selectElementsByField(['name']);
@@ -585,6 +589,7 @@
   };
 </script>
 
+<script setup lang="ts"></script>
 <style lang="less" scoped>
   // 拖拽
   .drag_item_box {
@@ -621,29 +626,29 @@
   }
 
   // 默认图片
-  /deep/ .hiprint-printElement-image-content {
+  :deep(.hiprint-printElement-image-content) {
     img {
       content: url('/public/logo.png');
     }
   }
 
   // 辅助线样式
-  /deep/ .toplineOfPosition {
+  :deep(.toplineOfPosition) {
     border: 0;
     border-top: 1px dashed purple;
   }
 
-  /deep/ .bottomlineOfPosition {
+  :deep(.bottomlineOfPosition) {
     border: 0;
     border-top: 1px dashed purple;
   }
 
-  /deep/ .leftlineOfPosition {
+  :deep(.leftlineOfPosition) {
     border: 0;
     border-left: 1px dashed purple;
   }
 
-  /deep/ .rightlineOfPosition {
+  :deep(.rightlineOfPosition) {
     border: 0;
     border-left: 1px dashed purple;
   }
