@@ -159,6 +159,7 @@
       title: '系统套餐信息',
       api: list,
       columns,
+      showIndexColumn: true,
       canResize:false,
       useSearchForm: false,
       actionColumn: {

@@ -82,6 +82,7 @@
       title: '商品单位管理',
       api: list,
       columns,
+      showIndexColumn: true,
       canResize:false,
       useSearchForm: false,
       actionColumn: {
