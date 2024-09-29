@@ -2,7 +2,11 @@
   <a-card>
     <div style="display: flex; flex-direction: column">
       <a-space style="margin-bottom: 10px">
+        <div>纸张大小设置:</div>
         <a-button-group>
+          <template v-for="(value, type) in paperTypes" :key="type">
+            <a-button :type="curPaperType === type ? 'primary' : 'default'" @click="setPaper(type, value)">{{ type }}</a-button>
+          </template>
           <a-popover v-model="paperPopVisible" title="设置纸张宽高(mm)" trigger="click">
             <template #content>
               <div>
@@ -11,13 +15,15 @@
                   <a-input style="width: 30px; border-left: 0; pointer-events: none; backgroundcolor: #fff" placeholder="~" disabled />
                   <a-input type="number" v-model="paperHeight" style="width: 100px; text-align: center; border-left: 0" placeholder="高(mm)" />
                 </a-input-group>
-                <a-button type="primary" style="width: 100%" @click="otherPaper">确定</a-button>
+                <a-button style="width: 100%" @click="otherPaper">确定</a-button>
               </div>
             </template>
-            <a-button :type="'other' === curPaperType ? 'primary' : ''">自定义纸张</a-button>
+            <a-button :type="'other' === curPaperType ? 'primary' : 'default'">自定义纸张</a-button>
           </a-popover>
         </a-button-group>
-        <a-button type="text" icon="zoom-out" @click="changeScale(false)" />
+        <a-button type="text" @click="changeScale(false)">
+          <span class="glyphicon glyphicon-minus"></span>
+        </a-button>
         <a-input-number
           :value="scaleValue"
           :min="scaleMin"
@@ -28,24 +34,25 @@
           :formatter="(value) => `${(value * 100).toFixed(0)}%`"
           :parser="(value) => value.replace('%', '')"
         />
-        <a-button type="text" icon="zoom-in" @click="changeScale(true)" />
-        <a-button type="primary" icon="eye" @click="preView"> 预览 </a-button>
-        <a-button type="primary" icon="printer" @click="print"> 直接打印 </a-button>
+        <a-button type="text" @click="changeScale(true)">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a-button>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
-          <template #icon>
-            <a-icon type="question-circle-o" style="color: red" />
+        <div>选中元素操作:</div>
+        <a-popover v-model="paperPopVisible" title="设置水平间距(mm)" trigger="click">
+          <template #content>
+            <div>
+              <a-input-group compact style="margin: 10px 10px">
+                <a-input type="number" v-model="elsSpace" style="width: 100px; text-align: center" placeholder="水平间距(mm)" />
+              </a-input-group>
+              <a-button style="width: 100%" @click="setElsSpace(true)">水平间距</a-button>
+            </div>
           </template>
-          <a-button type="primary" danger>清空<a-icon type="close" /></a-button>
-        </a-popconfirm>
-        <json-view :template="template" />
-        <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
-      </a-space>
-      <a-space style="margin-bottom: 10px">
-        <div>选中元素后点击:</div>
-        <a-button type="primary" @click="setElsSpace(true)"> 水平间距10 </a-button>
-        <a-button type="primary" @click="setElsSpace(false)"> 垂直间距10 </a-button>
+          <a-button type="primary">水平间距</a-button>
+        </a-popover>
+        <a-button type="primary" @click="setElsSpace(true)">水平间距10</a-button>
+        <a-button type="primary" @click="setElsSpace(false)">垂直间距10</a-button>
         <a-radio-group>
           <a-radio-button @click="setElsAlign('left')" title="左对齐">
             <span class="glyphicon glyphicon-object-align-left">左对齐</span>
@@ -74,10 +81,19 @@
         </a-radio-group>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <a-textarea style="width: 30vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
+        <div>操作模板:</div>
+        <json-view :template="template" />
+        <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
+        <a-button type="primary" @click="preView">预览</a-button>
+        <a-button type="primary" @click="print"> 直接打印 </a-button>
+        <a-textarea style="width: 20vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
         <a-button type="primary" @click="updateJson"> 更新json模板 </a-button>
-        <a-button type="primary" @click="exportJson"> 导出json模板到 textArea </a-button>
-        <a-textarea style="width: 30vw" v-model="jsonOut" placeholder="点击左侧导出json" allow-clear />
+        <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
+          <template #icon>
+            <a-icon type="question-circle-o" style="color: red" />
+          </template>
+          <a-button type="primary" danger>清空<a-icon type="close" /></a-button>
+        </a-popconfirm>
       </a-space>
     </div>
     <a-row :gutter="[8, 0]">
@@ -247,11 +263,19 @@
       return {
         template: null,
         curPaper: {
-          type: 'A4',
+          type: '三等分',
           width: 210,
           height: 93,
         },
         paperTypes: {
+          '三等分': {
+            width: 210,
+            height: 93,
+          },
+          '二等分': {
+            width: 210,
+            height: 140,
+          },
           A3: {
             width: 420,
             height: 296.6,
@@ -279,6 +303,7 @@
         },
         // 自定义纸张
         paperPopVisible: false,
+        elsSpace: 10,
         paperWidth: '210',
         paperHeight: '93',
         // 缩放
@@ -292,15 +317,24 @@
     },
     computed: {
       curPaperType() {
-        return 'other';
+        let type = 'other';
+        let types = this.paperTypes;
+        for (const key in types) {
+          let item = types[key];
+          let { width, height } = this.curPaper;
+          if (item.width === width && item.height === height) {
+            type = key;
+          }
+        }
+        return type;
       },
       /**
        * @description: 当前版本信息，用于 demo 页面根据版本控制功能
        * @return {Object}
        */
       currVerInfo() {
-        if (this.$parent.version && this.$parent.version != 'development') {
-          return decodeVer(this.$parent.version);
+        if (this.$parent['version'] && this.$parent['version'] !== 'development') {
+          return decodeVer(this.$parent['version']);
         } else if (hiprint?.version) {
           return decodeVer(hiprint.version);
         } else {
@@ -312,9 +346,9 @@
     },
     mounted() {
       // 存在一个固定版本号，并且不是开发版本
-      if (this.$parent.version && this.$parent.version != 'development') {
+      if (this.$parent['version'] && this.$parent['version'] !== 'development') {
         // 加载对应版本的 hiprint
-        this.getVersion(this.$parent.version);
+        this.getVersion(this.$parent['version']);
       }
       // 不存在固定版本，加载当前代码中的 hiprint
       else {
@@ -561,7 +595,7 @@
         }
       },
       exportJson() {
-        debugger
+        debugger;
         if (hiprintTemplate) {
           this.jsonOut = JSON.stringify(hiprintTemplate.getJson() || {});
         }
@@ -570,7 +604,7 @@
         hiprintTemplate.setElsAlign(e);
       },
       setElsSpace(h) {
-        hiprintTemplate.setElsSpace(10, h);
+        hiprintTemplate.setElsSpace(this.elsSpace, h);
       },
       setEleSelectByField() {
         hiprintTemplate.selectElementsByField(['name']);

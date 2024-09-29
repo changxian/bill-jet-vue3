@@ -4,7 +4,7 @@
     @register="registerModal"
     destroyOnClose
     :title="title"
-    :width="1300"
+    :width="1411"
     :canFullscreen="true"
     :defaultFullscreen="true"
     :showCancelBtn="false"
