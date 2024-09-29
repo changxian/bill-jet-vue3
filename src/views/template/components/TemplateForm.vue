@@ -2,7 +2,7 @@
   <a-card>
     <div style="display: flex; flex-direction: column">
       <a-space style="margin-bottom: 10px">
-        <div>纸张大小设置:</div>
+        <div>纸张设置:</div>
         <a-button-group>
           <template v-for="(value, type) in paperTypes" :key="type">
             <a-button :type="curPaperType === type ? 'primary' : 'default'" @click="setPaper(type, value)">{{ type }}</a-button>
@@ -10,7 +10,7 @@
           <a-popover v-model="paperPopVisible" title="设置纸张宽高(mm)" trigger="click">
             <template #content>
               <div>
-                <a-input-group compact style="margin: 10px 10px">
+                <a-input-group compact style="margin: 10px 0px">
                   <a-input type="number" v-model="paperWidth" style="width: 100px; text-align: center" placeholder="宽(mm)" />
                   <a-input style="width: 30px; border-left: 0; pointer-events: none; backgroundcolor: #fff" placeholder="~" disabled />
                   <a-input type="number" v-model="paperHeight" style="width: 100px; text-align: center; border-left: 0" placeholder="高(mm)" />
@@ -39,20 +39,29 @@
         </a-button>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <div>选中元素操作:</div>
+        <div>选中设置:</div>
         <a-popover v-model="paperPopVisible" title="设置水平间距(mm)" trigger="click">
           <template #content>
             <div>
-              <a-input-group compact style="margin: 10px 10px">
-                <a-input type="number" v-model="elsSpace" style="width: 100px; text-align: center" placeholder="水平间距(mm)" />
+              <a-input-group compact style="margin: 5px 0">
+                <a-input type="number" v-model="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
               </a-input-group>
-              <a-button style="width: 100%" @click="setElsSpace(true)">水平间距</a-button>
+              <a-button style="width: 100%" @click="setElsSpace(true)">确定</a-button>
             </div>
           </template>
           <a-button type="primary">水平间距</a-button>
         </a-popover>
-        <a-button type="primary" @click="setElsSpace(true)">水平间距10</a-button>
-        <a-button type="primary" @click="setElsSpace(false)">垂直间距10</a-button>
+        <a-popover v-model="paperPopVisible" title="设置水平间距(mm)" trigger="click">
+          <template #content>
+            <div>
+              <a-input-group compact style="margin: 5px 0">
+                <a-input type="number" v-model="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
+              </a-input-group>
+              <a-button style="width: 100%" @click="setElsSpace(false)">确定</a-button>
+            </div>
+          </template>
+          <a-button type="primary">垂直间距</a-button>
+        </a-popover>
         <a-radio-group>
           <a-radio-button @click="setElsAlign('left')" title="左对齐">
             <span class="glyphicon glyphicon-object-align-left">左对齐</span>
@@ -81,18 +90,18 @@
         </a-radio-group>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <div>操作模板:</div>
+        <div>模板操作:</div>
         <json-view :template="template" />
         <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
         <a-button type="primary" @click="preView">预览</a-button>
         <a-button type="primary" @click="print"> 直接打印 </a-button>
-        <a-textarea style="width: 20vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
-        <a-button type="primary" @click="updateJson"> 更新json模板 </a-button>
+        <a-textarea style="width: 24.2vw" v-model="jsonIn" @press-enter="updateJson" placeholder="复制json模板到此后 点击右侧更新" allow-clear />
+        <a-button type="primary" @click="updateJson"> 更新模板 </a-button>
         <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
           <template #icon>
             <a-icon type="question-circle-o" style="color: red" />
           </template>
-          <a-button type="primary" danger>清空<a-icon type="close" /></a-button>
+          <a-button type="primary" danger>清空设计板<a-icon type="close" /></a-button>
         </a-popconfirm>
       </a-space>
     </div>
@@ -247,11 +256,10 @@
   import '../public/css/bootstrap.min.css';
   import '../public/css/print-lock.css';
   import * as vuePluginHiprint from './index';
-  import panel from './panel';
+  import panel from './panel.empty';
   import printData from './print-data';
   import printPreview from './preview.vue';
   import jsonView from './json-view.vue';
-  import { decodeVer } from '../utils';
   // disAutoConnect();
   var hiprint, defaultElementTypeProvider;
   let hiprintTemplate;
@@ -333,69 +341,25 @@
        * @return {Object}
        */
       currVerInfo() {
-        if (this.$parent['version'] && this.$parent['version'] !== 'development') {
-          return decodeVer(this.$parent['version']);
-        } else if (hiprint?.version) {
-          return decodeVer(hiprint.version);
-        } else {
-          return {
-            verVal: 9999,
-          };
-        }
+        return {
+          verVal: 9999,
+        };
       },
     },
     mounted() {
-      // 存在一个固定版本号，并且不是开发版本
-      if (this.$parent['version'] && this.$parent['version'] !== 'development') {
-        // 加载对应版本的 hiprint
-        this.getVersion(this.$parent['version']);
-      }
-      // 不存在固定版本，加载当前代码中的 hiprint
-      else {
-        hiprint = vuePluginHiprint.hiprint;
-        defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
-        this.init();
-      }
+      hiprint = vuePluginHiprint.hiprint;
+      defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+      this.init();
     },
     methods: {
-      /**
-       * @description: 加载版本
-       * @param {string} version 版本号
-       */
-      getVersion(version) {
-        const script = document.createElement('script');
-        script.setAttribute('type', 'text/javascript');
-        script.setAttribute(
-          'src',
-          // jsdelivr cdn
-          // `https://cdn.jsdelivr.net/npm/vue-plugin-hiprint@${version}/dist/vue-plugin-hiprint.js`
-          // cnpm cdn
-          // `https://registry.npmmirror.com/vue-plugin-hiprint/${version}/files/dist/vue-plugin-hiprint.js`
-          // unpkg cdn
-          `https://unpkg.com/vue-plugin-hiprint@${version}/dist/vue-plugin-hiprint.js`
-        );
-        script.addEventListener('load', () => {
-          hiprint = window['vue-plugin-hiprint'].hiprint;
-          defaultElementTypeProvider = window['vue-plugin-hiprint'].defaultElementTypeProvider;
-          this.init();
-        });
-        const head = document.querySelector('head');
-        head.querySelector('link[media=print][href*="print-lock.css"]').remove();
-        head.append(
-          // $(`<link rel="stylesheet" type="text/css" media="print" href="https://registry.npmmirror.com/vue-plugin-hiprint/${version}/files/dist/print-lock.css">`)[0]
-          $(`<link rel="stylesheet" type="text/css" media="print" href="https://unpkg.com/vue-plugin-hiprint@${version}/dist/print-lock.css">`)[0]
-        );
-        head.append(script);
-      },
       init() {
         hiprint.init({
           providers: [new defaultElementTypeProvider()],
-          lang: this.$parent.lang,
+          lang: 'cn',
         });
         // 还原配置
         hiprint.setConfig();
-        // eslint-disable-next-line no-undef
-        //设置左侧拖拽事件
+        // 设置左侧拖拽事件
         hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
         $('#hiprint-printTemplate').empty();
         this.template = hiprintTemplate = new hiprint.PrintTemplate({
@@ -417,9 +381,7 @@
                   real: true, // 根据图片实际尺寸调整(转pt)
                 }
               );
-            }, 3000);
-            // target.getValue()
-            // target.refresh(url)
+            }, 1000);
           },
           // 自定义可选字体
           // 或者使用 hiprintTemplate.setFontList([])
