@@ -292,16 +292,7 @@
     },
     computed: {
       curPaperType() {
-        let type = 'other';
-        let types = this.paperTypes;
-        for (const key in types) {
-          let item = types[key];
-          let { width, height } = this.curPaper;
-          if (item.width === width && item.height === height) {
-            type = key;
-          }
-        }
-        return type;
+        return 'other';
       },
       /**
        * @description: 当前版本信息，用于 demo 页面根据版本控制功能
@@ -446,9 +437,10 @@
         }
       },
       otherPaper() {
-        let value = {};
-        value.width = this.paperWidth;
-        value.height = this.paperHeight;
+        let value = {
+          width: this.paperWidth,
+          height: this.paperHeight,
+        };
         this.paperPopVisible = false;
         this.setPaper('other', value);
       },
