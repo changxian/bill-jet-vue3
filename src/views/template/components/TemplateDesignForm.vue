@@ -1,277 +1,272 @@
 <template>
-        <a-card>
-          <div style="display: flex; flex-direction: column">
-            <a-space style="margin-bottom: 10px">
-              <div>纸张设置:</div>
-              <a-button-group>
-                <template v-for="(value, type) in paperTypes" :key="type">
-                  <a-button :type="curPaperType === type ? 'primary' : 'default'" @click="setPaper(type, value)">{{ type }}</a-button>
-                </template>
-                <a-popover v-model:visible="paperPopVisible" title="设置纸张宽高(mm)" trigger="click">
-                  <template #content>
-                    <div>
-                      <a-input-group compact style="margin: 10px 0px">
-                        <a-input type="number" v-model:value="paperWidth" style="width: 100px; text-align: center" placeholder="宽(mm)" />
-                        <a-input style="width: 30px; border-left: 0; pointer-events: none; backgroundcolor: #fff" placeholder="~" disabled />
-                        <a-input
-                          type="number"
-                          v-model:value="paperHeight"
-                          style="width: 100px; text-align: center; border-left: 0"
-                          placeholder="高(mm)"
-                        />
-                      </a-input-group>
-                      <a-button style="width: 100%" @click="otherPaper">确定</a-button>
-                    </div>
-                  </template>
-                  <a-button :type="'other' === curPaperType ? 'primary' : 'default'">自定义纸张</a-button>
-                </a-popover>
-              </a-button-group>
-              <a-button type="text" @click="changeScale(false)">
-                <span class="glyphicon glyphicon-minus"></span>
-              </a-button>
-              <a-input-number
-                :value="scaleValue"
-                :min="scaleMin"
-                :max="scaleMax"
-                :step="0.1"
-                disabled
-                style="width: 70px"
-                :formatter="(value) => `${(value * 100).toFixed(0)}%`"
-                :parser="(value) => value.replace('%', '')"
-              />
-              <a-button type="text" @click="changeScale(true)">
-                <span class="glyphicon glyphicon-plus"></span>
-              </a-button>
-            </a-space>
-            <a-space style="margin-bottom: 10px">
-              <div>选中设置:</div>
-              <a-popover v-model:visible="elsSpaceVisible" title="设置水平间距(mm)" trigger="click">
-                <template #content>
+  <a-card>
+    <div style="display: flex; flex-direction: column">
+      <a-space style="margin-bottom: 10px">
+        <div>纸张设置:</div>
+        <a-button-group>
+          <template v-for="(value, type) in paperTypes" :key="type">
+            <a-button :type="curPaperType === type ? 'primary' : 'default'" @click="setPaper(type, value)">{{ type }}</a-button>
+          </template>
+          <a-popover v-model:visible="paperPopVisible" title="设置纸张宽高(mm)" trigger="click">
+            <template #content>
+              <div>
+                <a-input-group compact style="margin: 10px 0px">
+                  <a-input type="number" v-model:value="paperWidth" style="width: 100px; text-align: center" placeholder="宽(mm)" />
+                  <a-input style="width: 30px; border-left: 0; pointer-events: none; backgroundcolor: #fff" placeholder="~" disabled />
+                  <a-input type="number" v-model:value="paperHeight" style="width: 100px; text-align: center; border-left: 0" placeholder="高(mm)" />
+                </a-input-group>
+                <a-button style="width: 100%" @click="otherPaper">确定</a-button>
+              </div>
+            </template>
+            <a-button :type="'other' === curPaperType ? 'primary' : 'default'">自定义纸张</a-button>
+          </a-popover>
+        </a-button-group>
+        <a-button type="text" @click="changeScale(false)">
+          <span class="glyphicon glyphicon-minus"></span>
+        </a-button>
+        <a-input-number
+          :value="scaleValue"
+          :min="scaleMin"
+          :max="scaleMax"
+          :step="0.1"
+          disabled
+          style="width: 70px"
+          :formatter="(value) => `${(value * 100).toFixed(0)}%`"
+          :parser="(value) => value.replace('%', '')"
+        />
+        <a-button type="text" @click="changeScale(true)">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a-button>
+      </a-space>
+      <a-space style="margin-bottom: 10px">
+        <div>选中设置:</div>
+        <a-popover v-model:visible="elsSpaceVisible" title="设置水平间距(mm)" trigger="click">
+          <template #content>
+            <div>
+              <a-input-group compact style="margin: 5px 0">
+                <a-input type="number" v-model:value="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
+              </a-input-group>
+              <a-button style="width: 100%" @click="setElsSpace(true, elsSpace)">确定</a-button>
+            </div>
+          </template>
+          <a-button type="primary">水平间距</a-button>
+        </a-popover>
+        <a-popover v-model:visible="verSpaceVisible" title="设置垂直间距(mm)" trigger="click">
+          <template #content>
+            <div>
+              <a-input-group compact style="margin: 5px 0">
+                <a-input type="number" v-model:value="verSpace" style="width: 100%; text-align: center" placeholder="垂直间距(mm)" />
+              </a-input-group>
+              <a-button style="width: 100%" @click="setElsSpace(false, verSpace)">确定</a-button>
+            </div>
+          </template>
+          <a-button type="primary">垂直间距</a-button>
+        </a-popover>
+        <a-radio-group>
+          <a-radio-button @click="setElsAlign('left')" title="左对齐">
+            <span class="glyphicon glyphicon-object-align-left">左对齐</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('vertical')" title="居中">
+            <span class="glyphicon glyphicon-object-align-vertical">居中</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('right')" title="右对齐">
+            <span class="glyphicon glyphicon-object-align-right">右对齐</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('top')" title="顶部对齐">
+            <span class="glyphicon glyphicon-object-align-top">顶部对齐</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('horizontal')" title="垂直居中">
+            <span class="glyphicon glyphicon-object-align-horizontal">垂直居中</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('bottom')" title="底部对齐">
+            <span class="glyphicon glyphicon-object-align-bottom">底部对齐</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('distributeHor')" title="横向分散">
+            <span class="glyphicon glyphicon-resize-horizontal">横向分散</span>
+          </a-radio-button>
+          <a-radio-button @click="setElsAlign('distributeVer')" title="纵向分散">
+            <span class="glyphicon glyphicon-resize-vertical">纵向分散</span>
+          </a-radio-button>
+        </a-radio-group>
+      </a-space>
+      <a-space style="margin-bottom: 10px">
+        <div>模板操作:</div>
+        <json-view :template="template" />
+        <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
+        <a-button type="primary" @click="preView">预览</a-button>
+        <a-button type="primary" @click="print"> 直接打印 </a-button>
+        <a-textarea
+          style="width: 24.2vw"
+          v-model:value="jsonIn"
+          @press-enter="updateJson"
+          placeholder="复制json模板到此后 点击右侧更新"
+          allow-clear
+        />
+        <a-button type="primary" @click="updateJson"> 更新模板 </a-button>
+        <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
+          <template #icon>
+            <a-icon type="question-circle-o" style="color: red" />
+          </template>
+          <a-button type="primary" danger>清空设计板<a-icon type="close" /></a-button>
+        </a-popconfirm>
+      </a-space>
+      <a-space style="margin-bottom: 10px">
+        <div>模板类型<span style="color: red"> *</span>：</div>
+        <a-select v-model:value="formData.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
+          <a-select-option value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>
+          <a-select-option value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>
+          <a-select-option value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
+          <a-select-option value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
+        </a-select>
+        <div>模板名称<span style="color: red"> *</span>：</div>
+        <a-input v-model:value="formData.name" style="width: 328px" placeholder="请输入模板名称" />
+      </a-space>
+    </div>
+    <a-row :gutter="[8, 0]">
+      <a-col :span="4">
+        <a-card style="height: 100vh">
+          <a-row>
+            <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
+              <a-row class="drag_item_title">拖拽组件列表</a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a-input-group compact style="margin: 5px 0">
-                      <a-input type="number" v-model:value="elsSpace" style="width: 100%; text-align: center" placeholder="水平间距(mm)" />
-                    </a-input-group>
-                    <a-button style="width: 100%" @click="setElsSpace(true, elsSpace)">确定</a-button>
+                    <a class="ep-draggable-item" tid="defaultModule.text">
+                      <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
+                      <p class="glyphicon-class">文本</p>
+                    </a>
                   </div>
-                </template>
-                <a-button type="primary">水平间距</a-button>
-              </a-popover>
-              <a-popover v-model:visible="verSpaceVisible" title="设置垂直间距(mm)" trigger="click">
-                <template #content>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
                   <div>
-                    <a-input-group compact style="margin: 5px 0">
-                      <a-input type="number" v-model:value="verSpace" style="width: 100%; text-align: center" placeholder="垂直间距(mm)" />
-                    </a-input-group>
-                    <a-button style="width: 100%" @click="setElsSpace(false, verSpace)">确定</a-button>
+                    <a class="ep-draggable-item" tid="defaultModule.image">
+                      <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                      <p class="glyphicon-class">图片</p>
+                    </a>
                   </div>
-                </template>
-                <a-button type="primary">垂直间距</a-button>
-              </a-popover>
-              <a-radio-group>
-                <a-radio-button @click="setElsAlign('left')" title="左对齐">
-                  <span class="glyphicon glyphicon-object-align-left">左对齐</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('vertical')" title="居中">
-                  <span class="glyphicon glyphicon-object-align-vertical">居中</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('right')" title="右对齐">
-                  <span class="glyphicon glyphicon-object-align-right">右对齐</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('top')" title="顶部对齐">
-                  <span class="glyphicon glyphicon-object-align-top">顶部对齐</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('horizontal')" title="垂直居中">
-                  <span class="glyphicon glyphicon-object-align-horizontal">垂直居中</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('bottom')" title="底部对齐">
-                  <span class="glyphicon glyphicon-object-align-bottom">底部对齐</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('distributeHor')" title="横向分散">
-                  <span class="glyphicon glyphicon-resize-horizontal">横向分散</span>
-                </a-radio-button>
-                <a-radio-button @click="setElsAlign('distributeVer')" title="纵向分散">
-                  <span class="glyphicon glyphicon-resize-vertical">纵向分散</span>
-                </a-radio-button>
-              </a-radio-group>
-            </a-space>
-            <a-space style="margin-bottom: 10px">
-              <div>模板操作:</div>
-              <json-view :template="template" />
-              <a-button type="primary" @click="exportPdf('pdfobjectnewwindow')"> 导出查看pdf</a-button>
-              <a-button type="primary" @click="preView">预览</a-button>
-              <a-button type="primary" @click="print"> 直接打印 </a-button>
-              <a-textarea
-                style="width: 24.2vw"
-                v-model:value="jsonIn"
-                @press-enter="updateJson"
-                placeholder="复制json模板到此后 点击右侧更新"
-                allow-clear
-              />
-              <a-button type="primary" @click="updateJson"> 更新模板 </a-button>
-              <a-popconfirm title="是否确认清空?" okType="danger" okText="确定清空" @confirm="clearPaper">
-                <template #icon>
-                  <a-icon type="question-circle-o" style="color: red" />
-                </template>
-                <a-button type="primary" danger>清空设计板<a-icon type="close" /></a-button>
-              </a-popconfirm>
-            </a-space>
-            <a-space style="margin-bottom: 10px">
-              <div>模板类型<span style="color: red"> *</span>：</div>
-              <a-select v-model:value="formData.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
-                <a-select-option value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>
-                <a-select-option value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>
-                <a-select-option value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
-                <a-select-option value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
-              </a-select>
-              <div>模板名称<span style="color: red"> *</span>：</div>
-              <a-input v-model:value="formData.name" style="width: 328px" placeholder="请输入模板名称" />
-            </a-space>
-          </div>
-          <a-row :gutter="[8, 0]">
-            <a-col :span="4">
-              <a-card style="height: 100vh">
-                <a-row>
-                  <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
-                    <a-row class="drag_item_title">拖拽组件列表</a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.text">
-                            <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
-                            <p class="glyphicon-class">文本</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.image">
-                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                            <p class="glyphicon-class">图片</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.longText">
-                            <span class="glyphicon glyphicon-subscript" aria-hidden="true"></span>
-                            <p class="glyphicon-class">长文</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.table">
-                            <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                            <p class="glyphicon-class">表格</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.emptyTable">
-                            <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                            <p class="glyphicon-class">空白表格</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.html">
-                            <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
-                            <p class="glyphicon-class">html</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.customText">
-                            <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
-                            <p class="glyphicon-class">自定义</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row class="drag_item_title">辅助</a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.hline">
-                            <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
-                            <p class="glyphicon-class">横线</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.vline">
-                            <span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
-                            <p class="glyphicon-class">竖线</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.rect">
-                            <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-                            <p class="glyphicon-class">矩形</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.oval">
-                            <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
-                            <p class="glyphicon-class">椭圆</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                    <a-row style="height: 100px">
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.barcode">
-                            <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
-                            <p class="glyphicon-class">条形码</p>
-                          </a>
-                        </div>
-                      </a-col>
-                      <a-col :span="12" class="drag_item_box">
-                        <div>
-                          <a class="ep-draggable-item" tid="defaultModule.qrcode">
-                            <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-                            <p class="glyphicon-class">二维码</p>
-                          </a>
-                        </div>
-                      </a-col>
-                    </a-row>
-                  </a-col>
-                </a-row>
-              </a-card>
-            </a-col>
-            <a-col :span="15">
-              <a-card class="card-design">
-                <div id="hiprint-printTemplate" class="hiprint-printTemplate"></div>
-              </a-card>
-            </a-col>
-            <a-col :span="5" class="params_setting_container">
-              <a-card>
-                <a-row class="hinnn-layout-sider">
-                  <div id="PrintElementOptionSetting"></div>
-                </a-row>
-              </a-card>
+                </a-col>
+              </a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.longText">
+                      <span class="glyphicon glyphicon-subscript" aria-hidden="true"></span>
+                      <p class="glyphicon-class">长文</p>
+                    </a>
+                  </div>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.table">
+                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                      <p class="glyphicon-class">表格</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.emptyTable">
+                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                      <p class="glyphicon-class">空白表格</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.html">
+                      <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
+                      <p class="glyphicon-class">html</p>
+                    </a>
+                  </div>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.customText">
+                      <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
+                      <p class="glyphicon-class">自定义</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
+              <a-row class="drag_item_title">辅助</a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.hline">
+                      <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+                      <p class="glyphicon-class">横线</p>
+                    </a>
+                  </div>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.vline">
+                      <span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
+                      <p class="glyphicon-class">竖线</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.rect">
+                      <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                      <p class="glyphicon-class">矩形</p>
+                    </a>
+                  </div>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.oval">
+                      <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                      <p class="glyphicon-class">椭圆</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
+              <a-row style="height: 100px">
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.barcode">
+                      <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
+                      <p class="glyphicon-class">条形码</p>
+                    </a>
+                  </div>
+                </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.qrcode">
+                      <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                      <p class="glyphicon-class">二维码</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
             </a-col>
           </a-row>
-          <!-- 预览 -->
-          <print-preview ref="preView" />
         </a-card>
+      </a-col>
+      <a-col :span="15">
+        <a-card class="card-design">
+          <div id="hiprint-printTemplate" class="hiprint-printTemplate"></div>
+        </a-card>
+      </a-col>
+      <a-col :span="5" class="params_setting_container">
+        <a-card>
+          <a-row class="hinnn-layout-sider">
+            <div id="PrintElementOptionSetting"></div>
+          </a-row>
+        </a-card>
+      </a-col>
+    </a-row>
+    <!-- 预览 -->
+    <print-preview ref="preView" />
+  </a-card>
 </template>
 
 <script defer>
@@ -282,7 +277,6 @@
   import printData from './print-data';
   import printPreview from './preview.vue';
   import jsonView from './json-view.vue';
-  import { defineComponent } from 'vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
@@ -292,7 +286,7 @@
 
   export default {
     name: 'TemplateDesignForm',
-    components: { printPreview, jsonView, JFormContainer },
+    components: { printPreview, jsonView },
     data() {
       return {
         template: null,
@@ -359,6 +353,7 @@
           category: null,
           name: '',
           data: '',
+          status: '1',
         },
       };
     },
