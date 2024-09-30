@@ -5,7 +5,7 @@ export const columns: BasicColumn[] = [
   {
     title: '模板类型',
     align: 'center',
-    dataIndex: 'category',
+    dataIndex: 'category_dictText',
   },
   {
     title: '模板名称',
@@ -15,7 +15,7 @@ export const columns: BasicColumn[] = [
   {
     title: '状态',
     align: 'center',
-    dataIndex: 'status',
+    dataIndex: 'status_dictText',
   },
 ];
 //查询数据

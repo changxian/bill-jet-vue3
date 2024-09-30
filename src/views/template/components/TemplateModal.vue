@@ -4,27 +4,30 @@
     @register="registerModal"
     destroyOnClose
     :title="title"
-    :width="1411"
+    :width="width"
     :canFullscreen="true"
-    :defaultFullscreen="true"
+    :defaultFullscreen="false"
     :showCancelBtn="false"
     :useWrapper="true"
     @ok="handleSubmit"
     :closeFunc="closeFunction"
   >
-    <TemplateForm ref="registerForm" @ok="submitCallback" name="TemplateForm" :formData="formData" />
+    <TemplateDesignForm ref="registerDesignForm" @ok="submitCallback" name="TemplateDesignForm" :formData="formData" />
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
-  import TemplateForm from './TemplateForm.vue';
+  import TemplateDesignForm from './TemplateDesignForm.vue';
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const isDetail = ref(false);
-  const registerForm = ref();
+  const registerDesignForm = ref();
+  const width = computed(() => {
+    return !isDetail.value ? 1411 : 1200;
+  });
   const isNew = ref(false);
 
   let _d = {};
@@ -66,7 +69,7 @@
   const title = computed(() => (!unref(isUpdate) ? '新增' : !unref(isDetail) ? '详情' : '编辑'));
   // 表单提交事件
   async function handleSubmit() {
-    registerForm.value.submitForm();
+    registerDesignForm.value.submitForm();
   }
 
   /**
