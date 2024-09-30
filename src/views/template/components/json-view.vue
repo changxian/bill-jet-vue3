@@ -61,11 +61,11 @@
   };
 </script>
 <style lang="less" scoped>
-  /deep/ .ant-modal-body {
+  :deep(.ant-modal-body) {
     padding: 0px;
   }
 
-  /deep/ .ant-modal-content {
+  :deep(.ant-modal-content) {
     margin-bottom: 24px;
   }
 </style>
