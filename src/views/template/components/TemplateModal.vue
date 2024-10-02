@@ -29,11 +29,6 @@
 
   let _d = ref({});
   const formData = computed(() => {
-    console.log('我看这个打印几次');
-    console.log('我看这个打印几次 isUpdate' + isUpdate.value);
-    console.log('我看这个打印几次 isDetail' + isDetail.value);
-    console.log('我看这个打印几次 isNew' + isNew.value);
-    console.info(_d);
     if (unref(isUpdate)) {
       return {
         ..._d.value,

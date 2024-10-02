@@ -64,28 +64,28 @@
         </a-popover>
         <a-radio-group>
           <a-radio-button @click="setElsAlign('left')" title="左对齐">
-            <span class="glyphicon glyphicon-object-align-left">左对齐</span>
+            <span class="glyphicon glyphicon-object-align-left"> 左对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('vertical')" title="居中">
-            <span class="glyphicon glyphicon-object-align-vertical">居中</span>
+            <span class="glyphicon glyphicon-object-align-vertical"> 居中</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('right')" title="右对齐">
-            <span class="glyphicon glyphicon-object-align-right">右对齐</span>
+            <span class="glyphicon glyphicon-object-align-right"> 右对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('top')" title="顶部对齐">
-            <span class="glyphicon glyphicon-object-align-top">顶部对齐</span>
+            <span class="glyphicon glyphicon-object-align-top"> 顶部对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('horizontal')" title="垂直居中">
-            <span class="glyphicon glyphicon-object-align-horizontal">垂直居中</span>
+            <span class="glyphicon glyphicon-object-align-horizontal"> 垂直居中</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('bottom')" title="底部对齐">
-            <span class="glyphicon glyphicon-object-align-bottom">底部对齐</span>
+            <span class="glyphicon glyphicon-object-align-bottom"> 底部对齐</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('distributeHor')" title="横向分散">
-            <span class="glyphicon glyphicon-resize-horizontal">横向分散</span>
+            <span class="glyphicon glyphicon-resize-horizontal"> 横向分散</span>
           </a-radio-button>
           <a-radio-button @click="setElsAlign('distributeVer')" title="纵向分散">
-            <span class="glyphicon glyphicon-resize-vertical">纵向分散</span>
+            <span class="glyphicon glyphicon-resize-vertical"> 纵向分散</span>
           </a-radio-button>
         </a-radio-group>
       </a-space>
@@ -112,14 +112,14 @@
       </a-space>
       <a-space style="margin-bottom: 10px">
         <div>模板类型<span style="color: red"> *</span>：</div>
-        <a-select v-model:value="formData.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
-          <a-select-option value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>
-          <a-select-option value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>
-          <a-select-option value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
-          <a-select-option value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
+        <a-select v-model:value="form.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
+          <a-select-option :value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>
+          <a-select-option :value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>
+          <a-select-option :value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
+          <a-select-option :value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
         </a-select>
         <div>模板名称<span style="color: red"> *</span>：</div>
-        <a-input v-model:value="formData.name" style="width: 328px" placeholder="请输入模板名称" />
+        <a-input v-model:value="form.name" style="width: 328px" placeholder="请输入模板名称" />
       </a-space>
     </div>
     <a-row :gutter="[8, 0]">
@@ -364,6 +364,14 @@
         // 导入导出json
         jsonIn: '',
         confirmLoading: false,
+        form: {
+          disabled: false,
+          category: null,
+          id: '',
+          name: '',
+          data: '',
+          status: '1',
+        },
       };
     },
     computed: {
@@ -400,9 +408,13 @@
         hiprint.setConfig();
         // 设置左侧拖拽事件
         hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
+
+        this.form = {
+          ...this.formData,
+        };
         let panels;
-        if (this.formData && this.formData.data) {
-          panels = JSON.parse(this.formData.data);
+        if (this.form && this.form.data) {
+          panels = JSON.parse(this.form.data);
         } else {
           panels = panel;
         }
@@ -559,20 +571,21 @@
         });
       },
       submitForm() {
-        if (!this.formData.category) {
+        if (!this.form.category) {
           createMessage.error(`模板类型不能为空`);
           return;
         }
-        if (!this.formData.name) {
+        if (!this.form.name) {
           createMessage.error(`模板名称不能为空`);
           return;
         }
         this.exportJson();
-        if (!this.formData.data) {
+        if (!this.form.data) {
           createMessage.error(`模板数据生成异常！`);
           return;
         }
-        saveOrUpdate(this.formData, false).then(() => {
+        this.form.spec = JSON.stringify(this.curPaper);
+        saveOrUpdate(this.form, this.form.id).then(() => {
           this.$emit('ok');
         });
       },
@@ -600,7 +613,7 @@
       },
       exportJson() {
         if (hiprintTemplate) {
-          this.formData.data = JSON.stringify(hiprintTemplate.getJson() || {});
+          this.form.data = JSON.stringify(hiprintTemplate.getJson() || {});
         }
       },
       setElsAlign(e) {
