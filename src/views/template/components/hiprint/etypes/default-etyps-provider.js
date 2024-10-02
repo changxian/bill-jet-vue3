@@ -1,5 +1,7 @@
 import { table1 } from './tb/table1';
 import { table2 } from './tb/table2';
+import { table2_1 } from './tb/table2_1';
+import { table2_2 } from './tb/table2_2';
 import { table3 } from './tb/table3';
 import { table4 } from './tb/table4';
 import { table5 } from './tb/table5';
@@ -79,7 +81,9 @@ export default function (hiprint) {
         ]),
         new hiprint.PrintElementTypeGroup('表格', [
           table1,
+          table2_2,
           table2,
+          table2_1,
           table3,
           table4,
           table5,

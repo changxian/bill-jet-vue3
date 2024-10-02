@@ -24,7 +24,7 @@ const table5 = {
         price +
         '</td><td colspan="6">合计人民币（大写）：' +
         capital +
-        '</td><td colspan="2" style="border: 1px solid">￥' +
+        '整</td><td colspan="2" style="border: 1px solid">￥' +
         data['total'] +
         '</td></tr>'
       );

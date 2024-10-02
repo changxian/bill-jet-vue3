@@ -1,10 +1,9 @@
 import { fields, cal, default_prot } from '../default';
-import Nzh from 'nzh';
 
-const table3 = {
-  tid: 'defaultModule.table3',
+const table2_2 = {
+  tid: 'defaultModule.table2_2',
   field: 'table',
-  title: '页合计3',
+  title: '页小计',
   type: 'table',
   options: {
     field: 'table',
@@ -15,37 +14,30 @@ const table3 = {
     // rows 总行数据信息
     // data 整个数据信息
     // currentPageGridRowsData 当前页的数据信息
-    // 算当前页金额小计
     if (currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
-      let capital = Nzh.cn.toMoney(price, { complete: false, outSymbol: false });
-      return '<tr><td colspan="5" style="border: 1px solid">金额合计（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';
+      return '<tr><td colspan="6" style="border: 1px solid"></td><td colspan="4">页小计：￥' + price + '</td></tr>';
     }
 
-    return '<tr><td colspan="5" style="border: 1px solid">金额合计（大写）：</td><td colspan="3">小写：￥</td></tr>';
+    return '<tr><td colspan="6" style="border: 1px solid"></td><td colspan="4">页小计：￥</td></tr>';
   },
   columns: [
     [
       {
-        title: '序号',
+        title: '药品编码',
         align: 'center',
-        field: 'seq',
-        width: 30,
+        field: 'code',
+        width: 60,
       },
       {
-        title: '商品名称',
+        title: '药品名称',
         align: 'left',
         field: 'name',
-        width: 150,
+        width: 120,
       },
       {
-        title: '规格',
-        field: 'spec',
-        width: 40,
-      },
-      {
-        title: '颜色',
-        field: 'color',
+        title: '单位',
+        field: 'unit',
         width: 30,
       },
       {
@@ -64,8 +56,23 @@ const table3 = {
         width: 50,
       },
       {
-        title: '备注',
-        field: 'amount',
+        title: '产地',
+        field: 'firmAddress',
+        width: 70,
+      },
+      {
+        title: '批号',
+        field: 'batchNum',
+        width: 70,
+      },
+      {
+        title: '零售价',
+        field: 'retailPrice',
+        width: 70,
+      },
+      {
+        title: '生产日期',
+        field: 'productDate',
         width: 50,
       },
     ],
@@ -73,4 +80,4 @@ const table3 = {
   ...default_prot,
 };
 
-export { table3 };
+export { table2_2 };

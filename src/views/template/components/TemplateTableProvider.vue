@@ -11,9 +11,27 @@
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_2">
+          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <p class="glyphicon-class">页小计</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="8" class="drag_item_box">
+      <div>
         <a class="ep-draggable-item" tid="defaultModule.table2">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">叶合计1</p>
+          <p class="glyphicon-class">页合计1</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="8" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1">
+          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <p class="glyphicon-class">页合计2</p>
         </a>
       </div>
     </a-col>
@@ -21,12 +39,10 @@
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table3">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">叶合计2</p>
+          <p class="glyphicon-class">页合计3</p>
         </a>
       </div>
     </a-col>
-  </a-row>
-  <a-row style="height: 80px">
     <a-col :span="8" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table4">
@@ -35,29 +51,13 @@
         </a>
       </div>
     </a-col>
+  </a-row>
+  <a-row style="height: 80px">
     <a-col :span="8" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table5">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
           <p class="glyphicon-class">总合计2</p>
-        </a>
-      </div>
-    </a-col>
-    <a-col :span="8" class="drag_item_box">
-      <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
-        </a>
-      </div>
-    </a-col>
-  </a-row>
-  <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
-      <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
         </a>
       </div>
     </a-col>
@@ -132,7 +132,8 @@
   </a-row>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 <style lang="less" scoped>
   // 拖拽
   .drag_item_box {
