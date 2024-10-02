@@ -55,7 +55,7 @@
   <a-row style="height: 80px">
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table5">
+        <a class="ep-draggable-item" tid="defaultModule.table4_1">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
           <p class="glyphicon-class">总合计2</p>
         </a>
@@ -63,17 +63,17 @@
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table5">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">总合计3</p>
         </a>
       </div>
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table6">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">尾合计</p>
         </a>
       </div>
     </a-col>

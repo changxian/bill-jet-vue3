@@ -1,10 +1,10 @@
 import { fields, cal, default_prot } from '../default';
 import Nzh from 'nzh';
 
-const table3 = {
-  tid: 'defaultModule.table3',
+const table6 = {
+  tid: 'defaultModule.table6',
   field: 'table',
-  title: '页合计3',
+  title: '尾页合计',
   type: 'table',
   options: {
     field: 'table',
@@ -16,13 +16,24 @@ const table3 = {
     // data 整个数据信息
     // currentPageGridRowsData 当前页的数据信息
     // 算当前页金额小计
-    if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
+    if (data && currentPageGridRowsData && currentPageGridRowsData.length > 0) {
       let price = cal(currentPageGridRowsData);
-      let capital = Nzh.cn.toMoney(price, { complete: false, outSymbol: false });
-      return '<tr><td colspan="5" style="border: 1px solid">金额合计（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';
+      if (data && data['total'] && currentPageGridRowsData[currentPageGridRowsData.length - 1].tail) {
+        let capital = Nzh.cn.toMoney(data['total'], { complete: false, outSymbol: false });
+        return (
+          '<tr><td colspan="5"></td><td colspan="3">页小计：' +
+          price +
+          '</td></tr>' +
+          '<tr><td colspan="5">合计金额（大写）：' +
+          capital +
+          '</td><td colspan="3">总合计：' +
+          data['total'] +
+          '</td></tr>'
+        );
+      }
+      return '<tr><td colspan="5"></td><td colspan="3">页小计：' + price + '</td></tr>';
     }
-
-    return '<tr><td colspan="5" style="border: 1px solid">金额合计（大写）：</td><td colspan="3">小写：￥</td></tr>';
+    return '<tr><td colspan="5"></td><td colspan="3">页小计：</td></tr><tr><td colspan="5">合计金额（大写）：</td><td colspan="3">页小计：</td></tr>';
   },
   columns: [
     [
@@ -30,22 +41,22 @@ const table3 = {
         title: '序号',
         align: 'center',
         field: 'seq',
-        width: 30,
+        width: 20,
       },
       {
         title: '商品名称',
         align: 'left',
         field: 'name',
-        width: 150,
+        width: 100,
       },
       {
-        title: '规格',
+        title: '规格型号',
         field: 'spec',
         width: 40,
       },
       {
-        title: '颜色',
-        field: 'color',
+        title: '单位',
+        field: 'unit',
         width: 30,
       },
       {
@@ -56,7 +67,7 @@ const table3 = {
       {
         title: '单价',
         field: 'price',
-        width: 50,
+        width: 40,
       },
       {
         title: '金额',
@@ -65,7 +76,7 @@ const table3 = {
       },
       {
         title: '备注',
-        field: 'amount',
+        field: 'remark',
         width: 50,
       },
     ],
@@ -73,4 +84,4 @@ const table3 = {
   ...default_prot,
 };
 
-export { table3 };
+export { table6 };

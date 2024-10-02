@@ -14,7 +14,7 @@ const table2_2 = {
     // rows 总行数据信息
     // data 整个数据信息
     // currentPageGridRowsData 当前页的数据信息
-    if (currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
+    if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
       return '<tr><td colspan="6" style="border: 1px solid"></td><td colspan="4">页小计：￥' + price + '</td></tr>';
     }

@@ -4,7 +4,9 @@ import { table2_1 } from './tb/table2_1';
 import { table2_2 } from './tb/table2_2';
 import { table3 } from './tb/table3';
 import { table4 } from './tb/table4';
+import { table4_1 } from './tb/table4_1';
 import { table5 } from './tb/table5';
+import { table6 } from './tb/table6';
 import * as fields from '@/views/template/components/hiprint/etypes/default';
 
 export default function (hiprint) {
@@ -86,7 +88,9 @@ export default function (hiprint) {
           table2_1,
           table3,
           table4,
+          table4_1,
           table5,
+          table6,
           {
             tid: 'defaultModule.table',
             field: 'table',

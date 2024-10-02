@@ -16,7 +16,7 @@ const table2 = {
     // rows 总行数据信息
     // data 整个数据信息
     // currentPageGridRowsData 当前页的数据信息
-    if (currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
+    if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
       let capital = Nzh.cn.toMoney(price, { complete: false, outSymbol: false });
       return '<tr><td colspan="5" style="border: 1px solid">合计金额（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';

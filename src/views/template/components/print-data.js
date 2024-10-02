@@ -2,7 +2,7 @@ export default {
   name: '黄磊',
   logoTest: '',
   password: '12346',
-  longText: '浙江在线3月29日讯最近',
+  remark: '浙江在线3月29日讯最近',
   barcode: '123456',
   qrcode: '123456',
   total: '21672.87',
@@ -102,6 +102,7 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
+      tail: 1, // tail 标记是最后一条数据
     },
   ],
 };
