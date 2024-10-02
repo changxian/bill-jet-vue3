@@ -3,17 +3,17 @@
     <!-- 空白表格 -->
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table1">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">空白表格</p>
+          <p class="glyphicon-class">空白</p>
         </a>
       </div>
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table2">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">小计</p>
         </a>
       </div>
     </a-col>

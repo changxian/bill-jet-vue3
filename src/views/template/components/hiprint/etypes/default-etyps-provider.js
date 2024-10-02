@@ -1,3 +1,7 @@
+import { table1 } from './tb/table1';
+import { table2 } from './tb/table2';
+import * as fields from '@/views/template/components/hiprint/etypes/default';
+
 export default function (hiprint) {
   return function (options) {
     var addElementTypes = function (context) {
@@ -71,27 +75,18 @@ export default function (hiprint) {
           },
         ]),
         new hiprint.PrintElementTypeGroup('表格', [
+          table1,
+          table2,
           {
             tid: 'defaultModule.table',
             field: 'table',
-            title: '表格',
+            title: '表格1',
             type: 'table',
-            groupFields: ['name'],
-            groupFooterFormatter: function (group, option) {
-              return '这里';
+            options: {
+              field: 'table',
+              fields: fields.fields,
             },
             columns: [
-              [
-                {
-                  title: '行号',
-                  fixed: true,
-                  rowspan: 2,
-                  field: 'id',
-                  width: 70,
-                },
-                { title: '人员信息', colspan: 2 },
-                { title: '销售统计', colspan: 2 },
-              ],
               [
                 {
                   title: '姓名',

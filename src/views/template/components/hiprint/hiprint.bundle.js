@@ -11,6 +11,19 @@
 
 "use strict";
 
+const cal = (arr) => {
+  debugger;
+  if (arr && arr.length > 0) {
+    let price = 0;
+    for (let i = 0; i < arr.length; i++) {
+      let p = Math.floor(arr[i].amount * 100);
+      price += p;
+    }
+    return price / 100;
+  }
+  return '';
+};
+
 function _instanceof(left, right) {
   if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
     return !!right[Symbol.hasInstance](left);
