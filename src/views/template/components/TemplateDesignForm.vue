@@ -128,8 +128,8 @@
           <a-row>
             <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
               <a-row class="drag_item_title">拖拽组件列表</a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.text">
                       <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
@@ -137,7 +137,7 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.image">
                       <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -145,9 +145,7 @@
                     </a>
                   </div>
                 </a-col>
-              </a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.longText">
                       <span class="glyphicon glyphicon-subscript" aria-hidden="true"></span>
@@ -155,7 +153,9 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+              </a-row>
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.table">
                       <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
@@ -163,19 +163,7 @@
                     </a>
                   </div>
                 </a-col>
-              </a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
-                  <div>
-                    <a class="ep-draggable-item" tid="defaultModule.emptyTable">
-                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                      <p class="glyphicon-class">空白表格</p>
-                    </a>
-                  </div>
-                </a-col>
-              </a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.html">
                       <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
@@ -183,7 +171,7 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.customText">
                       <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
@@ -193,8 +181,8 @@
                 </a-col>
               </a-row>
               <a-row class="drag_item_title">辅助</a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.hline">
                       <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
@@ -202,7 +190,7 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.vline">
                       <span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
@@ -210,9 +198,7 @@
                     </a>
                   </div>
                 </a-col>
-              </a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.rect">
                       <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
@@ -220,7 +206,9 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+              </a-row>
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.oval">
                       <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
@@ -228,9 +216,7 @@
                     </a>
                   </div>
                 </a-col>
-              </a-row>
-              <a-row style="height: 100px">
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.barcode">
                       <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
@@ -238,7 +224,7 @@
                     </a>
                   </div>
                 </a-col>
-                <a-col :span="12" class="drag_item_box">
+                <a-col :span="8" class="drag_item_box">
                   <div>
                     <a class="ep-draggable-item" tid="defaultModule.qrcode">
                       <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
@@ -645,7 +631,6 @@
   // 拖拽
   .drag_item_box {
     height: 100%;
-    padding: 6px;
   }
 
   .drag_item_box > div {
