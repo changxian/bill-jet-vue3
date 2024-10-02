@@ -23,13 +23,62 @@ export default function (hiprint) {
             type: 'longText',
           },
           {
+            tid: 'defaultModule.html',
+            title: 'html',
+            formatter: function (data, options) {
+              return '<div style="height:50pt;width:50pt;background:red;border-radius: 50%;"></div>';
+            },
+            type: 'html',
+          },
+          {
+            tid: 'defaultModule.customText',
+            title: '自定义文本',
+            customText: '自定义文本',
+            custom: true,
+            type: 'text',
+          },
+        ]),
+        new hiprint.PrintElementTypeGroup('辅助', [
+          {
+            tid: 'defaultModule.hline',
+            title: '横线',
+            type: 'hline',
+          },
+          {
+            tid: 'defaultModule.vline',
+            title: '竖线',
+            type: 'vline',
+          },
+          {
+            tid: 'defaultModule.rect',
+            title: '矩形',
+            type: 'rect',
+          },
+          {
+            tid: 'defaultModule.oval',
+            title: '椭圆',
+            type: 'oval',
+          },
+          {
+            tid: 'defaultModule.barcode',
+            title: '条形码',
+            type: 'barcode',
+          },
+          {
+            tid: 'defaultModule.qrcode',
+            title: '二维码',
+            type: 'qrcode',
+          },
+        ]),
+        new hiprint.PrintElementTypeGroup('表格', [
+          {
             tid: 'defaultModule.table',
             field: 'table',
             title: '表格',
             type: 'table',
             groupFields: ['name'],
             groupFooterFormatter: function (group, option) {
-              return '这里自定义统计脚信息';
+              return '这里';
             },
             columns: [
               [
@@ -76,72 +125,6 @@ export default function (hiprint) {
             isEnableInsertColumn: true, //插入列
             isEnableDeleteColumn: true, //删除列
             isEnableMergeCell: true, //合并单元格
-          },
-          {
-            tid: 'defaultModule.emptyTable',
-            title: '空白表格',
-            type: 'table',
-            columns: [
-              [
-                {
-                  title: '',
-                  field: '',
-                  width: 100,
-                },
-                {
-                  title: '',
-                  field: '',
-                  width: 100,
-                },
-              ],
-            ],
-          },
-          {
-            tid: 'defaultModule.html',
-            title: 'html',
-            formatter: function (data, options) {
-              return '<div style="height:50pt;width:50pt;background:red;border-radius: 50%;"></div>';
-            },
-            type: 'html',
-          },
-          {
-            tid: 'defaultModule.customText',
-            title: '自定义文本',
-            customText: '自定义文本',
-            custom: true,
-            type: 'text',
-          },
-        ]),
-        new hiprint.PrintElementTypeGroup('辅助', [
-          {
-            tid: 'defaultModule.hline',
-            title: '横线',
-            type: 'hline',
-          },
-          {
-            tid: 'defaultModule.vline',
-            title: '竖线',
-            type: 'vline',
-          },
-          {
-            tid: 'defaultModule.rect',
-            title: '矩形',
-            type: 'rect',
-          },
-          {
-            tid: 'defaultModule.oval',
-            title: '椭圆',
-            type: 'oval',
-          },
-          {
-            tid: 'defaultModule.barcode',
-            title: '条形码',
-            type: 'barcode',
-          },
-          {
-            tid: 'defaultModule.qrcode',
-            title: '二维码',
-            type: 'qrcode',
           },
         ]),
       ]);

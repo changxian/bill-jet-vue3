@@ -124,10 +124,14 @@
     </div>
     <a-row :gutter="[8, 0]">
       <a-col :span="4">
-        <a-card style="height: 100vh">
+        <a-card style="height: 80vh">
           <a-row>
             <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
               <a-row class="drag_item_title">拖拽组件列表</a-row>
+              <div style="height: 21vh; width: 180px; overflow: auto">
+                <TemplateTableProvider />
+              </div>
+              <a-row class="drag_item_title">基础组件</a-row>
               <a-row style="height: 80px">
                 <a-col :span="8" class="drag_item_box">
                   <div>
@@ -150,32 +154,6 @@
                     <a class="ep-draggable-item" tid="defaultModule.longText">
                       <span class="glyphicon glyphicon-subscript" aria-hidden="true"></span>
                       <p class="glyphicon-class">长文</p>
-                    </a>
-                  </div>
-                </a-col>
-              </a-row>
-              <a-row style="height: 80px">
-                <a-col :span="8" class="drag_item_box">
-                  <div>
-                    <a class="ep-draggable-item" tid="defaultModule.table">
-                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                      <p class="glyphicon-class">表格</p>
-                    </a>
-                  </div>
-                </a-col>
-                <a-col :span="8" class="drag_item_box">
-                  <div>
-                    <a class="ep-draggable-item" tid="defaultModule.html">
-                      <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
-                      <p class="glyphicon-class">html</p>
-                    </a>
-                  </div>
-                </a-col>
-                <a-col :span="8" class="drag_item_box">
-                  <div>
-                    <a class="ep-draggable-item" tid="defaultModule.customText">
-                      <span class="glyphicon glyphicon-text-width" aria-hidden="true"></span>
-                      <p class="glyphicon-class">自定义</p>
                     </a>
                   </div>
                 </a-col>
@@ -233,6 +211,16 @@
                   </div>
                 </a-col>
               </a-row>
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.html">
+                      <span class="glyphicon glyphicon-header" aria-hidden="true"></span>
+                      <p class="glyphicon-class">html</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
             </a-col>
           </a-row>
         </a-card>
@@ -262,6 +250,7 @@
   import panel from './panel.empty';
   import printData from './print-data';
   import printPreview from './TemplatePreview.vue';
+  import TemplateTableProvider from './TemplateTableProvider.vue';
   import jsonView from './json-view.vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -272,7 +261,7 @@
 
   export default {
     name: 'TemplateDesignForm',
-    components: { printPreview, jsonView },
+    components: { printPreview, jsonView, TemplateTableProvider },
     props: {
       formData: {
         type: Object,

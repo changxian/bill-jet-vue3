@@ -15,1771 +15,1800 @@
       supportOptions: [
         {
           name: 'panelPaperRule',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'panelPageRule',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'firstPaperFooter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'evenPaperFooter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'oddPaperFooter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lastPaperFooter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'leftOffset',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'topOffset',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontFamily',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'orient',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'paperNumberDisabled',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'paperNumberContinue',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'paperNumberFormat',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'watermarkOptions',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'panelLayoutOptions',
-          hidden: false
+          hidden: false,
         },
       ],
-      default: {}
+      default: {},
     },
     text: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'title',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'field',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'testData',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'hideTitle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'dataType',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontFamily',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontSize',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontWeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'letterSpacing',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'color',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'backgroundColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textDecoration',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textAlign',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textContentVerticalAlign',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textContentWrap',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'lineHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
         {
-          name: '边框', options: [
+          name: '边框',
+          options: [
             {
               name: 'optionsGroup',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderLeft',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderTop',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderRight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderBottom',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'contentPaddingLeft',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'contentPaddingTop',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'contentPaddingRight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'contentPaddingBottom',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'textType',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'barcodeMode',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'barTextMode',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'barWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'barAutoWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'qrCodeLevel',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'unShowInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'upperCase',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'formatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'styler',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'title',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'field',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'testData',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'dataType',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontFamily',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontSize',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontWeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'letterSpacing',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'color',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textDecoration',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textContentVerticalAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textContentWrap',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lineHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textType',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'barcodeMode',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'barTextMode',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'barWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'barAutoWidth',
-          hidden: false
+          hidden: false,
         },
         {
-          name: "qrCodeLevel",
-          hidden: false
+          name: 'qrCodeLevel',
+          hidden: false,
         },
         {
           name: 'hideTitle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'unShowInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'optionsGroup',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderLeft',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderTop',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderRight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderBottom',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingLeft',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingTop',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingRight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingBottom',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'backgroundColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'formatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'styler',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
       default: {
         width: 120,
         height: 9.75,
         // barAutoWidth: 'true' 这里必须使用字符串
-      }
+      },
     },
     image: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'field',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'src',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fit',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'unShowInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderRadius',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'formatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'styler',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'field',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'src',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fit',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderRadius',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'unShowInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'formatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'styler',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
-      default: {}
+      default: {},
     },
     longText: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'title',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'field',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'testData',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'hideTitle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'fontFamily',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontSize',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontWeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'letterSpacing',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textAlign',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'lineHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'color',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'longTextIndent',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'leftSpaceRemoved',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'lHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'unShowInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'formatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'styler',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'title',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'field',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'testData',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontFamily',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontSize',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontWeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'letterSpacing',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lineHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'color',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'hideTitle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'longTextIndent',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'leftSpaceRemoved',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'unShowInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'optionsGroup',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderLeft',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderTop',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderRight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderBottom',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingLeft',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingTop',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingRight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'contentPaddingBottom',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'backgroundColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'formatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'styler',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
       default: {
         height: 42,
-        width: 550
-      }
+        width: 550,
+      },
     },
     table: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'field',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'testData',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderRepeat',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableFooterRepeat',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'autoCompletion',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'maxRows',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'columns',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'fontFamily',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fontSize',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'lineHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'textAlign',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'gridColumns',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'gridColumnsGutter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderCellBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderRowHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderBackground',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderFontSize',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableHeaderFontWeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableBodyRowHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableBodyRowBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableBodyCellBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableFooterBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'tableFooterCellBorder',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'lHeight',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         // 留空即显示 表格 列 属性
         {
-          name: '列', options: []
+          name: '列',
+          options: [],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'styler',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'rowStyler',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'footerFormatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'rowsColumnsMerge',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'rowsColumnsMergeClean',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'groupFieldsFormatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'groupFormatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'groupFooterFormatter',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'gridColumnsFooterFormatter',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'field',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontFamily',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fontSize',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lineHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'textAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'gridColumns',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'gridColumnsGutter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderRepeat',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderCellBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderRowHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderBackground',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderFontSize',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableHeaderFontWeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableBodyRowHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableBodyRowBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableBodyCellBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableFooterBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableFooterCellBorder',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'lHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'autoCompletion',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'maxRows',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'columns',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'styler',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'rowStyler',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableFooterRepeat',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'footerFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'rowsColumnsMerge',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'groupFieldsFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'groupFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'groupFooterFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'gridColumnsFooterFormatter',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
       default: {
-        width: 550
-      }
+        width: 550,
+      },
     },
     hline: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'borderWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderStyle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderStyle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
       ],
       default: {
         borderWidth: 0.75,
         height: 9,
-        width: 90
-      }
+        width: 90,
+      },
     },
     vline: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'borderWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderStyle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderStyle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
       ],
       default: {
         borderWidth: undefined,
         height: 90,
-        width: 9
-      }
+        width: 9,
+      },
     },
     rect: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'borderWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderStyle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'backgroundColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderStyle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'backgroundColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
       ],
       default: {
         borderWidth: undefined,
         height: 90,
-        width: 90
-      }
+        width: 90,
+      },
     },
     oval: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'borderWidth',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderStyle',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'borderColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'backgroundColor',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderWidth',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderStyle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'borderColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'backgroundColor',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'transform',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
       default: {
         borderWidth: undefined,
         height: 90,
-        width: 90
-      }
+        width: 90,
+      },
     },
     html: {
       tabs: [
         {
-          name: '基础', options: [
+          name: '基础',
+          options: [
             {
               name: 'coordinate',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'widthHeight',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'showInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'unShowInPage',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'fixed',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '样式', options: [
+          name: '样式',
+          options: [
             {
               name: 'transform',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'zIndex',
-              hidden: false
+              hidden: false,
             },
-          ]
+          ],
         },
         {
-          name: '高级', options: [
+          name: '高级',
+          options: [
             {
               name: 'pageBreak',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'axis',
-              hidden: false
+              hidden: false,
             },
             {
               name: 'formatter',
-              hidden: false
-            }
-          ]
+              hidden: false,
+            },
+          ],
         },
       ],
       supportOptions: [
         {
           name: 'coordinate',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'widthHeight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'pageBreak',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'showInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'unShowInPage',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'fixed',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'zIndex',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'axis',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'formatter',
-          hidden: false
-        }
+          hidden: false,
+        },
       ],
       default: {
         height: 90,
-        width: 90
-      }
+        width: 90,
+      },
     },
     tableColumn: {
       supportOptions: [
         {
           name: 'title',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'align',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'halign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'vAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableTextType',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableBarcodeMode',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableQRCodeLevel',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableColumnHeight',
-          hidden: false
+          hidden: false,
         },
         {
           // 表格条码底部是否显示内容
@@ -1788,439 +1817,564 @@
         },
         {
           name: 'paddingLeft',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'paddingRight',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummaryTitle',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummaryText',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummaryColspan',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummary',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummaryAlign',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'tableSummaryNumFormat',
-          hidden: false
+          hidden: false,
         },
 
         {
           name: 'tableSummaryFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'upperCase',
-          hidden: false
+          hidden: false,
         },
 
         {
           name: 'renderFormatter',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'formatter2',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'styler2',
-          hidden: false
+          hidden: false,
         },
         {
           name: 'stylerHeader',
-          hidden: false
+          hidden: false,
         },
-
       ],
       default: {
         height: 90,
-        width: 90
-      }
+        width: 90,
+      },
     },
     barcode: {
-      tabs: [{
-        name: '基础',
-        options: [{
+      tabs: [
+        {
+          name: '基础',
+          options: [
+            {
+              name: 'title',
+              hidden: false,
+            },
+            {
+              name: 'field',
+              hidden: false,
+            },
+            {
+              name: 'testData',
+              hidden: false,
+            },
+            {
+              name: 'barcodeType',
+              hidden: false,
+            },
+            {
+              name: 'barWidth',
+              hidden: false,
+            },
+            {
+              name: 'barAutoWidth',
+              hidden: false,
+            },
+            {
+              name: 'coordinate',
+              hidden: false,
+            },
+            {
+              name: 'widthHeight',
+              hidden: false,
+            },
+            {
+              name: 'hideTitle',
+              hidden: false,
+            },
+            {
+              name: 'fixed',
+              hidden: false,
+            },
+          ],
+        },
+        {
+          name: '样式',
+          options: [
+            {
+              name: 'fontFamily',
+              hidden: false,
+            },
+            {
+              name: 'fontSize',
+              hidden: false,
+            },
+            {
+              name: 'fontWeight',
+              hidden: false,
+            },
+            {
+              name: 'letterSpacing',
+              hidden: false,
+            },
+            {
+              name: 'color',
+              hidden: false,
+            },
+            {
+              name: 'backgroundColor',
+              hidden: false,
+            },
+            {
+              name: 'barColor',
+              hidden: false,
+            },
+            {
+              name: 'textAlign',
+              hidden: false,
+            },
+            {
+              name: 'textContentVerticalAlign',
+              hidden: false,
+            },
+            {
+              name: 'lineHeight',
+              hidden: false,
+            },
+            {
+              name: 'transform',
+              hidden: false,
+            },
+            {
+              name: 'zIndex',
+              hidden: false,
+            },
+          ],
+        },
+        {
+          name: '高级',
+          options: [
+            {
+              name: 'pageBreak',
+              hidden: false,
+            },
+            {
+              name: 'showInPage',
+              hidden: false,
+            },
+            {
+              name: 'unShowInPage',
+              hidden: false,
+            },
+            {
+              name: 'axis',
+              hidden: false,
+            },
+            {
+              name: 'formatter',
+              hidden: false,
+            },
+            {
+              name: 'styler',
+              hidden: false,
+            },
+          ],
+        },
+      ],
+      supportOptions: [
+        {
           name: 'title',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'field',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'testData',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'barcodeType',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'barWidth',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'barAutoWidth',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'coordinate',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'widthHeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'hideTitle',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fixed',
-          hidden: false
-        }]
-      }, {
-        name: '样式',
-        options: [{
+          hidden: false,
+        },
+        {
           name: 'fontFamily',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fontSize',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fontWeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'letterSpacing',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'color',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'backgroundColor',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'barColor',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'textAlign',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'textContentVerticalAlign',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'lineHeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'transform',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'zIndex',
-          hidden: false
-        }]
-      }, {
-        name: '高级',
-        options: [{
+          hidden: false,
+        },
+        {
           name: 'pageBreak',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'showInPage',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'unShowInPage',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'axis',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'formatter',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'styler',
-          hidden: false
-        }]
-      }],
-      supportOptions: [{
-        name: 'title',
-        hidden:false
-      }, {
-        name: 'field',
-        hidden:false
-      }, {
-        name: 'testData',
-        hidden:false
-      }, {
-        name: 'barcodeType',
-        hidden:false
-      }, {
-        name: 'barWidth',
-        hidden: false
-      }, {
-        name: 'barAutoWidth',
-        hidden: false
-      }, {
-        name: 'coordinate',
-        hidden:false
-      }, {
-        name: 'widthHeight',
-        hidden:false
-      }, {
-        name: 'hideTitle',
-        hidden:false
-      }, {
-        name: 'fixed',
-        hidden:false
-      }, {
-        name: 'fontFamily',
-        hidden:false
-      }, {
-        name: 'fontSize',
-        hidden:false
-      }, {
-        name: 'fontWeight',
-        hidden:false
-      }, {
-        name: 'letterSpacing',
-        hidden:false
-      }, {
-        name: 'color',
-        hidden:false
-      }, {
-        name: 'backgroundColor',
-        hidden:false
-      }, {
-        name: 'barColor',
-        hidden:false
-      }, {
-        name: 'textAlign',
-        hidden:false
-      }, {
-        name: 'textContentVerticalAlign',
-        hidden:false
-      }, {
-        name: 'lineHeight',
-        hidden:false
-      }, {
-        name: 'transform',
-        hidden:false
-      }, {
-        name: 'zIndex',
-        hidden:false
-      }, {
-        name: 'pageBreak',
-        hidden:false
-      }, {
-        name: 'showInPage',
-        hidden:false
-      }, {
-        name: 'unShowInPage',
-        hidden:false
-      }, {
-        name: 'axis',
-        hidden:false
-      }, {
-        name: 'formatter',
-        hidden:false
-      }, {
-        name: 'styler',
-        hidden:false
-      }],
+          hidden: false,
+        },
+      ],
       default: {
         width: 160,
         height: 40,
         title: '条形码',
         barcodeType: 'code128',
-        testData: 'barcode'
+        testData: 'barcode',
         // barAutoWidth: 'true' 这里必须使用字符串
-      }
+      },
     },
     qrcode: {
-      tabs: [{
-        name: '基础',
-        options: [{
+      tabs: [
+        {
+          name: '基础',
+          options: [
+            {
+              name: 'title',
+              hidden: false,
+            },
+            {
+              name: 'field',
+              hidden: false,
+            },
+            {
+              name: 'testData',
+              hidden: false,
+            },
+            {
+              name: 'qrcodeType',
+              hidden: false,
+            },
+            {
+              name: 'qrCodeLevel',
+              hidden: false,
+            },
+            {
+              name: 'coordinate',
+              hidden: false,
+            },
+            {
+              name: 'widthHeight',
+              hidden: false,
+            },
+            {
+              name: 'hideTitle',
+              hidden: false,
+            },
+            {
+              name: 'fixed',
+              hidden: false,
+            },
+          ],
+        },
+        {
+          name: '样式',
+          options: [
+            {
+              name: 'fontFamily',
+              hidden: false,
+            },
+            {
+              name: 'fontSize',
+              hidden: false,
+            },
+            {
+              name: 'fontWeight',
+              hidden: false,
+            },
+            {
+              name: 'letterSpacing',
+              hidden: false,
+            },
+            {
+              name: 'color',
+              hidden: false,
+            },
+            {
+              name: 'backgroundColor',
+              hidden: false,
+            },
+            {
+              name: 'barColor',
+              hidden: false,
+            },
+            {
+              name: 'textAlign',
+              hidden: false,
+            },
+            {
+              name: 'textContentVerticalAlign',
+              hidden: false,
+            },
+            {
+              name: 'lineHeight',
+              hidden: false,
+            },
+            {
+              name: 'transform',
+              hidden: false,
+            },
+            {
+              name: 'zIndex',
+              hidden: false,
+            },
+          ],
+        },
+        {
+          name: '高级',
+          options: [
+            {
+              name: 'pageBreak',
+              hidden: false,
+            },
+            {
+              name: 'showInPage',
+              hidden: false,
+            },
+            {
+              name: 'unShowInPage',
+              hidden: false,
+            },
+            {
+              name: 'axis',
+              hidden: false,
+            },
+            {
+              name: 'formatter',
+              hidden: false,
+            },
+            {
+              name: 'styler',
+              hidden: false,
+            },
+          ],
+        },
+      ],
+      supportOptions: [
+        {
           name: 'title',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'field',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'testData',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'qrcodeType',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'qrCodeLevel',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'coordinate',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'widthHeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'hideTitle',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fixed',
-          hidden: false
-        }]
-      }, {
-        name: '样式',
-        options: [{
+          hidden: false,
+        },
+        {
           name: 'fontFamily',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fontSize',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'fontWeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'letterSpacing',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'color',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'backgroundColor',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'barColor',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'textAlign',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'textContentVerticalAlign',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'lineHeight',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'transform',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'zIndex',
-          hidden: false
-        }]
-      }, {
-        name: '高级',
-        options: [{
+          hidden: false,
+        },
+        {
           name: 'pageBreak',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'showInPage',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'unShowInPage',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'axis',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'formatter',
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           name: 'styler',
-          hidden: false
-        }]
-      }],
-      supportOptions: [{
-        name: 'title',
-        hidden:false
-      }, {
-        name: 'field',
-        hidden:false
-      }, {
-        name: 'testData',
-        hidden:false
-      }, {
-        name: 'qrcodeType',
-        hidden:false
-      }, {
-        name: 'qrCodeLevel',
-        hidden:false
-      }, {
-        name: 'coordinate',
-        hidden:false
-      }, {
-        name: 'widthHeight',
-        hidden:false
-      }, {
-        name: 'hideTitle',
-        hidden:false
-      }, {
-        name: 'fixed',
-        hidden:false
-      }, {
-        name: 'fontFamily',
-        hidden:false
-      }, {
-        name: 'fontSize',
-        hidden:false
-      }, {
-        name: 'fontWeight',
-        hidden:false
-      }, {
-        name: 'letterSpacing',
-        hidden:false
-      }, {
-        name: 'color',
-        hidden:false
-      }, {
-        name: 'backgroundColor',
-        hidden:false
-      }, {
-        name: 'barColor',
-        hidden: false
-      }, {
-        name: 'textAlign',
-        hidden:false
-      }, {
-        name: 'textContentVerticalAlign',
-        hidden:false
-      }, {
-        name: 'lineHeight',
-        hidden:false
-      }, {
-        name: 'transform',
-        hidden:false
-      }, {
-        name: 'zIndex',
-        hidden:false
-      }, {
-        name: 'pageBreak',
-        hidden:false
-      }, {
-        name: 'showInPage',
-        hidden:false
-      }, {
-        name: 'unShowInPage',
-        hidden:false
-      }, {
-        name: 'axis',
-        hidden:false
-      }, {
-        name: 'formatter',
-        hidden:false
-      }, {
-        name: 'styler',
-        hidden:false
-      }],
+          hidden: false,
+        },
+      ],
       default: {
         width: 80,
         height: 80,
         title: '二维码',
         qrcodeType: 'qrcode',
-        testData: 'qrcode'
-      }
-    }
-  }
+        testData: 'qrcode',
+      },
+    },
+  };
 })();
