@@ -28,8 +28,6 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
-      <!--字段回显插槽-->
-      <template #bodyCell="{ column, record, index, text }"> </template>
     </BasicTable>
     <!-- 表单区域 -->
     <TemplateModal @register="registerModal" @success="handleSuccess" />
@@ -54,14 +52,14 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '票据模板',
+      title: '',
       api: list,
       columns,
       canResize: false,
       // 显示表格设置
       showTableSetting: false,
       // 点击是否选中
-      clickToRowSelect: true,
+      clickToRowSelect: false,
       formConfig: {
         //labelWidth: 120,
         schemas: searchFormSchema,

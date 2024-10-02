@@ -63,7 +63,7 @@
   import * as vuePluginHiprint from './index';
   import panel from './panel.empty';
   import printData from './print-data';
-  import printPreview from './preview.vue';
+  import printPreview from './TemplatePreview.vue';
   import jsonView from './json-view.vue';
   import { defineComponent } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';

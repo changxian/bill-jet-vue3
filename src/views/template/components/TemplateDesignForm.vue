@@ -275,18 +275,34 @@
   import * as vuePluginHiprint from './index';
   import panel from './panel.empty';
   import printData from './print-data';
-  import printPreview from './preview.vue';
+  import printPreview from './TemplatePreview.vue';
   import jsonView from './json-view.vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
-  // disAutoConnect();
+  // vuePluginHiprint.disAutoConnect();
   var hiprint, defaultElementTypeProvider;
   let hiprintTemplate;
 
   export default {
     name: 'TemplateDesignForm',
     components: { printPreview, jsonView },
+    props: {
+      formData: {
+        type: Object,
+        default: () => {
+          return {
+            disabled: false,
+            category: null,
+            id: '',
+            name: '',
+            data: '',
+            status: '1',
+          };
+        },
+      },
+    },
+    emits: ['ok'],
     data() {
       return {
         template: null,
@@ -348,13 +364,6 @@
         // 导入导出json
         jsonIn: '',
         confirmLoading: false,
-        formData: {
-          disabled: false,
-          category: null,
-          name: '',
-          data: '',
-          status: '1',
-        },
       };
     },
     computed: {
@@ -369,6 +378,11 @@
           }
         }
         return type;
+      },
+    },
+    watch: {
+      ['formData.data']() {
+        this.init();
       },
     },
     mounted() {
@@ -386,9 +400,15 @@
         hiprint.setConfig();
         // 设置左侧拖拽事件
         hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
+        let panels;
+        if (this.formData && this.formData.data) {
+          panels = JSON.parse(this.formData.data);
+        } else {
+          panels = panel;
+        }
         $('#hiprint-printTemplate').empty();
         this.template = hiprintTemplate = new hiprint.PrintTemplate({
-          template: panel,
+          template: panels,
           // 图片选择功能
           onImageChooseClick: (target) => {
             // 测试 3秒后修改图片地址值
@@ -552,7 +572,9 @@
           createMessage.error(`模板数据生成异常！`);
           return;
         }
-        saveOrUpdate(this.formData, false);
+        saveOrUpdate(this.formData, false).then(() => {
+          this.$emit('ok');
+        });
       },
       clearPaper() {
         try {
