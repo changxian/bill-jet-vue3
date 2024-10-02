@@ -1,5 +1,8 @@
 import { table1 } from './tb/table1';
 import { table2 } from './tb/table2';
+import { table3 } from './tb/table3';
+import { table4 } from './tb/table4';
+import { table5 } from './tb/table5';
 import * as fields from '@/views/template/components/hiprint/etypes/default';
 
 export default function (hiprint) {
@@ -77,6 +80,9 @@ export default function (hiprint) {
         new hiprint.PrintElementTypeGroup('表格', [
           table1,
           table2,
+          table3,
+          table4,
+          table5,
           {
             tid: 'defaultModule.table',
             field: 'table',

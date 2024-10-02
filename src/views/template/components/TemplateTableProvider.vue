@@ -13,15 +13,15 @@
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table2">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">小计</p>
+          <p class="glyphicon-class">叶合计1</p>
         </a>
       </div>
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table3">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">叶合计2</p>
         </a>
       </div>
     </a-col>
@@ -29,17 +29,17 @@
   <a-row style="height: 80px">
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table4">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">总合计</p>
         </a>
       </div>
     </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
+        <a class="ep-draggable-item" tid="defaultModule.table5">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+          <p class="glyphicon-class">总合计2</p>
         </a>
       </div>
     </a-col>

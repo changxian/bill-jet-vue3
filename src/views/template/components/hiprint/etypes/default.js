@@ -1,11 +1,20 @@
 const fields = [
   { text: '物料编号', field: 'code' },
   { text: '物料名称', field: 'name' },
+  { text: '通用名称', field: 'name' },
   { text: '规格型号', field: 'spec' },
+  { text: '型号', field: 'spec' },
+  { text: '剂型', field: 'spec2' },
+  { text: '生产厂商', field: 'firm' },
+  { text: '厂商', field: 'firm' },
   { text: '单位', field: 'unit' },
+  { text: '颜色', field: 'color' },
   { text: '数量', field: 'count' },
   { text: '单价', field: 'price' },
   { text: '金额', field: 'amount' },
+  { text: '批号', field: 'batchNum' },
+  { text: '有效期', field: 'validity' },
+  { text: '批准文号', field: 'approvalNum' },
   { text: '备注', field: 'remark' },
 ];
 
