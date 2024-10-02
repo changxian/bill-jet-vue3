@@ -7388,6 +7388,10 @@ var hiprint = function (t) {
     },
     initResizeBox: function initResizeBox(t) {
       var e = this;
+      debugger;
+      console.info('e.bindHidePanel bindHidePanel bindHidePanel bindHidePanel')
+      e.bindHidePanel();
+
       n(t).each(function () {
         var o;
         i.maxPanelIndex += 1, e.options.noContainer ? o = n(t) : (o = n("<div panelIndex=" + i.maxPanelIndex + ' class="resize-panel"></div>')).css({
@@ -7461,8 +7465,15 @@ var hiprint = function (t) {
           f.addClass("resizeing");
         }), n(".easyui-droppable").on("mouseup", function () {
           f.removeClass("resizeing");
-        }), e.bindTrigger(n(this));
-      }), e.bindHidePanel();
+        });
+
+        console.info('e.bindTrigger')
+        console.info(e)
+        console.info(this)
+        console.info(n(this))
+        debugger;
+        e.bindTrigger(n(this));
+      });
     },
     addHandlerCss: function addHandlerCss(t) {
       for (var e = 0; e < t.length; e++) {
@@ -7508,6 +7519,8 @@ var hiprint = function (t) {
       }
     },
     triggerResize: function triggerResize(t, n) {
+      debugger;
+      console.log('仅当前元素被选中才更新坐标位置, 以避免冲突3')
       // 处理按住 ctrl / command 点击元素 多选
       if (!(n.ctrlKey || n.metaKey)) {
         t.siblings().children("div[panelindex]").removeClass('selected')
@@ -7673,17 +7686,27 @@ var hiprint = function (t) {
       });
     },
     bindTrigger: function bindTrigger(t) {
+      debugger;
       var e = this;
       t.on("click", function (_n) {
-        _n.stopPropagation(), e.triggerResize(t, _n), n(".mouseRect").remove();
+        console.info(t)
+        console.log('添加点击事件')
+        debugger;
+        _n.stopPropagation();
+        e.triggerResize(t, _n);
+        n(".mouseRect").remove();
       });
     },
     bindHidePanel: function bindHidePanel(t) {
+      console.info('仅点击设计面板时清除多选元素maxPanelIndex ' + i.maxPanelIndex);
       if (i.maxPanelIndex < 2) {
         var e = this.options.stage;
         n(e).bind("click", function (t) {
           // 仅点击设计面板时清除多选元素
-          if (t.target.className && _typeof(t.target.className) == "string" && t.target.className.includes("design")) {
+          console.info('仅点击设计面板时清除多选元素1');
+          if (t.target.className && _typeof(t.target.className) === "string" && t.target.className.includes("hiprint-printPaper-content")) {
+            console.info('仅点击设计面板时清除多选元素2');
+            debugger;
             t.stopPropagation(), n("div[panelindex]").css({
               display: "none"
             });
