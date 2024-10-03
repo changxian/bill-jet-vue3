@@ -65,7 +65,7 @@ const table3 = {
       },
       {
         title: '备注',
-        field: 'amount',
+        field: 'remark',
         width: 50,
       },
     ],

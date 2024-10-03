@@ -1,7 +1,7 @@
 <template>
   <a-row style="height: 80px">
     <!-- 空白表格 -->
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table1">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
@@ -9,93 +9,115 @@
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table2_2">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">页小计</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table2">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">页合计1</p>
         </a>
       </div>
     </a-col>
-  </a-row>
-  <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table2_1">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">页合计2</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table3">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">页合计3</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table4">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">总合计</p>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_1">
+          <img src="../public/static/43.png" alt="页合计、数量合计" />
+          <p class="glyphicon-class">页合计4</p>
         </a>
       </div>
     </a-col>
   </a-row>
   <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_2">
+          <img src="../public/static/43.png" alt="页合计金额、数量合计" />
+          <p class="glyphicon-class">页合计5</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_3">
+          <img src="../public/static/43.png" alt="页合计金额、数量合计" />
+          <p class="glyphicon-class">页合计6-繁体</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table4">
+          <img src="../public/static/43.png" alt="" />
+          <p class="glyphicon-class">总合计</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table4_1">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">总合计2</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table5">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">总合计3</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table6">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <img src="../public/static/43.png" alt="页小计，尾页合计" />
           <p class="glyphicon-class">尾合计</p>
         </a>
       </div>
     </a-col>
   </a-row>
   <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+        <a class="ep-draggable-item" tid="defaultModule.table4_2">
+          <img src="../public/static/43.png" alt="总合计、页小计、地址、售后热线、开票人" />
+          <p class="glyphicon-class">售后热线</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
-      <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
-        </a>
-      </div>
-    </a-col>
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
@@ -105,14 +127,6 @@
     </a-col>
   </a-row>
   <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
-      <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
-        </a>
-      </div>
-    </a-col>
     <a-col :span="8" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table">
@@ -132,8 +146,6 @@
   </a-row>
 </template>
 
-<script setup lang="ts">
-</script>
 <style lang="less" scoped>
   // 拖拽
   .drag_item_box {
@@ -156,6 +168,11 @@
 
   .drag_item_box > div > a > span {
     font-size: 28px;
+  }
+
+  .drag_item_box > div > a > img {
+    height: 50px;
+    padding: 1px;
   }
 
   .drag_item_box > div > a > p {
@@ -203,3 +220,5 @@
     overflow-y: auto;
   }
 </style>
+<script setup lang="ts">
+</script>

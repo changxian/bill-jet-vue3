@@ -1,11 +1,9 @@
-import { fields, cal } from '../default';
-// 数字转中文,大写,金额
-import Nzh from 'nzh';
+import { fields, cal, default_prot } from '../default';
 
-const table2 = {
-  tid: 'defaultModule.table2',
+const table2_1_3 = {
+  tid: 'defaultModule.table2_1_3',
   field: 'table',
-  title: '页合计',
+  title: '页合计5',
   type: 'table',
   options: {
     field: 'table',
@@ -18,59 +16,69 @@ const table2 = {
     // currentPageGridRowsData 当前页的数据信息
     if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
-      let capital = Nzh.cn.toMoney(price, { complete: false, outSymbol: false });
-      return '<tr><td colspan="5" style="border: 1px solid">合计金额（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';
+      let count = cal(currentPageGridRowsData, 'count');
+      return (
+        '<tr><td colspan="4" style="border: 1px solid; text-align: center;">合計金額</td>' +
+        '<td>' +
+        count +
+        '</td>' +
+        '<td></td>' +
+        '<td>' +
+        price +
+        '</td>' +
+        '<td></td></tr>'
+      );
     }
 
-    return '<tr><td colspan="5" style="border: 1px solid">合计金额（大写）：</td><td colspan="3">小写：￥</td></tr>';
+    return '<tr><td colspan="4" style="border: 1px solid; text-align: center;">合計金額</td><td></td><td></td><td></td><td></td></tr>';
   },
   columns: [
     [
       {
-        title: '序号',
+        title: '產品編號',
         align: 'center',
-        field: 'seq',
-        width: 30,
+        field: 'code',
+        width: 40,
       },
       {
-        title: '商品名称',
+        title: '產品名稱',
         align: 'left',
         field: 'name',
-        width: 150,
+        width: 130,
       },
       {
-        title: '规格',
+        title: '規格型號',
         field: 'spec',
         width: 40,
       },
       {
-        title: '单位',
+        title: '單位',
         field: 'unit',
         width: 30,
       },
       {
-        title: '数量',
+        title: '數量',
         field: 'count',
         width: 30,
       },
       {
-        title: '单价',
+        title: '單價',
         field: 'price',
         width: 50,
       },
       {
-        title: '金额',
+        title: '金額',
         field: 'amount',
         width: 50,
       },
       {
-        title: '备注',
+        title: '備註',
         field: 'remark',
         width: 50,
       },
     ],
   ],
-  ...fields.default_prot,
+  ...default_prot,
 };
 
-export { table2 };
+export { table2_1_3 };

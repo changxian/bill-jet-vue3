@@ -88,7 +88,7 @@ const table5 = {
       },
       {
         title: '批准文号',
-        field: 'approvalNum',
+        field: 'approvalNo',
         width: 50,
       },
     ],

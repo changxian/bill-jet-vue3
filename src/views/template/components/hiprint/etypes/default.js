@@ -34,12 +34,11 @@ const default_prot = {
   isEnableMergeCell: true, //合并单元格
 };
 
-const cal = (arr) => {
-  debugger;
+const cal = (arr, attr) => {
   if (arr && arr.length > 0) {
     let price = 0;
     for (let i = 0; i < arr.length; i++) {
-      let p = Math.floor(arr[i].amount * 100);
+      let p = Math.floor(arr[i][attr] * 100);
       price += p;
     }
     return price / 100;
