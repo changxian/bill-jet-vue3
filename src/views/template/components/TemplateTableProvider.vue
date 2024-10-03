@@ -75,6 +75,16 @@
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
       <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_4">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计-重量</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
         <a class="ep-draggable-item" tid="defaultModule.table4">
           <img src="../public/static/43.png" alt="" />
           <p class="glyphicon-class">总合计</p>
@@ -101,41 +111,41 @@
     </a-col>
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table6">
-          <img src="../public/static/43.png" alt="页小计，尾页合计" />
-          <p class="glyphicon-class">尾合计</p>
-        </a>
-      </div>
-    </a-col>
-  </a-row>
-  <a-row style="height: 80px">
-    <a-col :span="12" class="drag_item_box">
-      <div>
         <a class="ep-draggable-item" tid="defaultModule.table4_2">
           <img src="../public/static/43.png" alt="总合计、页小计、地址、售后热线、开票人" />
           <p class="glyphicon-class">售后热线</p>
         </a>
       </div>
     </a-col>
+  </a-row>
+  <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+        <a class="ep-draggable-item" tid="defaultModule.table6">
+          <img src="../public/static/43.png" alt="页小计，尾页合计" />
+          <p class="glyphicon-class">尾合计</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1">
+          <img src="../public/static/43.png" alt="尾合计2" />
+          <p class="glyphicon-class">尾合计2</p>
         </a>
       </div>
     </a-col>
   </a-row>
   <a-row style="height: 80px">
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+        <a class="ep-draggable-item" tid="defaultModule.table6_2">
+          <img src="../public/static/43.png" alt="尾合计3" />
+          <p class="glyphicon-class">尾合计3</p>
         </a>
       </div>
     </a-col>
-    <a-col :span="8" class="drag_item_box">
+    <a-col :span="12" class="drag_item_box">
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table">
           <span class="glyphicon glyphicon-th" aria-hidden="true"></span>

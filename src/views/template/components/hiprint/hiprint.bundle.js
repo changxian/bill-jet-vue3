@@ -12,11 +12,14 @@
 "use strict";
 
 const cal = (arr, attr) => {
+  function v(o, a) {
+    return !o[a] ? 0 : o[a];
+  }
   if (!attr) attr = 'amount';
   if (arr && arr.length > 0) {
     let price = 0;
     for (let i = 0; i < arr.length; i++) {
-      let p = Math.floor(arr[i][attr] * 100);
+      let p = Math.floor(v(arr[i], attr) * 100);
       price += p;
     }
     return price / 100;
