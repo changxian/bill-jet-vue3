@@ -123,7 +123,7 @@
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table6">
           <img src="../public/static/43.png" alt="页小计，尾页合计" />
-          <p class="glyphicon-class">尾合计</p>
+          <p class="glyphicon-class">尾页合计</p>
         </a>
       </div>
     </a-col>
@@ -147,9 +147,27 @@
     </a-col>
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table">
-          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-          <p class="glyphicon-class">表格</p>
+        <a class="ep-draggable-item" tid="defaultModule.table6_2_1">
+          <img src="../public/static/43.png" alt="尾合计4" />
+          <p class="glyphicon-class">尾合计4</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1_1">
+          <img src="../public/static/43.png" alt="尾合计5" />
+          <p class="glyphicon-class">尾页统计</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="">
+          <img src="../public/static/43.png" alt="尾合计3" />
+          <p class="glyphicon-class">尾</p>
         </a>
       </div>
     </a-col>

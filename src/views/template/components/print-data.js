@@ -9,6 +9,7 @@ export default {
   barcode: '123456',
   qrcode: '123456',
   total: '21672.87', // 总金额
+  discount: '216.87', // 优惠金额
   table: [
     {
       code: '1',
