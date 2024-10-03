@@ -99,6 +99,42 @@
         </a>
       </div>
     </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_7">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计-注意事项</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_8">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计8</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_9">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计9</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_10">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计10</p>
+        </a>
+      </div>
+    </a-col>
   </a-row>
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
@@ -132,6 +168,16 @@
         <a class="ep-draggable-item" tid="defaultModule.table4_2">
           <img src="../public/static/43.png" alt="总合计、页小计、地址、售后热线、开票人" />
           <p class="glyphicon-class">售后热线</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table5_1">
+          <img src="../public/static/43.png" alt="总金额、小写、本页小计、本页数量" />
+          <p class="glyphicon-class">总合计4</p>
         </a>
       </div>
     </a-col>

@@ -564,6 +564,9 @@
           this.$emit('ok');
         });
       },
+      disConnect() {
+        window.hiwebSocket && window.hiwebSocket.hasIo() && window.hiwebSocket.stop();
+      },
       clearPaper() {
         try {
           hiprintTemplate.clear();

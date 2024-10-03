@@ -8,12 +8,17 @@ import { table2_1_3 } from '@/views/template/components/hiprint/etypes/tb/table2
 import { table2_1_4 } from '@/views/template/components/hiprint/etypes/tb/table2_1_4';
 import { table2_1_5 } from '@/views/template/components/hiprint/etypes/tb/table2_1_5';
 import { table2_1_6 } from '@/views/template/components/hiprint/etypes/tb/table2_1_6';
+import { table2_1_7 } from '@/views/template/components/hiprint/etypes/tb/table2_1_7';
+import { table2_1_8 } from '@/views/template/components/hiprint/etypes/tb/table2_1_8';
+import { table2_1_9 } from '@/views/template/components/hiprint/etypes/tb/table2_1_9';
+import { table2_1_10 } from '@/views/template/components/hiprint/etypes/tb/table2_1_10';
 import { table2_2 } from '@/views/template/components/hiprint/etypes/tb/table2_2';
 import { table3 } from '@/views/template/components/hiprint/etypes/tb/table3';
 import { table4 } from '@/views/template/components/hiprint/etypes/tb/table4';
 import { table4_1 } from '@/views/template/components/hiprint/etypes/tb/table4_1';
 import { table4_2 } from '@/views/template/components/hiprint/etypes/tb/table4_2';
 import { table5 } from '@/views/template/components/hiprint/etypes/tb/table5';
+import { table5_1 } from '@/views/template/components/hiprint/etypes/tb/table5_1';
 import { table6 } from '@/views/template/components/hiprint/etypes/tb/table6';
 import { table6_1 } from '@/views/template/components/hiprint/etypes/tb/table6_1';
 import { table6_2 } from '@/views/template/components/hiprint/etypes/tb/table6_2';
@@ -105,9 +110,14 @@ export default function (hiprint) {
           table2_1_4,
           table2_1_5,
           table2_1_6,
+          table2_1_7,
+          table2_1_8,
+          table2_1_9,
+          table2_1_10,
           table4,
           table4_1,
           table5,
+          table5_1,
           table6,
           table4_2,
           table6_1,

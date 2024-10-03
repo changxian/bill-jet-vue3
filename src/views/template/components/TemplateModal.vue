@@ -75,6 +75,7 @@
 
   const closeFunction = () => {
     console.log('关闭前处理函数');
+    registerDesignForm.value.disConnect();
     return true;
   };
 </script>

@@ -2,6 +2,7 @@ const fields = [
   { text: '订单编号', field: 'orderNo' },
   { text: '物料编号', field: 'code' },
   { text: '产品货号', field: 'code' },
+  { text: '货号', field: 'code' },
   { text: '產品編號', field: 'code' },
   { text: '商品全名', field: 'name' },
   { text: '物料名称', field: 'name' },
@@ -15,6 +16,7 @@ const fields = [
   { text: '規格型號', field: 'spec' },
   { text: '型号', field: 'spec' },
   { text: '剂型', field: 'spec2' },
+  { text: '包装', field: 'pack' },
   { text: '品名及规格', field: 'nameSpec' },
   { text: '生产厂商', field: 'firm' },
   { text: '生产企业', field: 'firm' },
@@ -63,7 +65,7 @@ const cal = (arr, attr) => {
   if (arr && arr.length > 0) {
     let price = 0;
     for (let i = 0; i < arr.length; i++) {
-      let p = Math.floor(v(arr[i], attr) * 100);
+      let p = Math.ceil(v(arr[i], attr) * 100);
       price += p;
     }
     return price / 100;
