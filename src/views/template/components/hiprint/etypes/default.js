@@ -1,5 +1,7 @@
 const fields = [
+  { text: '订单编号', field: 'orderNo' },
   { text: '物料编号', field: 'code' },
+  { text: '产品货号', field: 'code' },
   { text: '產品編號', field: 'code' },
   { text: '商品全名', field: 'name' },
   { text: '物料名称', field: 'name' },

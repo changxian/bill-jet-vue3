@@ -81,6 +81,24 @@
         </a>
       </div>
     </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_5">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计-备注</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_6">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计-说明</p>
+        </a>
+      </div>
+    </a-col>
   </a-row>
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">

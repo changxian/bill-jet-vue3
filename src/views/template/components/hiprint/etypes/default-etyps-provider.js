@@ -6,6 +6,8 @@ import { table2_1_1 } from '@/views/template/components/hiprint/etypes/tb/table2
 import { table2_1_2 } from '@/views/template/components/hiprint/etypes/tb/table2_1_2';
 import { table2_1_3 } from '@/views/template/components/hiprint/etypes/tb/table2_1_3';
 import { table2_1_4 } from '@/views/template/components/hiprint/etypes/tb/table2_1_4';
+import { table2_1_5 } from '@/views/template/components/hiprint/etypes/tb/table2_1_5';
+import { table2_1_6 } from '@/views/template/components/hiprint/etypes/tb/table2_1_6';
 import { table2_2 } from '@/views/template/components/hiprint/etypes/tb/table2_2';
 import { table3 } from '@/views/template/components/hiprint/etypes/tb/table3';
 import { table4 } from '@/views/template/components/hiprint/etypes/tb/table4';
@@ -101,6 +103,8 @@ export default function (hiprint) {
           table2_1_2,
           table2_1_3,
           table2_1_4,
+          table2_1_5,
+          table2_1_6,
           table4,
           table4_1,
           table5,
