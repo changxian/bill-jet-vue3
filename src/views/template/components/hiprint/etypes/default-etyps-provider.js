@@ -17,6 +17,7 @@ import { table6_1 } from '@/views/template/components/hiprint/etypes/tb/table6_1
 import { table6_2 } from '@/views/template/components/hiprint/etypes/tb/table6_2';
 import { table6_2_1 } from '@/views/template/components/hiprint/etypes/tb/table6_2_1';
 import { table6_1_1 } from '@/views/template/components/hiprint/etypes/tb/table6_1_1';
+import { table6_1_2 } from '@/views/template/components/hiprint/etypes/tb/table6_1_2';
 
 export default function (hiprint) {
   return function (options) {
@@ -109,6 +110,7 @@ export default function (hiprint) {
           table6_2,
           table6_2_1,
           table6_1_1,
+          table6_1_2,
           {
             tid: 'defaultModule.table',
             field: 'table',

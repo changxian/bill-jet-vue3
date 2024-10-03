@@ -165,9 +165,9 @@
     </a-col>
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="">
-          <img src="../public/static/43.png" alt="尾合计3" />
-          <p class="glyphicon-class">尾</p>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1_2">
+          <img src="../public/static/43.png" alt="尾合计5" />
+          <p class="glyphicon-class">尾页统计2</p>
         </a>
       </div>
     </a-col>
