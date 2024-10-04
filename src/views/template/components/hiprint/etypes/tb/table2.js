@@ -1,4 +1,4 @@
-import { fields, cal } from '../default';
+import { fields, cal, default_prot } from '../default';
 // 数字转中文,大写,金额
 import Nzh from 'nzh';
 
@@ -70,7 +70,7 @@ const table2 = {
       },
     ],
   ],
-  ...fields.default_prot,
+  ...default_prot,
 };
 
 export { table2 };

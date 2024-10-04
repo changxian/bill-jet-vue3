@@ -25,6 +25,7 @@ import { table6_2 } from '@/views/template/components/hiprint/etypes/tb/table6_2
 import { table6_2_1 } from '@/views/template/components/hiprint/etypes/tb/table6_2_1';
 import { table6_1_1 } from '@/views/template/components/hiprint/etypes/tb/table6_1_1';
 import { table6_1_2 } from '@/views/template/components/hiprint/etypes/tb/table6_1_2';
+import { table6_3 } from '@/views/template/components/hiprint/etypes/tb/table6_3';
 
 export default function (hiprint) {
   return function (options) {
@@ -100,9 +101,9 @@ export default function (hiprint) {
         ]),
         new hiprint.PrintElementTypeGroup('表格', [
           table1,
-          table2_2,
           table2,
           table2_1,
+          table2_2,
           table3,
           table2_1_1,
           table2_1_2,
@@ -125,6 +126,7 @@ export default function (hiprint) {
           table6_2_1,
           table6_1_1,
           table6_1_2,
+          table6_3,
           {
             tid: 'defaultModule.table',
             field: 'table',

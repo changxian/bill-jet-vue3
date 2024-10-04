@@ -181,6 +181,14 @@
         </a>
       </div>
     </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_3">
+          <img src="../public/static/43.png" alt="总金额、小写、本页小计、本页数量" />
+          <p class="glyphicon-class">总合计5</p>
+        </a>
+      </div>
+    </a-col>
   </a-row>
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
