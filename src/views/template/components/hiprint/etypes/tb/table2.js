@@ -34,32 +34,37 @@ const table2 = {
       },
       {
         title: '商品名称',
-        align: 'left',
+        align: 'center',
         field: 'name',
         width: 150,
       },
       {
         title: '规格',
+        align: 'center',
         field: 'spec',
         width: 40,
       },
       {
         title: '单位',
+        align: 'center',
         field: 'unit',
         width: 30,
       },
       {
         title: '数量',
+        align: 'center',
         field: 'count',
         width: 30,
       },
       {
         title: '单价',
+        align: 'center',
         field: 'price',
         width: 50,
       },
       {
         title: '金额',
+        align: 'center',
         field: 'amount',
         width: 50,
       },

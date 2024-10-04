@@ -1,5 +1,8 @@
 export default {
   name: '黄磊',
+  customer: '黄磊', // 客户名称
+  contact: '浙江在线', // 联系人
+  contactPhone: '18888888888', // 联系人电话
   drawer: '吴先生', // 开票人
   hotLine: '吴先生', // 售后热线
   logoTest: '',
@@ -12,6 +15,12 @@ export default {
   total: '21672.87', // 总金额
   count: '21672.87', // 总数量
   discount: '216.87', // 优惠金额
+
+  // 本单位信息
+  address_1: '本公司地址本公司地址本公司地址本公司地址',
+  phone_1: '本公司电话', // 电话
+  preparedBy: '张某某', // 制单人
+  deliveryDate: '2024/10/04', // 送货日期
   table: [
     {
       code: '1',
