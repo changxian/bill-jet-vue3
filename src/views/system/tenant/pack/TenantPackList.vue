@@ -57,7 +57,7 @@
         },
       },
       beforeFetch: (params) => {
-        return Object.assign(params, { tenantId: unref(tenantId), packType:'custom' });
+        return Object.assign(params, { tenantId: unref(tenantId) });
       },
     },
   });
@@ -82,10 +82,10 @@
 
   function getActions(record) {
     return [
-      {
+     /*  {
         label: '用户',
         onClick: seeTenantPackUser.bind(null, record),
-      },
+      }, */
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
@@ -165,7 +165,6 @@
     openModal(true, {
       isUpdate: false,
       tenantId: unref(tenantId),
-      packType:'',
       showFooter: true
     });
   }

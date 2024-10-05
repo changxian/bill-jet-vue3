@@ -2,7 +2,7 @@ import { BasicColumn, FormSchema } from '/@/components/Table';
 import { getAutoScrollContainer } from '/@/utils/common/compUtils';
 import { render } from "/@/utils/common/renderUtils";
 import { rules } from "/@/utils/helper/validator";
-
+import { getAllSysPackList } from './tenant.api';
 export const columns: BasicColumn[] = [
   {
     title: '租户名称',
@@ -55,7 +55,7 @@ export const columns: BasicColumn[] = [
     title: '创建者(拥有者)',
     width: 150
   },
-/*  {
+  {
     title: '开始时间',
     dataIndex: 'beginDate',
     sorter: true,
@@ -66,7 +66,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'endDate',
     sorter: true,
     width: 180,
-  },*/
+  }, 
   {
     title: '状态',
     dataIndex: 'status_dictText',
@@ -153,7 +153,7 @@ export const formSchema: FormSchema[] = [
       rows: 4,
     }
   },
-/*  {
+ {
     field: 'beginDate',
     label: '开始时间',
     component: 'DatePicker',
@@ -172,7 +172,7 @@ export const formSchema: FormSchema[] = [
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       getPopupContainer: getAutoScrollContainer,
     },
-  },*/
+  }, 
   {
     field: 'houseNumber',
     label: '门牌号',
@@ -295,6 +295,17 @@ export const packFormSchema: FormSchema[] = [
 //套餐表单
 export const packMenuFormSchema: FormSchema[] = [
   {
+    field: 'sysPackId',
+    label: '选择系统套餐',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getAllSysPackList,
+      labelField: 'packName',
+      valueField: 'id',
+    },
+  },
+  /**
+ {
     field: 'packName',
     label: '套餐名称',
     component: 'Input',
@@ -312,6 +323,7 @@ export const packMenuFormSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
   },
+**/
   {
     field: 'remarks',
     label: '描述',

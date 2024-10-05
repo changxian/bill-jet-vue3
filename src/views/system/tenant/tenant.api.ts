@@ -36,6 +36,7 @@ enum Api {
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryTenantPackPermission',
   saveRolePermission = '/sys/permission/saveTenantPackPermission', 
+  getAllSysPackList = '/syspack/sysPack/getAllSysPackList', 
 }
 
 /**
@@ -62,6 +63,10 @@ export const saveOrUpdateTenant = (params, isUpdate) => {
 export const getTenantById = (params) => {
   return defHttp.get({ url: Api.get, params });
 };
+
+
+export const getAllSysPackList = (params) => defHttp.get({ url: Api.getAllSysPackList, params });
+
 
 /**
  * 删除租户

@@ -49,7 +49,6 @@
     const values = await validate();
     
     setModalProps({ confirmLoading: true });
-    values.packType = unref(packType);
     values.tenantId = unref(tenantId);
     if (!unref(isUpdate)) {
       await addPackPermission(values);
