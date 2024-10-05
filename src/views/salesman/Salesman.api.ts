@@ -11,7 +11,7 @@ enum Api {
   deleteBatch = '/salesman/salesman/deleteBatch',
   importExcel = '/salesman/salesman/importExcel',
   exportXls = '/salesman/salesman/exportXls',
-  getAllSalesmanList = '/salesman/salesman/allList',
+  allSalesmanList = '/salesman/salesman/allList',
 }
 
 /**
@@ -34,7 +34,7 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * 列表接口
  * @param params
  */
-export const getAllSalesmanList = (params) => defHttp.get({ url: Api.getAllSalesmanList, params });
+export const getAllSalesmanList =    Api.allSalesmanList ;
 /**
  * 删除单个
  * @param params
