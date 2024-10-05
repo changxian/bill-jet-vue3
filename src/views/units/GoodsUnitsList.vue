@@ -65,10 +65,10 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns } from './GoodsUnits.data';// superQuerySchema
+  import { columns } from './GoodsUnits.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './GoodsUnits.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import GoodsUnitsModal from './components/GoodsUnitsModal.vue'
+  import GoodsUnitsModal from './components/GoodsUnitsModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();
@@ -83,8 +83,9 @@
       api: list,
       columns,
       showIndexColumn: true,
-      canResize:false,
+      canResize: false,
       useSearchForm: false,
+      showIndexColumn: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -94,7 +95,7 @@
       },
     },
     exportConfig: {
-      name: "商品单位管理",
+      name: '商品单位管理',
       url: getExportUrl,
       params: queryParam,
     },

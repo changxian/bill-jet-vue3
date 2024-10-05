@@ -45,6 +45,8 @@ export const initDictOptions = (code) => {
   //update-end-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
   return defHttp.get({ url: `/sys/dict/getDictItems/${code}` });
 };
+
+
 /**
  * 获取字典数组
  * @param code 字典Code
@@ -53,3 +55,4 @@ export const initDictOptions = (code) => {
  * @return List<Map>
  */
 export const ajaxGetDictItems = (code, params, options?) => defHttp.get({ url: `/sys/dict/getDictItems/${code}`, params }, options);
+export const initUrlOptions = (url, params, options?) => defHttp.get({ url: `${url}`, params }, options);
