@@ -137,7 +137,6 @@
             names.push(u.realname);
             ids.push(u.id);
           }
-          console.log(tenantPackData);
           let params = {
             packId: tenantPackData.id,
             packName: tenantPackData.packName,
