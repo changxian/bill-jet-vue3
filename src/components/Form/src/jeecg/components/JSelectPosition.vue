@@ -107,7 +107,7 @@
       /**
        * 设置下拉框的值
        */
-      function setValue(options, values) {
+      function setValue(options, values,selectRows) {
         selectOptions.value = options;
         //emitData.value = values.join(",");
         state.value = values;

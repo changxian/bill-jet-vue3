@@ -100,6 +100,7 @@ export function useSelectBiz(getList, props, emit?) {
         options.push({ label: item[props.labelKey], value: item[props.rowKey] });
       });
       selectOptions.value = options;
+			      selectRows['value'] = records;
     }
   }
   async function initSelectRows() {
@@ -142,7 +143,7 @@ export function useSelectBiz(getList, props, emit?) {
       $message.createMessage.warning(`最多只能选择${props.maxSelectCount}条数据`);
       return false;
     }
-    success && success(options, values);
+    success && success(options, values,selectRows.value);
   }
   //删除已选择的信息
   function handleDeleteSelected(record) {
