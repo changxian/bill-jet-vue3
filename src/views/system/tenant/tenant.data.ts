@@ -465,14 +465,14 @@ export const tenantUserSchema: FormSchema[] = [
     label: '职位',
     component: 'JSelectPosition',
   },
-  {
-    field: 'workNo',
-    label: '工号',
-    component: 'Input',
-    dynamicRules: ({ model, schema }) => {
-      return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
-    },
-  },
+  // {
+  //   field: 'workNo',
+  //   label: '工号',
+  //   component: 'Input',
+  //   dynamicRules: ({ model, schema }) => {
+  //     return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
+  //   },
+  // },
   { field: 'relTenantIds', label: '租户', component: 'Input',show:false },
   { field: 'selectedroles', label: '角色', component: 'Input',show:false },
 ];
