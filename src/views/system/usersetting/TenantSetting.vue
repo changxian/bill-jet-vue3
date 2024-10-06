@@ -65,11 +65,11 @@
               class="font-color333 flex-center margin-right40 font-size13 pointer"
             >
               <Icon icon="ant-design:edit-outlined" class="footer-icon" />
-              <span>查看租户名片</span>
+              <span>查看企业名片</span>
             </span>
             <span v-else class="font-color9e flex-center margin-right40 font-size13">
               <Icon icon="ant-design:edit-outlined" class="footer-icon" />
-              <span>查看租户名片</span>
+              <span>查看企业名片</span>
             </span>
             <span
               v-if="item.userTenantStatus !== '3'"
@@ -77,11 +77,11 @@
               class="font-color333 flex-center margin-right40 font-size13 pointer"
             >
               <Icon icon="ant-design:export-outlined" class="footer-icon" />
-              <span>退出租户</span>
+              <span>退出企业</span>
             </span>
             <span v-else class="font-color9e flex-center margin-right40 font-size13">
               <Icon icon="ant-design:export-outlined" class="footer-icon" />
-              <span>退出租户</span>
+              <span>退出企业</span>
             </span>
           </div>
         </div>
@@ -108,19 +108,19 @@
     </div>
   </a-modal>
 
-  <!-- 退出租户 -->
+  <!-- 退出企业 -->
   <a-modal v-model:open="cancelVisible" width="800" destroy-on-close>
     <template #title>
       <div class="cancellation">
         <Icon icon="ant-design:warning-outlined" style="font-size: 20px;color: red"/>
-        退出租户 {{myTenantInfo.name}}
+        退出企业 {{myTenantInfo.name}}
       </div>
     </template>
     <a-form :model="formCancelState" ref="cancelTenantRef">
       <a-form-item name="tenantName">
         <a-row :span="24" style="padding: 20px 20px 0;font-size: 13px">
           <a-col :span="24">
-            请输入租户名称
+            请输入企业名称
           </a-col>
           <a-col :span="24" style="margin-top: 10px">
             <a-input v-model:value="formCancelState.tenantName" @change="tenantNameChange"/>
@@ -211,7 +211,7 @@ const userStore = useUserStore();
 const { createMessage } = useMessage();
 //部门字典
 const departOptions = ref<any>([]);
-//租户编辑是或否隐藏
+//企业编辑是或否隐藏
 const tenantVisible = ref<boolean>(false);
 //用户数据
 const userData = ref<any>([]);
@@ -223,11 +223,11 @@ const userDetail = ref({
   postText: userStore.getUserInfo.postText,
 });
 /**
- * 初始化租户数据
+ * 初始化企业数据
  */
   async function initDataSource() {
   //获取用户数据
-    //update-begin---author:wangshuai ---date:20230109  for: [QQYUN-3645]个人设置我的租户查询审核中和正常的------------
+    //update-begin---author:wangshuai ---date:20230109  for: [QQYUN-3645]个人设置我的企业查询审核中和正常的------------
     //update-begin---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息-----------
     getTenantListByUserId({ userTenantStatus: '1,3,5' }).then((res) => {
       if (res.success) {
@@ -256,7 +256,7 @@ const userDetail = ref({
     //update-end---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息------------
       }
     });
-    //update-end---author:wangshuai ---date:20230109  for：[QQYUN-3645]个人设置我的租户查询审核中和正常的------------
+    //update-end---author:wangshuai ---date:20230109  for：[QQYUN-3645]个人设置我的企业查询审核中和正常的------------
   }
   function setInitedValue() {
     dataSource.value = [];
@@ -343,7 +343,7 @@ const userDetail = ref({
     if (type === 'editTenant') {
       tenantVisible.value = true;
     }else if(type === 'exitTenant'){
-      //退出租户
+      //退出企业
       formCancelState.value = {loginPassword:'', tenantName:''};
       outBtnDisabled.value = true;
       cancelVisible.value = true;
@@ -351,13 +351,13 @@ const userDetail = ref({
     }
   }
 
-  //退出租户弹窗
+  //退出企业弹窗
   const cancelVisible = ref<boolean>(false);
-  //退出租户数据
+  //退出企业数据
   const formCancelState = ref<any>({});
-  //租户数据
+  //企业数据
   const myTenantInfo = ref<any>({});
-  //注销租户弹窗确定按钮是否可以点击
+  //注销企业弹窗确定按钮是否可以点击
   const outBtnDisabled = ref<boolean>(true);
   //拥有者
   const tenantOwen = ref<string>('');
@@ -365,7 +365,7 @@ const userDetail = ref({
   const owenVisible = ref<boolean>(false);
 
   /**
-   * 租户名称值改变事件
+   * 企业名称值改变事件
    */
   function tenantNameChange() {
     let name = unref(myTenantInfo).name;
@@ -397,7 +397,7 @@ const userDetail = ref({
           //需要指定变更者
           owenVisible.value = true;
           cancelVisible.value = false;
-        //update-begin---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下租户全部退出后，再次登录，提示租户全部冻结。拥有者提示前往注销------------
+        //update-begin---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下企业全部退出后，再次登录，提示企业全部冻结。拥有者提示前往注销------------
         }else if(res.message === 'cancelTenant'){
           cancelVisible.value = false;
           let fullPath = router.currentRoute.value.fullPath;
@@ -414,7 +414,7 @@ const userDetail = ref({
               router.push('/myapps/settings/organization/organMessage/'+unref(myTenantInfo).tenantUserId)
             }
           })
-        //update-end---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下租户全部退出后，再次登录，提示租户全部冻结。拥有者提示前往注销------------
+        //update-end---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下企业全部退出后，再次登录，提示企业全部冻结。拥有者提示前往注销------------
         } else {
           createMessage.warning(res.message);
         }
@@ -425,7 +425,7 @@ const userDetail = ref({
   }
 
   /**
-   * 退出租户取消事件
+   * 退出企业取消事件
    */
   function handleCancelOutClick() {
     cancelVisible.value = false;
@@ -444,9 +444,9 @@ const userDetail = ref({
       if(res.success){
         createMessage.success(res.message);
         initDataSource();
-        //update-begin---author:wangshuai---date:2023-10-23---for:【QQYUN-6822】7、登录拥有多个租户身份的用户，退出租户，只剩下一个租户后显示为空---
+        //update-begin---author:wangshuai---date:2023-10-23---for:【QQYUN-6822】7、登录拥有多个企业身份的用户，退出企业，只剩下一个企业后显示为空---
         userExitChangeLoginTenantId(unref(myTenantInfo).tenantUserId);
-        //update-end---author:wangshuai---date:2023-10-23---for:【QQYUN-6822】7、登录拥有多个租户身份的用户，退出租户，只剩下一个租户后显示为空---
+        //update-end---author:wangshuai---date:2023-10-23---for:【QQYUN-6822】7、登录拥有多个企业身份的用户，退出企业，只剩下一个企业后显示为空---
       } else {
         createMessage.warning(res.message);
       }

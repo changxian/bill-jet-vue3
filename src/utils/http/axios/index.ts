@@ -175,17 +175,17 @@ const transform: AxiosTransform = {
         tenantId = 0;
       }
 
-      // update-begin--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用租户和当前登录租户不一致时，提示404的问题
+      // update-begin--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用企业和当前登录企业不一致时，提示404的问题
       const userStore = useUserStoreWithOut();
-      // 判断是否有临时租户id
+      // 判断是否有临时企业id
       if (userStore.hasShareTenantId && userStore.shareTenantId !== 0) {
-        // 临时租户id存在，使用临时租户id
+        // 临时企业id存在，使用临时企业id
         tenantId = userStore.shareTenantId!;
       }
-      // update-end--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用租户和当前登录租户不一致时，提示404的问题
+      // update-end--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用企业和当前登录企业不一致时，提示404的问题
 
       config.headers[ConfigEnum.TENANT_ID] = tenantId;
-      //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
+      //--update-end--author:liusq---date:20211105---for:将多企业id，添加在请求接口 Header
 
       // ========================================================================================
       // update-begin--author:sunjianlei---date:20220624--for: 添加低代码应用ID

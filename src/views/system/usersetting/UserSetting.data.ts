@@ -101,7 +101,7 @@ export const formSchema: FormSchema[] = [
   {
     field: 'relTenantIds',
     component: 'JDictSelectTag',
-    label: '租户',
+    label: '企业',
     colProps: { span: 24 },
     componentProps:{
       mode:'multiple',

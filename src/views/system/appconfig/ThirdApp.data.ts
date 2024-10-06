@@ -50,7 +50,7 @@ export const thirdAppFormSchema: FormSchema[] = [
     },
     defaultValue: 1
   },{
-    label: '租户id',
+    label: '企业id',
     field: 'tenantId',
     component: 'Input',
     show: false,

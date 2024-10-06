@@ -63,10 +63,10 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
-    //租户id
+    //企业id
     tenantid: '',
-    // 分享租户ID
-    // 用于分享页面所属租户与当前用户登录租户不一致的情况
+    // 分享企业ID
+    // 用于分享页面所属企业与当前用户登录企业不一致的情况
     shareTenantId: null,
     //登录返回信息
     loginInfo: null,
@@ -111,7 +111,7 @@ export const useUserStore = defineStore({
     getTenant(): string | number {
       return this.tenantid || getAuthCache<string | number>(TENANT_ID);
     },
-    // 是否有分享租户id
+    // 是否有分享企业id
     hasShareTenantId(): boolean {
       return this.shareTenantId != null && this.shareTenantId !== '';
     },
@@ -365,7 +365,7 @@ export const useUserStore = defineStore({
       if (openSso == 'true') {
         await useSso().ssoLoginOut();
       }
-      //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+      //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
       //退出登录的时候需要用的应用id
       if (isOAuth2AppEnv()) {
         const tenantId = getAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
@@ -383,7 +383,7 @@ export const useUserStore = defineStore({
           }));
         // update-end-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
       }
-      //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+      //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
     },
     /**
      * 登录事件
@@ -397,10 +397,10 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...ThirdLoginParams } = params;
         const data = await thirdLogin(ThirdLoginParams, mode);
-        //update-begin---author:wangshuai---date:2024-07-01---for:【issues/6652】开启租户数据隔离，接入钉钉后登录默认租户为0了---
+        //update-begin---author:wangshuai---date:2024-07-01---for:【issues/6652】开启企业数据隔离，接入钉钉后登录默认企业为0了---
         const { token, userInfo } = data;
         this.setTenant(userInfo?.loginTenantId);
-        //update-end---author:wangshuai---date:2024-07-01---for:【issues/6652】开启租户数据隔离，接入钉钉后登录默认租户为0了---
+        //update-end---author:wangshuai---date:2024-07-01---for:【issues/6652】开启企业数据隔离，接入钉钉后登录默认企业为0了---
         // save token
         this.setToken(token);
         return this.afterLoginAction(goHome, data);

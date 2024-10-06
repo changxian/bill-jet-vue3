@@ -436,7 +436,7 @@ export const dataRuleFormSchema: FormSchema[] = [
           value: '#{sys_multi_org_code}',
         },
         {
-          label: '登录用户租户',
+          label: '登录用户企业',
           value: '#{tenant_id}',
         },
       ],

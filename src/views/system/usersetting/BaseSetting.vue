@@ -81,7 +81,7 @@ import UserAccountModal from './commponents/UserAccountModal.vue';
 import { useModal } from '/@/components/Modal';
 import { cloneDeep } from 'lodash-es';
 import { useDesign } from '/@/hooks/web/useDesign';
-//TODO 当字典租户隔离时，数据会查不到，默认一个
+//TODO 当字典企业隔离时，数据会查不到，默认一个
 const sexOption = getDictItemsByCode("sex") || [{text:'男',value:'1'},{text:'女',value:'2'}];
 const { createMessage } = useMessage();
 const userStore = useUserStore();

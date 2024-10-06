@@ -40,7 +40,7 @@ export const getImportUrl = Api.importExcel;
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
 /**
- * 租户角色列表
+ * 企业角色列表
  * @param params
  */
 export const listByTenant = (params) => defHttp.get({ url: Api.listByTenant, params });

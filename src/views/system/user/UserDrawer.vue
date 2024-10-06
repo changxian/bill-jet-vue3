@@ -43,11 +43,11 @@
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       rowId.value = data.record.id;
-      //租户信息定义成数组
+      //企业信息定义成数组
       if (data.record.relTenantIds && !Array.isArray(data.record.relTenantIds)) {
         data.record.relTenantIds = data.record.relTenantIds.split(',');
       } else {
-        //【issues/I56C5I】用户管理中连续点两次编辑租户配置就丢失了
+        //【issues/I56C5I】用户管理中连续点两次编辑企业配置就丢失了
         //data.record.relTenantIds = [];
       }
 
@@ -108,27 +108,27 @@
       {
         field: 'selectedroles',
         show: !data?.departDisabled,
-        //update-begin---author:wangshuai ---date:20230424  for：【issues/4844】多租户模式下，新增或编辑用户，选择角色一栏，角色选项没有做租户隔离------------
-        //判断是否为多租户模式
+        //update-begin---author:wangshuai ---date:20230424  for：【issues/4844】多企业模式下，新增或编辑用户，选择角色一栏，角色选项没有做企业隔离------------
+        //判断是否为多企业模式
         componentProps:{
           api: data.tenantSaas?getAllRolesList:getAllRolesListNoByTenant
         }
-        //update-end---author:wangshuai ---date:20230424  for：【issues/4844】多租户模式下，新增或编辑用户，选择角色一栏，角色选项没有做租户隔离------------
+        //update-end---author:wangshuai ---date:20230424  for：【issues/4844】多企业模式下，新增或编辑用户，选择角色一栏，角色选项没有做企业隔离------------
       },
-      //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+      //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】企业用户编辑界面中企业下拉框未过滤，显示当前系统所有的企业------------
       {
         field: 'relTenantIds',
         componentProps:{
           disabled: !!data.tenantSaas,
         },
       },
-      //update-end---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+      //update-end---author:wangshuai ---date:20230522  for：【issues/4935】企业用户编辑界面中企业下拉框未过滤，显示当前系统所有的企业------------
     ]);
-    //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+    //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】企业用户编辑界面中企业下拉框未过滤，显示当前系统所有的企业------------
     if(!unref(isUpdate) && data.tenantSaas){
       await setFieldsValue({ relTenantIds: getTenantId().toString() })
     }
-    //update-end---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+    //update-end---author:wangshuai ---date:20230522  for：【issues/4935】企业用户编辑界面中企业下拉框未过滤，显示当前系统所有的企业------------
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
       setFieldsValue({

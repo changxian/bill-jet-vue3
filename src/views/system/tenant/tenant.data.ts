@@ -5,13 +5,13 @@ import { rules } from "/@/utils/helper/validator";
 import { getAllSysPackList } from './tenant.api';
 export const columns: BasicColumn[] = [
   {
-    title: '租户名称',
+    title: '企业名称',
     dataIndex: 'name',
     width: 200,
     align: 'left',
   },
   {
-    title: '租户编号(ID)',
+    title: '企业编号(ID)',
     dataIndex: 'id',
     width: 180,
   },{
@@ -77,7 +77,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
     colProps: { span: 8 },
   },
@@ -109,13 +109,13 @@ export const searchFormSchema: FormSchema[] = [
 export const formSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
     required: true,
   },
   {
     field: 'id',
-    label: '租户编号(ID)',
+    label: '企业编号(ID)',
     component: 'InputNumber',
     required: true,
     ifShow: ({ values }) => {
@@ -352,13 +352,13 @@ export const packMenuFormSchema: FormSchema[] = [
 //回收站列表
 export const recycleColumns : BasicColumn[] = [
   {
-    title: '租户名称',
+    title: '企业名称',
     dataIndex: 'name',
     width: 100,
     align: 'left',
   },
   {
-    title: '租户编号(ID)',
+    title: '企业编号(ID)',
     dataIndex: 'id',
     width: 100,
   },
@@ -380,11 +380,11 @@ export const recycleColumns : BasicColumn[] = [
   }
 ]
 
-//租户回收站搜索表单
+//企业回收站搜索表单
 export const searchRecycleFormSchema : FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
   },
   {
@@ -418,7 +418,7 @@ export const tenantPackUserColumns: BasicColumn[] = [
 ]
 
 /**
- * 用户租户新增编辑表单
+ * 用户企业新增编辑表单
  */
 export const tenantUserSchema: FormSchema[] = [
   { field: 'id', label: 'id', component: 'Input', show: false },
@@ -473,6 +473,6 @@ export const tenantUserSchema: FormSchema[] = [
   //     return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
   //   },
   // },
-  { field: 'relTenantIds', label: '租户', component: 'Input',show:false },
+  { field: 'relTenantIds', label: '企业', component: 'Input',show:false },
   { field: 'selectedroles', label: '角色', component: 'Input',show:false },
 ];

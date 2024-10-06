@@ -41,13 +41,13 @@ export const getExportUrl = Api.exportXls;
  */
 export const getImportUrl = Api.importExcel;
 /**
- * 列表接口(查询用户，通过租户隔离)
+ * 列表接口(查询用户，通过企业隔离)
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
 
 /**
- * 列表接口(查询全部用户，不通过租户隔离)
+ * 列表接口(查询全部用户，不通过企业隔离)
  * @param params
  */
 export const listNoCareTenant = (params) => defHttp.get({ url: Api.listNoCareTenant, params });
@@ -129,17 +129,17 @@ export const duplicateCheckDelay = (params) => {
   });
 };
 /**
- * 获取全部角色（租户隔离）
+ * 获取全部角色（企业隔离）
  * @param params
  */
 export const getAllRolesList = (params) => defHttp.get({ url: Api.allRolesList, params });
 /**
- * 获取全部角色（不租户隔离）
+ * 获取全部角色（不企业隔离）
  * @param params
  */
 export const getAllRolesListNoByTenant = (params) => defHttp.get({ url: Api.allRolesListNoByTenant, params });
 /**
- * 获取全部租户
+ * 获取全部企业
  */
 export const getAllTenantList = (params) => defHttp.get({ url: Api.allTenantList, params });
 /**
@@ -243,7 +243,7 @@ export const getUserTenantPageList = (params) => {
 };
 
 /**
- * 更新租户状态
+ * 更新企业状态
  * @param params
  */
 export const updateUserTenantStatus = (params) => {

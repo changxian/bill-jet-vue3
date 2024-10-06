@@ -56,7 +56,7 @@
   const { prefixCls, tableContext } = useListPage({
     designScope: 'tenant-template',
     tableProps: {
-      title: '租户列表',
+      title: '企业列表',
       api: getTenantPageListByUserId,
       columns: columns,
       formConfig: {
@@ -90,7 +90,7 @@
   }
 
   /**
-   * 邀请用户加入租户
+   * 邀请用户加入企业
    */
   function handleInvitation() {
     userOpenModal(true, {});
@@ -127,7 +127,7 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
-      //我的租户不显示新增和编辑套餐
+      //我的企业不显示新增和编辑套餐
       showPackAddAndEdit: false
     });
   }
@@ -141,6 +141,6 @@
 
   onMounted(()=>{
     //提示信息
-    tenantSaasMessage('我的租户')
+    tenantSaasMessage('我的企业')
   })
 </script>

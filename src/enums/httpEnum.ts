@@ -41,7 +41,7 @@ export enum ConfigEnum {
   TIMESTAMP = 'X-TIMESTAMP',
   // Sign
   Sign = 'X-Sign',
-  // 租户id
+  // 企业id
   TENANT_ID = 'X-Tenant-Id',
   // 版本
   VERSION = 'X-Version',

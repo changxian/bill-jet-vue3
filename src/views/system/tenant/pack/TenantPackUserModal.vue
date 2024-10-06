@@ -38,7 +38,7 @@
     name: 'TenantPackUserModal',
     components: { BasicModal, BasicTable, TableAction, TenantUserSelectModal },
     setup() {
-      //获取租户id
+      //获取企业id
       const getTenantId = computed(()=>{
         return tenantPackData.tenantId;
       })

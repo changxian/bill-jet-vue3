@@ -6,9 +6,9 @@
         <template #label>
           <a-tooltip placement="topLeft">
             <template #title>
-              <span>您隶属于多租户，请选择当前所属租户</span>
+              <span>您隶属于多企业，请选择当前所属企业</span>
             </template>
-            <a-avatar style="background-color: #87d068" :size="30"> 租户 </a-avatar>
+            <a-avatar style="background-color: #87d068" :size="30"> 企业 </a-avatar>
           </a-tooltip>
         </template>
         <!--部门下拉内容-->
@@ -100,14 +100,14 @@
   async function show() {
     //加载部门
     await loadDepartList();
-    //加载租户
+    //加载企业
     await loadTenantList();
     //标题配置
     if (unref(isMultiTenant) && unref(isMultiDepart)) {
-      currTitle.value = '切换租户和部门';
+      currTitle.value = '切换企业和部门';
     } else if (unref(isMultiTenant)) {
       currTitle.value =
-        unref(currentTenantName) && unref(currentTenantName).length > 0 ? `租户切换（当前租户 :${unref(currentTenantName)}）` : props.title;
+        unref(currentTenantName) && unref(currentTenantName).length > 0 ? `企业切换（当前企业 :${unref(currentTenantName)}）` : props.title;
     } else if (unref(isMultiDepart)) {
       currTitle.value =
         unref(currentDepartName) && unref(currentDepartName).length > 0 ? `部门切换（当前部门 :${unref(currentDepartName)}）` : props.title;
@@ -132,7 +132,7 @@
     isMultiDepart.value = true;
   }
   /**
-   *加载租户信息
+   *加载企业信息
    */
   async function loadTenantList() {
     const result = await getUserTenants();
@@ -166,7 +166,7 @@
         }
         createMessage.success('切换成功');
         
-        //切换租户后要刷新首页
+        //切换企业后要刷新首页
         window.location.reload();
       })
       .catch((e) => {

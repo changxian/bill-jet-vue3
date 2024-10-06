@@ -167,12 +167,12 @@ export const passwordChange = (params) => defHttp.get({ url: Api.passwordChange,
  * @description: 第三方登录
  */
 export function thirdLogin(params, mode: ErrorMessageMode = 'modal') {
-  //==========begin 第三方登录/auth2登录需要传递租户id===========
+  //==========begin 第三方登录/auth2登录需要传递企业id===========
   let tenantId = '0';
   if (!params.tenantId) {
     tenantId = params.tenantId;
   }
-  //==========end 第三方登录/auth2登录需要传递租户id===========
+  //==========end 第三方登录/auth2登录需要传递企业id===========
   return defHttp.get<LoginResultModel>(
     {
       url: `${Api.thirdLogin}/${params.token}/${params.thirdType}/${tenantId}`,

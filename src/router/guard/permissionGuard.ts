@@ -74,12 +74,12 @@ export function createPermissionGuard(router: Router) {
       } else if (to.path === LOGIN_PATH && isOAuth2AppEnv() && !token) {
         //退出登录进入此逻辑
         //如果进入的页面是login页面并且当前是OAuth2app环境，并且token为空，就进入OAuth2登录页面
-        //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+        //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
         if(to.query.tenantId){
           setAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID,to.query.tenantId)
         }
         next({ path: OAUTH2_LOGIN_PAGE_PATH });
-        //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+        //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
         return;
         //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
       }

@@ -18,7 +18,7 @@
     schemas: packMenuFormSchema,
     showActionButtonGroup: false,
   });
-  //租户
+  //企业
   const tenantId = ref<number>();
   //套餐类型
   const packType = ref<number>();
@@ -43,7 +43,7 @@
     //update-end---author:wangshuai ---date:20230705  for：【QQYUN-5685】2 套餐增加一个查看：添加底部有没有按钮及表单禁用------------
   });
   //设置标题
-  const title = computed(() => (unref(isUpdate) ? '编辑租户套餐' : '新增租户套餐'));
+  const title = computed(() => (unref(isUpdate) ? '编辑企业套餐' : '新增企业套餐'));
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();

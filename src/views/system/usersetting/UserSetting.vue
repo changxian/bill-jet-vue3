@@ -78,13 +78,13 @@ export default defineComponent({
     }
 
     function goToMyTeantPage(){
-      //update-begin---author:wangshuai ---date:20230721  for：【QQYUN-5726】邀请加入租户加个按钮直接跳转过去------------
-      //如果请求参数包含我的租户，直接跳转过去
+      //update-begin---author:wangshuai ---date:20230721  for：【QQYUN-5726】邀请加入企业加个按钮直接跳转过去------------
+      //如果请求参数包含我的企业，直接跳转过去
       let query = router.currentRoute.value.query;
       if(query && query.page === 'tenantSetting'){
         activeKey.value = "2";
       }
-      //update-end---author:wangshuai ---date:20230721  for：【QQYUN-5726】邀请加入租户加个按钮直接跳转过去------------
+      //update-end---author:wangshuai ---date:20230721  for：【QQYUN-5726】邀请加入企业加个按钮直接跳转过去------------
     }
     
     onMounted(()=>{

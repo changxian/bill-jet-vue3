@@ -62,9 +62,9 @@
     api: userList,
     columns: userColumns,
     formConfig: {
-      //update-begin---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、租户角色下,查询居左显示
+      //update-begin---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、企业角色下,查询居左显示
       labelWidth: 60,
-      //update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、租户角色下,查询居左显示
+      //update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、企业角色下,查询居左显示
       schemas: searchUserFormSchema,
       autoSubmitOnEnter: true,
     },
@@ -192,9 +192,9 @@
 </script>
 
 <style scoped>
-  /*update-begin---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、租户角色下,查询居左显示*/
+  /*update-begin---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、企业角色下,查询居左显示*/
   :deep(.ant-form-item-control-input-content){
     text-align: left;
   }
-  /*update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、租户角色下,查询居左显示*/
+  /*update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】3、企业角色下,查询居左显示*/
 </style>

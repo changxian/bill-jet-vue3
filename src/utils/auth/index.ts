@@ -19,7 +19,7 @@ export function getLoginBackInfo() {
   return getAuthCache(LOGIN_INFO_KEY);
 }
 /**
- * 获取租户id
+ * 获取企业id
  */
 export function getTenantId() {
   return getAuthCache<string>(TENANT_ID);

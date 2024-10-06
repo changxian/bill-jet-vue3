@@ -59,7 +59,7 @@ export const updateUserPassword = (params) => {
 }
 
 /**
- * 通过用户id获取租户列表
+ * 通过用户id获取企业列表
  * @param params
  */
 export const getTenantListByUserId = (params) => {
@@ -75,7 +75,7 @@ export const cancelApplyTenant = (params) => {
 };
 
 /**
- * 用户退出租户
+ * 用户退出企业
  * @param params
  */
 export const exitUserTenant = (params)=>{
@@ -83,7 +83,7 @@ export const exitUserTenant = (params)=>{
 }
 
 /**
- * 变更租户拥有者
+ * 变更企业拥有者
  * @param params
  */
 export const changeOwenUserTenant = (params)=>{
@@ -115,7 +115,7 @@ export const deleteThirdAccount = (params) => {
 };
 
 /**
- * 同意和拒绝加入租户
+ * 同意和拒绝加入企业
  * @param params
  */
 export const agreeOrRefuseJoinTenant = (params) => {

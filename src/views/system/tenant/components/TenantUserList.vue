@@ -20,6 +20,8 @@ import { useListPage } from "/@/hooks/system/useListPage";
 import { BasicTable, TableAction } from '/@/components/Table';
 
 const tenantId = ref<number>(0);
+const tenantName = ref<string>(0);
+
 // 列表页面公共参数、方法
 const { prefixCls, tableContext } = useListPage({
   designScope: 'tenant-template',
@@ -42,7 +44,7 @@ const { prefixCls, tableContext } = useListPage({
       },
     },
     beforeFetch: (params) => {
-      return Object.assign(params, { userTenantId: unref(tenantId) });
+      return Object.assign(params, { userTenantId: unref(tenantId),tenantName: unref(tenantName)  });
     },
   },
 });
@@ -53,10 +55,11 @@ const emit = defineEmits(['register', 'success']);
 //表单赋值
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
   tenantId.value = data.id;
+  tenantName.value = data.tenantName;
   success();
 });
 //设置标题
-const title = '租户成员';
+const title = computed(() =>  `企业【${unref(tenantName)}】成员`  );
 //表单提交事件
 async function handleSubmit(v) {
   closeModal();
@@ -83,14 +86,14 @@ function success() {
  * @param id
  */
 async function handleLeave(id) {
-  await leaveTenant({userIds:id,tenantId:unref(tenantId)},success)
+  await leaveTenant({userIds:id,tenantId:unref(tenantId),tenantName:unref(tenantName)},success)
 }
 
 /**
  * 批量请离
  */
 async function  handleLeaveBatch(){
-  await leaveTenant({userIds:selectedRowKeys.value.join(","),tenantId:unref(tenantId)},success)
+  await leaveTenant({userIds:selectedRowKeys.value.join(","),tenantId:unref(tenantId),tenantName:unref(tenantName)},success)
 }
 </script>
 

@@ -21,7 +21,7 @@ export const getExportUrl = Api.exportXls;
  */
 export const getImportUrl = Api.importExcel;
 /**
- * 查询租户列表
+ * 查询企业列表
  * @param params
  */
 export const getList = (params) => {

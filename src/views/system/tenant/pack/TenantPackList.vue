@@ -21,7 +21,7 @@
   <TenantPackUserModal @register="registerPackUser" @success="success" />
 </template>
 <script lang="ts" setup name="tenant-pack-modal">
-  import { reactive, ref, unref } from 'vue';
+import {computed, reactive, ref, unref} from 'vue';
   import { BasicModal, useModal, useModalInner } from '/@/components/Modal';
   import { packColumns, userColumns, packFormSchema } from '../tenant.data';
   import { getTenantUserList, leaveTenant, packList, deleteTenantPack } from '../tenant.api';
@@ -35,6 +35,7 @@
   const [registerPackMenu, { openModal }] = useModal();
   const [registerPackUser, { openModal: packUserOpenModal }] = useModal();
   const tenantId = ref<number>(0);
+  const tenantName = ref<string>(0);
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
     designScope: 'tenant-template',
@@ -57,7 +58,7 @@
         },
       },
       beforeFetch: (params) => {
-        return Object.assign(params, { tenantId: unref(tenantId) });
+        return Object.assign(params, { tenantId: unref(tenantId) ,tenantName: unref(tenantName)});
       },
     },
   });
@@ -69,11 +70,13 @@
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     tenantId.value = data.tenantId;
+    tenantName.value = data.tenantName;
     showPackAddAndEdit.value = data.showPackAddAndEdit;
     success();
   });
   //设置标题
-  const title = '租户套餐列表';
+  const title = computed(() =>  `企业【${unref(tenantName)}】套餐列表`  );
+
 
   //表单提交事件
   async function handleSubmit(v) {
@@ -110,7 +113,7 @@
       isUpdate: true,
       record: record,
       tenantId: unref(tenantId),
-      packType:'',
+      tenantName: unref(tenantName),
       showFooter: true
     });
   }
@@ -147,8 +150,8 @@
       }
     }
     Modal.confirm({
-      title: '删除租户套餐',
-      content: '是否删除租户套餐',
+      title: '删除企业套餐',
+      content: '是否删除企业套餐',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {
@@ -165,6 +168,7 @@
     openModal(true, {
       isUpdate: false,
       tenantId: unref(tenantId),
+      tenantName: unref(tenantName),
       showFooter: true
     });
   }
@@ -192,7 +196,7 @@
       {
         label: '删除',
         popConfirm: {
-          title: '是否确认删除租户套餐',
+          title: '是否确认删除企业套餐',
           confirm: handleDelete.bind(null, record),
         },
       },
@@ -208,6 +212,7 @@
       isUpdate: true,
       record: record,
       tenantId: unref(tenantId),
+      tenantName: unref(tenantName),
       packType:'',
       showFooter: false
     });

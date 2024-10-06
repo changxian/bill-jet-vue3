@@ -33,7 +33,7 @@ export const APP_LOCAL_CACHE_KEY = 'COMMON__LOCAL__KEY__';
 
 // base global session key
 export const APP_SESSION_CACHE_KEY = 'COMMON__SESSION__KEY__';
-// 租户 key
+// 企业 key
 export const TENANT_ID = 'TENANT_ID';
 // login info key
 export const LOGIN_INFO_KEY = 'LOGIN__INFO__';
@@ -41,7 +41,7 @@ export const LOGIN_INFO_KEY = 'LOGIN__INFO__';
 // 聊天UID key
 export const JEECG_CHAT_UID = 'JEECG_CHAT_UID';
 
-// 免登录租户id，与系统分开，避免重复
+// 免登录企业id，与系统分开，避免重复
 export const OAUTH2_THIRD_LOGIN_TENANT_ID = 'THIRD_LOGIN_TENANT_ID';
 
 // ai助手标识（退出需要记录一下）

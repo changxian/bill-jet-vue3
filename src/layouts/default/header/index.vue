@@ -162,18 +162,18 @@
       });
 
       /**
-       * 首页多租户部门弹窗逻辑
+       * 首页多企业部门弹窗逻辑
        */
       const loginSelectRef = ref();
 
       function showLoginSelect() {
-        //update-begin---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
+        //update-begin---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择企业----
         //判断是否是登陆进来
         const loginInfo = toRaw(userStore.getLoginInfo) || {};
         if (!!loginInfo.isLogin) {
           loginSelectRef.value.show(loginInfo);
         }
-        //update-end---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
+        //update-end---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择企业----
       }
 
       function loginSelectOk() {
