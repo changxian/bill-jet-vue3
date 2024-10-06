@@ -7,44 +7,44 @@
           <a-col :lg="6">
             <a-form-item name="orgName">
               <template #label><span title="客户名称">客户名称</span></template>
-              <a-input placeholder="请输入客户名称" v-model:value="queryParam.orgName" allow-clear ></a-input>
+              <j-input placeholder="请输入客户名称" v-model:value="queryParam.orgName" allow-clear></j-input>
             </a-form-item>
           </a-col>
           <a-col :lg="6">
             <a-form-item name="cellPhone">
               <template #label><span title="手机">手机</span></template>
-              <a-input placeholder="请输入手机" v-model:value="queryParam.cellPhone" allow-clear ></a-input>
+              <j-input placeholder="请输入手机" v-model:value="queryParam.cellPhone" allow-clear></j-input>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item name="phone">
                 <template #label><span title="电话">电话</span></template>
-                <a-input placeholder="请输入电话" v-model:value="queryParam.phone" allow-clear ></a-input>
+                <j-input placeholder="请输入电话" v-model:value="queryParam.phone" allow-clear></j-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="contact">
                 <template #label><span title="联系人">联系人</span></template>
-                <a-input placeholder="请输入联系人" v-model:value="queryParam.contact" allow-clear ></a-input>
+                <j-input placeholder="请输入联系人" v-model:value="queryParam.contact" allow-clear></j-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="qq">
                 <template #label><span title="QQ">QQ</span></template>
-                <a-input placeholder="请输入QQ" v-model:value="queryParam.qq" allow-clear ></a-input>
+                <j-input placeholder="请输入QQ" v-model:value="queryParam.qq" allow-clear></j-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="wechat">
                 <template #label><span title="微信">微信</span></template>
-                <a-input placeholder="请输入微信" v-model:value="queryParam.wechat" allow-clear ></a-input>
+                <j-input placeholder="请输入微信" v-model:value="queryParam.wechat" allow-clear></j-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="email">
                 <template #label><span title="邮箱">邮箱</span></template>
-                <a-input placeholder="请输入邮箱" v-model:value="queryParam.email" allow-clear ></a-input>
+                <j-input placeholder="请输入邮箱" v-model:value="queryParam.email" allow-clear></j-input>
               </a-form-item>
             </a-col>
           </template>
@@ -68,6 +68,8 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button type="primary" v-auth="'deliver.customer:jxc_customer:custPrice'" :disabled="selectedRowKeys.length != 1" @click="handleCustPrice" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
+        <a-button type="primary" v-auth="'deliver.customer:jxc_customer:debt'" :disabled="selectedRowKeys.length != 1" @click="handleAdd" preIcon="ant-design:switcher-outlined"> 还款明细</a-button>
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'deliver.customer:jxc_customer:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -96,19 +98,27 @@
     </BasicTable>
     <!-- 表单区域 -->
     <CustomerModal ref="registerModal" @success="handleSuccess"></CustomerModal>
+    <!-- 客户价列表区域 -->
+    <CustPriceList @register="registerCustPriceModal" />
   </div>
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, unref } from "vue";
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './Customer.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Customer.api';
+  import CustPriceList from './custprice/GoodsCustPriceList.vue';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import CustomerModal from './components/CustomerModal.vue'
-  import { useUserStore } from '/@/store/modules/user';
 
+  import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
+  import CustomerModal from './components/CustomerModal.vue';
+  import { useUserStore } from '/@/store/modules/user';
+  import { useModal } from "@/components/Modal";
+  import { useMessage } from "@/hooks/web/useMessage";
+  const { createMessage } = useMessage();
+  const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -141,7 +151,7 @@
 	    success: handleSuccess
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -189,7 +199,22 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
+
+  /**
+   * 新增客户价
+   */
+  function handleCustPrice() {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个客户');
+      return;
+    }
+    custPriceModal(true, {
+      custId: unref(selectedRowKeys.value),
+      custName: unref(selectedRows.value[0].orgName),
+    });
+  }
+
   /**
    * 删除事件
    */

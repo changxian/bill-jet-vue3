@@ -261,7 +261,7 @@
             let result: any = true;
             try {
               result = await beforeEditSubmit({
-                record: pick(record, keys),
+                record: record,
                 index,
                 key,
                 value,

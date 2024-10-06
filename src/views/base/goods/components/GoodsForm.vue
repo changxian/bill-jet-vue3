@@ -36,12 +36,7 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="单位" v-bind="validateInfos.unit" id="GoodsForm-unit" name="unit">
-                <JDictSelectTag
-                  v-model:value="formData.unit"
-                  placeholder="请选择商品类别"
-                  dictCode="jxc_goods_units,name,id,status=0 order by sort desc"
-                  :showChooseOption="false"
-                />
+                <j-dict-select-tag v-model:value="formData.unit" placeholder="请选择商品单位" :url="getAllGoodsUnitsList" value-field="name" :showChooseOption="false" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -109,6 +104,7 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
+  import { getAllGoodsUnitsList } from "@/views/units/GoodsUnits.api";
   const props = defineProps({
     formData: { type: Object, default: () => ({}) },
     formBpm: { type: Boolean, default: true },

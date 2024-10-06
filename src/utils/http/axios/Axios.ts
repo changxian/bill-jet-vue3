@@ -224,9 +224,14 @@ export class VAxios {
             try {
               const ret = transformRequestHook(res, opt);
               //zhangyafei---添加回调方法
-              config.success && config.success(res.data);
+              if(res.data.success ){
+                config.success && config.success(res.data);
+                resolve(ret);
+              }else{
+                createMessage.error(res.data.message);
+                reject(res.data.message);
+              }
               //zhangyafei---添加回调方法
-              resolve(ret);
             } catch (err) {
               reject(err || new Error('request error!'));
             }

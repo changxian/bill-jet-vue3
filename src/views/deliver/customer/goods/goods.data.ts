@@ -1,20 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-// import {rules} from '/@/utils/helper/validator';
-// import {render} from '/@/utils/common/renderUtils';
-// import {getWeekMonthQuarterYear} from '/@/utils';
 //列表数据
 export const columns: BasicColumn[] = [
-  {
-    title: '商品类别',
-    align: 'center',
-    dataIndex: 'categoryId_dictText',
-  },
-  {
-    title: '商品编号',
-    align: 'center',
-    dataIndex: 'code',
-  },
   {
     title: '商品名称',
     align: 'center',
@@ -26,82 +13,45 @@ export const columns: BasicColumn[] = [
     dataIndex: 'type',
   },
   {
-    title: '面积',
-    align: 'center',
-    dataIndex: 'area',
-  },
-  {
     title: '单位',
     align: 'center',
     dataIndex: 'unit',
   },
   {
-    title: '库存数量',
-    align: 'center',
-    dataIndex: 'stock',
-  },
-  {
-    title: '成本',
-    align: 'center',
-    dataIndex: 'cost',
-  },
-  {
-    title: '售价',
+    title: '价格',
     align: 'center',
     dataIndex: 'price',
-  },
-  {
-    title: '状态',
-    align: 'center',
-    dataIndex: 'status_dictText',
   },
   {
     title: '备注',
     align: 'center',
     dataIndex: 'remark',
   },
-  {
-    title: '创建时间',
-    align: 'center',
-    dataIndex: 'createTime',
-  },
 ];
-//查询数据
+//条件查询数据
 export const searchFormSchema: FormSchema[] = [
   // Input 是精确查询, JInput 是模糊查询
   {
     label: '编号(条码)',
     field: 'code',
-    component: 'JInput',
+    component: 'Input',
     //colProps: {span: 6},
   },
   {
     label: '名称',
     field: 'name',
-    component: 'JInput',
+    component: 'Input',
     //colProps: {span: 6},
   },
   {
     label: '规格型号',
     field: 'type',
-    component: 'JInput',
+    component: 'Input',
     //colProps: {span: 6},
   },
-  {
-    label: '状态',
-    field: 'status',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'jxc_goods_status',
-      placeholder: '请选择',
-      // 删除请选择选项
-      showChooseOption: false,
-      stringToNumber: false,
-    },
-  },
 ];
-//表单数据
-export const formSchema: FormSchema[] = [
+//列表数据
+export const goodsSchema: FormSchema[] = [
   {
     // TODO 主键隐藏字段，目前写死为ID
     label: '',

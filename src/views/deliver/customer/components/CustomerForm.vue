@@ -55,8 +55,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="业务员" v-bind="validateInfos.userId" id="CustomerForm-userId" name="userId">
-								<j-dict-select-tag v-model:value="formData.userId" :url="getAllSalesmanList" placeholder="请选择业务员"  allow-clear />
+							<a-form-item label="业务员" v-bind="validateInfos.salesmanName" id="CustomerForm-salesmanName" name="salesmanName">
+								<j-dict-select-tag v-model:value="formData.salesmanName" :url="getAllSalesmanList" value-field="name" placeholder="请选择业务员"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">

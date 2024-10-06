@@ -54,7 +54,7 @@ export const columns: BasicColumn[] = [
   {
     title: '业务员',
     align: 'center',
-    dataIndex: 'userName_dictText',
+    dataIndex: 'salesmanName',
   },
   {
     title: '创建日期',
@@ -83,3 +83,4 @@ export const columns: BasicColumn[] = [
   userName: {title: '业务员',order: 10,view: 'list', type: 'string',dictCode: '',},
   remark: {title: '备注',order: 11,view: 'textarea', type: 'string',},
 };*/
+
