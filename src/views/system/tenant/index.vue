@@ -22,7 +22,7 @@
           type="primary"
           @click="handleInvitation"
           style="margin-right: 5px"
-          :disabled="selectedRowKeys.length === 0"
+          :disabled="selectedRowKeys.length != 1"
           >邀请用户加入</a-button
         >
         <a-button
@@ -30,7 +30,7 @@
           type="primary"
           @click="handlePack"
           style="margin-right: 5px"
-          :disabled="selectedRowKeys.length === 0"
+          :disabled="selectedRowKeys.length != 1"
           >套餐</a-button
         >
         <a-button type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
