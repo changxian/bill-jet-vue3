@@ -1,50 +1,84 @@
 const fields = [
   { text: '序号', field: 'seq' },
   { text: '订单编号', field: 'orderNo' },
-  { text: '物料编号', field: 'code' },
-  { text: '产品货号', field: 'code1' },
-  { text: '货号', field: 'code2' },
-  { text: '產品編號', field: 'code3' },
-  { text: '商品全名', field: 'name' },
-  { text: '物料名称', field: 'name1' },
+  { text: '订单号', field: 'orderNo2' },
+
+  { text: '商品编号', field: 'code' },
+  { text: '物料编号', field: 'code2' },
+  { text: '编号', field: 'code3' },
+  { text: '编码', field: 'code4' },
+  { text: '产品编号', field: 'code5' },
+  { text: '产品货号', field: 'code6' },
+  { text: '货号', field: 'code7' },
+  { text: '品号', field: 'code8' },
+  { text: '药品编号', field: 'code9' },
+  { text: '產品編號', field: 'code10' },
+
+  { text: '商品名称', field: 'name' },
   { text: '物料名称', field: 'name2' },
-  { text: '通用名称', field: 'name3' },
+  { text: '产品名称', field: 'name3' },
+  { text: '商品全名', field: 'name4' },
+  { text: '通用名称', field: 'name5' },
+  { text: '货品名称', field: 'name6' },
+  { text: '货物名称', field: 'name7' },
+  { text: '名称', field: 'name8' },
+  { text: '品名', field: 'name9' },
+  { text: '药品名称', field: 'name10' },
+  { text: '產品名稱', field: 'name11' },
+
+  { text: '规格型号', field: 'spec' },
+  { text: '规格', field: 'spec2' },
+  { text: '型号', field: 'spec3' },
+  { text: '規格型號', field: 'spec4' },
+
+  { text: '剂型', field: 'spec_2' },
+
+  { text: '品名及规格', field: 'nameSpec' },
+
+  { text: '包装', field: 'pack' },
+
+  { text: '单位', field: 'unit' },
+  { text: '單位', field: 'unit2' },
+
+  { text: '颜色', field: 'color' },
+
+  { text: '数量', field: 'count' },
+
+  { text: '重量', field: 'weight' },
+
+  { text: '单价', field: 'price' },
+  { text: '单价(元)', field: 'price2' },
+
+  { text: '金额', field: 'amount' },
+
+  { text: '零售价', field: 'price' },
+
+  { text: '备注', field: 'remark' },
+
+  { text: '生产产商', field: 'firm' },
+  { text: '产商', field: 'firm' },
+  { text: '生产厂商', field: 'firm' },
+  { text: '厂商', field: 'firm' },
+  { text: '生产企业', field: 'firm' },
+
+  { text: '生产地址', field: 'firm' },
+
+
   { text: '货品名称', field: 'name4' },
-  { text: '货物名称', field: 'name5' },
-  { text: '產品名稱', field: 'name6' },
   { text: '品名', field: 'name7' },
   { text: '名称', field: 'name8' },
   { text: '商品名称', field: 'name9' },
-  { text: '药品名称', field: 'name10' },
   { text: '名称简写', field: 'shortName' },
-  { text: '规格型号', field: 'spec' },
-  { text: '規格型號', field: 'spec1' },
-  { text: '型号', field: 'spec2' },
-  { text: '规格', field: 'spec3' },
-  { text: '剂型', field: 'spec_2' },
-  { text: '包装', field: 'pack' },
-  { text: '品名及规格', field: 'nameSpec' },
-  { text: '生产厂商', field: 'firm' },
   { text: '生产企业', field: 'firm1' },
   { text: '厂商', field: 'firm2' },
   { text: '产商地址', field: 'firmAddress' },
   { text: '生产地址', field: 'firmAddress1' },
   { text: '生产日期', field: 'productDate' },
-  { text: '单位', field: 'unit' },
-  { text: '單位', field: 'unit1' },
-  { text: '颜色', field: 'color' },
-  { text: '数量', field: 'count' },
-  { text: '重量', field: 'weight' },
-  { text: '单价', field: 'price' },
-  { text: '单价(元)', field: 'price' },
-  { text: '金额', field: 'amount' },
   { text: '批号', field: 'batchNum' },
   { text: '生产批号', field: 'batchNum2' },
   { text: '有效期', field: 'validity' },
-  { text: '零售价', field: 'retailPrice' },
   { text: '批准文号', field: 'approvalNo' },
   { text: '注册证号', field: 'certificateNo' },
-  { text: '备注', field: 'remark' },
 ];
 
 const default_prot = {
