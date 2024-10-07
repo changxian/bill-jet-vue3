@@ -150,7 +150,6 @@
       async function initUrlData() {
         let { url,labelField,valueField} = props;
         //根据字典Code, 初始化字典数组
-        debugger
         const urlData = await initUrlOptions(url,{});
         dictOptions.value = urlData.reduce((prev, next) => {
           if (next) {
