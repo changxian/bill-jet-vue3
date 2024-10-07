@@ -1,5 +1,15 @@
 <template>
   <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table0">
+          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <p class="glyphicon-class">随时变</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
     <!-- 空白表格 -->
     <a-col :span="12" class="drag_item_box">
       <div>
@@ -135,6 +145,24 @@
         </a>
       </div>
     </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table2_1_11">
+          <img src="../public/static/43.png" alt="大写金额、总重量、总金额" />
+          <p class="glyphicon-class">页合计-备注跨行</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table4_3">
+          <img src="../public/static/43.png" alt="" />
+          <p class="glyphicon-class">总合计</p>
+        </a>
+      </div>
+    </a-col>
   </a-row>
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
@@ -193,17 +221,45 @@
   <a-row style="height: 80px">
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table6">
-          <img src="../public/static/43.png" alt="页小计，尾页合计" />
+        <a class="ep-draggable-item" tid="defaultModule.table5_2">
+          <img src="../public/static/43.png" alt="总金额、小写、本页小计、本页数量" />
+          <p class="glyphicon-class">总合计5_2</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1">
+          <img src="../public/static/43.png" alt="尾页合计" />
           <p class="glyphicon-class">尾页合计</p>
         </a>
       </div>
     </a-col>
     <a-col :span="12" class="drag_item_box">
       <div>
-        <a class="ep-draggable-item" tid="defaultModule.table6_1">
-          <img src="../public/static/43.png" alt="尾合计2" />
-          <p class="glyphicon-class">尾合计2</p>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1_3">
+          <img src="../public/static/43.png" alt="尾页合计1" />
+          <p class="glyphicon-class">尾页合计1</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1_4">
+          <img src="../public/static/43.png" alt="尾页合计1" />
+          <p class="glyphicon-class">尾页合计1-4</p>
+        </a>
+      </div>
+    </a-col>
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6">
+          <img src="../public/static/43.png" alt="页小计，尾页合计2" />
+          <p class="glyphicon-class">尾页合计2</p>
         </a>
       </div>
     </a-col>
@@ -213,7 +269,7 @@
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table6_2">
           <img src="../public/static/43.png" alt="尾合计3" />
-          <p class="glyphicon-class">尾合计3</p>
+          <p class="glyphicon-class">尾页合计3</p>
         </a>
       </div>
     </a-col>
@@ -221,7 +277,7 @@
       <div>
         <a class="ep-draggable-item" tid="defaultModule.table6_2_1">
           <img src="../public/static/43.png" alt="尾合计4" />
-          <p class="glyphicon-class">尾合计4</p>
+          <p class="glyphicon-class">尾页合计4</p>
         </a>
       </div>
     </a-col>
@@ -240,6 +296,16 @@
         <a class="ep-draggable-item" tid="defaultModule.table6_1_2">
           <img src="../public/static/43.png" alt="尾合计5" />
           <p class="glyphicon-class">尾页统计2</p>
+        </a>
+      </div>
+    </a-col>
+  </a-row>
+  <a-row style="height: 80px">
+    <a-col :span="12" class="drag_item_box">
+      <div>
+        <a class="ep-draggable-item" tid="defaultModule.table6_1_5">
+          <img src="../public/static/43.png" alt="尾页统计3" />
+          <p class="glyphicon-class">尾页统计3</p>
         </a>
       </div>
     </a-col>

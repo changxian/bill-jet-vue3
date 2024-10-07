@@ -38,7 +38,7 @@
   const { getCollapsedShowTitle } = useMenuSetting();
   const userStore = useUserStore();
   const { title, shortTitle } = useGlobSetting();
-  
+
   const go = useGo();
 
   const getAppLogoClass = computed(() => [prefixCls, props.theme, { 'collapsed-show-title': unref(getCollapsedShowTitle) }]);

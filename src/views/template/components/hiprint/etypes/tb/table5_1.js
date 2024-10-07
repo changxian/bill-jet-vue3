@@ -22,7 +22,7 @@ const table5_1 = {
       let total = data['total'] ?? 0;
       let capital = Nzh.cn.toMoney(total, { complete: false, outSymbol: false });
       return (
-        '<tr><td colspan="13">总金额：' +
+        '<tr><td colspan="13" style="text-align: left">总金额：' +
         capital +
         '整' +
         '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +

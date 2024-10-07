@@ -17,16 +17,17 @@ const table2_1_9 = {
     // currentPageGridRowsData 当前页的数据信息
     if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
+      let remark = data['remark'] ?? '';
       return (
-        '<tr><td style="border: 0px solid">说明：</td>' +
-        '<td colspan="3" style="border: 0px solid">' + data['remark'] + '</td>' +
+        '<tr><td style="border: 0px solid" style="text-align: right">说明:</td>' +
+        '<td colspan="3" style="text-align: left">' + remark + '</td>' +
         '<td colspan="2" style="text-align: center; border: 1px solid">TOTAL总金额</td>' +
         '<td colspan="2" style="text-align: center; border: 1px solid">' + price + ' 元</td>' +
         '</tr>'
       );
     }
 
-    return '<tr><td style="border: 0px solid">说明：</td><td colspan="3" style="border: 0px solid"></td><td colspan="2" style="text-align: center; border: 1px solid">TOTAL总金额</td><td colspan="2" style="text-align: center; border: 1px solid">0 元</td></tr>';
+    return '<tr><td style="text-align: right">说明:</td><td colspan="3"></td><td colspan="2" style="text-align: center; border: 1px solid">TOTAL总金额</td><td colspan="2" style="text-align: center; border: 1px solid">0 元</td></tr>';
   },
   columns: [
     [

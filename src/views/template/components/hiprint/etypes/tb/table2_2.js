@@ -1,4 +1,5 @@
 import { fields, cal, default_prot } from '../default';
+import Nzh from "nzh";
 
 const table2_2 = {
   tid: 'defaultModule.table2_2',
@@ -10,28 +11,46 @@ const table2_2 = {
     fields: fields,
   },
   footerFormatter: function (options, rows, data, currentPageGridRowsData) {
-    // options 配置信息
-    // rows 总行数据信息
-    // data 整个数据信息
     // currentPageGridRowsData 当前页的数据信息
     if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
+      let total = data['total'] ?? 0;
+      let capital = Nzh.cn.toMoney(total, { complete: false, outSymbol: false });
       let price = cal(currentPageGridRowsData);
-      return '<tr><td colspan="6" style="border: 1px solid"></td><td colspan="4">页小计：￥' + price + '</td></tr>';
+      if (currentPageGridRowsData[currentPageGridRowsData.length - 1].tail) {
+        return (
+          '<tr>' +
+          ' <td colspan="6"></td>' +
+          ' <td colspan="4" style="text-align: left">页小计：￥' + price + '</td>' +
+          '</tr>' +
+          '<tr>' +
+          ' <td colspan="4" style="text-align: left">合计金额（大写）：'+ capital +'整</td>' +
+          ' <td colspan="6" style="text-align: left">（小写）：'+ total +'</td>' +
+          '</tr>'
+        );
+      }
+      return '<tr><td colspan="6"></td><td colspan="4" style="text-align: left">页小计：￥' + price + '</td></tr>';
     }
 
-    return '<tr><td colspan="6" style="border: 1px solid"></td><td colspan="4">页小计：￥</td></tr>';
+    return (
+      '<tr>' +
+      ' <td colspan="6"></td>' +
+      ' <td colspan="4" style="text-align: left">页小计：￥</td>' +
+      '</tr>' +
+      '<tr>' +
+      ' <td colspan="4" style="text-align: left">合计金额（大写）：整</td>' +
+      ' <td colspan="6" style="text-align: left">（小写）：0</td>' +
+      '</tr>'
+    );
   },
   columns: [
     [
       {
         title: '药品编码',
-        align: 'center',
         field: 'code',
         width: 60,
       },
       {
         title: '药品名称',
-        align: 'left',
         field: 'name',
         width: 120,
       },

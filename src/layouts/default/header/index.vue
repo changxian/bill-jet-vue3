@@ -211,7 +211,7 @@
         loginSelectOk,
         loginSelectRef,
         title,
-        t
+        t,
       };
     },
   });

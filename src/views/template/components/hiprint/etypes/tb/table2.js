@@ -19,10 +19,10 @@ const table2 = {
     if (data && currentPageGridRowsData && 0 < currentPageGridRowsData.length) {
       let price = cal(currentPageGridRowsData);
       let capital = Nzh.cn.toMoney(price, { complete: false, outSymbol: false });
-      return '<tr><td colspan="5" style="border: 1px solid">合计金额（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';
+      return '<tr><td colspan="5">合计金额（大写）：' + capital + '整</td><td colspan="3">小写：￥' + price + '</td></tr>';
     }
 
-    return '<tr><td colspan="5" style="border: 1px solid">合计金额（大写）：</td><td colspan="3">小写：￥</td></tr>';
+    return '<tr><td colspan="5">合计金额（大写）：</td><td colspan="3">小写：￥</td></tr>';
   },
   columns: [
     [

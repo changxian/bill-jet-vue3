@@ -11,7 +11,7 @@
           :style="{ height: '500px', 'border-right': '2px solid #c1c1c1', 'overflow-y': 'auto' }"
           @expand="onExpand"
           @select="onSelect"
-        ></a-tree>
+        />
       </a-col>
 
       <!--右侧缩略图-->
@@ -42,12 +42,12 @@
         {
           title: '1页',
           key: '0-0-0',
-          imgUrl: 'https://static.jeecg.com/upload/test/1_1588149743473.jpg',
+          imgUrl: '/src/assets/test/1_1588149743473.jpg',
         },
         {
           title: '2页',
           key: '0-0-1',
-          imgUrl: 'https://static.jeecg.com/upload/test/u27356337152749454924fm27gp0_1588149731821.jpg',
+          imgUrl: '/src/assets/test/u27356337152749454924fm27gp0_1588149731821.jpg',
         },
       ],
     },
@@ -58,12 +58,12 @@
         {
           title: '1页',
           key: '0-1-0',
-          imgUrl: 'https://static.jeecg.com/upload/test/u24454681402491956848fm27gp0_1588149712663.jpg',
+          imgUrl: '/src/assets/test/u24454681402491956848fm27gp0_1588149712663.jpg',
         },
         {
           title: '2页',
           key: '0-1-1',
-          imgUrl: 'https://static.jeecg.com/upload/test/u8891206113801177793fm27gp0_1588149704459.jpg',
+          imgUrl: '/src/assets/test/u8891206113801177793fm27gp0_1588149704459.jpg',
         },
       ],
     },
@@ -74,7 +74,7 @@
         {
           title: '1页',
           key: '0-2-0',
-          imgUrl: 'https://static.jeecg.com/upload/test/1374962_1587621329085.jpg',
+          imgUrl: '/src/assets/upload/test/1374962_1587621329085.jpg',
         },
       ],
     },
