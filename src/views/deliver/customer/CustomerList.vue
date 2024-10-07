@@ -71,7 +71,7 @@
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:custPrice'" :disabled="selectedRowKeys.length != 1" @click="handleCustPrice" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:debt'" :disabled="selectedRowKeys.length != 1" @click="handleAdd" preIcon="ant-design:switcher-outlined"> 还款明细</a-button>
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'deliver.customer:jxc_customer:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <j-upload-button type="primary" v-auth="'deliver.customer:jxc_customer:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -93,43 +93,95 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
       </template>
-      <template v-slot:bodyCell="{ column, record, index, text }">
+
+      <!-- 动态字段回显插槽-->
+      <template #dynamic1="{ record }">
+        {{ record.dynamicField.dynamic1 }}
       </template>
+      <template #dynamic2="{ record }">
+        {{ record.dynamicField.dynamic2 }}
+      </template>
+      <template #dynamic3="{ record }">
+        {{ record.dynamicField.dynamic3 }}
+      </template>
+      <template #dynamic4="{ record }">
+        {{ record.dynamicField.dynamic4 }}
+      </template>
+      <template #dynamic5="{ record }">
+        {{ record.dynamicField.dynamic5 }}
+      </template>
+      <template #dynamic6="{ record }">
+        {{ record.dynamicField.dynamic6 }}
+      </template>
+      <template #dynamic17="{ record }">
+        {{ record.dynamicField.dynamic7 }}
+      </template>
+      <template #dynamic8="{ record }">
+        {{ record.dynamicField.dynamic8 }}
+      </template>
+      <template #dynamic9="{ record }">
+        {{ record.dynamicField.dynamic9 }}
+      </template>
+      <template #dynamic10="{ record }">
+        {{ record.dynamicField.dynamic10 }}
+      </template>
+      <template #dynamic11="{ record }">
+        {{ record.dynamicField.dynamic11 }}
+      </template>
+      <template #dynamic12="{ record }">
+        {{ record.dynamicField.dynamic12 }}
+      </template>
+
     </BasicTable>
     <!-- 表单区域 -->
-    <CustomerModal ref="registerModal" @success="handleSuccess"></CustomerModal>
+    <CustomerModal @register="registerModal" @success="handleSuccess"></CustomerModal>
     <!-- 客户价列表区域 -->
     <CustPriceList @register="registerCustPriceModal" />
   </div>
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
-  import { ref, reactive, unref } from "vue";
+  import { ref, reactive, unref, computed, watch } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './Customer.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Customer.api';
   import CustPriceList from './custprice/GoodsCustPriceList.vue';
-  import { downloadFile } from '/@/utils/common/renderUtils';
+  // import { downloadFile } from '/@/utils/common/renderUtils';
 
   import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
   import CustomerModal from './components/CustomerModal.vue';
   import { useUserStore } from '/@/store/modules/user';
-  import { useModal } from "@/components/Modal";
-  import { useMessage } from "@/hooks/web/useMessage";
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+
   const { createMessage } = useMessage();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const registerModal = ref();
+  const [registerModal, { openModal }] = useModal();
   const userStore = useUserStore();
+
+  const props = defineProps({
+    data: {
+      type: Object,
+      required: true,
+      defaultValue: () => {},
+    },
+  });
+
+  // 当前选中的客户ID，可能会为空，代表未选择客户
+  const categoryId = computed(() => props.data?.id);
+
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '客户管理',
       api: list,
       columns,
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_customer'], // 添加扩展列信息
       canResize: false,
       useSearchForm: false,
       showIndexColumn: true,
@@ -146,10 +198,10 @@
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess
-	  },
+    importConfig: {
+      url: getImportUrl,
+      success: handleSuccess,
+    },
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
@@ -162,6 +214,12 @@
     xs: 24,
     sm: 20,
   });
+
+  watch(
+    () => props.data,
+    () => reload()
+  );
+
 
   // 高级查询配置
   // const superQueryConfig = reactive(superQuerySchema);
@@ -180,27 +238,37 @@
    * 新增事件
    */
   function handleAdd() {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.add();
+    let record = {
+      dynamicFields: userStore.getDynamicCols['jxc_customer'],
+    };
+    openModal(true, {
+      record,
+      isUpdate: false,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
   }
-  
   /**
    * 编辑事件
    */
   function handleEdit(record: Recordable) {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
   }
-   
   /**
    * 详情
    */
   function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: false,
+    });
   }
-
-
   /**
    * 新增客户价
    */
@@ -221,21 +289,18 @@
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
   /**
    * 操作栏
    */
@@ -244,11 +309,10 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'deliver.customer:jxc_customer:edit'
+        auth: 'deliver.customer:jxc_customer:edit',
       },
     ];
   }
-   
   /**
    * 下拉操作栏
    */
@@ -264,9 +328,9 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'deliver.customer:jxc_customer:delete'
-      }
-    ]
+        auth: 'deliver.customer:jxc_customer:delete',
+      },
+    ];
   }
 
   /**
@@ -275,7 +339,6 @@
   function searchQuery() {
     reload();
   }
-  
   /**
    * 重置
    */
@@ -285,10 +348,6 @@
     //刷新数据
     reload();
   }
-  
-
-
-
 </script>
 
 <style lang="less" scoped>
@@ -305,7 +364,7 @@
     .query-group-split-cust{
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
     .ant-form-item:not(.ant-form-item-with-help){
       margin-bottom: 16px;
