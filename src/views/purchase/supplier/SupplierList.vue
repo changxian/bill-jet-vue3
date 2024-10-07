@@ -166,6 +166,7 @@
       api: list,
       columns,
       canResize:false,
+      cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_supplier'], // 添加扩展列信息
       useSearchForm: false,
       actionColumn: {
@@ -220,7 +221,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.add();
   }
-  
+
   /**
    * 编辑事件
    */
@@ -228,7 +229,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 详情
    */
@@ -236,7 +237,7 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */

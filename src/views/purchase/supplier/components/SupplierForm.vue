@@ -67,6 +67,21 @@
               </a-form-item>
             </a-col>
           </a-row>
+          <a-row>
+            <span style="position: relative; margin-bottom: 20px; margin-left: 5.1%">更多信息（在系统参数中配置）</span>
+          </a-row>
+          <a-row v-if="formData.dynamicFields && 0 < formData.dynamicFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicFields" :key="item.id" :span="12">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'SupplierForm-' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
+          </a-row>
         </a-form>
       </template>
     </JFormContainer>
@@ -84,6 +99,10 @@
   import {JInput} from "@/components/Form";
   import {getAllSalesmanList} from "@/views/salesman/Salesman.api";
   import JDictSelectTag from "../../../../components/Form/src/jeecg/components/JDictSelectTag.vue";
+
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
+
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({})},
@@ -92,6 +111,7 @@
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  const dynamicFields= userStore.getDynamicCols['jxc_supplier'];
   const formData = reactive<Record<string, any>>({
     id: '',
     orgName: '',   
@@ -106,7 +126,9 @@
     email: '',   
     salesmanId: '',   
     salesmanName: '',   
-    remark: '',   
+    remark: '',
+    dynamicFields: dynamicFields,
+
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
@@ -181,17 +203,17 @@
     if (model.id) {
       isUpdate.value = true;
     }
-    //循环数据
-    for (let data in model) {
-      //如果该数据是数组并且是字符串类型
-      if (model[data] instanceof Array) {
-        let valueType = getValueType(formRef.value.getProps, data);
-        //如果是字符串类型的需要变成以逗号分割的字符串
-        if (valueType === 'string') {
-          model[data] = model[data].join(',');
-        }
-      }
-    }
+    // //循环数据
+    // for (let data in model) {
+    //   //如果该数据是数组并且是字符串类型
+    //   if (model[data] instanceof Array) {
+    //     let valueType = getValueType(formRef.value.getProps, data);
+    //     //如果是字符串类型的需要变成以逗号分割的字符串
+    //     if (valueType === 'string') {
+    //       model[data] = model[data].join(',');
+    //     }
+    //   }
+    // }
     await saveOrUpdate(model, isUpdate.value)
       .then((res) => {
         if (res.success) {
