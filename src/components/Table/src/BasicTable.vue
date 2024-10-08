@@ -430,7 +430,6 @@ export default defineComponent({
         handleResizeColumn: (w, col) => {
           // update-begin--author:liaozhiyang---date:20240903---for：【issues/7101】列配置resizable: true时，表尾合计的列宽没有同步改变
           const columns = getColumns();
-          debugger
           const findItem = columns.find((item) => {
             if (item['dataIndex'] != null) {
               return item['dataIndex'] === col['dataIndex'];
