@@ -93,46 +93,7 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
       </template>
-
-      <!-- 动态字段回显插槽-->
-      <template #dynamic1="{ record }">
-        {{ record.dynamicField.dynamic1 }}
-      </template>
-      <template #dynamic2="{ record }">
-        {{ record.dynamicField.dynamic2 }}
-      </template>
-      <template #dynamic3="{ record }">
-        {{ record.dynamicField.dynamic3 }}
-      </template>
-      <template #dynamic4="{ record }">
-        {{ record.dynamicField.dynamic4 }}
-      </template>
-      <template #dynamic5="{ record }">
-        {{ record.dynamicField.dynamic5 }}
-      </template>
-      <template #dynamic6="{ record }">
-        {{ record.dynamicField.dynamic6 }}
-      </template>
-      <template #dynamic17="{ record }">
-        {{ record.dynamicField.dynamic7 }}
-      </template>
-      <template #dynamic8="{ record }">
-        {{ record.dynamicField.dynamic8 }}
-      </template>
-      <template #dynamic9="{ record }">
-        {{ record.dynamicField.dynamic9 }}
-      </template>
-      <template #dynamic10="{ record }">
-        {{ record.dynamicField.dynamic10 }}
-      </template>
-      <template #dynamic11="{ record }">
-        {{ record.dynamicField.dynamic11 }}
-      </template>
-      <template #dynamic12="{ record }">
-        {{ record.dynamicField.dynamic12 }}
-      </template>
-
-    </BasicTable>
+     </BasicTable>
     <!-- 表单区域 -->
     <CustomerModal @register="registerModal" @success="handleSuccess"></CustomerModal>
     <!-- 客户价列表区域 -->
@@ -141,21 +102,20 @@
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
-  import { ref, reactive, unref, computed, watch } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns } from './Customer.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Customer.api';
-  import CustPriceList from './custprice/GoodsCustPriceList.vue';
-  // import { downloadFile } from '/@/utils/common/renderUtils';
+import {computed, reactive, ref, unref, watch} from 'vue';
+import {BasicTable, TableAction} from '/@/components/Table';
+import {useListPage} from '/@/hooks/system/useListPage';
+import {columns} from './Customer.data';
+import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './Customer.api';
+import CustPriceList from './custprice/GoodsCustPriceList.vue';
+// import { downloadFile } from '/@/utils/common/renderUtils';
+import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
+import CustomerModal from './components/CustomerModal.vue';
+import {useUserStore} from '/@/store/modules/user';
+import {useModal} from '@/components/Modal';
+import {useMessage} from '@/hooks/web/useMessage';
 
-  import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
-  import CustomerModal from './components/CustomerModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import { useModal } from '@/components/Modal';
-  import { useMessage } from '@/hooks/web/useMessage';
-
-  const { createMessage } = useMessage();
+const { createMessage } = useMessage();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
   const formRef = ref();
   const queryParam = reactive<any>({});

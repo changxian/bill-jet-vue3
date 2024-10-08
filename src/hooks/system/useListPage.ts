@@ -1,13 +1,14 @@
-import { reactive, ref, Ref, unref } from 'vue';
-import { merge } from 'lodash-es';
-import { DynamicProps } from '/#/utils';
-import { BasicTableProps, TableActionType, useTable } from '/@/components/Table';
-import { ColEx } from '/@/components/Form/src/types';
-import { FormActionType } from '/@/components/Form';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { useMethods } from '/@/hooks/system/useMethods';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { filterObj } from '/@/utils/common/compUtils';
+import {reactive, ref, Ref, unref} from 'vue';
+import {merge} from 'lodash-es';
+import {DynamicProps} from '/#/utils';
+import {BasicTableProps, TableActionType, useTable} from '/@/components/Table';
+import {ColEx} from '/@/components/Form/src/types';
+import {FormActionType} from '/@/components/Form';
+import {useMessage} from '/@/hooks/web/useMessage';
+import {useMethods} from '/@/hooks/system/useMethods';
+import {useDesign} from '/@/hooks/web/useDesign';
+import {filterObj} from '/@/utils/common/compUtils';
+
 const { handleExportXls, handleImportXls } = useMethods();
 
 // 定义 useListPage 方法所需参数
@@ -318,8 +319,16 @@ export function useListTable(tableProps: TableProps): [
           value: fieldName,
           dataIndex: fieldName,
           slots: { customRender: fieldName },
+          customRender: ({ text ,record}) => {
+            if(!record){
+              return "";
+            }
+            if(!record.dynamicField){
+              return "";
+            }
+            return record?.dynamicField[fieldName];
+          },
         };
-
         tableProps.columns.push(col);
       }
     }

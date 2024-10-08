@@ -29,25 +29,6 @@
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
 
-      <!-- 动态字段回显插槽-->
-      <template #dynamic1="{ record }">
-        {{ record.dynamicField.dynamic1 }}
-      </template>
-      <template #dynamic2="{ record }">
-        {{ record.dynamicField.dynamic2 }}
-      </template>
-      <template #dynamic3="{ record }">
-        {{ record.dynamicField.dynamic3 }}
-      </template>
-      <template #dynamic4="{ record }">
-        {{ record.dynamicField.dynamic4 }}
-      </template>
-      <template #dynamic5="{ record }">
-        {{ record.dynamicField.dynamic5 }}
-      </template>
-      <template #dynamic6="{ record }">
-        {{ record.dynamicField.dynamic6 }}
-      </template>
     </BasicTable>
     <!-- 表单区域 -->
     <GoodsModal @register="registerModal" @success="handleSuccess" />
@@ -55,15 +36,16 @@
 </template>
 
 <script lang="ts" name="bill-goods" setup>
-  import { reactive, computed, watch } from 'vue';
-  import { BasicTable, TableAction, BasicColumn } from '/@/components/Table';
-  import { useModal } from '/@/components/Modal';
-  import { useListPage } from '/@/hooks/system/useListPage';
-  import GoodsModal from './GoodsModal.vue';
-  import { columns, searchFormSchema } from './goods.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './goods.api';
-  import { useUserStore } from '/@/store/modules/user';
-  const queryParam = reactive<any>({});
+import {computed, reactive, watch} from 'vue';
+import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
+import {useModal} from '/@/components/Modal';
+import {useListPage} from '/@/hooks/system/useListPage';
+import GoodsModal from './GoodsModal.vue';
+import {columns, searchFormSchema} from './goods.data';
+import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
+import {useUserStore} from '/@/store/modules/user';
+
+const queryParam = reactive<any>({});
   const userStore = useUserStore();
   //注册model
   const [registerModal, { openModal }] = useModal();
