@@ -41,7 +41,7 @@
         default: () => {},
       },
     },
-    emits: ['options-change', 'change', 'update:value'],
+    emits: ['options-change', 'change', 'update:value','getSelectResult'],
     setup(props, { emit, refs }) {
       const emitData = ref<any[]>();
       //注册model
@@ -114,6 +114,7 @@
         selectValues.value = values;
         //update-begin-author:liusq date:20230517 for:选择职务组件v-model方式绑定值不生效
         emit('update:value', values.join(','));
+        emit('getSelectResult', options, values,selectRows);
         //update-begin-author:liusq date:20230517 for:选择职务组件v-model方式绑定值不生效
 
       }
