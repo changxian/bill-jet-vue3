@@ -7,7 +7,7 @@
         <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
         <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
         <a-button type="primary" @click="openQuitModal(true, {})" preIcon="ant-design:user-delete-outlined">离职信息</a-button>
-        <div style="margin-left: 10px;margin-top: 5px"> 当前登录租户: <span class="tenant-name">{{loginTenantName}}</span> </div>
+        <div style="margin-left: 10px;margin-top: 5px"> 当前登录企业: <span class="tenant-name">{{loginTenantName}}</span> </div>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -68,7 +68,7 @@
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     designScope: 'user-list',
     tableProps: {
-      title: '租户用户列表',
+      title: '企业用户列表',
       api: getUserTenantPageList,
       columns: userTenantColumns,
       size: 'small',
@@ -172,11 +172,11 @@
         //update-begin---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
         onClick: handleQuit.bind(null,record.username, record.id),
         //update-end---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
-        //update-begin---author:wangshuai ---date:20230130  for：[QQYUN-3974]租户的创建人 不应该有离职按钮------------
+        //update-begin---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
         ifShow: () =>{
           return record.status === '1' && record.username!== record.createBy;
         }
-        //update-end---author:wangshuai ---date:20230130  for：[QQYUN-3974]租户的创建人 不应该有离职按钮------------
+        //update-end---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
       },
       {
         label: '交接',
@@ -216,7 +216,7 @@
   }
 
   /**
-   * 更新用户租户状态
+   * 更新用户企业状态
    * @param id
    * @param status
    */
@@ -232,8 +232,8 @@
       });
   }
 
-  //============================================ 租户离职交接  ============================================
-  //租户id
+  //============================================ 企业离职交接  ============================================
+  //企业id
   const tenantId = ref<string>('');
   //排除自己的编号集合
   const excludeUserIdList = ref<any>([]);
@@ -276,10 +276,10 @@
       })
     }
   }
-  //============================================  租户离职交接  ============================================
+  //============================================  企业离职交接  ============================================
 
 
-  //update-begin---author:wangshuai ---date:20230710  for：【QQYUN-5723】4、显示当前登录租户------------
+  //update-begin---author:wangshuai ---date:20230710  for：【QQYUN-5723】4、显示当前登录企业------------
   const loginTenantName = ref<string>('');
 
   getTenantName();
@@ -287,14 +287,14 @@
   async function getTenantName(){
     loginTenantName.value = await getLoginTenantName();
   }
-  //update-end---author:wangshuai ---date:20230710  for：【QQYUN-5723】4、显示当前登录租户------------
+  //update-end---author:wangshuai ---date:20230710  for：【QQYUN-5723】4、显示当前登录企业------------
 
   /**
    * 离职成功之后需要判断一下是否为当前用户，当前用户需要刷新浏览器
    * @param userName
    */
   function handleQuitSuccess(userName) {
-    //判断如果当前离职的是当前登录用户，需要刷新页面，便将租户id设置成null
+    //判断如果当前离职的是当前登录用户，需要刷新页面，便将企业id设置成null
     let username = userStore.getUserInfo.username;
     if (username && userName === username) {
       userStore.setTenant(null);
@@ -305,7 +305,7 @@
   }
   
   onMounted(()=>{
-    tenantSaasMessage('租户用户')
+    tenantSaasMessage('企业用户')
   })
 </script>
 

@@ -166,9 +166,9 @@
        * 确定选择
        */
       function handleOk() {
-        getSelectResult((options, values) => {
+        getSelectResult((options, values,selectRows) => {
           //回传选项和已选择的值
-          emit('getSelectResult', options, values);
+          emit('getSelectResult', options, values,selectRows);
           //关闭弹窗
           closeModal();
         });

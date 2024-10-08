@@ -182,12 +182,12 @@ export function isOAuth2AppEnv() {
 export function sysOAuth2Login(source) {
   let url = `${window._CONFIG['domianURL']}/sys/thirdLogin/oauth2/${source}/login`;
   url += `?state=${encodeURIComponent(window.location.origin)}`;
-  //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+  //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
   let tenantId = getAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
   if(tenantId){
     url += `&tenantId=${tenantId}`;
   }
-  //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+  //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过企业模式隔离------------
   window.location.href = url;
 }
 //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------

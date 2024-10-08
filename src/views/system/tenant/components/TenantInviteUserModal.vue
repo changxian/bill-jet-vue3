@@ -1,4 +1,4 @@
-<!--邀请用户加入租户弹窗-->
+<!--邀请用户加入企业弹窗-->
 <template>
   <BasicModal @register="registerModal" :width="500" :title="title" @ok="handleSubmit">
     <BasicForm @register="registerForm" />
@@ -43,7 +43,7 @@ export default defineComponent({
     });
 
     /**
-     * 提交，返回给租户list页面
+     * 提交，返回给企业list页面
      */
     async function handleSubmit() {
       let values = await validate();

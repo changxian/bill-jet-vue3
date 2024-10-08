@@ -12,6 +12,7 @@
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
+  const tenantName = ref('');
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     // labelWidth: 150,
@@ -24,6 +25,7 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
+    tenantName.value=data?.record?.name
     if (unref(isUpdate)) {
       // 编辑模式下禁用id字段
       updateSchema({ field: 'id', dynamicDisabled: true });
@@ -38,7 +40,7 @@
     }
   });
   //设置标题
-  const title = computed(() => (!unref(isUpdate) ? '新增租户' : '编辑租户'));
+  const title = computed(() => (!unref(isUpdate) ? `新增企业` : `编辑企业【${unref(tenantName)}】`));
   //表单提交事件
   async function handleSubmit(v) {
     try {

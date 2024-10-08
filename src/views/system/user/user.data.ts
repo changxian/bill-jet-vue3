@@ -234,7 +234,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '租户',
+    label: '企业',
     field: 'relTenantIds',
     component: 'ApiSelect',
     componentProps: {
@@ -497,7 +497,7 @@ export const formQuitAgentSchema: FormSchema[] = [
   },
 ];
 
-//租户用户列表
+//企业用户列表
 export const userTenantColumns: BasicColumn[] = [
   {
     title: '用户账号',
@@ -541,7 +541,7 @@ export const userTenantColumns: BasicColumn[] = [
   },
 ];
 
-//用户租户搜索表单
+//用户企业搜索表单
 export const userTenantFormSchema: FormSchema[] = [
   {
     label: '账号',

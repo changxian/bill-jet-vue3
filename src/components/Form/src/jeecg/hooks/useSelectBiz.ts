@@ -100,6 +100,7 @@ export function useSelectBiz(getList, props, emit?) {
         options.push({ label: item[props.labelKey], value: item[props.rowKey] });
       });
       selectOptions.value = options;
+	      selectRows['value'] = records;
     }
   }
   async function initSelectRows() {
@@ -108,7 +109,6 @@ export function useSelectBiz(getList, props, emit?) {
       pageSize: selectValues['value'].length,
     });
     checkedKeys['value'] = selectValues['value'];
-    selectRows['value'] = records;
   }
 
   /**
@@ -131,8 +131,10 @@ export function useSelectBiz(getList, props, emit?) {
   function getSelectResult(success) {
     let options = <any[]>[];
     let values = <any[]>[];
+    let srows = <any[]>[];
     selectRows.value.forEach((item) => {
       options.push({ label: item[props.labelKey], value: item[props.rowKey] });
+      srows.push(item);
     });
     checkedKeys.value.forEach((item) => {
       values.push(item);
@@ -142,7 +144,7 @@ export function useSelectBiz(getList, props, emit?) {
       $message.createMessage.warning(`最多只能选择${props.maxSelectCount}条数据`);
       return false;
     }
-    success && success(options, values);
+    success && success(options, values,srows);
   }
   //删除已选择的信息
   function handleDeleteSelected(record) {

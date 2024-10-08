@@ -2,16 +2,16 @@ import { BasicColumn, FormSchema } from '/@/components/Table';
 import { getAutoScrollContainer } from '/@/utils/common/compUtils';
 import { render } from "/@/utils/common/renderUtils";
 import { rules } from "/@/utils/helper/validator";
-
+import { getAllSysPackList } from './tenant.api';
 export const columns: BasicColumn[] = [
   {
-    title: '租户名称',
+    title: '企业名称',
     dataIndex: 'name',
     width: 200,
     align: 'left',
   },
   {
-    title: '租户编号(ID)',
+    title: '企业编号(ID)',
     dataIndex: 'id',
     width: 180,
   },{
@@ -55,7 +55,7 @@ export const columns: BasicColumn[] = [
     title: '创建者(拥有者)',
     width: 150
   },
-/*  {
+  {
     title: '开始时间',
     dataIndex: 'beginDate',
     sorter: true,
@@ -66,7 +66,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'endDate',
     sorter: true,
     width: 180,
-  },*/
+  }, 
   {
     title: '状态',
     dataIndex: 'status_dictText',
@@ -77,7 +77,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
     colProps: { span: 8 },
   },
@@ -109,13 +109,13 @@ export const searchFormSchema: FormSchema[] = [
 export const formSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
     required: true,
   },
   {
     field: 'id',
-    label: '租户编号(ID)',
+    label: '企业编号(ID)',
     component: 'InputNumber',
     required: true,
     ifShow: ({ values }) => {
@@ -153,7 +153,7 @@ export const formSchema: FormSchema[] = [
       rows: 4,
     }
   },
-/*  {
+ {
     field: 'beginDate',
     label: '开始时间',
     component: 'DatePicker',
@@ -172,7 +172,7 @@ export const formSchema: FormSchema[] = [
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       getPopupContainer: getAutoScrollContainer,
     },
-  },*/
+  }, 
   {
     field: 'houseNumber',
     label: '门牌号',
@@ -295,6 +295,17 @@ export const packFormSchema: FormSchema[] = [
 //套餐表单
 export const packMenuFormSchema: FormSchema[] = [
   {
+    field: 'sysPackId',
+    label: '选择系统套餐',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getAllSysPackList,
+      labelField: 'packName',
+      valueField: 'id',
+    },
+  },
+  /**
+ {
     field: 'packName',
     label: '套餐名称',
     component: 'Input',
@@ -312,6 +323,7 @@ export const packMenuFormSchema: FormSchema[] = [
       getPopupContainer: () => document.body,
     },
   },
+**/
   {
     field: 'remarks',
     label: '描述',
@@ -340,13 +352,13 @@ export const packMenuFormSchema: FormSchema[] = [
 //回收站列表
 export const recycleColumns : BasicColumn[] = [
   {
-    title: '租户名称',
+    title: '企业名称',
     dataIndex: 'name',
     width: 100,
     align: 'left',
   },
   {
-    title: '租户编号(ID)',
+    title: '企业编号(ID)',
     dataIndex: 'id',
     width: 100,
   },
@@ -368,11 +380,11 @@ export const recycleColumns : BasicColumn[] = [
   }
 ]
 
-//租户回收站搜索表单
+//企业回收站搜索表单
 export const searchRecycleFormSchema : FormSchema[] = [
   {
     field: 'name',
-    label: '租户名称',
+    label: '企业名称',
     component: 'Input',
   },
   {
@@ -406,7 +418,7 @@ export const tenantPackUserColumns: BasicColumn[] = [
 ]
 
 /**
- * 用户租户新增编辑表单
+ * 用户企业新增编辑表单
  */
 export const tenantUserSchema: FormSchema[] = [
   { field: 'id', label: 'id', component: 'Input', show: false },
@@ -453,14 +465,14 @@ export const tenantUserSchema: FormSchema[] = [
     label: '职位',
     component: 'JSelectPosition',
   },
-  {
-    field: 'workNo',
-    label: '工号',
-    component: 'Input',
-    dynamicRules: ({ model, schema }) => {
-      return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
-    },
-  },
-  { field: 'relTenantIds', label: '租户', component: 'Input',show:false },
+  // {
+  //   field: 'workNo',
+  //   label: '工号',
+  //   component: 'Input',
+  //   dynamicRules: ({ model, schema }) => {
+  //     return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
+  //   },
+  // },
+  { field: 'relTenantIds', label: '企业', component: 'Input',show:false },
   { field: 'selectedroles', label: '角色', component: 'Input',show:false },
 ];

@@ -33,7 +33,7 @@ export const columns: BasicColumn[] = [
   {
     title: '单位',
     align: 'center',
-    dataIndex: 'unit_dictText',
+    dataIndex: 'unit',
   },
   {
     title: '库存数量',

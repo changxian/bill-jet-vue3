@@ -59,7 +59,7 @@
   import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted, nextTick } from 'vue';
   import { propTypes } from '/@/utils/propTypes';
   import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { initDictOptions } from '/@/utils/dict';
+  import { initDictOptions, initUrlOptions } from "/@/utils/dict";
   import { get, omit } from 'lodash-es';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { CompTypeEnum } from '/@/enums/CompTypeEnum';
@@ -72,6 +72,9 @@
     props: {
       value: propTypes.oneOfType([propTypes.string, propTypes.number, propTypes.array]),
       dictCode: propTypes.string,
+      url: propTypes.string,
+      labelField: propTypes.string.def('name'),
+      valueField: propTypes.string.def('id'),
       type: propTypes.string,
       placeholder: propTypes.string,
       stringToNumber: propTypes.bool,
@@ -92,6 +95,7 @@
     },
     emits: ['options-change', 'change','update:value'],
     setup(props, { emit, refs }) {
+
       const dictOptions = ref<any[]>([]);
       const attrs = useAttrs();
       const [state, , , formItemContext] = useRuleFormItem(props, 'value', 'change');
@@ -117,7 +121,14 @@
           });
         }
         //update-begin-author:taoyan date: 如果没有提供dictCode 可以走options的配置--
-        if (!props.dictCode) {
+        if (props.url) {
+          loadingEcho.value = isFirstLoadEcho;
+          isFirstLoadEcho = false;
+          initUrlData().finally(() => {
+            loadingEcho.value = isFirstLoadEcho;
+          });
+        }
+        if (!props.url && !props.dictCode) {
           dictOptions.value = props.options;
         }
         //update-end-author:taoyan date: 如果没有提供dictCode 可以走options的配置--
@@ -136,6 +147,23 @@
       );
       //update-end-author:taoyan date:20220404 for: 使用useRuleFormItem定义的value，会有一个问题，如果不是操作设置的值而是代码设置的控件值而不能触发change事件
 
+      async function initUrlData() {
+        let { url,labelField,valueField} = props;
+        //根据字典Code, 初始化字典数组
+        const urlData = await initUrlOptions(url,{});
+        dictOptions.value = urlData.reduce((prev, next) => {
+          if (next) {
+            const value = next[valueField];
+            prev.push({
+              label: next[labelField],
+              value: value,
+              color: next['color'],
+              ...omit(next, ['text', 'value', 'color']),
+            });
+          }
+          return prev;
+        }, []);
+      }
       async function initDictData() {
         let { dictCode, stringToNumber } = props;
         //根据字典Code, 初始化字典数组

@@ -16,7 +16,7 @@
           <Icon icon="mdi:chevron-down"></Icon>
         </a-button>
       </a-dropdown>
-      <div style="margin-left: 10px;margin-top: 5px">当前登录租户: <span class="tenant-name">{{loginTenantName}}</span> </div>
+      <div style="margin-left: 10px;margin-top: 5px">当前登录企业: <span class="tenant-name">{{loginTenantName}}</span> </div>
     </template>
     <template #action="{ record }">
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
@@ -53,7 +53,7 @@
   const { prefixCls, tableContext, onImportXls, onExportXls } = useListPage({
     designScope: 'role-template',
     tableProps: {
-      title: '租户角色列表',
+      title: '企业角色列表',
       api: listByTenant,
       columns: columns,
       formConfig: {
@@ -171,7 +171,7 @@
   }
 
   onMounted(()=>{
-    tenantSaasMessage('租户角色')
+    tenantSaasMessage('企业角色')
   })
 </script>
 

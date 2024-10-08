@@ -479,22 +479,22 @@ export function replaceUserInfoByExpression(expression: string | any[]) {
 }
 
 /**
- * 设置租户缓存，当租户退出的时候
+ * 设置企业缓存，当企业退出的时候
  * 
  * @param tenantId
  */
 export async function userExitChangeLoginTenantId(tenantId){
   const userStore = useUserStoreWithOut();
-  //step 1 获取用户租户
+  //step 1 获取用户企业
   const url = '/sys/tenant/getCurrentUserTenant'
   let currentTenantId = null;
   const data = await defHttp.get({ url });
   if(data && data.list){
     let arr = data.list;
     if(arr.length>0){
-      //step 2.判断当前id是否存在用户租户中
+      //step 2.判断当前id是否存在用户企业中
       let filterTenantId = arr.filter((item) => item.id == tenantId);
-      //存在说明不是退出的不是当前租户，还用用来的租户即可
+      //存在说明不是退出的不是当前企业，还用用来的企业即可
       if(filterTenantId && filterTenantId.length>0){
         currentTenantId = tenantId;
       }else{
@@ -506,16 +506,16 @@ export async function userExitChangeLoginTenantId(tenantId){
   let loginTenantId = getTenantId();
   userStore.setTenant(currentTenantId);
 
-  //update-begin---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退租户，判断退出的租户ID与当前租户ID一致，再刷新---
-  //租户为空，说明没有租户了，需要刷新页面。或者当前租户和退出的租户一致则需要刷新浏览器
+  //update-begin---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退企业，判断退出的企业ID与当前企业ID一致，再刷新---
+  //企业为空，说明没有企业了，需要刷新页面。或者当前企业和退出的企业一致则需要刷新浏览器
   if(!currentTenantId || tenantId == loginTenantId){
     window.location.reload();
   }
-  //update-end---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退租户，判断退出的租户ID与当前租户ID一致，再刷新---
+  //update-end---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退企业，判断退出的企业ID与当前企业ID一致，再刷新---
 }
 
 /**
- * 我的租户模块需要开启多租户提示
+ * 我的企业模块需要开启多企业提示
  * 
  * @param title 标题
  */
@@ -524,7 +524,7 @@ export function tenantSaasMessage(title){
   if(!tenantId){
     Modal.confirm({
       title:title,
-      content: '此菜单需要在多租户模式下使用，否则数据会出现混乱',
+      content: '此菜单需要在多企业模式下使用，否则数据会出现混乱',
       okText: '确认',
       okType: 'danger',
       // @ts-ignore

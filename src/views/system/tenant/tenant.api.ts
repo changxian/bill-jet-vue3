@@ -24,10 +24,10 @@ enum Api {
   queryTenantPackUserList = '/sys/tenant/queryTenantPackUserList',
   deleteTenantPackUser = '/sys/tenant/deleteTenantPackUser',
   addTenantPackUser = '/sys/tenant/addTenantPackUser',
-  //获取用户租户列表
+  //获取用户企业列表
   getTenantPageListByUserId = '/sys/tenant/getTenantPageListByUserId',
   
-  //新增、编辑用户租户
+  //新增、编辑用户企业
   saveUser = '/sys/user/add',
   editUser = '/sys/user/editTenantUser',
 
@@ -36,10 +36,11 @@ enum Api {
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryTenantPackPermission',
   saveRolePermission = '/sys/permission/saveTenantPackPermission', 
+  getAllSysPackList = '/syspack/sysPack/getAllSysPackList', 
 }
 
 /**
- * 查询租户列表
+ * 查询企业列表
  * @param params
  */
 export const getTenantList = (params) => {
@@ -47,7 +48,7 @@ export const getTenantList = (params) => {
 };
 
 /**
- * 保存或者更新租户
+ * 保存或者更新企业
  * @param params
  */
 export const saveOrUpdateTenant = (params, isUpdate) => {
@@ -56,15 +57,19 @@ export const saveOrUpdateTenant = (params, isUpdate) => {
 };
 
 /**
- * 查询租户详情
+ * 查询企业详情
  * @param params
  */
 export const getTenantById = (params) => {
   return defHttp.get({ url: Api.get, params });
 };
 
+
+export const getAllSysPackList = (params) => defHttp.get({ url: Api.getAllSysPackList, params });
+
+
 /**
- * 删除租户
+ * 删除企业
  * @param params
  */
 export const deleteTenant = (params, handleSuccess) => {
@@ -74,7 +79,7 @@ export const deleteTenant = (params, handleSuccess) => {
 };
 
 /**
- * 批量删除租户
+ * 批量删除企业
  * @param params
  */
 export const batchDeleteTenant = (params, handleSuccess) => {
@@ -97,13 +102,13 @@ export const batchDeleteTenant = (params, handleSuccess) => {
 export const getUserTenants = (params?) => defHttp.get({ url: Api.getCurrentUserTenants, params });
 
 /**
- * 邀请用户加入租户
+ * 邀请用户加入企业
  * @param params
  */
 export const invitationUserJoin = (params) => defHttp.put({ url: Api.invitationUserJoin, params }, { joinParamsToUrl: true });
 
 /**
- * 通过租户id获取数据
+ * 通过企业id获取数据
  * @param params
  */
 export const getTenantUserList = (params) => {
@@ -111,7 +116,7 @@ export const getTenantUserList = (params) => {
 };
 
 /**
- * 用户离开租户
+ * 用户离开企业
  * @param params
  */
 export const leaveTenant = (params, handleSuccess) => {
@@ -163,7 +168,7 @@ export const deleteTenantPack = (params, handleSuccess) => {
 };
 
 /**
- * 获取租户回收站的列表
+ * 获取企业回收站的列表
  * @param params
  */
 export const recycleBinPageList = (params) => {
@@ -171,7 +176,7 @@ export const recycleBinPageList = (params) => {
 };
 
 /**
- * 租户彻底删除
+ * 企业彻底删除
  * @param params
  */
 export const deleteLogicDeleted = (params,handleSuccess) => {
@@ -183,7 +188,7 @@ export const deleteLogicDeleted = (params,handleSuccess) => {
 };
 
 /**
- * 租户还原
+ * 企业还原
  * @param params
  */
 export const revertTenantLogic = (params,handleSuccess) => {
@@ -193,7 +198,7 @@ export const revertTenantLogic = (params,handleSuccess) => {
 };
 
 /**
- * 获取租户套餐下面的用户
+ * 获取企业套餐下面的用户
  * @param params
  */
 export const queryTenantPackUserList = (params) => {
@@ -217,7 +222,7 @@ export const addTenantPackUser = (params)=>{
 }
 
 /**
- * 查询用户租户列表
+ * 查询用户企业列表
  * @param params
  */
 export const getTenantPageListByUserId = (params) => {
@@ -226,7 +231,7 @@ export const getTenantPageListByUserId = (params) => {
 
 
 /**
- * 获取当前登录租户名称
+ * 获取当前登录企业名称
  */
 export async function getLoginTenantName() {
   let tenantId = getTenantId();

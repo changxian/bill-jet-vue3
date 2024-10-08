@@ -50,7 +50,7 @@
   import { columns, superQuerySchema } from './TenantCompany.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './TenantCompany.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import TenantCompanyModal from './components/TenantCompanyModal.vue'
+  import TenantCompanyModal from './components/TenantCompanyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from "lodash-es";
 
@@ -67,6 +67,7 @@
       columns,
       canResize:false,
       useSearchForm: false,
+      showIndexColumn: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -77,7 +78,7 @@
       },
     },
     exportConfig: {
-      name: "公司管理",
+      name: '公司管理',
       url: getExportUrl,
       params: queryParam,
     },

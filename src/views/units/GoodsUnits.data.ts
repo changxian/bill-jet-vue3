@@ -6,15 +6,6 @@ import {BasicColumn} from '/@/components/Table';
 //列表数据
 export const columns: BasicColumn[] = [
   {
-    title: '序号',
-    align: 'center',
-    dataIndex: 'serialNumber',
-    width: 120,
-    customRender: ({ index}) => {
-      return index + 1;
-    },
-  },
-  {
     title: '商品单位',
     align: 'center',
     dataIndex: 'name',

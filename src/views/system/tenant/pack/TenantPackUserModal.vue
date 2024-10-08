@@ -38,7 +38,7 @@
     name: 'TenantPackUserModal',
     components: { BasicModal, BasicTable, TableAction, TenantUserSelectModal },
     setup() {
-      //获取租户id
+      //获取企业id
       const getTenantId = computed(()=>{
         return tenantPackData.tenantId;
       })
@@ -137,7 +137,6 @@
             names.push(u.realname);
             ids.push(u.id);
           }
-          console.log(tenantPackData);
           let params = {
             packId: tenantPackData.id,
             packName: tenantPackData.packName,

@@ -143,7 +143,7 @@
           }
         }
         let text: string = '';
-        //查询未被绑定的租户
+        //查询未被绑定的企业
         if (userList && userList.length > 0) {
           for (const item of userList) {
             params.push({ wechatUserId: item.wechatUserId, wechatDepartId: item.wechatDepartId, wechatRealName: item.wechatRealName });

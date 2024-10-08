@@ -1,25 +1,25 @@
 <template>
   <BasicModal v-bind="config" @register="registerModal" :title="currTitle" wrapClassName="loginSelectModal" v-model:visible="visible">
     <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" :colon="false" class="loginSelectForm">
-      <!--多租户选择-->
+      <!--多企业选择-->
       <a-form-item v-if="isMultiTenant" name="tenantId" :validate-status="validate_status">
         <!--label内容-->
         <template #label>
           <a-tooltip placement="topLeft">
             <template #title>
-              <span>您隶属于多租户，请选择登录租户</span>
+              <span>您隶属于多企业，请选择登录企业</span>
             </template>
-            <a-avatar style="background-color: #87d068" :size="30"> 租户 </a-avatar>
+            <a-avatar style="background-color: #87d068" :size="30"> 企业 </a-avatar>
           </a-tooltip>
         </template>
         <template #extra v-if="validate_status == 'error'">
-          <span style="color: #ed6f6f">请选择登录租户</span>
+          <span style="color: #ed6f6f">请选择登录企业</span>
         </template>
-        <!--租户下拉内容-->
+        <!--企业下拉内容-->
         <a-select
           v-model:value="formState.tenantId"
           @change="handleTenantChange"
-          placeholder="请选择登录租户"
+          placeholder="请选择登录企业"
           :class="{ 'valid-error': validate_status == 'error' }"
         >
           <template v-for="tenant in tenantList" :key="tenant.id">
@@ -82,7 +82,7 @@
     setup(props, { emit }) {
       const userStore = useUserStore();
       const { notification } = useMessage();
-      //租户配置
+      //企业配置
       const isMultiTenant = ref(false);
       const tenantList = ref([]);
       const validate_status = ref('');
@@ -96,7 +96,7 @@
       const username = ref('');
       //表单
       const formRef = ref();
-      //选择的租户部门信息
+      //选择的企业部门信息
       const formState: UnwrapRef<FormState> = reactive({
         orgCode: undefined,
         tenantId: null,
@@ -116,16 +116,16 @@
       //当前标题
       const currTitle = computed(() => {
         if (unref(isMultiDepart) && unref(isMultiTenant)) {
-          return '请选择租户和部门';
+          return '请选择企业和部门';
         } else if (unref(isMultiDepart) && !unref(isMultiTenant)) {
           return '请选择部门';
         } else if (!unref(isMultiDepart) && unref(isMultiTenant)) {
-          return '请选择租户';
+          return '请选择企业';
         }
       });
 
       const rules = ref({
-        tenantId: [{ required: unref(isMultiTenant), type: 'number', message: '请选择租户', trigger: 'change' }],
+        tenantId: [{ required: unref(isMultiTenant), type: 'number', message: '请选择企业', trigger: 'change' }],
         orgCode: [{ required: unref(isMultiDepart), message: '请选择部门', trigger: 'change' }],
       });
 
@@ -137,7 +137,7 @@
        * 处理部门情况
        */
       function bizDepart(loginResult) {
-        //如果登录接口返回了用户上次登录租户ID，则不需要重新选择
+        //如果登录接口返回了用户上次登录企业ID，则不需要重新选择
         if(loginResult.userInfo?.orgCode && loginResult.userInfo?.orgCode!==''){
           isMultiDepart.value = false;
           return;
@@ -161,10 +161,10 @@
       }
 
       /**
-       * 处理租户情况
+       * 处理企业情况
        */
       function bizTenantList(loginResult) {
-        //如果登录接口返回了用户上次登录租户ID，则不需要重新选择
+        //如果登录接口返回了用户上次登录企业ID，则不需要重新选择
         if(loginResult.userInfo?.loginTenantId && loginResult.userInfo?.loginTenantId!==0){
           isMultiTenant.value = false;
           return;
@@ -187,7 +187,7 @@
       }
 
       /**
-       * 确认选中的租户和部门信息
+       * 确认选中的企业和部门信息
        */
       function handleSubmit() {
         if (unref(isMultiTenant) && !formState.tenantId) {

@@ -56,6 +56,11 @@
       beforeFetch: (params) => {
         return Object.assign(params, { packType: '' });
       },
+      //自定义默认排序
+      defSort: {
+        column: 'tenantId,packCode',
+        order: 'desc',
+      },
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
@@ -76,7 +81,7 @@
       {
         label: '删除',
         popConfirm: {
-          title: '是否确认删除租户套餐',
+          title: '是否确认删除企业套餐',
           confirm: handleDelete.bind(null, record.id),
         },
       },
@@ -143,8 +148,8 @@
    */
   async function handlePackBatch() {
     Modal.confirm({
-      title: '删除租户套餐',
-      content: '是否删除租户套餐',
+      title: '删除企业套餐',
+      content: '是否删除企业套餐',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {

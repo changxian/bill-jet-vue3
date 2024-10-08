@@ -22,7 +22,7 @@
           type="primary"
           @click="handleInvitation"
           style="margin-right: 5px"
-          :disabled="selectedRowKeys.length === 0"
+          :disabled="selectedRowKeys.length != 1"
           >邀请用户加入</a-button
         >
         <a-button
@@ -30,7 +30,7 @@
           type="primary"
           @click="handlePack"
           style="margin-right: 5px"
-          :disabled="selectedRowKeys.length === 0"
+          :disabled="selectedRowKeys.length != 1"
           >套餐</a-button
         >
         <a-button type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
@@ -44,7 +44,7 @@
     <TenantUserModal @register="registerTenUserModal" />
     <!--  套餐  -->
     <TenantPackList @register="registerPackModal" />
-    <!--  租户回收站  -->
+    <!--  企业回收站  -->
     <TenantRecycleBinModal @register="registerRecycleBinModal" @success="reload" />
   </div>
 </template>
@@ -73,7 +73,7 @@
   const { prefixCls, tableContext } = useListPage({
     designScope: 'tenant-template',
     tableProps: {
-      title: '租户列表',
+      title: '企业列表',
       api: getTenantList,
       columns: columns,
       formConfig: {
@@ -108,7 +108,7 @@
       },
       {
         label: '用户',
-        onClick: handleSeeUser.bind(null, record.id),
+        onClick: handleSeeUser.bind(null, record),
       },
     ];
   }
@@ -147,7 +147,7 @@
   }
 
   /**
-   * 邀请用户加入租户
+   * 邀请用户加入企业
    */
   function handleInvitation() {
     userOpenModal(true, {});
@@ -159,20 +159,21 @@
    * @param value
    */
   async function handleInviteUserOk(value) {
-    //update-begin---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入租户，没办法选不是租户下的用户------------
+    //update-begin---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入企业，没办法选不是企业下的用户------------
     if (value) {
       await invitationUserJoin({ ids: selectedRowKeys.value.join(','), phone: value });
     }
-    //update-end---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入租户，没办法选不是租户下的用户------------
+    //update-end---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入企业，没办法选不是企业下的用户------------
   }
 
   /**
    * 查看用户
    * @param id
    */
-  function handleSeeUser(id) {
+  function handleSeeUser(record) {
     tenUserOpenModal(true, {
-      id: id,
+      id: record.id,
+      tenantName: unref(record.name),
     });
   }
 
@@ -186,7 +187,8 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
-      //我的租户显示新增和编辑套餐
+      tenantName: unref(selectedRows.value[0].name),
+      //我的企业显示新增和编辑套餐
       showPackAddAndEdit: true
     });
   }
