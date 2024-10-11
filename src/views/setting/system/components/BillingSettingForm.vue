@@ -90,7 +90,7 @@
                   :key="item.fieldName"
                   class="option-item" >
             <a-col :span="24">
-              <p style="margin-bottom: 20px">{{item.fieldDesc}}:<input class="input-only-bpottom" v-model="item.fieldTitle" ></input></p>
+              <p style="margin-bottom: 20px">{{item.fieldDesc}}:<input class="underLine-text" v-model="item.fieldTitle" ></input></p>
              </a-col>
           </a-row>
 
@@ -347,12 +347,6 @@
     border: none; /* 移除默认边框 */
     border-bottom: 1px solid #bdacac; /* 设置下划线 */
     outline: none; /* 移除点击输入框时的默认轮廓 */
-  }
-  .input-only-bpottom{
-    width: 30%;
-    border-bottom: 1px solid black;
-    border-left-width: 0;
-    border-top-width: 0;
-    border-right-width: 0;
+    margin-left: 10px;
   }
 </style>
