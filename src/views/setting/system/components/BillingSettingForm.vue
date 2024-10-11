@@ -86,12 +86,12 @@
               <p style="margin-bottom: 20px; color: red">提示：选中显示小计列后，小计列=属性*数量，比如：重量小计= 重量*数量。</p>
             </a-col>
           </a-row>
-          <a-row  v-for="(option, index) in getMoreCols"
-                  :key="fieldName"
+          <a-row  v-for="(item, index) in getMoreCols"
+                  :key="item.fieldName"
                   class="option-item" >
             <a-col :span="24">
-              <p style="margin-bottom: 20px">{{option.fieldDesc}}:<a-input class="input-only-bpottom" v-model="option.fieldTitle" ></a-input></p>
-            </a-col>
+              <p style="margin-bottom: 20px">{{item.fieldDesc}}:<input class="input-only-bpottom" v-model="item.fieldTitle" ></input></p>
+             </a-col>
           </a-row>
 
 
@@ -334,6 +334,7 @@
   defineExpose({
     add,
     edit,
+    getMoreCols,
     submitForm,
   });
 </script>
