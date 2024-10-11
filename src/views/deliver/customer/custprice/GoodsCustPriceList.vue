@@ -1,6 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="1000px" :showCancelBtn="false" :showOkBtn="false">
-    <BasicTable @register="registerTable" :rowSelection="rowSelection" @edit-end="handleEditEnd" @edit-cancel="handleEditCancel" :beforeEditSubmit="beforeEditSubmit" :change="handleChange">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @edit-end="handleEditEnd" @edit-cancel="handleEditCancel" :beforeEditSubmit="beforeEditSubmit" >
       <template #tableTitle>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增 </a-button>
       </template>
@@ -21,9 +21,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/@/components/Table';
   import GoodsList from '../goods/GoodsList.vue';
-  import { useMessage } from '@/hooks/web/useMessage';
 
-  const { createMessage } = useMessage();
   //注册modal
   const [registerGoodsModal, { openModal: goodsOpenModal }] = useModal();
 
@@ -87,16 +85,6 @@
     (selectedRowKeys.value = []) && reload();
   }
 
-  function handleChange(value, key, column) {
-    console.log(value, key, column, '=========================');
-    // const newData = [...this.data];
-    // const target = newData.find(item => key === item.key);
-    // if (target) {
-    //   target[column] = value;
-    //   this.data = newData;
-    // }
-  }
-
   /**
    * 成功
    */
@@ -111,21 +99,10 @@
 
   // 模拟将指定数据保存
   async function feakSave({ value, key, id }) {
-    // createMessage.loading({
-    //   content: `正在保存${key}`,
-    //   key: '_save_fake_data',
-    //   duration: 0,
-    // });
     await updatePrice({ id: id, price: value }, reload());
-    // createMessage.success({
-    //   content: `记录${id}的${key}已保存`,
-    //   key: '_save_fake_data',
-    //   duration: 2,
-    // });
   }
 
   async function beforeEditSubmit({ record, index, key, value }) {
-    console.log('单元格数据正在准备提交------------', record, record.id, index, key, value );
     return await feakSave({ id: record.id, key, value });
   }
 

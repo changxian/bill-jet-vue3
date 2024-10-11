@@ -59,7 +59,7 @@
 								<j-dict-select-tag v-model:value="formData.salesmanName" :url="getAllSalesmanList" value-field="name" placeholder="请选择业务员"  allow-clear />
 							</a-form-item>
 						</a-col>
-						<a-col :span="24">
+						<a-col :span="12">
 							<a-form-item label="备注" v-bind="validateInfos.remark" id="CustomerForm-remark" name="remark">
 								<a-textarea v-model:value="formData.remark" :rows="2" placeholder="请输入备注" />
 							</a-form-item>
@@ -73,7 +73,7 @@
               <a-form-item
                 v-if="item.fieldTitle"
                 :label="item.fieldTitle"
-                :id="'GoodsForm-' + item.fieldName"
+                :id="'CustomerForm-' + item.fieldName"
                 :name="'dynamicFields.' + item.fieldName"
               >
                 <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />

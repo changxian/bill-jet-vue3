@@ -140,7 +140,6 @@ const { createMessage } = useMessage();
       title: '客户管理',
       api: list,
       columns,
-      cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_customer'], // 添加扩展列信息
       canResize: false,
       useSearchForm: false,

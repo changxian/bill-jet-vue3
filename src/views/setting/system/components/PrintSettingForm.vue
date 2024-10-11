@@ -1,0 +1,244 @@
+<template>
+  <a-spin :spinning="confirmLoading">
+    <JFormContainer :disabled="disabled">
+      <template #detail>
+        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="PrintSettingForm">
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="单据打印机" v-bind="validateInfos.printer" id="PrintSettingForm-printer" name="printer">
+								<j-dict-select-tag v-model:value="formData.printer" dictCode="" placeholder="请选择单据打印机"/>
+							</a-form-item>
+						</a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="打印份数" v-bind="validateInfos.num" id="PrintSettingForm-num" name="num">
+								<j-dict-select-tag v-model:value="formData.num" dictCode="" placeholder="请选择打印份数" />
+							</a-form-item>
+						</a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="送货单模板" v-bind="validateInfos.deliveryBillTemp" id="PrintSettingForm-deliveryBillTemp" name="deliveryBillTemp">
+								<a-input v-model:value="formData.deliveryBillTemp" placeholder="请选择送货单模板" :bordered="false" disabled ></a-input>
+							</a-form-item>
+						</a-col>
+						<a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+						</a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="送货退货单模板" v-bind="validateInfos.deliveryReturnTemp" id="PrintSettingForm-deliveryReturnTemp" name="deliveryReturnTemp">
+								<a-input v-model:value="formData.deliveryReturnTemp" placeholder="请选择送货退货单模板" :bordered="false" disabled  ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="对账单模板" v-bind="validateInfos.accountTemp" id="PrintSettingForm-accountTemp" name="accountTemp">
+								<a-input v-model:value="formData.accountTemp" placeholder="请选择对账单模板" :bordered="false" disabled  ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="还款收据模板" v-bind="validateInfos.repayReceiptTemp" id="PrintSettingForm-repayReceiptTemp" name="repayReceiptTemp">
+								<a-input v-model:value="formData.repayReceiptTemp" placeholder="请选择还款收据模板" :bordered="false" disabled  ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="进货单模板" v-bind="validateInfos.stockBillTemp" id="PrintSettingForm-stockBillTemp" name="stockBillTemp">
+								<a-input v-model:value="formData.stockBillTemp" placeholder="请输入进货单模板" :bordered="false" disabled  ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="进货退货单模板" v-bind="validateInfos.stockReturnTemp" id="PrintSettingForm-stockReturnTemp" name="stockReturnTemp">
+								<a-input v-model:value="formData.stockReturnTemp" placeholder="请选择进货退货单模板" :bordered="false" disabled  ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+						<a-col :span="12">
+							<a-form-item label="进货对账单模板" v-bind="validateInfos.stockAccountTemp" id="PrintSettingForm-stockAccountTemp" name="stockAccountTemp">
+								<a-input v-model:value="formData.stockAccountTemp" placeholder="请选择进货对账单模板" :bordered="false" disabled ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="12">
+              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="24">
+              <p style="margin-bottom: 30px">&nbsp;</p>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="24">
+              <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+                <a-button type="primary" html-type="submit">保存</a-button>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </template>
+    </JFormContainer>
+  </a-spin>
+</template>
+
+<script lang="ts" setup>
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, h } from 'vue';
+  import { defHttp } from '/@/utils/http/axios';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
+  import { getValueType } from '/@/utils';
+  import { saveOrUpdatePrint } from '../index.api';
+  import { Form } from 'ant-design-vue';
+  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import { SearchOutlined } from "@ant-design/icons-vue";
+  const props = defineProps({
+    formDisabled: { type: Boolean, default: false },
+    formData: { type: Object, default: () => ({})},
+    formBpm: { type: Boolean, default: true }
+  });
+  const formRef = ref();
+  const useForm = Form.useForm;
+  const emit = defineEmits(['register', 'ok']);
+  const formData = reactive<Record<string, any>>({
+    id: '',
+    printer: '',   
+    num: undefined,
+    deliveryBillTemp: '',   
+    deliveryReturnTemp: '',   
+    accountTemp: '',   
+    repayReceiptTemp: '',   
+    stockBillTemp: '',   
+    stockReturnTemp: '',   
+    stockAccountTemp: '',   
+  });
+  const { createMessage } = useMessage();
+  const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
+  const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
+  const confirmLoading = ref<boolean>(false);
+  //表单验证
+  const validatorRules = reactive({
+  });
+  const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
+
+  // 表单禁用
+  const disabled = computed(()=>{
+    if(props.formBpm === true){
+      if(props.formData.disabled === false){
+        return false;
+      }else{
+        return true;
+      }
+    }
+    return props.formDisabled;
+  });
+
+  
+  /**
+   * 新增
+   */
+  function add() {
+    edit({});
+  }
+
+  /**
+   * 编辑
+   */
+  function edit(record) {
+    nextTick(() => {
+      resetFields();
+      const tmpData = {};
+      Object.keys(formData).forEach((key) => {
+        if(record.hasOwnProperty(key)){
+          tmpData[key] = record[key]
+        }
+      })
+      //赋值
+      Object.assign(formData, tmpData);
+    });
+  }
+
+  /**
+   * 提交数据
+   */
+  async function submitForm() {
+    try {
+      // 触发表单验证
+      await validate();
+    } catch ({ errorFields }) {
+      if (errorFields) {
+        const firstField = errorFields[0];
+        if (firstField) {
+          formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
+        }
+      }
+      return Promise.reject(errorFields);
+    }
+    confirmLoading.value = true;
+    const isUpdate = ref<boolean>(false);
+    //时间格式化
+    let model = formData;
+    if (model.id) {
+      isUpdate.value = true;
+    }
+    //循环数据
+    for (let data in model) {
+      //如果该数据是数组并且是字符串类型
+      if (model[data] instanceof Array) {
+        let valueType = getValueType(formRef.value.getProps, data);
+        //如果是字符串类型的需要变成以逗号分割的字符串
+        if (valueType === 'string') {
+          model[data] = model[data].join(',');
+        }
+      }
+    }
+    await saveOrUpdatePrint(model, isUpdate.value)
+      .then((res) => {
+        if (res.success) {
+          createMessage.success(res.message);
+          emit('ok');
+        } else {
+          createMessage.warning(res.message);
+        }
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+      });
+  }
+
+
+  defineExpose({
+    add,
+    edit,
+    submitForm,
+  });
+</script>
+
+<style lang="less" scoped>
+  .antd-modal-form {
+    padding: 14px;
+  }
+</style>

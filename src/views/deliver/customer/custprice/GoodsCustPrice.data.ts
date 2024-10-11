@@ -29,7 +29,7 @@ export const custPriceFormSchema: FormSchema[] = [
     field: 'goodsName',
     label: '商品名称',
     component: 'JInput',
-    colProps: { xxl: 80 },
+    colProps: { xxl: 50 },
   },
 ];
 
