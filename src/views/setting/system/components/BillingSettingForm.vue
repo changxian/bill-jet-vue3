@@ -86,11 +86,11 @@
               <p style="margin-bottom: 20px; color: red">提示：选中显示小计列后，小计列=属性*数量，比如：重量小计= 重量*数量。</p>
             </a-col>
           </a-row>
-          <a-row  v-for="(item, index) in getMoreCols"
-                  :key="item.fieldName"
-                  class="option-item" >
-            <a-col :span="24">
-              <p style="margin-bottom: 20px">{{item.fieldDesc}}:<input class="underLine-text" v-model="item.fieldTitle" ></input></p>
+          <a-row  >
+            <a-col  v-for="(item, index) in getMoreCols"
+                    :key="item.fieldName"
+                    class="option-item"  :span="8">
+              <p style="margin-bottom: 10px"><label class="underLine-label">{{item.fieldDesc}}:</label><input class="underLine-text" v-model="item.fieldTitle" ></input></p>
              </a-col>
           </a-row>
 
@@ -204,9 +204,9 @@
   const formRef = ref()
   const getMoreCols = ref([
     {"tableName":"jxc_goods","fieldName":"name","fieldDesc":"名称","fieldTitle":""},
-    {"tableName":"jxc_goods","fieldName":"type","fieldDesc":"规格","fieldTitle":""},
-    {"tableName":"jxc_goods","fieldName":"price","fieldDesc":"单价","fieldTitle":""},
-     {"tableName":"jxc_goods","fieldName":"remark","fieldDesc":"备注","fieldTitle":""}]);
+    {"tableName":"jxc_goods","fieldName":"type","fieldDesc":"规是格","fieldTitle":""},
+    {"tableName":"jxc_goods","fieldName":"price","fieldDesc":"单撒旦价","fieldTitle":""},
+     {"tableName":"jxc_goods","fieldName":"remark","fieldDesc":"备是多少注","fieldTitle":""}]);
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
@@ -343,10 +343,16 @@
   .antd-modal-form {
     padding: 14px;
   }
+  .underLine-label{
+    width: 15%;
+    text-align: right;
+    display: inline-block;
+  }
   .underLine-text {
     border: none; /* 移除默认边框 */
     border-bottom: 1px solid #bdacac; /* 设置下划线 */
     outline: none; /* 移除点击输入框时的默认轮廓 */
     margin-left: 10px;
+    width: 60%;
   }
 </style>
