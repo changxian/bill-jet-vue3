@@ -86,11 +86,15 @@
               <p style="margin-bottom: 20px; color: red">提示：选中显示小计列后，小计列=属性*数量，比如：重量小计= 重量*数量。</p>
             </a-col>
           </a-row>
-          <a-row>
+          <a-row  v-for="(option, index) in getMoreCols"
+                  :key="fieldName"
+                  class="option-item" >
             <a-col :span="24">
-              <p style="margin-bottom: 20px">列名备注：（显示在表格列名称右边小括号里面的内容）</p>
+              <p style="margin-bottom: 20px">{{option.fieldDesc}}:<a-input class="input-only-bpottom" v-model="option.fieldTitle" ></a-input></p>
             </a-col>
           </a-row>
+
+
           <a-row>
             <a-col :span="24">
               <p style="margin-bottom: 20px">***************** 加载配置的动态列 *****************</p>
@@ -111,6 +115,7 @@
 							</a-form-item>
 						</a-col>
           </a-row>
+
           <a-row>
             <a-col :span="24">
               <p style="margin-bottom: 20px; color: red">提示：金额计算方式选择后，请保持不变，否则将导致成本及金额计算结果不一致。</p>
@@ -170,7 +175,7 @@
           <a-row>
             <a-col :span="24">
               <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                <a-button type="primary" html-type="submit" >保存</a-button>
+                <a-button type="primary" html-type="submit"  @click="submitForm">保存</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -196,7 +201,12 @@
     formData: { type: Object, default: () => ({})},
     formBpm: { type: Boolean, default: true }
   });
-  const formRef = ref();
+  const formRef = ref()
+  const getMoreCols = ref([
+    {"tableName":"jxc_goods","fieldName":"name","fieldDesc":"名称","fieldTitle":""},
+    {"tableName":"jxc_goods","fieldName":"type","fieldDesc":"规格","fieldTitle":""},
+    {"tableName":"jxc_goods","fieldName":"price","fieldDesc":"单价","fieldTitle":""},
+     {"tableName":"jxc_goods","fieldName":"remark","fieldDesc":"备注","fieldTitle":""}]);
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
@@ -253,6 +263,7 @@
     edit({});
   }
 
+
   /**
    * 编辑
    */
@@ -275,47 +286,48 @@
    */
   async function submitForm() {
     try {
+      console.log(getMoreCols,"====================")
       // 触发表单验证
-      await validate();
+      // await validate();
     } catch ({ errorFields }) {
-      if (errorFields) {
-        const firstField = errorFields[0];
-        if (firstField) {
-          formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
-        }
-      }
-      return Promise.reject(errorFields);
+      // if (errorFields) {
+      //   const firstField = errorFields[0];
+      //   if (firstField) {
+      //     formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
+      //   }
+      // }
+      // return Promise.reject(errorFields);
     }
-    confirmLoading.value = true;
-    const isUpdate = ref<boolean>(false);
-    //时间格式化
-    let model = formData;
-    if (model.id) {
-      isUpdate.value = true;
-    }
-    //循环数据
-    for (let data in model) {
-      //如果该数据是数组并且是字符串类型
-      if (model[data] instanceof Array) {
-        let valueType = getValueType(formRef.value.getProps, data);
-        //如果是字符串类型的需要变成以逗号分割的字符串
-        if (valueType === 'string') {
-          model[data] = model[data].join(',');
-        }
-      }
-    }
-    await saveOrUpdateBilling(model, isUpdate.value)
-      .then((res) => {
-        if (res.success) {
-          createMessage.success(res.message);
-          emit('ok');
-        } else {
-          createMessage.warning(res.message);
-        }
-      })
-      .finally(() => {
-        confirmLoading.value = false;
-      });
+    // confirmLoading.value = true;
+    // const isUpdate = ref<boolean>(false);
+    // //时间格式化
+    // let model = formData;
+    // if (model.id) {
+    //   isUpdate.value = true;
+    // }
+    // //循环数据
+    // for (let data in model) {
+    //   //如果该数据是数组并且是字符串类型
+    //   if (model[data] instanceof Array) {
+    //     let valueType = getValueType(formRef.value.getProps, data);
+    //     //如果是字符串类型的需要变成以逗号分割的字符串
+    //     if (valueType === 'string') {
+    //       model[data] = model[data].join(',');
+    //     }
+    //   }
+    // }
+    // await saveOrUpdateBilling(model, isUpdate.value)
+    //   .then((res) => {
+    //     if (res.success) {
+    //       createMessage.success(res.message);
+    //       emit('ok');
+    //     } else {
+    //       createMessage.warning(res.message);
+    //     }
+    //   })
+    //   .finally(() => {
+    //     confirmLoading.value = false;
+    //   });
   }
 
 
@@ -334,5 +346,12 @@
     border: none; /* 移除默认边框 */
     border-bottom: 1px solid #bdacac; /* 设置下划线 */
     outline: none; /* 移除点击输入框时的默认轮廓 */
+  }
+  .input-only-bpottom{
+    width: 30%;
+    border-bottom: 1px solid black;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-right-width: 0;
   }
 </style>
