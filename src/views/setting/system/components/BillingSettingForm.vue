@@ -95,7 +95,7 @@
           </a-row>
 
 
-          <a-row>
+          <a-row style="margin-top: 20px;">
             <a-col :span="24">
               <p style="margin-bottom: 20px">***************** 加载配置的动态列 *****************</p>
             </a-col>
@@ -344,7 +344,7 @@
     padding: 14px;
   }
   .underLine-label{
-    width: 15%;
+    width: 25%;
     text-align: right;
     display: inline-block;
   }
