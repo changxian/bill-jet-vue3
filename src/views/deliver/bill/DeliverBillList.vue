@@ -11,9 +11,9 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'inoutbill:jxc_inout_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'inoutbill:jxc_inout_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'inoutbill:jxc_inout_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button  type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button  type="primary" v-auth="'deliver.bill:jxc_deliver_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -23,7 +23,7 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button v-auth="'inoutbill:jxc_inout_bill:deleteBatch'">批量操作
+          <a-button v-auth="'deliver.bill:jxc_deliver_bill:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
@@ -38,18 +38,18 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <CustomerBillModal ref="registerModal" @success="handleSuccess"></CustomerBillModal>
+    <DeliverBillModal ref="registerModal" @success="handleSuccess"></DeliverBillModal>
   </div>
 </template>
 
-<script lang="ts" name="inoutbill-customerBill" setup>
+<script lang="ts" name="deliver.bill-deliverBill" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './CustomerBill.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './CustomerBill.api';
+  import { columns, superQuerySchema } from './DeliverBill.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import CustomerBillModal from './components/CustomerBillModal.vue'
+  import DeliverBillModal from './components/DeliverBillModal.vue'
   import { useUserStore } from '/@/store/modules/user';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
 
@@ -61,7 +61,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: 'jxc_inout_bill',
+      title: '送货开单',
       api: list,
       columns,
       canResize:false,
@@ -75,7 +75,7 @@
       },
     },
     exportConfig: {
-      name: "jxc_inout_bill",
+      name: "送货开单",
       url: getExportUrl,
       params: queryParam,
     },
@@ -162,7 +162,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'inoutbill:jxc_inout_bill:edit'
+        auth: 'deliver.bill:jxc_deliver_bill:edit'
       },
     ];
   }
@@ -182,7 +182,7 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'inoutbill:jxc_inout_bill:delete'
+        auth: 'deliver.bill:jxc_deliver_bill:delete'
       }
     ]
   }

@@ -11,6 +11,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billNo'
   },
   {
+    title: '交易类型（1：送货，2：退货）',
+    align: "center",
+    dataIndex: 'type_dictText'
+  },
+  {
     title: '开单日期',
     align: "center",
     dataIndex: 'billDate'
@@ -21,29 +26,24 @@ export const columns: BasicColumn[] = [
     dataIndex: 'companyName_dictText'
   },
   {
-    title: '交易类型（1：进货，2：退货）',
+    title: '客户名称',
     align: "center",
-    dataIndex: 'billType_dictText'
+    dataIndex: 'custName_dictText'
   },
   {
-    title: '供应商/客户名称',
+    title: '客户电话',
     align: "center",
-    dataIndex: 'objectName_dictText'
+    dataIndex: 'custPhone'
   },
   {
-    title: '供应商/客户电话',
+    title: '客户联系人',
     align: "center",
-    dataIndex: 'objectPhone'
+    dataIndex: 'custContact'
   },
   {
-    title: '供应商/客户联系人',
+    title: '客户地址',
     align: "center",
-    dataIndex: 'objectContact'
-  },
-  {
-    title: '供应商/客户地址',
-    align: "center",
-    dataIndex: 'objectAddress'
+    dataIndex: 'custAddress'
   },
   {
     title: '数量（本单商品数量）',
@@ -88,12 +88,12 @@ export const columns: BasicColumn[] = [
   {
     title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',
     align: "center",
-    dataIndex: 'status_dictText'
+    dataIndex: 'status'
   },
   {
     title: '开票状态（未开、不开、已开、无信息、其他）',
     align: "center",
-    dataIndex: 'billStatus_dictText'
+    dataIndex: 'billStatus'
   },
   {
     title: '成本',
@@ -130,13 +130,13 @@ export const columns: BasicColumn[] = [
 // 高级查询数据
 export const superQuerySchema = {
   billNo: {title: '单号',order: 0,view: 'text', type: 'string',},
-  billDate: {title: '开单日期',order: 1,view: 'datetime', type: 'string',},
-  companyName: {title: '公司名称(记录开票时的公司名称）',order: 2,view: 'list', type: 'string',dictCode: '',},
-  billType: {title: '交易类型（1：进货，2：退货）',order: 3,view: 'number', type: 'number',dictCode: '',},
-  objectName: {title: '供应商/客户名称',order: 4,view: 'sel_user', type: 'string',},
-  objectPhone: {title: '供应商/客户电话',order: 5,view: 'text', type: 'string',},
-  objectContact: {title: '供应商/客户联系人',order: 6,view: 'text', type: 'string',},
-  objectAddress: {title: '供应商/客户地址',order: 7,view: 'text', type: 'string',},
+  type: {title: '交易类型（1：送货，2：退货）',order: 1,view: 'number', type: 'number',dictCode: '',},
+  billDate: {title: '开单日期',order: 2,view: 'datetime', type: 'string',},
+  companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'sel_user', type: 'string',},
+  custName: {title: '客户名称',order: 4,view: 'sel_user', type: 'string',},
+  custPhone: {title: '客户电话',order: 5,view: 'text', type: 'string',},
+  custContact: {title: '客户联系人',order: 6,view: 'text', type: 'string',},
+  custAddress: {title: '客户地址',order: 7,view: 'text', type: 'string',},
   count: {title: '数量（本单商品数量）',order: 8,view: 'number', type: 'number',},
   amount: {title: '本单金额',order: 9,view: 'number', type: 'number',},
   paymentAmount: {title: '已付款金额',order: 10,view: 'number', type: 'number',},
@@ -145,8 +145,8 @@ export const superQuerySchema = {
   hisDebtAmount: {title: '往期欠款金额',order: 13,view: 'number', type: 'number',},
   careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
   contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
-  status: {title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',order: 16,view: 'number', type: 'number',dictCode: '',},
-  billStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',dictCode: '',},
+  status: {title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',order: 16,view: 'number', type: 'number',},
+  billStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',},
   costAmount: {title: '成本',order: 18,view: 'number', type: 'number',},
   profitAmount: {title: '利润',order: 19,view: 'number', type: 'number',},
   userName: {title: '业务员',order: 20,view: 'sel_user', type: 'string',},

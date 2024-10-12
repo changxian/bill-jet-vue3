@@ -86,11 +86,13 @@
               <p style="margin-bottom: 20px; color: red">提示：选中显示小计列后，小计列=属性*数量，比如：重量小计= 重量*数量。</p>
             </a-col>
           </a-row>
-          <a-row  >
+          <a-row>
             <a-col  v-for="(item, index) in getMoreCols"
                     :key="item.fieldName"
                     class="option-item"  :span="8">
-              <p style="margin-bottom: 10px"><label class="underLine-label">{{item.fieldDesc}}:</label><input class="underLine-text" v-model="item.fieldTitle" ></input></p>
+              <p style="margin-bottom: 10px">
+                <label class="underLine-label">{{item.fieldDesc}}:</label>
+                <input class="underLine-text" v-model="item.fieldTitle" /></p>
              </a-col>
           </a-row>
 

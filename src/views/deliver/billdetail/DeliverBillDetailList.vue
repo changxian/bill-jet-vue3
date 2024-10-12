@@ -11,9 +11,9 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'inoutbill:jxc_inout_bill_detail:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'inoutbill:jxc_inout_bill_detail:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'inoutbill:jxc_inout_bill_detail:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'deliver.billdetail:jxc_deliver_bill_detail:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button  type="primary" v-auth="'deliver.billdetail:jxc_deliver_bill_detail:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button  type="primary" v-auth="'deliver.billdetail:jxc_deliver_bill_detail:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -23,7 +23,7 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button v-auth="'inoutbill:jxc_inout_bill_detail:deleteBatch'">批量操作
+          <a-button v-auth="'deliver.billdetail:jxc_deliver_bill_detail:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
@@ -38,20 +38,19 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <CustomerBillDetailModal ref="registerModal" @success="handleSuccess"></CustomerBillDetailModal>
+    <DeliverBillDetailModal ref="registerModal" @success="handleSuccess"></DeliverBillDetailModal>
   </div>
 </template>
 
-<script lang="ts" name="inoutbill-customerBillDetail" setup>
+<script lang="ts" name="deliver.billdetail-deliverBillDetail" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './CustomerBillDetail.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './CustomerBillDetail.api';
+  import { columns, superQuerySchema } from './DeliverBillDetail.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBillDetail.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import CustomerBillDetailModal from './components/CustomerBillDetailModal.vue'
+  import DeliverBillDetailModal from './components/DeliverBillDetailModal.vue'
   import { useUserStore } from '/@/store/modules/user';
-  import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -162,7 +161,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'inoutbill:jxc_inout_bill_detail:edit'
+        auth: 'deliver.billdetail:jxc_deliver_bill_detail:edit'
       },
     ];
   }
@@ -182,7 +181,7 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'inoutbill:jxc_inout_bill_detail:delete'
+        auth: 'deliver.billdetail:jxc_deliver_bill_detail:delete'
       }
     ]
   }
@@ -205,16 +204,6 @@
   }
   
 
-  /**
-   * form点击事件(以逗号分割)
-   * @param key
-   * @param value
-   */
-  function handleFormJoinChange(key, value) {
-    if (typeof value != 'string') {
-      queryParam[key] = value.join(',');
-    }
-  }
 
 
 </script>

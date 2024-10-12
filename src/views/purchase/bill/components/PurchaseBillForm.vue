@@ -2,125 +2,125 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
-        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="SupplierBillForm">
+        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="PurchaseBillForm">
           <a-row>
 						<a-col :span="24">
-							<a-form-item label="单号" v-bind="validateInfos.billNo" id="SupplierBillForm-billNo" name="billNo">
+							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
 								<a-input v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="开单日期" v-bind="validateInfos.billDate" id="SupplierBillForm-billDate" name="billDate">
+							<a-form-item label="交易类型（1：进货，2：退货）" v-bind="validateInfos.type" id="PurchaseBillForm-type" name="type">
+								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择交易类型（1：进货，2：退货）"  allow-clear />
+							</a-form-item>
+						</a-col>
+						<a-col :span="24">
+							<a-form-item label="开单日期" v-bind="validateInfos.billDate" id="PurchaseBillForm-billDate" name="billDate">
 								<a-date-picker placeholder="请选择开单日期"  v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="公司名称(记录开票时的公司名称）" v-bind="validateInfos.companyName" id="SupplierBillForm-companyName" name="companyName">
+							<a-form-item label="公司名称(记录开票时的公司名称）" v-bind="validateInfos.companyName" id="PurchaseBillForm-companyName" name="companyName">
 								<j-dict-select-tag v-model:value="formData.companyName" dictCode="" placeholder="请选择公司名称(记录开票时的公司名称）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="交易类型（1：进货，2：退货）" v-bind="validateInfos.billType" id="SupplierBillForm-billType" name="billType">
-								<j-dict-select-tag v-model:value="formData.billType" dictCode="" placeholder="请选择交易类型（1：进货，2：退货）"  allow-clear />
+							<a-form-item label="供应商/客户名称" v-bind="validateInfos.supplierName" id="PurchaseBillForm-supplierName" name="supplierName">
+								<a-input v-model:value="formData.supplierName" placeholder="请输入供应商/客户名称"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户名称" v-bind="validateInfos.objectName" id="SupplierBillForm-objectName" name="objectName">
-						<j-select-user v-model:value="formData.objectName"      allow-clear />
+							<a-form-item label="供应商/客户电话" v-bind="validateInfos.supplierPhone" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
+								<a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商/客户电话"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户电话" v-bind="validateInfos.objectPhone" id="SupplierBillForm-objectPhone" name="objectPhone">
-								<a-input v-model:value="formData.objectPhone" placeholder="请输入供应商/客户电话"  allow-clear ></a-input>
+							<a-form-item label="供应商/客户联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
+								<a-input v-model:value="formData.supplierContact" placeholder="请输入供应商/客户联系人"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户联系人" v-bind="validateInfos.objectContact" id="SupplierBillForm-objectContact" name="objectContact">
-								<a-input v-model:value="formData.objectContact" placeholder="请输入供应商/客户联系人"  allow-clear ></a-input>
+							<a-form-item label="供应商/客户地址" v-bind="validateInfos.supplierAddress" id="PurchaseBillForm-supplierAddress" name="supplierAddress">
+								<a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商/客户地址"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户地址" v-bind="validateInfos.objectAddress" id="SupplierBillForm-objectAddress" name="objectAddress">
-								<a-input v-model:value="formData.objectAddress" placeholder="请输入供应商/客户地址"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="数量（本单商品数量）" v-bind="validateInfos.count" id="SupplierBillForm-count" name="count">
+							<a-form-item label="数量（本单商品数量）" v-bind="validateInfos.count" id="PurchaseBillForm-count" name="count">
 								<a-input-number v-model:value="formData.count" placeholder="请输入数量（本单商品数量）" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="SupplierBillForm-amount" name="amount">
+							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="PurchaseBillForm-amount" name="amount">
 								<a-input-number v-model:value="formData.amount" placeholder="请输入本单金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="SupplierBillForm-paymentAmount" name="paymentAmount">
+							<a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
 								<a-input-number v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="SupplierBillForm-discountAmount" name="discountAmount">
+							<a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="PurchaseBillForm-discountAmount" name="discountAmount">
 								<a-input-number v-model:value="formData.discountAmount" placeholder="请输入优惠金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="SupplierBillForm-debtAmount" name="debtAmount">
+							<a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
 								<a-input-number v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="往期欠款金额" v-bind="validateInfos.hisDebtAmount" id="SupplierBillForm-hisDebtAmount" name="hisDebtAmount">
+							<a-form-item label="往期欠款金额" v-bind="validateInfos.hisDebtAmount" id="PurchaseBillForm-hisDebtAmount" name="hisDebtAmount">
 								<a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="送货车号" v-bind="validateInfos.careNo" id="SupplierBillForm-careNo" name="careNo">
+							<a-form-item label="送货车号" v-bind="validateInfos.careNo" id="PurchaseBillForm-careNo" name="careNo">
 								<a-input v-model:value="formData.careNo" placeholder="请输入送货车号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="合同号" v-bind="validateInfos.contractCode" id="SupplierBillForm-contractCode" name="contractCode">
+							<a-form-item label="合同号" v-bind="validateInfos.contractCode" id="PurchaseBillForm-contractCode" name="contractCode">
 								<a-input v-model:value="formData.contractCode" placeholder="请输入合同号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="状态（未打印、已打印、签回、过账、审核、已开票、作废）" v-bind="validateInfos.status" id="SupplierBillForm-status" name="status">
-								<j-dict-select-tag v-model:value="formData.status" dictCode="" placeholder="请选择状态（未打印、已打印、签回、过账、审核、已开票、作废）"  allow-clear />
+							<a-form-item label="状态（未打印、已打印、签回、过账、审核、已开票、作废）" v-bind="validateInfos.status" id="PurchaseBillForm-status" name="status">
+								<a-input-number v-model:value="formData.status" placeholder="请输入状态（未打印、已打印、签回、过账、审核、已开票、作废）" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.billStatus" id="SupplierBillForm-billStatus" name="billStatus">
-								<j-dict-select-tag v-model:value="formData.billStatus" dictCode="" placeholder="请选择开票状态（未开、不开、已开、无信息、其他）"  allow-clear />
+							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.billStatus" id="PurchaseBillForm-billStatus" name="billStatus">
+								<a-input-number v-model:value="formData.billStatus" placeholder="请输入开票状态（未开、不开、已开、无信息、其他）" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="成本" v-bind="validateInfos.costAmount" id="SupplierBillForm-costAmount" name="costAmount">
+							<a-form-item label="成本" v-bind="validateInfos.costAmount" id="PurchaseBillForm-costAmount" name="costAmount">
 								<a-input-number v-model:value="formData.costAmount" placeholder="请输入成本" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="利润" v-bind="validateInfos.profitAmount" id="SupplierBillForm-profitAmount" name="profitAmount">
+							<a-form-item label="利润" v-bind="validateInfos.profitAmount" id="PurchaseBillForm-profitAmount" name="profitAmount">
 								<a-input-number v-model:value="formData.profitAmount" placeholder="请输入利润" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="业务员" v-bind="validateInfos.userName" id="SupplierBillForm-userName" name="userName">
+							<a-form-item label="业务员" v-bind="validateInfos.userName" id="PurchaseBillForm-userName" name="userName">
 						<j-select-user v-model:value="formData.userName"      allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="备注" v-bind="validateInfos.remark" id="SupplierBillForm-remark" name="remark">
+							<a-form-item label="备注" v-bind="validateInfos.remark" id="PurchaseBillForm-remark" name="remark">
 								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="版本" v-bind="validateInfos.version" id="SupplierBillForm-version" name="version">
+							<a-form-item label="版本" v-bind="validateInfos.version" id="PurchaseBillForm-version" name="version">
 								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="制单人" v-bind="validateInfos.createName" id="SupplierBillForm-createName" name="createName">
+							<a-form-item label="制单人" v-bind="validateInfos.createName" id="PurchaseBillForm-createName" name="createName">
 								<a-input v-model:value="formData.createName" placeholder="请输入制单人"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
@@ -138,7 +138,7 @@
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
   import { getValueType } from '/@/utils';
-  import { saveOrUpdate } from '../SupplierBill.api';
+  import { saveOrUpdate } from '../PurchaseBill.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   const props = defineProps({
@@ -152,13 +152,13 @@
   const formData = reactive<Record<string, any>>({
     id: '',
     billNo: '',   
+    type: undefined,
     billDate: '',   
     companyName: '',   
-    billType: undefined,
-    objectName: '',   
-    objectPhone: '',   
-    objectContact: '',   
-    objectAddress: '',   
+    supplierName: '',   
+    supplierPhone: '',   
+    supplierContact: '',   
+    supplierAddress: '',   
     count: undefined,
     amount: undefined,
     paymentAmount: undefined,
