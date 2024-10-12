@@ -1,13 +1,13 @@
 <template>
-  <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
-           cancelText="关闭">
+<!--  <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"-->
+<!--           cancelText="关闭">&ndash;&gt;-->
     <PurchaseBillForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseBillForm>
-  </j-modal>
+<!--  </j-modal>-->
 </template>
 
 <script lang="ts" setup>
-  import { ref, nextTick, defineExpose } from 'vue';
-  import PurchaseBillForm from './PurchaseBillForm.vue'
+import {ref, nextTick, defineExpose, onMounted, onUpdated} from 'vue';
+  import PurchaseBillForm from './components/PurchaseBillForm.vue'
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   
   const title = ref<string>('');
@@ -16,6 +16,11 @@
   const disableSubmit = ref<boolean>(false);
   const registerForm = ref();
   const emit = defineEmits(['register', 'success']);
+
+onMounted(() => {
+  console.log('组件已挂载',99999999999);
+  visible.value=true;
+});
 
   /**
    * 新增

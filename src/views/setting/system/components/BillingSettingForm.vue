@@ -6,13 +6,14 @@
           <a-row>
 						<a-col :span="12">
 							<a-form-item label="单号生成方式" v-bind="validateInfos.billNoGenerateMethod" id="BillingSettingForm-billNoGenerateMethod" name="billNoGenerateMethod">
-                <j-dict-select-tag v-model:value="formData.printer" dictCode="" placeholder="请选择单号生成方式" />
+                <j-dict-select-tag @change="change" v-model:value="formData.billNoGenMethod" dictCode="billNoGenMethod" placeholder="请选择单号生成方式" />
 							</a-form-item>
 						</a-col>
+
 						<a-col :span="12">
-							<a-form-item label="比如" v-bind="validateInfos.billNoGenerateMethod" id="BillingSettingForm-billNoGenerateMethod" name="billNoGenerateMethod">
-                <a-input v-model:value="validateInfos.billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
-							</a-form-item>
+
+                <a-input v-model:value="billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
+
 						</a-col>
           </a-row>
           <a-row>
@@ -188,7 +189,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
+import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted, watch} from 'vue';
   import { defHttp } from '/@/utils/http/axios';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
@@ -200,7 +201,7 @@
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: () => ({})},
+    // formData: { type: Object, default: () => ({})},
     formBpm: { type: Boolean, default: true }
   });
   const formRef = ref()
@@ -211,7 +212,8 @@
      {"tableName":"jxc_goods","fieldName":"remark","fieldDesc":"备是多少注","fieldTitle":""}]);
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
-  const formData = reactive<Record<string, any>>({
+const billNoGeneMethodExamp = ref('')
+  const formData = ref<Record<string, any>>({
     id: '',
     billNoGenerateMethod: '',   
     repeatedAutoGenerate: undefined,
@@ -236,6 +238,7 @@
     onlyChooseGoods: undefined,
     notLessZeroStock: undefined,
   });
+
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
@@ -244,7 +247,16 @@
   const validatorRules = reactive({
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
+console.log(formData,121212121,formData.value.billNoGenerateMethod)
 
+watch(  formData.value.billNoGenMethod, (newValue, oldValue) => {
+  console.log(newValue, oldValue,55555555555555)
+  // if(newValue.value.billNoGenerateMethod!=oldValue.value.billNoGenerateMethod){
+  //
+  // }
+  console.log(`Name changed from ${oldValue} to ${newValue}`);
+// 这里可以添加你想要执行的代码
+});
   // 表单禁用
   const disabled = computed(()=>{
     if(props.formBpm === true){
@@ -257,7 +269,9 @@
     return props.formDisabled;
   });
 
-  
+  function change(value){
+    billNoGeneMethodExamp.value=value;
+  }
   /**
    * 新增
    */
@@ -288,7 +302,7 @@
    */
   async function submitForm() {
     try {
-      console.log(getMoreCols,"====================")
+      console.log(getMoreCols,formData,"====================")
       // 触发表单验证
       // await validate();
     } catch ({ errorFields }) {
@@ -336,6 +350,7 @@
   defineExpose({
     add,
     edit,
+    formData,
     getMoreCols,
     submitForm,
   });

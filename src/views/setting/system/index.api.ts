@@ -45,3 +45,5 @@ export const saveOrUpdateSystem = (params, isUpdate) => {
   let url = isUpdate ? Api.editSystem : Api.saveSystem;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
+
+export const getInitData = () => defHttp.get({ url: Api.getDictFields });

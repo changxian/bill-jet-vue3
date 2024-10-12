@@ -24,12 +24,17 @@
   import PrintSettingForm from './components/PrintSettingForm.vue';
   import SystemSettingForm from './components/SystemSettingForm.vue';
   import BillingSettingForm from './components/BillingSettingForm.vue';
+  import {getInitData} from "@/views/setting/system/index.api";
+  import {queryTreeListForRole} from "@/views/system/role/role.api";
 
   // const disableSubmit = ref<boolean>(false);
   const activeKey = ref('1');
 
   const loading = ref(true);
 
+  //初始化数据
+  // const roleResult = await getInitData();
+  // console.log(roleResult,22222222222222222);
 </script>
 
 <style lang="less">
