@@ -11,7 +11,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billNo'
   },
   {
-    title: '交易类型（1：进货，2：退货）',
+    title: '开单类型（1：进货开单，2：退货开单）',
     align: "center",
     dataIndex: 'type_dictText'
   },
@@ -26,22 +26,22 @@ export const columns: BasicColumn[] = [
     dataIndex: 'companyName_dictText'
   },
   {
-    title: '供应商/客户名称',
+    title: '供应商名称',
     align: "center",
-    dataIndex: 'supplierName'
+    dataIndex: 'supplierName_dictText'
   },
   {
-    title: '供应商/客户电话',
+    title: '供应商电话',
     align: "center",
     dataIndex: 'supplierPhone'
   },
   {
-    title: '供应商/客户联系人',
+    title: '供应商联系人',
     align: "center",
     dataIndex: 'supplierContact'
   },
   {
-    title: '供应商/客户地址',
+    title: '供应商地址',
     align: "center",
     dataIndex: 'supplierAddress'
   },
@@ -86,24 +86,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'contractCode'
   },
   {
-    title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',
+    title: '状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）',
     align: "center",
-    dataIndex: 'status'
+    dataIndex: 'status_dictText'
   },
   {
-    title: '开票状态（未开、不开、已开、无信息、其他）',
+    title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',
     align: "center",
-    dataIndex: 'billStatus'
-  },
-  {
-    title: '成本',
-    align: "center",
-    dataIndex: 'costAmount'
-  },
-  {
-    title: '利润',
-    align: "center",
-    dataIndex: 'profitAmount'
+    dataIndex: 'billStatus_dictText'
   },
   {
     title: '业务员',
@@ -130,13 +120,13 @@ export const columns: BasicColumn[] = [
 // 高级查询数据
 export const superQuerySchema = {
   billNo: {title: '单号',order: 0,view: 'text', type: 'string',},
-  type: {title: '交易类型（1：进货，2：退货）',order: 1,view: 'number', type: 'number',dictCode: '',},
+  type: {title: '开单类型（1：进货开单，2：退货开单）',order: 1,view: 'number', type: 'number',dictCode: '',},
   billDate: {title: '开单日期',order: 2,view: 'datetime', type: 'string',},
-  companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'list', type: 'string',dictCode: '',},
-  supplierName: {title: '供应商/客户名称',order: 4,view: 'text', type: 'string',},
-  supplierPhone: {title: '供应商/客户电话',order: 5,view: 'text', type: 'string',},
-  supplierContact: {title: '供应商/客户联系人',order: 6,view: 'text', type: 'string',},
-  supplierAddress: {title: '供应商/客户地址',order: 7,view: 'text', type: 'string',},
+  companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'sel_user', type: 'string',},
+  supplierName: {title: '供应商名称',order: 4,view: 'sel_user', type: 'string',},
+  supplierPhone: {title: '供应商电话',order: 5,view: 'text', type: 'string',},
+  supplierContact: {title: '供应商联系人',order: 6,view: 'text', type: 'string',},
+  supplierAddress: {title: '供应商地址',order: 7,view: 'text', type: 'string',},
   count: {title: '数量（本单商品数量）',order: 8,view: 'number', type: 'number',},
   amount: {title: '本单金额',order: 9,view: 'number', type: 'number',},
   paymentAmount: {title: '已付款金额',order: 10,view: 'number', type: 'number',},
@@ -145,12 +135,10 @@ export const superQuerySchema = {
   hisDebtAmount: {title: '往期欠款金额',order: 13,view: 'number', type: 'number',},
   careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
   contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
-  status: {title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',order: 16,view: 'number', type: 'number',},
-  billStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',},
-  costAmount: {title: '成本',order: 18,view: 'number', type: 'number',},
-  profitAmount: {title: '利润',order: 19,view: 'number', type: 'number',},
-  userName: {title: '业务员',order: 20,view: 'sel_user', type: 'string',},
-  remark: {title: '备注',order: 21,view: 'text', type: 'string',},
-  version: {title: '版本',order: 23,view: 'number', type: 'number',},
-  createName: {title: '制单人',order: 24,view: 'text', type: 'string',},
+  status: {title: '状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）',order: 16,view: 'number', type: 'number',dictCode: '',},
+  billStatus: {title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',order: 17,view: 'number', type: 'number',dictCode: '',},
+  userName: {title: '业务员',order: 18,view: 'sel_user', type: 'string',},
+  remark: {title: '备注',order: 19,view: 'text', type: 'string',},
+  version: {title: '版本',order: 21,view: 'number', type: 'number',},
+  createName: {title: '制单人',order: 22,view: 'text', type: 'string',},
 };

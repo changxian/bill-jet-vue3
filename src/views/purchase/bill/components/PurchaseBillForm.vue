@@ -10,8 +10,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="交易类型（1：进货，2：退货）" v-bind="validateInfos.type" id="PurchaseBillForm-type" name="type">
-								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择交易类型（1：进货，2：退货）"  allow-clear />
+							<a-form-item label="开单类型（1：进货开单，2：退货开单）" v-bind="validateInfos.type" id="PurchaseBillForm-type" name="type">
+								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择开单类型（1：进货开单，2：退货开单）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -21,27 +21,27 @@
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="公司名称(记录开票时的公司名称）" v-bind="validateInfos.companyName" id="PurchaseBillForm-companyName" name="companyName">
-								<j-dict-select-tag v-model:value="formData.companyName" dictCode="" placeholder="请选择公司名称(记录开票时的公司名称）"  allow-clear />
+						<j-select-user v-model:value="formData.companyName"      allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户名称" v-bind="validateInfos.supplierName" id="PurchaseBillForm-supplierName" name="supplierName">
-								<a-input v-model:value="formData.supplierName" placeholder="请输入供应商/客户名称"  allow-clear ></a-input>
+							<a-form-item label="供应商名称" v-bind="validateInfos.supplierName" id="PurchaseBillForm-supplierName" name="supplierName">
+						<j-select-user v-model:value="formData.supplierName"      allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户电话" v-bind="validateInfos.supplierPhone" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
-								<a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商/客户电话"  allow-clear ></a-input>
+							<a-form-item label="供应商电话" v-bind="validateInfos.supplierPhone" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
+								<a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商电话"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
-								<a-input v-model:value="formData.supplierContact" placeholder="请输入供应商/客户联系人"  allow-clear ></a-input>
+							<a-form-item label="供应商联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
+								<a-input v-model:value="formData.supplierContact" placeholder="请输入供应商联系人"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商/客户地址" v-bind="validateInfos.supplierAddress" id="PurchaseBillForm-supplierAddress" name="supplierAddress">
-								<a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商/客户地址"  allow-clear ></a-input>
+							<a-form-item label="供应商地址" v-bind="validateInfos.supplierAddress" id="PurchaseBillForm-supplierAddress" name="supplierAddress">
+								<a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商地址"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -85,23 +85,13 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="状态（未打印、已打印、签回、过账、审核、已开票、作废）" v-bind="validateInfos.status" id="PurchaseBillForm-status" name="status">
-								<a-input-number v-model:value="formData.status" placeholder="请输入状态（未打印、已打印、签回、过账、审核、已开票、作废）" style="width: 100%" />
+							<a-form-item label="状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）" v-bind="validateInfos.status" id="PurchaseBillForm-status" name="status">
+								<j-dict-select-tag v-model:value="formData.status" dictCode="" placeholder="请选择状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.billStatus" id="PurchaseBillForm-billStatus" name="billStatus">
-								<a-input-number v-model:value="formData.billStatus" placeholder="请输入开票状态（未开、不开、已开、无信息、其他）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="成本" v-bind="validateInfos.costAmount" id="PurchaseBillForm-costAmount" name="costAmount">
-								<a-input-number v-model:value="formData.costAmount" placeholder="请输入成本" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="利润" v-bind="validateInfos.profitAmount" id="PurchaseBillForm-profitAmount" name="profitAmount">
-								<a-input-number v-model:value="formData.profitAmount" placeholder="请输入利润" style="width: 100%" />
+							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.billStatus" id="PurchaseBillForm-billStatus" name="billStatus">
+								<j-dict-select-tag v-model:value="formData.billStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -169,8 +159,6 @@
     contractCode: '',   
     status: undefined,
     billStatus: undefined,
-    costAmount: undefined,
-    profitAmount: undefined,
     userName: '',   
     remark: '',   
     delFlag: undefined,
