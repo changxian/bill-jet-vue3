@@ -90,7 +90,9 @@
             <a-col  v-for="(item, index) in getMoreCols"
                     :key="item.fieldName"
                     class="option-item"  :span="8">
-              <p style="margin-bottom: 10px"><label class="underLine-label">{{item.fieldDesc}}:</label><input class="underLine-text" v-model="item.fieldTitle" ></input></p>
+              <p style="margin-bottom: 10px">
+                <label class="underLine-label">{{item.fieldDesc}}:</label>
+                <input class="underLine-text" v-model="item.fieldTitle" /></p>
              </a-col>
           </a-row>
 
