@@ -14,7 +14,21 @@ enum Api {
   getDictItems = '/sys/dict/getDictItems/',
   getTableList = '/sys/user/queryUserComponentData',
   getCategoryData = '/sys/category/loadAllData',
+  companyList = '/company/tenantCompany/list',
+  supplierList = '/purchase/supplier/supplier/list',
 }
+
+/**
+ * 公司列表接口
+ * @param params
+ */
+export const getCompanyList = (params) => defHttp.get({ url: Api.companyList, params });
+
+/**
+ * 供应商列表接口
+ * @param params
+ */
+export const getSupplierList = (params) => defHttp.get({ url: Api.supplierList, params });
 
 /**
  * 上传父路径

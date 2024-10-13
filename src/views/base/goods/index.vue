@@ -5,9 +5,9 @@
         <GoodsTree @select="onTreeSelect" />
       </a-card>
     </a-col>
-    <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1">
+    <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
       <a-card :bordered="false" style="height: 100%">
-        <GoodsList :data="departData" />
+        <GoodsList :data="departData" @get-select="getSelect"/>
       </a-card>
     </a-col>
   </a-row>
@@ -22,7 +22,7 @@
 
   const { prefixCls } = useDesign('depart-user');
   provide('prefixCls', prefixCls);
-
+  const emits = defineEmits(['get-select'])
   // 当前选中的部门信息
   let departData = ref({});
 
@@ -30,8 +30,19 @@
   function onTreeSelect(data: any) {
     departData.value = data;
   }
+  function getSelect(rows, ids) {
+    emits('get-select', rows, ids)
+  }
 </script>
 
 <style lang="less">
   @import 'index.less';
+  .goods-tbl-wrap {
+    :deep(.ant-row) {
+        width:100% !important
+    }
+    :deep(.ant-col) {
+        max-width:100% !important
+    }
+}
 </style>

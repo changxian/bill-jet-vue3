@@ -58,6 +58,8 @@ const queryParam = reactive<any>({});
     },
   });
 
+  const emits = defineEmits(['get-select'])
+
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
 
@@ -89,6 +91,12 @@ const queryParam = reactive<any>({});
         params['categoryId'] = categoryId.value;
         return Object.assign(params, queryParam);
       },
+      rowSelection: {
+        type: 'checkbox',
+        onChange: function(ids, rows) {
+          emits('get-select', rows, ids)
+        }
+      }
     },
     exportConfig: {
       name: '商品信息',
