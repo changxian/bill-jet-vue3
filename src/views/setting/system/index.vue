@@ -9,7 +9,7 @@
           <BillingSettingForm :loading="loading" class="enter-y" :formBpm="false"></BillingSettingForm>
         </a-tab-pane>
         <a-tab-pane key="3" tab="其他属性显示设置">
-          其他属性显示设置
+          <OthersSettingForm :loading="loading" class="enter-y" :formBpm="false"></OthersSettingForm>
         </a-tab-pane>
         <a-tab-pane key="4" tab="系统设置">
           <SystemSettingForm :loading="loading" class="enter-y" :formBpm="false"></SystemSettingForm>
@@ -23,6 +23,7 @@
   import { PageWrapper } from '/@/components/Page';
   import PrintSettingForm from './components/PrintSettingForm.vue';
   import SystemSettingForm from './components/SystemSettingForm.vue';
+  import OthersSettingForm from './components/OthersSettingForm.vue';
   import BillingSettingForm from './components/BillingSettingForm.vue';
   // import {getInitData} from "@/views/setting/system/index.api";
   // import {queryTreeListForRole} from "@/views/system/role/role.api";
