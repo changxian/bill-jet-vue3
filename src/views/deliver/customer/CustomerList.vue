@@ -108,7 +108,6 @@ import {useListPage} from '/@/hooks/system/useListPage';
 import {columns} from './Customer.data';
 import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './Customer.api';
 import CustPriceList from './custprice/GoodsCustPriceList.vue';
-// import { downloadFile } from '/@/utils/common/renderUtils';
 import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
 import CustomerModal from './components/CustomerModal.vue';
 import {useUserStore} from '/@/store/modules/user';

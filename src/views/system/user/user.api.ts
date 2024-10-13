@@ -3,6 +3,7 @@ import { Modal } from 'ant-design-vue';
 import { isObject } from '/@/utils/is';
 enum Api {
   listNoCareTenant = '/sys/user/listAll',
+  listTenantUser = '/sys/user/listTenantUser',
   list = '/sys/user/list',
   save = '/sys/user/add',
   edit = '/sys/user/edit',
@@ -45,6 +46,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 列表接口(查询用户，通过企业隔离)
+ * @param params
+ */
+export const listTenantUser = Api.listTenantUser;
 
 /**
  * 列表接口(查询全部用户，不通过企业隔离)
