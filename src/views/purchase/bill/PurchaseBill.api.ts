@@ -5,8 +5,8 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/purchase/bill/purchaseBill/list',
-  save='/purchase/bill/purchaseBill/add',
-  edit='/purchase/bill/purchaseBill/edit',
+  save='/purchase/bill/purchaseBill/saveOrUpdate',
+  edit='/purchase/bill/purchaseBill/saveOrUpdate',
   deleteOne = '/purchase/bill/purchaseBill/delete',
   deleteBatch = '/purchase/bill/purchaseBill/deleteBatch',
   importExcel = '/purchase/bill/purchaseBill/importExcel',
@@ -66,7 +66,6 @@ export const batchDelete = (params, handleSuccess) => {
  * @param params
  * @param isUpdate
  */
-export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
-  return defHttp.post({ url: url, params }, { isTransformResponse: false });
+export const saveOrUpdate = (params) => {
+  return defHttp.post({ url:  Api.save, params }, { isTransformResponse: false });
 }

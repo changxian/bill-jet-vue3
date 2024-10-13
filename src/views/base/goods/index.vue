@@ -38,10 +38,10 @@
 <style lang="less">
   @import 'index.less';
   .goods-tbl-wrap {
-    :deep(.ant-row) {
+    .ant-row {
         width:100% !important
     }
-    :deep(.ant-col) {
+    .ant-col {
         max-width:100% !important
     }
 }

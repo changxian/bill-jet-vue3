@@ -11,7 +11,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billNo'
   },
   {
-    title: '开单类型（1：进货开单，2：退货开单）',
+    title: '开单类型',
     align: "center",
     dataIndex: 'type_dictText'
   },
@@ -21,14 +21,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billDate'
   },
   {
-    title: '公司名称(记录开票时的公司名称）',
+    title: '公司名称',
     align: "center",
-    dataIndex: 'companyName_dictText'
+    dataIndex: 'companyName'
   },
   {
     title: '供应商名称',
     align: "center",
-    dataIndex: 'supplierName_dictText'
+    dataIndex: 'supplierName'
   },
   {
     title: '供应商电话',
@@ -46,7 +46,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'supplierAddress'
   },
   {
-    title: '数量（本单商品数量）',
+    title: '数量',
     align: "center",
     dataIndex: 'count'
   },
@@ -86,29 +86,24 @@ export const columns: BasicColumn[] = [
     dataIndex: 'contractCode'
   },
   {
-    title: '状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）',
+    title: '状态',
     align: "center",
     dataIndex: 'status_dictText'
   },
   {
-    title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',
+    title: '开票状态',
     align: "center",
     dataIndex: 'billStatus_dictText'
   },
   {
     title: '业务员',
     align: "center",
-    dataIndex: 'userName_dictText'
+    dataIndex: 'userName'
   },
   {
     title: '备注',
     align: "center",
     dataIndex: 'remark'
-  },
-  {
-    title: '版本',
-    align: "center",
-    dataIndex: 'version'
   },
   {
     title: '制单人',
