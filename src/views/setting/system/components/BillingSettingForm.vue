@@ -6,7 +6,7 @@
           <a-row>
 						<a-col :span="12">
 							<a-form-item label="单号生成方式" v-bind="validateInfos.billNoGenerateMethod" id="BillingSettingForm-billNoGenerateMethod" name="billNoGenerateMethod">
-                <j-dict-select-tag @change="change" v-model:value="formData.billNoGenMethod" dictCode="billNoGenMethod" placeholder="请选择单号生成方式" />
+                <j-dict-select-tag @change="change" v-model:value="formData.billNoGenerateMethod" dictCode="billNoGenMethod" placeholder="请选择单号生成方式" />
 							</a-form-item>
 						</a-col>
 
@@ -26,12 +26,12 @@
           <a-row>
 						<a-col :span="12">
 							<a-form-item label="小数位数" v-bind="validateInfos.decimalPlaces" id="BillingSettingForm-decimalPlaces" name="decimalPlaces">
-								<a-input-number v-model:value="formData.decimalPlaces" placeholder="请输入小数位数" style="width: 100%" class="underLine-text" />
+								<a-input-number v-model:value="formData.decimalPlaces" placeholder="请输入小数位数" min="0" max="6" :precision="0" style="width: 100%" class="underLine-text" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="金额小计小数位数" v-bind="validateInfos.subtotalDecimalPlaces" id="BillingSettingForm-subtotalDecimalPlaces" name="subtotalDecimalPlaces">
-								<a-input-number v-model:value="formData.subtotalDecimalPlaces" placeholder="请输入金额小计小数位数" style="width: 100%" class="underLine-text" />
+								<a-input-number v-model:value="formData.subtotalDecimalPlaces" placeholder="请输入金额小计小数位数" min="0" max="6" :precision="0"  style="width: 100%" class="underLine-text" />
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -189,6 +189,7 @@ import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted,
   import {getMyBillSetting,   saveOrUpdateBilling} from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+import {formatToDateS, formatToDateTimeSSS, formatToMonthS} from "@/utils/dateUtil";
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
@@ -197,11 +198,13 @@ import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted,
   const formRef = ref()
 
 const formData = ref<Record<any>>({});
-
-getMyBillSetting().then(res=>{
-  formData.value=res;
-});
-  const useForm = Form.useForm;
+function init(){
+  getMyBillSetting().then(res=>{
+    formData.value=res;
+  });
+}
+init();
+const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const billNoGeneMethodExamp = ref('')
   const { createMessage } = useMessage();
@@ -210,6 +213,8 @@ getMyBillSetting().then(res=>{
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
+    "subtotalDecimalPlaces":[{ required: true, message: '金额小计小数位数不能为空', trigger: 'change' }],
+    "decimalPlaces":[{ required: true, message: '小数位数不能为空', trigger: 'change' }]
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
@@ -226,7 +231,16 @@ getMyBillSetting().then(res=>{
   });
 
   function change(value){
-    billNoGeneMethodExamp.value=value;
+    if(value=='YYYYMMDDHHmmssSSS'){
+      billNoGeneMethodExamp.value=formatToDateTimeSSS(new Date());
+    }else  if(value=='YYYYMMDD_SERIAL'){
+      billNoGeneMethodExamp.value=formatToDateS()+"0001";
+    }else  if(value=='YYYYMM_SERIAL'){
+      billNoGeneMethodExamp.value=formatToMonthS()+"00001";
+    }else  if(value=='8_SERIAL'){
+      billNoGeneMethodExamp.value='00000001';
+    }
+
   }
   /**
    * 新增
@@ -287,6 +301,7 @@ getMyBillSetting().then(res=>{
         }
       })
       .finally(() => {
+        init();
         confirmLoading.value = false;
       });
   }
