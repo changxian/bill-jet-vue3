@@ -1,13 +1,15 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  getDictFields = '/bill/dynamic/getDictFields',
+  getMoreColsData = '/bill/dynamic/getDictFields',
   savePrint = '/setting/print/printSetting/add',
   editPrint = '/setting/print/printSetting/edit',
   saveBilling = '/setting/billing/billingSetting/add',
   editBilling = '/setting/billing/billingSetting/edit',
   saveSystem = '/setting/system/systemSetting/add',
   editSystem = '/setting/system/systemSetting/edit',
+  myBillSetting  = '/setting/billing/billingSetting/getMyBillSetting',
+
 }
 
 /**
@@ -46,4 +48,4 @@ export const saveOrUpdateSystem = (params, isUpdate) => {
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
 
-export const getInitData = () => defHttp.get({ url: Api.getDictFields });
+export const  getMyBillSetting = () => defHttp.get({ url: Api.myBillSetting });

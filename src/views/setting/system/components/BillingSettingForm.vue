@@ -19,7 +19,7 @@
           <a-row>
 						<a-col :span="24">
 							<a-form-item v-bind="validateInfos.repeatedAutoGenerate" id="BillingSettingForm-repeatedAutoGenerate" name="repeatedAutoGenerate">
-                <a-checkbox type="checkbox" v-model:value="formData.repeatedAutoGenerate">重复时自动生成（保存单据时如果单号重复，系统将自动生成单号）</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.repeatedAutoGenerate">重复时自动生成（保存单据时如果单号重复，系统将自动生成单号）</a-checkbox>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -43,42 +43,42 @@
           <a-row>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.autoCustPrice" id="BillingSettingForm-autoCustPrice" name="autoCustPrice">
-                <a-checkbox type="checkbox" v-model:value="formData.autoCustPrice"> 自动记录客户价</a-checkbox>
+                <input type="checkbox" value="1" v-model="formData.autoCustPrice" /> 自动记录客户价
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.singleCustPrice" id="BillingSettingForm-singleCustPrice" name="singleCustPrice">
-                <a-checkbox type="checkbox" v-model:value="formData.singleCustPrice"> 启用一客一价</a-checkbox>
+                <a-checkbox type="checkbox" value="1" v-model:checked="formData.singleCustPrice"> 启用一客一价</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="5">
 							<a-form-item v-bind="validateInfos.billingEditPrice" id="BillingSettingForm-billingEditPrice" name="billingEditPrice">
-                <a-checkbox type="checkbox" v-model:value="formData.billingEditPrice"> 开单保存更新售价</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.billingEditPrice"> 开单保存更新售价</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="11">
 							<a-form-item v-bind="validateInfos.billingEditBuyPrice" id="BillingSettingForm-billingEditBuyPrice" name="billingEditBuyPrice">
-                <a-checkbox type="checkbox" v-model:value="formData.billingEditBuyPrice">开单保存更新进货价(勾选后 进货价计算方式选项 无效)</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.billingEditBuyPrice">开单保存更新进货价(勾选后 进货价计算方式选项 无效)</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.showGoodsCodeCol" id="BillingSettingForm-showGoodsCodeCol" name="showGoodsCodeCol">
-                <a-checkbox type="checkbox" v-model:value="formData.showGoodsCodeCol"> 显示产品编号列</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.showGoodsCodeCol"> 显示产品编号列</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.showWeightCol" id="BillingSettingForm-showWeightCol" name="showWeightCol">
-                <a-checkbox type="checkbox" v-model:value="formData.showWeightCol"> 显示重量列</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.showWeightCol"> 显示重量列</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.showAreaCol" id="BillingSettingForm-showAreaCol" name="showAreaCol">
-                <a-checkbox type="checkbox" v-model:value="formData.showAreaCol"> 显示面积列</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.showAreaCol"> 显示面积列</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.showVolumeCol" id="BillingSettingForm-showVolumeCol" name="showVolumeCol">
-                <a-checkbox type="checkbox" v-model:value="formData.showVolumeCol"> 显示体积列</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.showVolumeCol"> 显示体积列</a-checkbox>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -87,8 +87,8 @@
               <p style="margin-bottom: 20px; color: red">提示：选中显示小计列后，小计列=属性*数量，比如：重量小计= 重量*数量。</p>
             </a-col>
           </a-row>
-          <a-row>
-            <a-col  v-for="(item, index) in getMoreCols"
+          <a-row v-if="formData?.dynaFieldsGroup">
+            <a-col  v-for="(item, index) in formData.dynaFieldsGroup['1']"
                     :key="item.fieldName"
                     class="option-item"  :span="8">
               <p style="margin-bottom: 10px">
@@ -97,24 +97,15 @@
              </a-col>
           </a-row>
 
-
-          <a-row style="margin-top: 20px;">
-            <a-col :span="24">
-              <p style="margin-bottom: 20px">***************** 加载配置的动态列 *****************</p>
-            </a-col>
-            <a-col :span="24">
-              <p style="margin-bottom: 20px">***************** 加载配置的动态列 *****************</p>
-            </a-col>
-          </a-row>
           <a-row>
 						<a-col :span="10">
 							<a-form-item label="金额计算方式" v-bind="validateInfos.amountComputeMethod" id="BillingSettingForm-amountComputeMethod" name="amountComputeMethod">
-								<j-dict-select-tag v-model:value="formData.amountComputeMethod" dictCode="" placeholder="请选择金额计算方式" />
+								<j-dict-select-tag v-model:value="formData.amountComputeMethod" dictCode="amountComputedMethod" placeholder="请选择金额计算方式" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="8">
 							<a-form-item v-bind="validateInfos.editAmountEditPrice" id="BillingSettingForm-editAmountEditPrice" name="editAmountEditPrice">
-                <a-checkbox type="checkbox" v-model:value="formData.editAmountEditPrice"> 修改金额单价变动</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.editAmountEditPrice"> 修改金额单价变动</a-checkbox>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -127,46 +118,46 @@
           <a-row>
 						<a-col :span="12">
 							<a-form-item label="进货价计算方式" v-bind="validateInfos.buyPriceComputeMethod" id="BillingSettingForm-buyPriceComputeMethod" name="buyPriceComputeMethod">
-								<j-dict-select-tag v-model:value="formData.buyPriceComputeMethod" dictCode="" placeholder="请选择进货价计算方式"  allow-clear />
+								<j-dict-select-tag v-model:value="formData.buyPriceComputeMethod" dictCode="buyPriceComputeMethod" placeholder="请选择进货价计算方式"  allow-clear />
 							</a-form-item>
 						</a-col>
           </a-row>
           <a-row>
 						<a-col :span="24">
 							<a-form-item v-bind="validateInfos.goodsNameRepeat" id="BillingSettingForm-goodsNameRepeat" name="goodsNameRepeat">
-                <a-checkbox type="checkbox" v-model:value="formData.goodsNameRepeat"> 不允许商品名重复</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.goodsNameRepeat"> 不允许商品名重复</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item label="" v-bind="validateInfos.notAutoSaveCustomer" id="BillingSettingForm-notAutoSaveCustomer" name="notAutoSaveCustomer">
-                <a-checkbox type="checkbox" v-model:value="formData.notAutoSaveCustomer"> 不自动保存客户</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.notAutoSaveCustomer"> 不自动保存客户</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.notAutoSaveGoods" id="BillingSettingForm-notAutoSaveGoods" name="notAutoSaveGoods">
-                <a-checkbox type="checkbox" v-model:value="formData.notAutoSaveGoods"> 不自动保存商品</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.notAutoSaveGoods"> 不自动保存商品</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="6">
 							<a-form-item v-bind="validateInfos.notAutoSaveGoodsRmk" id="BillingSettingForm-notAutoSaveGoodsRmk" name="notAutoSaveGoodsRmk">
-                <a-checkbox type="checkbox" v-model:value="formData.notAutoSaveGoodsRmk"> 不自动保存商品备注</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.notAutoSaveGoodsRmk"> 不自动保存商品备注</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="6">
 							<a-form-item v-bind="validateInfos.notAutoSaveSupplier" id="BillingSettingForm-notAutoSaveSupplier" name="notAutoSaveSupplier">
-                <a-checkbox type="checkbox" v-model:value="formData.notAutoSaveSupplier"> 不自动保存供应商</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.notAutoSaveSupplier"> 不自动保存供应商</a-checkbox>
 							</a-form-item>
 						</a-col>
           </a-row>
           <a-row>
 						<a-col :span="6">
 							<a-form-item v-bind="validateInfos.onlyChooseGoods" id="BillingSettingForm-onlyChooseGoods" name="onlyChooseGoods">
-                <a-checkbox type="checkbox" v-model:value="formData.onlyChooseGoods"> 只允许选择商品开单</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.onlyChooseGoods"> 只允许选择商品开单</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="16">
 							<a-form-item v-bind="validateInfos.notLessZeroStock" id="BillingSettingForm-notLessZeroStock" name="notLessZeroStock">
-                <a-checkbox type="checkbox" v-model:value="formData.notLessZeroStock"> 库存不允许小于零（必须同时勾选 只允许选择商品开单，否则无效）</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.notLessZeroStock"> 库存不允许小于零（必须同时勾选 只允许选择商品开单，否则无效）</a-checkbox>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -195,50 +186,24 @@ import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted,
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JCheckbox from "/@/components/Form/src/jeecg/components/JCheckbox.vue";
   import { getValueType } from '/@/utils';
-  import { saveOrUpdateBilling } from '../index.api';
+  import {getMyBillSetting,   saveOrUpdateBilling} from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    // formData: { type: Object, default: () => ({})},
     formBpm: { type: Boolean, default: true }
   });
   const formRef = ref()
-  const getMoreCols = ref([
-    {"tableName":"jxc_goods","fieldName":"name","fieldDesc":"名称","fieldTitle":""},
-    {"tableName":"jxc_goods","fieldName":"type","fieldDesc":"规是格","fieldTitle":""},
-    {"tableName":"jxc_goods","fieldName":"price","fieldDesc":"单撒旦价","fieldTitle":""},
-     {"tableName":"jxc_goods","fieldName":"remark","fieldDesc":"备是多少注","fieldTitle":""}]);
+
+const formData = ref<Record<any>>({});
+
+getMyBillSetting().then(res=>{
+  formData.value=res;
+});
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
-const billNoGeneMethodExamp = ref('')
-  const formData = ref<Record<string, any>>({
-    id: '',
-    billNoGenerateMethod: '',   
-    repeatedAutoGenerate: undefined,
-    decimalPlaces: undefined,
-    subtotalDecimalPlaces: undefined,
-    autoCustPrice: undefined,
-    singleCustPrice: undefined,
-    billingEditPrice: undefined,
-    billingEditBuyPrice: undefined,
-    showGoodsCodeCol: undefined,
-    showWeightCol: undefined,
-    showAreaCol: undefined,
-    showVolumeCol: undefined,
-    amountComputeMethod: '',   
-    editAmountEditPrice: undefined,
-    buyPriceComputeMethod: '',   
-    goodsNameRepeat: undefined,
-    notAutoSaveCustomer: undefined,
-    notAutoSaveGoods: undefined,
-    notAutoSaveGoodsRmk: undefined,
-    notAutoSaveSupplier: undefined,
-    onlyChooseGoods: undefined,
-    notLessZeroStock: undefined,
-  });
-
+  const billNoGeneMethodExamp = ref('')
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
@@ -247,16 +212,7 @@ const billNoGeneMethodExamp = ref('')
   const validatorRules = reactive({
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
-console.log(formData,121212121,formData.value.billNoGenerateMethod)
 
-watch(  formData.value.billNoGenMethod, (newValue, oldValue) => {
-  console.log(newValue, oldValue,55555555555555)
-  // if(newValue.value.billNoGenerateMethod!=oldValue.value.billNoGenerateMethod){
-  //
-  // }
-  console.log(`Name changed from ${oldValue} to ${newValue}`);
-// 这里可以添加你想要执行的代码
-});
   // 表单禁用
   const disabled = computed(()=>{
     if(props.formBpm === true){
@@ -302,48 +258,37 @@ watch(  formData.value.billNoGenMethod, (newValue, oldValue) => {
    */
   async function submitForm() {
     try {
-      console.log(getMoreCols,formData,"====================")
+      console.log(formData,"====================")
       // 触发表单验证
-      // await validate();
+      await validate();
     } catch ({ errorFields }) {
-      // if (errorFields) {
-      //   const firstField = errorFields[0];
-      //   if (firstField) {
-      //     formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
-      //   }
-      // }
-      // return Promise.reject(errorFields);
+      if (errorFields) {
+        const firstField = errorFields[0];
+        if (firstField) {
+          formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
+        }
+      }
+      return Promise.reject(errorFields);
     }
-    // confirmLoading.value = true;
-    // const isUpdate = ref<boolean>(false);
-    // //时间格式化
-    // let model = formData;
-    // if (model.id) {
-    //   isUpdate.value = true;
-    // }
-    // //循环数据
-    // for (let data in model) {
-    //   //如果该数据是数组并且是字符串类型
-    //   if (model[data] instanceof Array) {
-    //     let valueType = getValueType(formRef.value.getProps, data);
-    //     //如果是字符串类型的需要变成以逗号分割的字符串
-    //     if (valueType === 'string') {
-    //       model[data] = model[data].join(',');
-    //     }
-    //   }
-    // }
-    // await saveOrUpdateBilling(model, isUpdate.value)
-    //   .then((res) => {
-    //     if (res.success) {
-    //       createMessage.success(res.message);
-    //       emit('ok');
-    //     } else {
-    //       createMessage.warning(res.message);
-    //     }
-    //   })
-    //   .finally(() => {
-    //     confirmLoading.value = false;
-    //   });
+    confirmLoading.value = true;
+    const isUpdate = ref<boolean>(false);
+    //时间格式化
+    let model = formData.value;
+    if (model.id) {
+      isUpdate.value = true;
+    }
+    await saveOrUpdateBilling(model, isUpdate.value)
+      .then((res) => {
+        if (res.success) {
+          createMessage.success(res.message);
+          emit('ok');
+        } else {
+          createMessage.warning(res.message);
+        }
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+      });
   }
 
 
@@ -351,7 +296,6 @@ watch(  formData.value.billNoGenMethod, (newValue, oldValue) => {
     add,
     edit,
     formData,
-    getMoreCols,
     submitForm,
   });
 </script>

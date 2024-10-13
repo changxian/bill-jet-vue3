@@ -24,8 +24,8 @@
   import PrintSettingForm from './components/PrintSettingForm.vue';
   import SystemSettingForm from './components/SystemSettingForm.vue';
   import BillingSettingForm from './components/BillingSettingForm.vue';
-  import {getInitData} from "@/views/setting/system/index.api";
-  import {queryTreeListForRole} from "@/views/system/role/role.api";
+  // import {getInitData} from "@/views/setting/system/index.api";
+  // import {queryTreeListForRole} from "@/views/system/role/role.api";
 
   // const disableSubmit = ref<boolean>(false);
   const activeKey = ref('1');
