@@ -105,6 +105,8 @@ import {
   import { getAllSalesmanList } from '../../../salesman/Salesman.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+import {useUserStore} from "@/store/modules/user";
+const userStore = useUserStore();
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({})},
@@ -113,6 +115,7 @@ import {
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  const dynamicFields= userStore.getDynamicCols['jxc_customer'];
   const formData = reactive<Record<string, any>>({
     id: '',
     orgName: '',
@@ -127,7 +130,7 @@ import {
     email: '',
     userName: '',
     remark: '',
-    dynamicFields: undefined,
+    dynamicFields: dynamicFields,
   });
 
   watch(

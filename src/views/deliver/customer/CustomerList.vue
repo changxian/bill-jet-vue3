@@ -197,11 +197,10 @@ const { createMessage } = useMessage();
    * 新增事件
    */
   function handleAdd() {
-    let record = {
-      dynamicFields: userStore.getDynamicCols['jxc_customer'],
-    };
+    // let record = {
+    //   dynamicFields: userStore.getDynamicCols['jxc_customer'],
+    // };
     openModal(true, {
-      record,
       isUpdate: false,
       showFooter: true,
       categoryId: categoryId.value,
