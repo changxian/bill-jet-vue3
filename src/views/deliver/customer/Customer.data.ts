@@ -54,7 +54,7 @@ export const columns: BasicColumn[] = [
   {
     title: '业务员',
     align: 'center',
-    dataIndex: 'salesmanName',
+    dataIndex: 'userName',
   },
   {
     title: '创建日期',
