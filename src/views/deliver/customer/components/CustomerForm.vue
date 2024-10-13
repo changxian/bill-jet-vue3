@@ -102,7 +102,7 @@ import {
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../Customer.api';
-  import { listTenantUser } from '../../../system/user/user.api';
+  import { listTenantUser } from '@/views/system/user/user.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
 import {useUserStore} from "@/store/modules/user";
