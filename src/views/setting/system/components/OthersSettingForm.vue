@@ -125,10 +125,12 @@
   });
 
   const formData = ref<Record<any>>({});
-  fieldsList({ "category": 1, "match": "0" }).then(res => {
-    formData.value = res;
-  });
-
+  function init() {
+    fieldsList({ "category": 1, "match": "0" }).then(res => {
+      formData.value = res;
+    });
+  }
+  init();
   /**
    * 提交数据
    */
@@ -174,6 +176,7 @@
         }
       })
       .finally(() => {
+        init();
         confirmLoading.value = false;
       });
   }
