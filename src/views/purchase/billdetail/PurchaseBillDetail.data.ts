@@ -23,22 +23,22 @@ export const columns: BasicColumn[] = [
   {
     title: '商品编号',
     align: "center",
-    dataIndex: 'doogsCode'
+    dataIndex: 'goodsCode'
   },
   {
     title: '商品名称',
     align: "center",
-    dataIndex: 'doogsName'
+    dataIndex: 'goodsName'
   },
   {
     title: '规格型号',
     align: "center",
-    dataIndex: 'doogsType'
+    dataIndex: 'goodsType'
   },
   {
     title: '单位',
     align: "center",
-    dataIndex: 'doogsUnit'
+    dataIndex: 'goodsUnit'
   },
   {
     title: '进货价',
@@ -87,10 +87,10 @@ export const superQuerySchema = {
   billNo: {title: '开单单号',order: 0,view: 'text', type: 'string',},
   supplierId: {title: '供应商id',order: 1,view: 'list', type: 'string',dictCode: '',},
   categoryName: {title: '商品类型',order: 2,view: 'text', type: 'string',},
-  doogsCode: {title: '商品编号',order: 3,view: 'text', type: 'string',},
-  doogsName: {title: '商品名称',order: 4,view: 'text', type: 'string',},
-  doogsType: {title: '规格型号',order: 5,view: 'text', type: 'string',},
-  doogsUnit: {title: '单位',order: 6,view: 'text', type: 'string',},
+  goodsCode: {title: '商品编号',order: 3,view: 'text', type: 'string',},
+  goodsName: {title: '商品名称',order: 4,view: 'text', type: 'string',},
+  goodsType: {title: '规格型号',order: 5,view: 'text', type: 'string',},
+  goodsUnit: {title: '单位',order: 6,view: 'text', type: 'string',},
   costAmount: {title: '进货价',order: 7,view: 'number', type: 'number',},
   amount: {title: '金额',order: 8,view: 'number', type: 'number',},
   count: {title: '数量',order: 9,view: 'number', type: 'number',},

@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/purchase/bill/purchaseBill/deleteBatch',
   importExcel = '/purchase/bill/purchaseBill/importExcel',
   exportXls = '/purchase/bill/purchaseBill/exportXls',
+  billDetail = '/purchase/bill/purchaseBill/billDetail',
 }
 
 /**
@@ -29,6 +30,8 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params });
 
 /**
  * 删除单个

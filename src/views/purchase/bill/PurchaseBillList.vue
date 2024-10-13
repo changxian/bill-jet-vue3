@@ -8,7 +8,7 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
@@ -28,7 +28,7 @@
           </a-button>
         </a-dropdown>
         <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
+        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -39,6 +39,10 @@
     </BasicTable>
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
+    <div class="tbl-wrap">
+         <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
+        </BasicTable>
+    </div>
   </div>
 </template>
 
@@ -46,8 +50,8 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './PurchaseBill.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseBill.api';
+  import { columns, superQuerySchema, detailColumns } from './PurchaseBill.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl,billDetail } from './PurchaseBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseBillModal from './components/PurchaseBillModal.vue'
   import { useUserStore } from '/@/store/modules/user';
@@ -216,6 +220,28 @@
     }
   }
 
+const dataSourceDetail:any = ref([])
+    const { tableContext: tableContextDetail } = useListPage({
+    designScope: 'basic-table-demo',
+    tableProps: {
+      title: '商品详情',
+      columns: detailColumns,
+      rowkey: 'id',
+      pagination: false
+    },
+  });
+
+
+/**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
+selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
+  const [registerTableDetail, ] = tableContextDetail;
+  const currentRowId = ref('')
+function rowClick(record){
+  currentRowId.value = record.id
+  billDetail({billId: record.id}).then(res=>{
+    dataSourceDetail.value = [...res]
+  })
+}
 
 </script>
 

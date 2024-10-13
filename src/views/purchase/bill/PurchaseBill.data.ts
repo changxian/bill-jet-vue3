@@ -112,6 +112,48 @@ export const columns: BasicColumn[] = [
   },
 ];
 
+export const detailColumns: BasicColumn[] = [
+  {
+ title: '商品编号(条码)',
+ align: 'center',
+ dataIndex: 'goodsCode',
+},
+{
+ title: '商品名称',
+ align: 'center',
+ dataIndex: 'goodsName',
+},
+{
+ title: '规格型号',
+ align: 'center',
+ dataIndex: 'goodsType',
+},
+{
+ title: '单位',
+ align: 'center',
+ dataIndex: 'goodsUnit',
+},
+{
+ title: '数量',
+ align: 'center',
+ dataIndex: 'count',
+},
+{
+ title: '进货价',
+ align: 'center',
+ dataIndex: 'cost',
+},
+{
+ title: '金额',
+ align: 'center',
+ dataIndex: 'costAmount',
+},
+{
+ title: '备注',
+ align: 'center',
+ dataIndex: 'remark',
+}
+];
 // 高级查询数据
 export const superQuerySchema = {
   billNo: {title: '单号',order: 0,view: 'text', type: 'string',},

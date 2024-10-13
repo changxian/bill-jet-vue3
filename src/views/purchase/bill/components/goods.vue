@@ -69,7 +69,7 @@ const columns: BasicColumn[] = [
      {
     title: '商品编号(条码)',
     align: 'center',
-    dataIndex: 'code',
+    dataIndex: 'goodsCode',
         editable: false,
     edit: true,
     editComponent: 'Input',
@@ -77,7 +77,7 @@ const columns: BasicColumn[] = [
   {
     title: '商品名称',
     align: 'center',
-    dataIndex: 'name',
+    dataIndex: 'goodsName',
             editable: false,
     edit: true,
     editComponent: 'Input',
@@ -85,7 +85,7 @@ const columns: BasicColumn[] = [
   {
     title: '规格型号',
     align: 'center',
-    dataIndex: 'type',
+    dataIndex: 'goodsType',
             editable: false,
     edit: true,
     editComponent: 'Input',
@@ -93,7 +93,7 @@ const columns: BasicColumn[] = [
   {
     title: '单位',
     align: 'center',
-    dataIndex: 'unit',
+    dataIndex: 'goodsUnit',
             editable: false,
     edit: true,
     editComponent: 'Input',
@@ -101,7 +101,7 @@ const columns: BasicColumn[] = [
   {
     title: '数量',
     align: 'center',
-    dataIndex: 'stock',
+    dataIndex: 'count',
     editable: false,
     edit: true,
     editComponent: 'InputNumber',
@@ -137,9 +137,10 @@ const columns: BasicColumn[] = [
   const { tableContext } = useListPage({
     designScope: 'basic-table-demo',
     tableProps: {
-      title: '可选择表格',
+      title: '商品详情',
       columns: columns,
       rowkey: 'id',
+      pagination: false,
     //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选 
       rowSelection: { type: 'checkbox',
       onChange: function(ids, rows) {
@@ -157,6 +158,14 @@ selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
  
 const handleOk = (e: MouseEvent) => {
   console.log('ok:',e);
+  selectedGoods.forEach(item=>{
+    item.goodsId = item.id
+    item.goodsName = item.name
+    item.goodsCode = item.code
+    item.goodsType = item.type
+    item.goodsUnit = item.unit
+    item.count = item.stock
+  })
   if(dataSource.value.length){
     dataSource.value = [...dataSource.value, ...selectedGoods]
   }else{
@@ -169,7 +178,7 @@ const handleOk = (e: MouseEvent) => {
 const countNum = computed(()=>{
     let  num = 0
     dataSource.value.forEach(item=>{
-        num += item.stock;
+        num += item.count;
     })
     return num
 })
@@ -184,11 +193,12 @@ const countMoney = computed(()=>{
 function addRow(){
     const row = {
         id: new Date().getTime(),
-        code: '',
-        name: '',
-        type: '',
-        unit: '',
-        stock: '',
+        goodsCode: '',
+        goodsId: '',
+        goodsName: '',
+        goodsType: '',
+        goodsUnit: '',
+        count: '',
         cost: '',
         costAmount: '',
         remark: '',
@@ -216,8 +226,8 @@ function delRow(){
   function beforeEditSubmit({ record, index, key, value }) {
      console.log('==', record, index, key, value)
      if(key === 'cost'){
-        record.costAmount = value * record.stock;
-     }else if(key === 'stock'){
+        record.costAmount = value * record.count;
+     }else if(key === 'count'){
          record.costAmount = value * record.cost;
      }
   }
@@ -252,7 +262,6 @@ defineExpose({
     }
 }
 .count-wrap {
-    transform: translateY(-10px);
     padding-bottom: 20px;
 
     .name {
