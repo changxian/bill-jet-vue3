@@ -27,8 +27,8 @@
 						</a-col>
 
             <a-col :span="12">
-              <a-form-item label="业务员" v-bind="validateInfos.salesmanName" id="CustomerForm-salesmanName" name="salesmanName">
-                <j-dict-select-tag v-model:value="formData.salesmanName" :url="getAllSalesmanList" value-field="name" placeholder="请选择业务员"  allow-clear />
+              <a-form-item label="业务员" v-bind="validateInfos.userId" id="CustomerForm-userName" name="userId">
+                <j-dict-select-tag v-model:value="formData.userId" :url="listTenantUser" value-field="id" label-field="realname" placeholder="请选择业务员"  allow-clear />
               </a-form-item>
             </a-col>
 						<a-col :span="12">
@@ -97,7 +97,7 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import {JInput} from "@/components/Form";
-  import {getAllSalesmanList} from "@/views/salesman/Salesman.api";
+  import { listTenantUser } from '@/views/system/user/user.api';
   import JDictSelectTag from "../../../../components/Form/src/jeecg/components/JDictSelectTag.vue";
 
   import { useUserStore } from '/@/store/modules/user';
@@ -124,8 +124,8 @@
     qq: '',   
     wechat: '',   
     email: '',   
-    salesmanId: '',   
-    salesmanName: '',   
+    userId: '',   
+    userName: '',   
     remark: '',
     dynamicFields: dynamicFields,
 
