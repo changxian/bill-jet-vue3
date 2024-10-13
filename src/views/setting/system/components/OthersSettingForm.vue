@@ -148,7 +148,7 @@
     // confirmLoading.value = true;
     // const isUpdate = ref<boolean>(false);
     // //时间格式化
-    let model = formData.value['3'];
+    let model = formData.value;
     console.log(model, "=========model=model==========")
     // if (model.id) {
     //   isUpdate.value = true;

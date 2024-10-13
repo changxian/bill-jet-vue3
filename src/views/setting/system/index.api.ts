@@ -3,6 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   getDictFields = '/bill/dynamic/getMyTelnetDynaFieldsGroup',
   myBillSetting = '/setting/billing/billingSetting/getMyBillSetting',
+  mySystemSetting = '/setting/system/systemSetting/getMySystemSetting',
   savePrint = '/setting/print/printSetting/add',
   editPrint = '/setting/print/printSetting/edit',
   saveBilling = '/setting/billing/billingSetting/add',
@@ -59,3 +60,4 @@ export const saveOrUpdateSystem = (params, isUpdate) => {
 };
 
 export const getMyBillSetting = () => defHttp.get({ url: Api.myBillSetting });
+export const getMySystemSetting = () => defHttp.get({ url: Api.mySystemSetting });
