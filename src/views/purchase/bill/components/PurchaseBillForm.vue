@@ -27,6 +27,11 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
+							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
+								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
+							</a-form-item>
+						</a-col>
+            <a-col :span="span">
               <a-form-item label="供应商联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
                 <a-input v-model:value="formData.supplierContact" placeholder="请输入供应商联系人" allow-clear></a-input>
               </a-form-item>
@@ -285,9 +290,54 @@ function edit(record) {
     Object.assign(formData, tmpData);
   });
 }
-
+function validateForm(){
+  if(!formData.supplierId){
+    createMessage.warning('请选择供应商');
+    return false;
+  }
+  if(!formData.companyId){
+    createMessage.warning('请选择公司');
+    return false;
+  }
+  const goods = goodsRef.value.getData().details
+  if(goods.length === 0){
+    createMessage.warning('请选择商品');
+    return false;
+  }
+  return true
+}
+function resetForm() {
+  formData.id = ''
+  formData.type = undefined
+  formData.billNo = ''
+  formData.billDate = ''
+  formData.companyName = ''
+  formData.companyId = ''
+  formData.supplierId = ''
+  formData.supplierName = ''
+  formData.supplierPhone = ''
+  formData.supplierAddress = ''
+  formData.supplierContact = ''
+  formData.count = undefined
+  formData.amount = undefined
+  formData.paymentAmount = undefined
+  formData.discountAmount = undefined
+  formData.debtAmount = undefined
+  formData.hisDebtAmount = undefined
+  formData.status = undefined
+  formData.billStatus = undefined
+  formData.careNo = ''
+  formData.contractCode = ''
+  formData.remark = ''
+  formData.createName = ''
+  formData.userName = ''
+  goodsRef.value.setValue([])
+}
 function  clickSave() {
   // console.log('goodsRef:', goodsRef.value.getData());
+  if(!validateForm()){
+    return;
+  }
   console.log('formData:', formData);
   const params = {
     ...formData,
@@ -299,6 +349,7 @@ function  clickSave() {
     .then((res) => {
       if (res.success) {
         createMessage.success(res.message);
+        resetForm()
         emit('ok');
       } else {
         createMessage.warning(res.message);

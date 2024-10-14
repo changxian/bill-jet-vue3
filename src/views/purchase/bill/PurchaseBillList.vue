@@ -40,8 +40,10 @@
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
     <div class="tbl-wrap">
+       <a-spin :spinning="detailLoading">
          <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
         </BasicTable>
+       </a-spin>
     </div>
   </div>
 </template>
@@ -236,10 +238,14 @@ const dataSourceDetail:any = ref([])
 selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
   const [registerTableDetail, ] = tableContextDetail;
   const currentRowId = ref('')
+  const detailLoading = ref(false)
 function rowClick(record){
+  detailLoading.value = true
   currentRowId.value = record.id
   billDetail({billId: record.id}).then(res=>{
     dataSourceDetail.value = [...res]
+  }).finally(()=>{
+    detailLoading.value = false
   })
 }
 
