@@ -3,6 +3,25 @@ import {FormSchema} from '/@/components/Table';
 import { rules} from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 import { getWeekMonthQuarterYear } from '/@/utils';
+
+// 状态  1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
+export const statusList = [
+    { value: '1', label: '未打印' },
+    { value: '2', label: '已打印' },
+    { value: '3', label: '签回' },
+    { value: '4', label: '过账' },
+    { value: '5', label: '审核' },
+    { value: '6', label: '已开票' },
+    { value: '9', label: '作废' },
+]
+// 开票状态（1未开、2不开、3已开、4无信息、9其他）
+export const billStatusList = [
+  { value: '1', label: '未开' },
+  { value: '2', label: '不开' },
+  { value: '3', label: '已开' },
+  { value: '4', label: '无信息' },
+  { value: '9', label: '其他' },
+]
 //列表数据
 export const columns: BasicColumn[] = [
   {

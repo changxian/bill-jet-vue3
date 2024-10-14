@@ -11,7 +11,15 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:plus-outlined"> 删除</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('status')" preIcon="ant-design:plus-outlined"> 改状态</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('billStatus')" preIcon="ant-design:plus-outlined"> 改开票</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('info')" preIcon="ant-design:plus-outlined"> 改信息</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 还款明细</a-button>
         <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -39,6 +47,7 @@
     </BasicTable>
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
+    <ModifyModal ref="modifyModalRef" @refresh="reload"></ModifyModal>
     <div class="tbl-wrap">
        <a-spin :spinning="detailLoading">
          <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
@@ -56,14 +65,21 @@
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl,billDetail } from './PurchaseBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseBillModal from './components/PurchaseBillModal.vue'
+  import ModifyModal from './components/ModifyModal.vue'
   import { useUserStore } from '/@/store/modules/user';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { createMessage, createConfirm } = useMessage();
 
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
+  const modifyModalRef = ref();
   const userStore = useUserStore();
+  let selectedIds:any = []
+  let selectedRows:any = []
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -79,6 +95,13 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
       },
+      rowSelection: { type: 'checkbox',
+        onChange: function(ids, rows) {
+          console.log('select:', rows, ids)
+          selectedIds = ids;
+          selectedRows = rows
+        }
+       }, 
     },
     exportConfig: {
       name: "进货开单",
@@ -97,6 +120,25 @@
     xl:6,
     xxl:4
   });
+  function handleDel() {
+      if(selectedIds.length === 0){
+        return createMessage.warning('请先选择数据');
+      }
+       createConfirm({
+          title: '删除',
+          content: `确定要删除吗？`,
+          iconType: 'warning',
+          onOk: () => {
+
+          }
+        });
+  }
+  function handleModify(type) {
+      if(selectedIds.length === 0){
+        return createMessage.warning('请先选择数据');
+      }
+      modifyModalRef.value.show(type, selectedRows[0])
+  }
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,

@@ -169,21 +169,14 @@ import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupp
 import goods from './goods.vue';
 import { getValueType } from '/@/utils';
 import { saveOrUpdate } from '../PurchaseBill.api';
+import { statusList } from '../PurchaseBill.data';
 import { Form } from 'ant-design-vue';
 import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
 import type { Rule } from 'ant-design-vue/es/form';
 
 const span = 8;
 // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
-const statusOptions = ref([
-  { value: '1', label: '未打印' },
-  { value: '2', label: '已打印' },
-  { value: '3', label: '签回' },
-  { value: '4', label: '过账' },
-  { value: '5', label: '审核' },
-  { value: '6', label: '已开票' },
-  { value: '9', label: '作废' },
-]);
+const statusOptions = ref(statusList);
 const typeOptions = ref([
   { value: '1', label: '进货开单' },
   { value: '2', label: '退货开单' },
