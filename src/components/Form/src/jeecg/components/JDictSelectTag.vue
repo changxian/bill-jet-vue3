@@ -78,6 +78,7 @@
       type: propTypes.string,
       placeholder: propTypes.string,
       stringToNumber: propTypes.bool,
+      numberToString: propTypes.bool,
       useDicColor: propTypes.bool.def(false),
       getPopupContainer: {
         type: Function,
@@ -165,7 +166,7 @@
         }, []);
       }
       async function initDictData() {
-        let { dictCode, stringToNumber } = props;
+        let { dictCode, numberToString,stringToNumber } = props;
         //根据字典Code, 初始化字典数组
         const dictData = await initDictOptions(dictCode);
         dictOptions.value = dictData.reduce((prev, next) => {
@@ -173,7 +174,7 @@
             const value = next['value'];
             prev.push({
               label: next['text'] || next['label'],
-              value: stringToNumber ? +value : value,
+              value: numberToString ?(value+''):(stringToNumber ? +value : value),
               color: next['color'],
               ...omit(next, ['text', 'value', 'color']),
             });
