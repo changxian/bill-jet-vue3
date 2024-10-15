@@ -151,8 +151,12 @@
    * 新增事件
    */
   function handleAdd() {
+    if(selectedRowKeys.value.length === 0){
+        return createMessage.warning('请先选择数据');
+    }
     registerModal.value.disableSubmit = false;
-    registerModal.value.add();
+    const row = selectedRows.value[0]
+    registerModal.value.copyAdd(row);
   }
   
   /**

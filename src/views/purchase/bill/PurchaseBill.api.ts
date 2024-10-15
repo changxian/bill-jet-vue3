@@ -15,6 +15,7 @@ enum Api {
   editStatus = '/purchase/bill/purchaseBill/editStatus',
   editBillStatus = '/purchase/bill/purchaseBill/editBillStatus',
   editInfo = '/purchase/bill/purchaseBill/editInfo',
+  queryById = '/purchase/bill/purchaseBill/queryById',
 }
 
 export const editStatus = (params) => {

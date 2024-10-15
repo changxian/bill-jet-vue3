@@ -114,6 +114,7 @@
                 name="status"
               >
                 <j-dict-select-tag
+                 :stringToNumber="true"
                   v-model:value="formData.status"
                   :options="statusOptions"
                   dictCode=""
@@ -148,9 +149,9 @@
 							</a-form-item>
 						</a-col> -->
           </a-row>
-          <a-row class="btns-wrap">
+          <a-row class="btns-wrap" v-if="showBtn">
             <a-button type="primary" @click="clickSave">保存</a-button>
-            <a-button style="margin: 0 30px 0 10px">保存并打印</a-button>
+            <a-button style="margin: 0 30px 0 10px" @click="clickSave">保存并打印</a-button>
           </a-row>
         </a-form>
       </template>
@@ -168,7 +169,7 @@ import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompa
 import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
 import goods from './goods.vue';
 import { getValueType } from '/@/utils';
-import { saveOrUpdate } from '../PurchaseBill.api';
+import { saveOrUpdate, billDetail } from '../PurchaseBill.api';
 import { statusList } from '../PurchaseBill.data';
 import { Form } from 'ant-design-vue';
 import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
@@ -178,14 +179,15 @@ const span = 8;
 // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
 const statusOptions = ref(statusList);
 const typeOptions = ref([
-  { value: '1', label: '进货开单' },
-  { value: '2', label: '退货开单' },
+  { value: 1, label: '进货开单' },
+  { value: 2, label: '退货开单' },
 ]);
 
 const props = defineProps({
   formDisabled: { type: Boolean, default: false },
   formData: { type: Object, default: () => ({}) },
   formBpm: { type: Boolean, default: true },
+  showBtn: { type: Boolean, default: false },
 });
 const formRef = ref();
 const useForm = Form.useForm;
@@ -210,7 +212,7 @@ const formData = reactive({
   hisDebtAmount: undefined,
   careNo: '',
   contractCode: '',
-  status: undefined,
+  status: '',
   billStatus: undefined,
   userName: '',
   remark: '',
@@ -281,8 +283,23 @@ function edit(record) {
     });
     //赋值
     Object.assign(formData, tmpData);
+    formData.status = record.status + ''
+    getGoods(formData.id)
+    if(record.copyId){
+      formData.id = ''
+    }
   });
 }
+
+function getGoods(id){
+    billDetail({billId: id}).then(res=>{
+    // dataSourceDetail.value = [...res]
+    nextTick(()=>{
+      goodsRef.value.setValue([...res])
+    })
+  })
+}
+
 function validateForm(){
   if(!formData.supplierId){
     createMessage.warning('请选择供应商');
@@ -317,7 +334,7 @@ function resetForm() {
   formData.discountAmount = undefined
   formData.debtAmount = undefined
   formData.hisDebtAmount = undefined
-  formData.status = undefined
+  formData.status = ''
   formData.billStatus = undefined
   formData.careNo = ''
   formData.contractCode = ''
@@ -413,6 +430,7 @@ async function submitForm() {
 defineExpose({
   add,
   edit,
+  clickSave,
   submitForm,
 });
 </script>

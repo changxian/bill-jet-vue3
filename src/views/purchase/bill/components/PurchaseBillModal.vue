@@ -1,7 +1,7 @@
 <template>
-  <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
+  <j-modal :title="title" :width="width"  :fullscreen="true" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
            cancelText="关闭">
-    <PurchaseBillForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseBillForm>
+    <PurchaseBillForm ref="registerForm" :showBtn="false" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseBillForm>
   </j-modal>
 </template>
 
@@ -36,15 +36,24 @@
     title.value = disableSubmit.value ? '详情' : '编辑';
     visible.value = true;
     nextTick(() => {
+      record.copyId = false;
       registerForm.value.edit(record);
     });
   }
   
+  function copyAdd(record){
+    title.value = '新增';
+    visible.value = true;
+    nextTick(() => {
+      record.copyId = true;
+      registerForm.value.edit(record);
+    });
+  }
   /**
    * 确定按钮点击事件
    */
   function handleOk() {
-    registerForm.value.submitForm();
+    registerForm.value.clickSave();
   }
 
   /**
@@ -65,6 +74,7 @@
   defineExpose({
     add,
     edit,
+    copyAdd,
     disableSubmit,
   });
 </script>

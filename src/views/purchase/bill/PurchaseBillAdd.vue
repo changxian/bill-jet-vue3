@@ -1,7 +1,7 @@
 <template>
 <!--  <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"-->
 <!--           cancelText="关闭">&ndash;&gt;-->
-    <PurchaseBillForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseBillForm>
+    <PurchaseBillForm ref="registerForm" :showBtn="true" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseBillForm>
 <!--  </j-modal>-->
 </template>
 
