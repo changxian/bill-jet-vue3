@@ -47,7 +47,7 @@
     </BasicTable>
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
-    <ModifyModal ref="modifyModalRef" @refresh="reload"></ModifyModal>
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <div class="tbl-wrap">
        <a-spin :spinning="detailLoading">
          <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
@@ -78,8 +78,6 @@
   const registerModal = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
-  let selectedIds:any = []
-  let selectedRows:any = []
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -88,6 +86,7 @@
       columns,
       canResize:false,
       useSearchForm: false,
+      clickToRowSelect: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -95,13 +94,7 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
       },
-      rowSelection: { type: 'checkbox',
-        onChange: function(ids, rows) {
-          console.log('select:', rows, ids)
-          selectedIds = ids;
-          selectedRows = rows
-        }
-       }, 
+      rowSelection: { type: 'checkbox'}, 
     },
     exportConfig: {
       name: "进货开单",
@@ -113,7 +106,7 @@
 	    success: handleSuccess
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -121,23 +114,20 @@
     xxl:4
   });
   function handleDel() {
-      if(selectedIds.length === 0){
+      if(selectedRowKeys.value.length === 0){
         return createMessage.warning('请先选择数据');
       }
-       createConfirm({
-          title: '删除',
-          content: `确定要删除吗？`,
-          iconType: 'warning',
-          onOk: () => {
-
-          }
-        });
+      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   function handleModify(type) {
-      if(selectedIds.length === 0){
+      if(selectedRowKeys.value.length === 0){
         return createMessage.warning('请先选择数据');
       }
-      modifyModalRef.value.show(type, selectedRows[0])
+      const row = selectedRows.value[0]
+      if(type === 'status' && row.status === 5){
+        return createMessage.warning('已经审核了，就不能修改了');
+      }
+      modifyModalRef.value.show(type, row)
   }
   const wrapperCol = reactive({
     xs: 24,

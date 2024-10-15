@@ -12,6 +12,19 @@ enum Api {
   importExcel = '/purchase/bill/purchaseBill/importExcel',
   exportXls = '/purchase/bill/purchaseBill/exportXls',
   billDetail = '/purchase/bill/purchaseBill/billDetail',
+  editStatus = '/purchase/bill/purchaseBill/editStatus',
+  editBillStatus = '/purchase/bill/purchaseBill/editBillStatus',
+  editInfo = '/purchase/bill/purchaseBill/editInfo',
+}
+
+export const editStatus = (params) => {
+  return defHttp.post({ url:  Api.editStatus, params }, { isTransformResponse: false });
+}
+export const editBillStatus = (params) => {
+  return defHttp.post({ url:  Api.editBillStatus, params }, { isTransformResponse: false });
+}
+export const editInfo = (params) => {
+  return defHttp.post({ url:  Api.editInfo, params }, { isTransformResponse: false });
 }
 
 /**
