@@ -49,6 +49,8 @@ import {  BasicColumn, BasicTable } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
 import { useMessage } from '/@/hooks/web/useMessage';
 import {getMyBillSetting} from '@/views/setting/system/index.api'
+import {useUserStore} from '/@/store/modules/user';
+
 
 const emit = defineEmits(['change-goods'])
  const { createMessage, createConfirm } = useMessage();
@@ -134,6 +136,7 @@ const columns: BasicColumn[] = [
     editComponent: 'Input',
   }
   ];
+  const userStore = useUserStore();
   const dataSource:any = ref([])
   // 列表页面公共参数、方法
   let delIds:any = []
@@ -142,6 +145,7 @@ const columns: BasicColumn[] = [
     tableProps: {
       title: '商品详情',
       columns: columns,
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
     //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选 
