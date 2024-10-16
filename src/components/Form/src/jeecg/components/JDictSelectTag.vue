@@ -130,7 +130,7 @@
           });
         }
         if (!props.url && !props.dictCode) {
-          dictOptions.value = props.options;
+          initOptions( props.options);
         }
         //update-end-author:taoyan date: 如果没有提供dictCode 可以走options的配置--
       });
@@ -146,10 +146,21 @@
           }
         }
       );
+      //修复 自定义option  类型和后台不一致 不能回显问题
+      function initOptions(options){
+        let {  numberToString,stringToNumber} = props;
+        dictOptions.value =options.reduce((prev, next) => {
+          if (next) {
+            next.value=numberToString ?(next.value+''):(stringToNumber ? +(next.value) : (next.value));
+            prev.push(next);
+          }
+          return prev;
+        }, []);
+      }
       //update-end-author:taoyan date:20220404 for: 使用useRuleFormItem定义的value，会有一个问题，如果不是操作设置的值而是代码设置的控件值而不能触发change事件
 
       async function initUrlData() {
-        let { url,labelField,valueField} = props;
+        let { url,labelField,valueField, numberToString,stringToNumber} = props;
         //根据字典Code, 初始化字典数组
         const urlData = await initUrlOptions(url,{});
         dictOptions.value = urlData.reduce((prev, next) => {
@@ -157,7 +168,7 @@
             const value = next[valueField];
             prev.push({
               label: next[labelField],
-              value: value,
+              value: numberToString ?(value+''):(stringToNumber ? +value : value),
               color: next['color'],
               ...omit(next, ['text', 'value', 'color']),
             });

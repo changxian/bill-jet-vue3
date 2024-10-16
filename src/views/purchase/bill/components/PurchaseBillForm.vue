@@ -114,7 +114,6 @@
                 name="status"
               >
                 <j-dict-select-tag
-                 :stringToNumber="true"
                   v-model:value="formData.status"
                   :options="statusOptions"
                   dictCode=""
