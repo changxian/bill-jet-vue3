@@ -23,6 +23,7 @@
           :class="getWrapperClass"
           ref="elRef"
           @change="handleChange"
+          @blur="handleSubmitClick"
           @options-change="handleOptionsChange"
           @pressEnter="handleEnter"
         />
