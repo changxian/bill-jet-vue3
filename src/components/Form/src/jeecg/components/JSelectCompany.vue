@@ -6,6 +6,7 @@
     <a-form-item>
       <CompanySelectModal
         :rowKey="rowKey"
+        isRadioSelection
         @register="regModal"
         @getSelectResult="setValue"
         v-bind="getBindValue"

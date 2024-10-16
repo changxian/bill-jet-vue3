@@ -64,7 +64,7 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <goods ref="goodsRef"></goods>
+          <goods ref="goodsRef" @change-goods="changeGoods"></goods>
           <a-row>
             <!-- <a-col :span="span">
 							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
@@ -88,17 +88,17 @@
 						</a-col> -->
             <a-col :span="span">
               <a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
-                <a-input-number v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
+                <a-input-number @change="changeMoney" v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="PurchaseBillForm-discountAmount" name="discountAmount">
-                <a-input-number v-model:value="formData.discountAmount" placeholder="请输入优惠金额" style="width: 100%" />
+                <a-input-number @change="changeMoney" v-model:value="formData.discountAmount" placeholder="请输入优惠金额" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
-                <a-input-number v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
+                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -205,9 +205,9 @@ const formData = reactive({
   supplierContact: '',
   count: undefined,
   amount: undefined,
-  paymentAmount: undefined,
-  discountAmount: undefined,
-  debtAmount: undefined,
+  paymentAmount: 0,
+  discountAmount: 0,
+  debtAmount: 0,
   hisDebtAmount: undefined,
   careNo: '',
   contractCode: '',
@@ -219,6 +219,7 @@ const formData = reactive({
   version: undefined,
   createName: '',
 });
+
 const rules: Record<string, Rule[]> = {
   companyId: [{ required: true, message: '必填', trigger: 'blur' }],
   supplierId: [{ required: true, message: '必填', trigger: 'blur' }],
@@ -260,7 +261,24 @@ function changeSupplier(val, selectRows) {
     formData.supplierAddress = selectRows[0].address;
   }
 }
+let amount = 0
+function changeGoods(goods) {
+  let num = 0
+    goods.forEach(item=>{
+        num += item.costAmount;
+    })
+    amount = num
+    calcDebtAmount()
+}
 
+function changeMoney(){
+  calcDebtAmount()
+}
+function calcDebtAmount(){
+  if(amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
+    formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount
+  }
+}
 /**
  * 新增
  */
@@ -329,9 +347,9 @@ function resetForm() {
   formData.supplierContact = ''
   formData.count = undefined
   formData.amount = undefined
-  formData.paymentAmount = undefined
-  formData.discountAmount = undefined
-  formData.debtAmount = undefined
+  formData.paymentAmount = 0
+  formData.discountAmount = 0
+  formData.debtAmount = 0
   formData.hisDebtAmount = undefined
   formData.status = ''
   formData.billStatus = undefined

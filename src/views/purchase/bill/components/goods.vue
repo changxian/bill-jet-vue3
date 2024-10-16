@@ -1,11 +1,12 @@
   <template>
   <div>
     <a-row>
-      <a-col :span="8">
+      <a-col :span="8" style="position:relative">
         <a-form-item label="商品搜索"  id="PurchaseBillForm-companyId" name="goodsName">
           <div style="display: flex">
             <a-input v-model:value="goodsName" placeholder="条码/编号/名称/简拼/规格" />
             <a-button type="primary" style="margin-left: 10px" @click="showModal">选择</a-button>
+            <div v-if="goodsNameRepeat" style="color:red;position:absolute;left:104%;width:150px;top:6px"> 商品不可重复选择</div>
           </div>
         </a-form-item>
       </a-col>
@@ -24,11 +25,11 @@
     <div class="tbl-wrap">
          <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
         <template #tableTitle>
-             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-auth="'purchase.bill:jxc_purchase_bill:add'">插入行</a-button>
+             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'purchase.bill:jxc_purchase_bill:add'">插入行</a-button>
              <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'purchase.bill:jxc_purchase_bill:add'">删除</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">剪切</a-button>
+             <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">剪切</a-button>
              <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">复制</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">粘贴</a-button>
+             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">粘贴</a-button> -->
         </template>
         </BasicTable>
         <div class="count-wrap">
@@ -41,13 +42,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref,computed } from 'vue';
+import { ref, computed, defineEmits } from 'vue';
 import goodsSelectList from '@/views/base/goods/index.vue';
 import { BasicModal, useModal } from '/@/components/Modal';
 import {  BasicColumn, BasicTable } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
 import { useMessage } from '/@/hooks/web/useMessage';
+import {getMyBillSetting} from '@/views/setting/system/index.api'
 
+const emit = defineEmits(['change-goods'])
  const { createMessage, createConfirm } = useMessage();
 
 const goodsId = ref('');
@@ -156,6 +159,22 @@ const columns: BasicColumn[] = [
 selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
   const [registerTable, { reload }, {rowSelection}] = tableContext;
  
+ // 校验商品是否可重复添加
+ const goodsNameRepeat = ref(false);
+ const editAmountEditPrice = ref(false)
+ const  onlyChooseGoods = ref(false)
+ const decimalPlaces = ref(2)
+
+ getMyBillSetting().then(res=>{
+  goodsNameRepeat.value = !! res.goodsNameRepeat
+  editAmountEditPrice.value = !! res.editAmountEditPrice
+  onlyChooseGoods.value = !! res.onlyChooseGoods
+  if(res.decimalPlaces === 0 || res.decimalPlaces){
+    decimalPlaces.value = res.decimalPlaces
+  }
+ })
+
+
 const handleOk = (e: MouseEvent) => {
   console.log('ok:',e);
   selectedGoods.forEach(item=>{
@@ -166,14 +185,24 @@ const handleOk = (e: MouseEvent) => {
     item.goodsUnit = item.unit
     item.count = item.stock
   })
+  if(goodsNameRepeat.value){
+     selectedGoods = removedExistGoods(selectedGoods)
+  }
   if(dataSource.value.length){
     dataSource.value = [...dataSource.value, ...selectedGoods]
   }else{
     dataSource.value = [...selectedGoods]
   }
+  emit('change-goods', [...dataSource.value])
   
   closeModal()
 };
+// 去掉已重发的商品
+function removedExistGoods(goods){
+  const ids = dataSource.value.map(item=>item.id)
+  const tmp = goods.filter(item => ids.indexOf(item.id) === -1)
+  return tmp
+}
 
 const countNum = computed(()=>{
     let  num = 0
@@ -227,8 +256,13 @@ function delRow(){
      console.log('==', record, index, key, value)
      if(key === 'cost'){
         record.costAmount = value * record.count;
+        emit('change-goods', [...dataSource.value])
      }else if(key === 'count'){
          record.costAmount = value * record.cost;
+        emit('change-goods', [...dataSource.value])
+     }else if(editAmountEditPrice.value && key === 'costAmount'){
+        record.cost = ((value*100 / record.count)/100).toFixed(decimalPlaces.value)
+        emit('change-goods', [...dataSource.value])
      }
   }
 function test(){
