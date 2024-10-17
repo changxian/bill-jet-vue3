@@ -4,13 +4,13 @@ import { useMessage } from "/@/hooks/web/useMessage";
 const { createConfirm } = useMessage();
 
 enum Api {
-  list = '/purchase/debtdetail/purchaseDebtDetail/list',
-  save='/purchase/debtdetail/purchaseDebtDetail/add',
-  edit='/purchase/debtdetail/purchaseDebtDetail/edit',
-  deleteOne = '/purchase/debtdetail/purchaseDebtDetail/delete',
-  deleteBatch = '/purchase/debtdetail/purchaseDebtDetail/deleteBatch',
-  importExcel = '/purchase/debtdetail/purchaseDebtDetail/importExcel',
-  exportXls = '/purchase/debtdetail/purchaseDebtDetail/exportXls',
+  list = '/purchase/debtdetail/debtDetail/list',
+  save='/purchase/debtdetail/debtDetail/add',
+  edit='/purchase/debtdetail/debtDetail/edit',
+  deleteOne = '/purchase/debtdetail/debtDetail/delete',
+  deleteBatch = '/purchase/debtdetail/debtDetail/deleteBatch',
+  importExcel = '/purchase/debtdetail/debtDetail/importExcel',
+  exportXls = '/purchase/debtdetail/debtDetail/exportXls',
 }
 
 /**
