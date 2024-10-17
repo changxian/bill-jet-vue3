@@ -38,18 +38,18 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <DebtDetailModal ref="registerModal" @success="handleSuccess"></DebtDetailModal>
+    <PurchaseDebtDetailModal ref="registerModal" @success="handleSuccess"></PurchaseDebtDetailModal>
   </div>
 </template>
 
-<script lang="ts" name="purchase.debtdetail-debtDetail" setup>
+<script lang="ts" name="purchase.debtdetail-purchaseDebtDetail" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './DebtDetail.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DebtDetail.api';
+  import { columns, superQuerySchema } from './PurchaseDebtDetail.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseDebtDetail.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import DebtDetailModal from './components/DebtDetailModal.vue'
+  import PurchaseDebtDetailModal from './components/PurchaseDebtDetailModal.vue'
   import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();

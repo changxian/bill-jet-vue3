@@ -70,18 +70,18 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <DebtModal ref="registerModal" @success="handleSuccess"></DebtModal>
+    <PurchaseDebtModal ref="registerModal" @success="handleSuccess"></PurchaseDebtModal>
   </div>
 </template>
 
-<script lang="ts" name="purchase.debt-debt" setup>
+<script lang="ts" name="purchase.debt-purchaseDebt" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './Debt.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Debt.api';
+  import { columns, superQuerySchema } from './PurchaseDebt.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseDebt.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import DebtModal from './components/DebtModal.vue'
+  import PurchaseDebtModal from './components/PurchaseDebtModal.vue'
   import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();

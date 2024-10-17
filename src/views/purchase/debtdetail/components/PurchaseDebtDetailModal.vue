@@ -1,12 +1,12 @@
 <template>
   <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel" cancelText="关闭">
-    <DebtForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></DebtForm>
+    <PurchaseDebtDetailForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></PurchaseDebtDetailForm>
   </j-modal>
 </template>
 
 <script lang="ts" setup>
   import { ref, nextTick, defineExpose } from 'vue';
-  import DebtForm from './DebtForm.vue'
+  import PurchaseDebtDetailForm from './PurchaseDebtDetailForm.vue'
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   
   const title = ref<string>('');
