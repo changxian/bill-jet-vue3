@@ -4,6 +4,38 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <a-col :lg="6">
+            <a-form-item name="supplierName">
+              <template #label><span title="供应商名">供应商名</span></template>
+              <a-input placeholder="请输入供应商名" v-model:value="queryParam.supplierName" allow-clear ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="6">
+            <a-form-item name="supplierPhone">
+              <template #label><span title="供应商手机">供应商手</span></template>
+              <a-input placeholder="请输入供应商手机" v-model:value="queryParam.supplierPhone" allow-clear ></a-input>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :lg="6">
+              <a-form-item name="supplierContact">
+                <template #label><span title="供应商联系人">供应商联</span></template>
+                <a-input placeholder="请输入供应商联系人" v-model:value="queryParam.supplierContact" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
