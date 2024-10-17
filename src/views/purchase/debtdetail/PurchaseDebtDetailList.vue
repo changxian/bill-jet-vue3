@@ -4,6 +4,56 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <a-col :lg="6">
+            <a-form-item name="billNo">
+              <template #label><span title="单号">单号</span></template>
+              <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="6">
+            <a-form-item name="billDate">
+              <template #label><span title="日期">日期</span></template>
+              <a-range-picker showTime value-format="YYYY-MM-DD HH:mm:ss" v-model:value="queryParam.billDate" class="query-group-cust"/>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :lg="6">
+              <a-form-item name="type">
+                <template #label><span title="欠款类型（1：进货欠款，2：退货欠款）">欠款类型</span></template>
+                <a-input placeholder="请输入欠款类型（1：进货欠款，2：退货欠款）" v-model:value="queryParam.type" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="userName">
+                <template #label><span title="业务员">业务员</span></template>
+                <a-input placeholder="请输入业务员" v-model:value="queryParam.userName" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="createName">
+                <template #label><span title="制单人">制单人</span></template>
+                <a-input placeholder="请输入制单人" v-model:value="queryParam.createName" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="remark">
+                <template #label><span title="备注">备注</span></template>
+                <a-input placeholder="请输入备注" v-model:value="queryParam.remark" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -51,6 +101,7 @@
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseDebtDetailModal from './components/PurchaseDebtDetailModal.vue'
   import { useUserStore } from '/@/store/modules/user';
+  import { cloneDeep } from "lodash-es";
 
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -70,7 +121,8 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        return Object.assign(params, queryParam);
+        let rangerQuery = await setRangeQuery();
+        return Object.assign(params, rangerQuery);
       },
     },
     exportConfig: {
@@ -206,6 +258,30 @@
 
 
 
+  
+  let rangeField = 'billDate,'
+  
+  /**
+   * 设置范围查询条件
+   */
+  async function setRangeQuery(){
+    let queryParamClone = cloneDeep(queryParam);
+    if (rangeField) {
+      let fieldsValue = rangeField.split(',');
+      fieldsValue.forEach(item => {
+        if (queryParamClone[item]) {
+          let range = queryParamClone[item];
+          queryParamClone[item+'_begin'] = range[0];
+          queryParamClone[item+'_end'] = range[1];
+          delete queryParamClone[item];
+        } else {
+          queryParamClone[item+'_begin'] = '';
+          queryParamClone[item+'_end'] = '';
+        }
+      })
+    }
+    return queryParamClone;
+  }
 </script>
 
 <style lang="less" scoped>
