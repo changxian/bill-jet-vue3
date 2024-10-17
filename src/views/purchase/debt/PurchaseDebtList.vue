@@ -1,51 +1,35 @@
 <template>
   <div class="p-2">
+    <div class="btns-wrap">
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtHandle">还款</a-button>
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">一键还款</a-button>
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">还款明细</a-button>
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">导出欠款</a-button>
+    </div>
+    <div class="purchase-debt-List">
+    <div class="left-tbl">
     <!--查询区域-->
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-row :gutter="24">
-          <a-col :lg="6">
-            <a-form-item name="supplierName">
-              <template #label><span title="供应商名">供应商名</span></template>
-              <a-input placeholder="请输入供应商名" v-model:value="queryParam.supplierName" allow-clear ></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :lg="6">
-            <a-form-item name="supplierPhone">
-              <template #label><span title="供应商手机">供应商手</span></template>
-              <a-input placeholder="请输入供应商手机" v-model:value="queryParam.supplierPhone" allow-clear ></a-input>
-            </a-form-item>
-          </a-col>
-          <template v-if="toggleSearchStatus">
-            <a-col :lg="6">
-              <a-form-item name="supplierContact">
-                <template #label><span title="供应商联系人">供应商联</span></template>
-                <a-input placeholder="请输入供应商联系人" v-model:value="queryParam.supplierContact" allow-clear ></a-input>
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
-              <a-col :lg="6">
-                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>
-              </a-col>
-            </span>
-          </a-col>
-        </a-row>
+        <div class="query-wrap">
+            <a-select
+              ref="select"
+              v-model:value="queryType"
+              style="width:120px"
+            >
+              <a-select-option value="supplierName">名称</a-select-option>
+              <a-select-option value="supplierPhone">手机</a-select-option>
+              <a-select-option value="supplierContact">联系人</a-select-option>
+          </a-select>
+          <a-input placeholder="请输入" v-model:value="queryTypeValue" allow-clear ></a-input>
+          <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+        </div>
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.debt:jxc_purchase_debt:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'purchase.debt:jxc_purchase_debt:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'purchase.debt:jxc_purchase_debt:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -59,8 +43,6 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -72,17 +54,26 @@
     <!-- 表单区域 -->
     <PurchaseDebtModal ref="registerModal" @success="handleSuccess"></PurchaseDebtModal>
   </div>
+    <div class="right-tbl">
+    <PurchaseDebtDetailList ref="purchaseDebtDetailListRef"/>
+  </div>
+  </div>
+  </div>
 </template>
 
 <script lang="ts" name="purchase.debt-purchaseDebt" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './PurchaseDebt.data';
+  import { columns } from './PurchaseDebt.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseDebt.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseDebtModal from './components/PurchaseDebtModal.vue'
   import { useUserStore } from '/@/store/modules/user';
+  import PurchaseDebtDetailList from '/@/views/purchase/debtdetail/PurchaseDebtDetailList.vue'
+
+  const queryType = ref('supplierName')
+  const queryTypeValue = ref('')
 
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -97,12 +88,16 @@
       columns,
       canResize:false,
       useSearchForm: false,
+      showActionColumn:false,
       actionColumn: {
         width: 120,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        return Object.assign(params, queryParam);
+        const queryVal = {
+          [queryType.value]: queryTypeValue.value
+        }
+        return Object.assign(params, queryVal);
       },
     },
     exportConfig: {
@@ -126,10 +121,15 @@
     xs: 24,
     sm: 20,
   });
+const purchaseDebtDetailListRef = ref('purchaseDebtDetailListRef')
+function rowClick(record){
+  console.log('record:')
+  purchaseDebtDetailListRef.value.searchBySupplierId(record.id)
+}
 
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
-
+function debtHandle(){
+  console.log(purchaseDebtDetailListRef.value.getSelectedData())
+}
   /**
    * 高级查询事件
    */
@@ -241,8 +241,28 @@
 </script>
 
 <style lang="less" scoped>
+.p-2{
+  background-color: #fff;
+  button{
+    margin: 0 10px;
+  }
+}
+.purchase-debt-List{
+  
+  display: flex;
+  .left-tbl{
+    width:550px
+  }
+  .right-tbl{
+    flex:1;
+    overflow-x:auto;
+  }
+}
   .jeecg-basic-table-form-container {
     padding: 0;
+    .query-wrap{
+      display:flex;
+    }
     .table-page-search-submitButtons {
       display: block;
       margin-bottom: 24px;

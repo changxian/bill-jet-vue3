@@ -61,9 +61,6 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.debtdetail:jxc_purchase_debt_detail:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'purchase.debtdetail:jxc_purchase_debt_detail:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'purchase.debtdetail:jxc_purchase_debt_detail:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -77,8 +74,6 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -93,7 +88,7 @@
 </template>
 
 <script lang="ts" name="purchase.debtdetail-purchaseDebtDetail" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive,defineExpose } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, superQuerySchema } from './PurchaseDebtDetail.data';
@@ -108,6 +103,7 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
+  const supplierId = ref('')
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -116,13 +112,14 @@
       columns,
       canResize:false,
       useSearchForm: false,
+      showActionColumn:false,
       actionColumn: {
         width: 120,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
         let rangerQuery = await setRangeQuery();
-        return Object.assign(params, rangerQuery);
+        return Object.assign(params, rangerQuery, {supplierId: supplierId.value});
       },
     },
     exportConfig: {
@@ -135,7 +132,7 @@
 	    success: handleSuccess
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -147,8 +144,6 @@
     sm: 20,
   });
 
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
 
   /**
    * 高级查询事件
@@ -282,6 +277,20 @@
     }
     return queryParamClone;
   }
+  function searchBySupplierId(id){
+    supplierId.value = id
+    reload()
+  }
+  function getSelectedData(){
+    return {
+      selectedRowKeys: selectedRowKeys.value, 
+      selectedRows: selectedRows.value
+    }
+  }
+  defineExpose({
+    searchBySupplierId,
+    getSelectedData
+  })
 </script>
 
 <style lang="less" scoped>
