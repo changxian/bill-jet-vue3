@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-           进货对账单
+           进货统计
   </div>
 </template>
 
