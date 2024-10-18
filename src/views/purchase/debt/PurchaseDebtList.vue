@@ -2,7 +2,7 @@
   <div class="p-2">
     <div class="btns-wrap">
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtHandle">还款</a-button>
-        <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">一键还款</a-button>
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="oneKeyDebt">一键还款</a-button>
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">还款明细</a-button>
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">导出欠款</a-button>
     </div>
@@ -58,6 +58,8 @@
     <PurchaseDebtDetailList ref="purchaseDebtDetailListRef"/>
   </div>
   </div>
+  <DeptDialog ref="deptDialogRef"/>
+  <OneKeyDeptDialog ref="oneKeyDeptDialogRef"/>
   </div>
 </template>
 
@@ -69,12 +71,16 @@
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseDebt.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseDebtModal from './components/PurchaseDebtModal.vue'
+  import DeptDialog from './components/DeptDialog.vue'
+  import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue'
   import { useUserStore } from '/@/store/modules/user';
   import PurchaseDebtDetailList from '/@/views/purchase/debtdetail/PurchaseDebtDetailList.vue'
 
   const queryType = ref('supplierName')
   const queryTypeValue = ref('')
 
+  const deptDialogRef = ref() 
+  const oneKeyDeptDialogRef = ref()
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -128,7 +134,12 @@ function rowClick(record){
 }
 
 function debtHandle(){
+  console.log('=====',deptDialogRef.value)
+  deptDialogRef.value.show({})
   console.log(purchaseDebtDetailListRef.value.getSelectedData())
+}
+function oneKeyDebt() {
+  oneKeyDeptDialogRef.value.show({})
 }
   /**
    * 高级查询事件

@@ -12,7 +12,7 @@
         >
           <a-row>
             <a-col :span="span">
-              <a-form-item label="公司名称(记录开票时的公司名称）" v-bind="validateInfos.companyId" id="PurchaseBillForm-companyId" name="companyId">
+              <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="PurchaseBillForm-companyId" name="companyId">
                 <j-select-company v-model:value="formData.companyId" @change="changeCompany" allow-clear />
               </a-form-item>
             </a-col>
