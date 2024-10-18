@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" name="purchase.supplier-supplier" setup>
+<script lang="ts" name="purchase.checkbill-PurchaseCheckBill" setup>
  
  
 </script>
