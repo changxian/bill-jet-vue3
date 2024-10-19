@@ -3,7 +3,7 @@
     <div class="btns-wrap">
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtHandle">还款</a-button>
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="oneKeyDebt">一键还款</a-button>
-        <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">还款明细</a-button>
+        <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtDetailHandle">还款明细</a-button>
         <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">导出欠款</a-button>
     </div>
     <div class="purchase-debt-List">
@@ -60,6 +60,7 @@
   </div>
   <DeptDialog ref="deptDialogRef"/>
   <OneKeyDeptDialog ref="oneKeyDeptDialogRef"/>
+  <DebtDetailDialog ref="debtDetailDialogRef"/>
   </div>
 </template>
 
@@ -73,6 +74,7 @@
   import PurchaseDebtModal from './components/PurchaseDebtModal.vue'
   import DeptDialog from './components/DeptDialog.vue'
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue'
+  import DebtDetailDialog from './components/DebtDetailDialog.vue'
   import { useUserStore } from '/@/store/modules/user';
   import PurchaseDebtDetailList from '/@/views/purchase/debtdetail/PurchaseDebtDetailList.vue'
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -83,6 +85,7 @@
   const { createMessage } = useMessage();
   const deptDialogRef = ref() 
   const oneKeyDeptDialogRef = ref()
+  const debtDetailDialogRef = ref()
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -161,6 +164,16 @@ function oneKeyDebt() {
     ...selectedRows.value[0],
   }
   oneKeyDeptDialogRef.value.show(params)
+}
+function debtDetailHandle() {
+  if(selectedRows.value.length === 0) {
+    debtDetailDialogRef.value.show()
+  }else{
+    debtDetailDialogRef.value.show({
+    ...selectedRows.value[0],
+  })
+  }
+  
 }
   /**
    * 高级查询事件
