@@ -75,10 +75,12 @@
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue'
   import { useUserStore } from '/@/store/modules/user';
   import PurchaseDebtDetailList from '/@/views/purchase/debtdetail/PurchaseDebtDetailList.vue'
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const queryType = ref('supplierName')
   const queryTypeValue = ref('')
 
+  const { createMessage } = useMessage();
   const deptDialogRef = ref() 
   const oneKeyDeptDialogRef = ref()
   const formRef = ref();
@@ -95,6 +97,10 @@
       canResize:false,
       useSearchForm: false,
       showActionColumn:false,
+      clickToRowSelect: true,
+      rowSelection: {
+        type: 'radio'
+      },
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -116,7 +122,7 @@
 	    success: handleSuccess
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -134,12 +140,27 @@ function rowClick(record){
 }
 
 function debtHandle(){
-  console.log('=====',deptDialogRef.value)
-  deptDialogRef.value.show({})
-  console.log(purchaseDebtDetailListRef.value.getSelectedData())
+  if(selectedRows.value.length === 0) {
+    return createMessage.warning('请选择供应商')
+  }
+  const selectedBillData = purchaseDebtDetailListRef.value.getSelectedData().selectedRows
+  if(selectedBillData.length === 0) {
+    return createMessage.warning('请选择相关单')
+  }
+  const params = {
+    ...selectedRows.value[0],
+    ...selectedBillData[0]
+  }
+  deptDialogRef.value.show(params)
 }
 function oneKeyDebt() {
-  oneKeyDeptDialogRef.value.show({})
+  if(selectedRows.value.length === 0) {
+    return createMessage.warning('请选择供应商')
+  }
+  const params = {
+    ...selectedRows.value[0],
+  }
+  oneKeyDeptDialogRef.value.show(params)
 }
   /**
    * 高级查询事件

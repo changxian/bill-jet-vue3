@@ -142,6 +142,7 @@ async function handleOk() {
       })
       //赋值
       Object.assign(formData, tmpData);
+      formData.debtAmount = formData.returnDebtAmount + formData.purchaseDebtAmount
     }
 
     function handleCancel(){

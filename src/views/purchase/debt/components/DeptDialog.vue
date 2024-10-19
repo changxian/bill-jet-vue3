@@ -23,8 +23,8 @@
                             </a-form-item>
                        </a-col>
 						<a-col :span="24">
-							<a-form-item label="欠款单号" v-bind="validateInfos.supplierId" id="PurchaseDebtForm-supplierId" name="supplierId">
-								<a-input v-model:value="formData.supplierId" placeholder="请输入供应商id"  allow-clear ></a-input>
+							<a-form-item label="欠款单号" v-bind="validateInfos.billNo" id="PurchaseDebtForm-billNo" name="billNo">
+								<a-input v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -81,6 +81,7 @@
     userName: userStore.getUserInfo.username,   
     collectCompanyName: '',   
     debtAmount: '',   
+    billNo: '',   
     repayAmount: '',   
     supplierName: '',   
     supplierPhone: '',   
@@ -129,6 +130,8 @@ async function handleOk() {
       })
       //赋值
       Object.assign(formData, tmpData);
+      formData.collectCompanyName = record.supplierName
+      formData.userName = userStore.getUserInfo.username
     }
 
     function handleCancel(){
