@@ -17,11 +17,13 @@ const numCountCol =  {
 const detailCol =  {
     title: '明细',
     align: "center",
-    dataIndex: 'detail'
+    dataIndex: 'detail',
+    slots: { customRender: 'detail' },
   }
   const countCol =  {
     title: '合计',
     align: "center",
+    slots: { customRender: 'count' },
     dataIndex: 'count'
   }
 // 按商品统计

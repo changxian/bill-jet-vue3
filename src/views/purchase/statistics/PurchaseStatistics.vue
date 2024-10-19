@@ -60,7 +60,15 @@
         <!-- 高级查询 -->
         <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
+      <!-- 明细 -->
+      <template #detail="{ record }">
+         <a-button @click="lookDetail(record)" preIcon="ant-design:container-outlined"></a-button>
+      </template>
+      <template #count="{ record }">
+         <a-button @click="lookDetail(record)" preIcon="ant-design:credit-card-outlined"></a-button>
+      </template>
     </BasicTable>
+    <DetailDialog ref="detailDialogRef" />
   </div>
 </template>
 
@@ -75,6 +83,7 @@
     import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
     import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+    import DetailDialog from './components/DetailDialog.vue'
  
 
  const queryParam = reactive<any>({queryType: 'goodsCountColumns', companyId: '', companyName: ''});
@@ -106,6 +115,7 @@ const columns = ref(goodsCountColumns)
       useSearchForm: false,
       showActionColumn:false,
       clickToRowSelect: true,
+      showIndexColumn: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -138,7 +148,10 @@ function changeType(){
   columns.value = columnObj[queryParam.queryType]
   reload()
 }
-   
+   const detailDialogRef = ref()
+   function lookDetail(record){
+    detailDialogRef.value.show(queryParam.queryType, record)
+   }
   
   /**
    * 查询
