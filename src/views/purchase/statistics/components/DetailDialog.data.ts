@@ -84,3 +84,37 @@ export const columns: BasicColumn[] = [
  
 ];
 
+//列表数据
+export const totalColumns: BasicColumn[] = [
+    {
+      title: '商品编号(条码)',
+      align: 'center',
+      dataIndex: 'goodsCode',
+     },
+     {
+      title: '商品名称',
+      align: 'center',
+      dataIndex: 'goodsName',
+     },
+     {
+      title: '规格型号',
+      align: 'center',
+      dataIndex: 'goodsType',
+     },
+     {
+      title: '单位',
+      align: 'center',
+      dataIndex: 'goodsUnit',
+     },
+     {
+      title: '数量',
+      align: 'center',
+      dataIndex: 'count',
+     },
+     {
+      title: '金额合计',
+      align: 'center',
+      dataIndex: 'costAmount',
+     }
+  ];
+  

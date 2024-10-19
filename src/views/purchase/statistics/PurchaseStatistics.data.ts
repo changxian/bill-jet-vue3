@@ -52,7 +52,7 @@ export const goodsCountColumns: BasicColumn[] = [
     numCountCol,
     amountCol,
     detailCol,
-    countCol
+    // countCol
   ];
   
   // 按类别统计
