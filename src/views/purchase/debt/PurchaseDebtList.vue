@@ -29,7 +29,7 @@
     <!--引用表格-->
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
-      <template #tableTitle>
+      <!-- <template #tableTitle>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -43,7 +43,7 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-      </template>
+      </template> -->
       <!--操作栏-->
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
@@ -94,7 +94,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '供应商欠款',
+      title: '欠款供应商',
       api: list,
       columns,
       canResize:false,
@@ -307,6 +307,8 @@ function debtDetailHandle() {
     padding: 0;
     .query-wrap{
       display:flex;
+      padding-top:10px;
+      padding-bottom:15px;
     }
     .table-page-search-submitButtons {
       display: block;

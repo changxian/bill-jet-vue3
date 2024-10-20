@@ -94,7 +94,7 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
       },
-      rowSelection: { type: 'checkbox'}, 
+      rowSelection: { type: 'radio'}, 
     },
     exportConfig: {
       name: "进货开单",
