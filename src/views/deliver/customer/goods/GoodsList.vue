@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerGoodsModal" title="搜索商品" @ok="handleGoodsSubmit" width="900px" :showCancelBtn="true" :showOkBtn="true">
+  <BasicModal v-bind="$attrs" @register="registerGoodsModal" title="搜索商品" @ok="handleGoodsSubmit" width="1100px" :showCancelBtn="true" :showOkBtn="true">
     <!--引用表格-->
     <BasicTable @register="registerGoodsTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
@@ -64,7 +64,7 @@
       },
       beforeFetch: (params) => {
         params['categoryId'] = categoryId.value;
-        params['custId'] = custId.value[0];
+        params['custId'] = custId.value
         return Object.assign(params, queryParam);
       },
     },
@@ -85,7 +85,7 @@
   async function handleGoodsSubmit() {
     const data: any = {};
     if (!data.custId) {
-      data.custId = custId.value[0];
+      data.custId = custId.value;
     }
     if (!data.custName) {
       data.custName = custName.value;

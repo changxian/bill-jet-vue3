@@ -1,8 +1,10 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="1000px" :showCancelBtn="false" :showOkBtn="false">
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="1200px" :showCancelBtn="false" :showOkBtn="false">
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @edit-end="handleEditEnd" @edit-cancel="handleEditCancel" :beforeEditSubmit="beforeEditSubmit" >
       <template #tableTitle>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增 </a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined">清空</a-button>
+        <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -21,7 +23,9 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/@/components/Table';
   import GoodsList from '../goods/GoodsList.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
+const { createConfirm } = useMessage();
   //注册modal
   const [registerGoodsModal, { openModal: goodsOpenModal }] = useModal();
 
@@ -37,16 +41,14 @@
       immediate: false,
       formConfig: {
         schemas: custPriceFormSchema,
-        labelCol: {
-          xxl: 8,
-        },
+        labelWidth: 100,
         actionColOptions: {
-          xs: 24,
-          sm: 8,
-          md: 8,
-          lg: 8,
-          xl: 8,
-          xxl: 8,
+          xs: 6,
+          sm: 6,
+          md: 6,
+          lg: 6,
+          xl: 6,
+          xxl:6,
         },
       },
       beforeFetch: (params) => {
@@ -78,6 +80,23 @@
     await deleteOne({ id: record.id }, handleSuccess);
   }
 
+function handleDel() {
+  console.log('custId', custId.value)
+    createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '确认删除所有数据吗？此操作无法恢复',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+        handleSuccess();
+    }
+  });
+
+}
+function onExportXls(){
+  console.log('custId', custId.value)
+}
   /**
    * 成功回调
    */
@@ -117,8 +136,8 @@
   function handleAdd() {
     goodsOpenModal(true, {
       isUpdate: false,
-      custId: unref(custId),
-      custName: unref(custName),
+      custId: custId.value,
+      custName: custName.value,
       showFooter: true,
     });
   }

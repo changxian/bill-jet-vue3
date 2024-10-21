@@ -235,7 +235,7 @@
       return;
     }
     custPriceModal(true, {
-      custId: unref(selectedRowKeys.value),
+      custId: unref(selectedRowKeys.value[0]),
       custName: unref(selectedRows.value[0].orgName),
     });
   }
