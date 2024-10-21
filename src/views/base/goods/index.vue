@@ -7,7 +7,7 @@
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
       <a-card :bordered="false" style="height: 100%">
-        <GoodsList :data="departData" @get-select="getSelect"/>
+        <GoodsList :data="departData" @db-ok="emits('db-ok')" @get-select="getSelect"/>
       </a-card>
     </a-col>
   </a-row>
@@ -22,7 +22,7 @@
 
   const { prefixCls } = useDesign('depart-user');
   provide('prefixCls', prefixCls);
-  const emits = defineEmits(['get-select'])
+  const emits = defineEmits(['get-select', 'db-ok'])
   // 当前选中的部门信息
   let departData = ref({});
 

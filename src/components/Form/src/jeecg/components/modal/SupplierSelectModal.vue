@@ -23,6 +23,7 @@
             :scroll="tableScroll"
             v-bind="getBindValue"
             :useSearchForm="true"
+            @dblclick="handleOk"
             :formConfig="formConfig"
             :api="getSupplierList"
             :searchInfo="searchInfo"

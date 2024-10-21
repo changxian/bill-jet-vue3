@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
@@ -68,7 +68,7 @@
     },
   });
 
-  const emits = defineEmits(['get-select']);
+  const emits = defineEmits(['get-select', 'db-ok']);
 
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
@@ -122,6 +122,13 @@
 
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
+  function handleOk(){
+    console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value)
+    if(selectedRowKeys.value.length > 0 ){
+       emits('get-select', selectedRows.value, selectedRowKeys.value);
+       emits('db-ok');
+    }
+  }
   watch(
     () => props.data,
     () => reload()
