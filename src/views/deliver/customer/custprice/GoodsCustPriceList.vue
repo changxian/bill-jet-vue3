@@ -118,7 +118,8 @@ function onExportXls(){
 
   // 模拟将指定数据保存
   async function feakSave({ value, key, id }) {
-    await updatePrice({ id: id, price: value }, reload());
+    await updatePrice({ id: id, price: value });
+     reload();
   }
 
   async function beforeEditSubmit({ record, index, key, value }) {
