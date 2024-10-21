@@ -87,7 +87,7 @@
       clickToRowSelect: false,
       showIndexColumn: true,
       formConfig: {
-        //labelWidth: 120,
+        labelWidth: 120,
         schemas: searchFormSchema,
         autoSubmitOnEnter: true,
         showAdvancedButton: true,

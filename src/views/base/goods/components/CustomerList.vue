@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-    <BasicModal v-bind="$attrs" @register="registerModal" destroyOnClose title="客户搜索" :width="750" >
+    <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleGoodsSubmit" destroyOnClose title="客户搜索" width="1100px" >
       <!--查询区域-->
       <div class="jeecg-basic-table-form-container">
         <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -44,6 +44,7 @@
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
+  import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
   import { computed, reactive, ref, unref, watch } from 'vue';
   import { useListPage } from '/src/hooks/system/useListPage';
   import { columns } from '../Customer.data';
@@ -58,7 +59,7 @@
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const [registerModal, { openModal }] = useModal();
+  const [registerModal, { openModal, closeModal }] = useModal();
   const userStore = useUserStore();
   const goodsId = ref<number>(0);
   const goodsName = ref<string>('');
@@ -110,6 +111,11 @@
     () => reload()
   );
 
+// 确定
+function handleGoodsSubmit(){
+  console.log('selectedRowKeys, selectedRows:', selectedRowKeys, selectedRows)
+   closeModal();
+}
   /**
    * 查询
    */
