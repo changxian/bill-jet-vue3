@@ -37,6 +37,11 @@
       immediate: false,
       formConfig: {
         schemas: custPriceFormSchema,
+        labelWidth: 120,
+        autoSubmitOnEnter: true,
+        showAdvancedButton: false,
+        fieldMapToNumber: [],
+        fieldMapToTime: [],
         labelCol: {
           xxl: 8,
         },
