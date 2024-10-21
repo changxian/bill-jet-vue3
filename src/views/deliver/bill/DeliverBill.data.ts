@@ -93,7 +93,7 @@ export const columns: BasicColumn[] = [
   {
     title: '开票状态（未开、不开、已开、无信息、其他）',
     align: "center",
-    dataIndex: 'invoiceStatus'
+    dataIndex: 'invoiceStatus_dictText'
   },
   {
     title: '成本',

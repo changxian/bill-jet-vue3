@@ -16,7 +16,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billDate'
   },
   {
-    title: '欠款类型（1：进货欠款，2：退货欠款）',
+    title: '欠款类型',
     align: "center",
     dataIndex: 'type_dictText'
   },
