@@ -2,6 +2,7 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
+        <a-divider orientation="left"> 开单 </a-divider>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="BillingSettingForm">
           <a-row>
 						<a-col :span="12">
@@ -9,11 +10,8 @@
                 <j-dict-select-tag @change="change" v-model:value="formData.billNoGenerateMethod" dictCode="billNoGenMethod" placeholder="请选择单号生成方式" />
 							</a-form-item>
 						</a-col>
-
 						<a-col :span="12">
-
-                <a-input v-model:value="billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
-
+              <a-input v-model:value="billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
 						</a-col>
           </a-row>
           <a-row>
@@ -43,7 +41,8 @@
           <a-row>
 						<a-col :span="4">
 							<a-form-item v-bind="validateInfos.autoCustPrice" id="BillingSettingForm-autoCustPrice" name="autoCustPrice">
-                <input type="checkbox" value="1" v-model="formData.autoCustPrice" /> 自动记录客户价
+<!--                <input type="checkbox" value="1" v-model="formData.autoCustPrice" /> 自动记录客户价-->
+                <a-checkbox type="checkbox" value="1" v-model:checked="formData.autoCustPrice"> 自动记录客户价</a-checkbox>
 							</a-form-item>
 						</a-col>
 						<a-col :span="4">
@@ -88,16 +87,16 @@
             </a-col>
           </a-row>
           <a-row v-if="formData?.dynaFieldsGroup">
-            <a-col  v-for="(item, index) in formData.dynaFieldsGroup['1']"
+            <a-col v-for="(item, index) in formData.dynaFieldsGroup['1']"
                     :key="item.fieldName"
-                    class="option-item"  :span="8">
+                    class="option-item" :span="6">
               <p style="margin-bottom: 10px">
-                <label class="underLine-label">{{item.fieldDesc}}:</label>
+                <label class="underLine-label">{{item.fieldDesc}}列名:</label>
                 <input class="underLine-text" v-model="item.fieldTitle" /></p>
              </a-col>
           </a-row>
 
-          <a-row>
+          <a-row style="margin-top: 25px">
 						<a-col :span="10">
 							<a-form-item label="金额计算方式" v-bind="validateInfos.amountComputeMethod" id="BillingSettingForm-amountComputeMethod" name="amountComputeMethod">
 								<j-dict-select-tag v-model:value="formData.amountComputeMethod" dictCode="amountComputedMethod" placeholder="请选择金额计算方式" />
@@ -169,7 +168,7 @@
           <a-row>
             <a-col :span="24">
               <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                <a-button type="primary" html-type="submit"  @click="submitForm">保存</a-button>
+                <a-button type="primary" html-type="submit" @click="submitForm">保存</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -180,7 +179,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted, watch} from 'vue';
+  import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted, watch} from 'vue';
   import { defHttp } from '/@/utils/http/axios';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
@@ -189,22 +188,22 @@ import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted,
   import {getMyBillSetting,   saveOrUpdateBilling} from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-import {formatToDateS, formatToDateTimeSSS, formatToMonthS} from "@/utils/dateUtil";
+  import {formatToDateS, formatToDateTimeSSS, formatToMonthS} from "@/utils/dateUtil";
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formBpm: { type: Boolean, default: true }
+    formBpm: { type: Boolean, default: true },
   });
-  const formRef = ref()
+  const formRef = ref();
 
-const formData = ref<Record<any>>({});
-function init(){
-  getMyBillSetting().then(res=>{
-    formData.value=res;
-  });
-}
-init();
-const useForm = Form.useForm;
+  const formData = ref<Record<any>>({});
+  function init(){
+    getMyBillSetting().then(res=>{
+      formData.value=res;
+    });
+  }
+  init();
+  const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const billNoGeneMethodExamp = ref('')
   const { createMessage } = useMessage();
@@ -240,7 +239,6 @@ const useForm = Form.useForm;
     }else  if(value=='8_SERIAL'){
       billNoGeneMethodExamp.value='00000001';
     }
-
   }
   /**
    * 新增
@@ -259,9 +257,9 @@ const useForm = Form.useForm;
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
         if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
@@ -272,7 +270,6 @@ const useForm = Form.useForm;
    */
   async function submitForm() {
     try {
-      console.log(formData,"====================")
       // 触发表单验证
       await validate();
     } catch ({ errorFields }) {
@@ -320,7 +317,7 @@ const useForm = Form.useForm;
     padding: 14px;
   }
   .underLine-label{
-    width: 25%;
+    width: 35%;
     text-align: right;
     display: inline-block;
   }
@@ -329,6 +326,6 @@ const useForm = Form.useForm;
     border-bottom: 1px solid #bdacac; /* 设置下划线 */
     outline: none; /* 移除点击输入框时的默认轮廓 */
     margin-left: 10px;
-    width: 60%;
+    width: 30%;
   }
 </style>

@@ -2,6 +2,7 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
+        <a-divider orientation="left"> 打印 </a-divider>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="PrintSettingForm">
           <a-row>
 						<a-col :span="12">

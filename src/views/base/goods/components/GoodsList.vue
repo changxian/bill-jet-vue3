@@ -5,6 +5,11 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleCategoryEdit" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:edit-outlined"> 改类别</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCostEdit" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:plus-outlined"> 更新成本</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleUpdateStock" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:plus-outlined"> 变动库存</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'bill:jxc_goods:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"
           >导入</j-upload-button
@@ -28,27 +33,32 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
-
     </BasicTable>
     <!-- 表单区域 -->
     <GoodsModal @register="registerModal" @success="handleSuccess" />
+    <!-- 客户价表单 -->
+    <CustPriceList @register="registerCustPriceModal" />
   </div>
 </template>
 
 <script lang="ts" name="bill-goods" setup>
-import {computed, reactive, watch} from 'vue';
-import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
-import {useModal} from '/@/components/Modal';
-import {useListPage} from '/@/hooks/system/useListPage';
-import GoodsModal from './GoodsModal.vue';
-import {columns, searchFormSchema} from './goods.data';
-import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
-import {useUserStore} from '/@/store/modules/user';
+  import { computed, reactive, unref, watch } from 'vue';
+  import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
+  import {useModal} from '/@/components/Modal';
+  import {useListPage} from '/@/hooks/system/useListPage';
+  import GoodsModal from './GoodsModal.vue';
+  import {columns, searchFormSchema} from './goods.data';
+  import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
+  import {useUserStore} from '/@/store/modules/user';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import CustPriceList from './CustPriceList.vue';
 
-const queryParam = reactive<any>({});
+  const queryParam = reactive<any>({});
   const userStore = useUserStore();
+  const { createMessage } = useMessage();
   //注册model
   const [registerModal, { openModal }] = useModal();
+  const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
 
   const props = defineProps({
     data: {
@@ -58,7 +68,7 @@ const queryParam = reactive<any>({});
     },
   });
 
-  const emits = defineEmits(['get-select'])
+  const emits = defineEmits(['get-select']);
 
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
@@ -75,6 +85,7 @@ const queryParam = reactive<any>({});
       canResize: false,
       showTableSetting: false,
       clickToRowSelect: false,
+      showIndexColumn: true,
       formConfig: {
         //labelWidth: 120,
         schemas: searchFormSchema,
@@ -94,9 +105,9 @@ const queryParam = reactive<any>({});
       rowSelection: {
         type: 'checkbox',
         onChange: function(ids, rows) {
-          emits('get-select', rows, ids)
-        }
-      }
+          emits('get-select', rows, ids);
+        },
+      },
     },
     exportConfig: {
       name: '商品信息',
@@ -109,7 +120,7 @@ const queryParam = reactive<any>({});
     },
   });
 
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
   watch(
     () => props.data,
@@ -134,6 +145,80 @@ const queryParam = reactive<any>({});
    * 编辑事件
    */
   function handleEdit(record: Recordable) {
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
+  }
+  /**
+   * 新增客户价
+   */
+  function handleCustPrice() {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个商品');
+      return;
+    }
+    console.log(selectedRowKeys.value, selectedRows.value[0]);
+    custPriceModal(true, {
+      goodsId: unref(selectedRowKeys.value),
+      goodsName: unref(selectedRows.value[0].name),
+    });
+  }
+  /**
+   * 编辑类别
+   */
+  function handleCategoryEdit(record: Recordable) {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个商品');
+      return;
+    }
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
+  }
+  /**
+   * 更新成本
+   */
+  function handleCostEdit(record: Recordable) {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个商品');
+      return;
+    }
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
+  }
+  /**
+   * 变动库存
+   */
+  function handleUpdateStock(record: Recordable) {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个商品');
+      return;
+    }
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+      categoryId: categoryId.value,
+    });
+  }
+  /**
+   * 库存明细
+   */
+  function handleStockDetail(record: Recordable) {
+    if (unref(selectedRowKeys).length != 1) {
+      createMessage.warn('请选择一个商品');
+      return;
+    }
     openModal(true, {
       record,
       isUpdate: true,

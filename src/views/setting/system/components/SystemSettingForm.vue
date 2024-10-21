@@ -2,6 +2,7 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
+        <a-divider orientation="left"> 系统 </a-divider>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="SystemSettingForm">
           <a-row>
 						<a-col :span="24">

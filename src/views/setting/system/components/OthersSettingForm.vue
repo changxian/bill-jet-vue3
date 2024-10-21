@@ -2,8 +2,8 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
+        <a-divider orientation="left"> 其他属性显示 </a-divider>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="OthersSettingForm">
-
           <a-row>
             <a-col :span="24">
               <p class="label-p">商品：</p>
