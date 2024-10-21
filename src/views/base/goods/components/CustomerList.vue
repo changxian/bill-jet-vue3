@@ -45,21 +45,25 @@
 
 <script lang="ts" name="deliver.customer-customer" setup>
   import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
-  import { computed, reactive, ref, unref, watch } from 'vue';
+  import { computed, reactive, ref, unref, watch, defineEmits } from 'vue';
   import { useListPage } from '/src/hooks/system/useListPage';
   import { columns } from '../Customer.data';
   import { list } from '../Customer.api';
   import JInput from '/src/components/Form/src/jeecg/components/JInput.vue';
   import { useUserStore } from '/src/store/modules/user';
-  import { BasicModal, useModal } from "@/components/Modal";
+  import { BasicModal, useModal,useModalInner } from "@/components/Modal";
   import { useMessage } from '@/hooks/web/useMessage';
   import { BasicForm } from "@/components/Form";
 
+  const emit = defineEmits(['success']);
   const { createMessage } = useMessage();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const [registerModal, { openModal, closeModal }] = useModal();
+  let row
+  const [registerModal, { openModal, closeModal }] = useModalInner(async (data) => {
+    row = data.row
+  });
   const userStore = useUserStore();
   const goodsId = ref<number>(0);
   const goodsName = ref<string>('');
@@ -114,6 +118,8 @@
 // 确定
 function handleGoodsSubmit(){
   console.log('selectedRowKeys, selectedRows:', selectedRowKeys, selectedRows)
+  console.log('row:', row)
+    emit('success');
    closeModal();
 }
   /**

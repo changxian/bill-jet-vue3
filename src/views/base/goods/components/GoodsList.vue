@@ -162,8 +162,9 @@
     }
     console.log(selectedRowKeys.value, selectedRows.value[0]);
     custPriceModal(true, {
-      goodsId: unref(selectedRowKeys.value),
+      goodsId: unref(selectedRowKeys.value[0]),
       goodsName: unref(selectedRows.value[0].name),
+      row: selectedRows.value[0]
     });
   }
   /**

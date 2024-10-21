@@ -64,9 +64,11 @@
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   //表单赋值
+  let row;
   const [registerModal, { closeModal }] = useModalInner(async (data) => {
     goodsId.value = data.goodsId;
     goodsName.value = data.goodsName;
+    row = data.row
     success();
   });
   //设置标题
@@ -125,6 +127,7 @@
       goodsId: unref(goodsId),
       goodsName: unref(goodsName),
       showFooter: true,
+      row
     });
   }
 
