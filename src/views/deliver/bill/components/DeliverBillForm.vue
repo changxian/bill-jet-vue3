@@ -90,8 +90,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.billStatus" id="DeliverBillForm-billStatus" name="billStatus">
-								<a-input-number v-model:value="formData.billStatus" placeholder="请输入开票状态（未开、不开、已开、无信息、其他）" style="width: 100%" />
+							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.invoiceStatus" id="DeliverBillForm-invoiceStatus" name="invoiceStatus">
+								<a-input-number v-model:value="formData.invoiceStatus" placeholder="请输入开票状态（未开、不开、已开、无信息、其他）" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -168,7 +168,7 @@
     careNo: '',   
     contractCode: '',   
     status: undefined,
-    billStatus: undefined,
+    invoiceStatus: undefined,
     costAmount: undefined,
     profitAmount: undefined,
     userName: '',   

@@ -93,7 +93,7 @@ export const columns: BasicColumn[] = [
   {
     title: '开票状态（未开、不开、已开、无信息、其他）',
     align: "center",
-    dataIndex: 'billStatus'
+    dataIndex: 'invoiceStatus'
   },
   {
     title: '成本',
@@ -146,7 +146,7 @@ export const superQuerySchema = {
   careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
   contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
   status: {title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',order: 16,view: 'number', type: 'number',},
-  billStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',},
+  invoiceStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',},
   costAmount: {title: '成本',order: 18,view: 'number', type: 'number',},
   profitAmount: {title: '利润',order: 19,view: 'number', type: 'number',},
   userName: {title: '业务员',order: 20,view: 'sel_user', type: 'string',},

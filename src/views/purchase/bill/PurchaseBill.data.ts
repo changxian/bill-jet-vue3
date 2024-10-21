@@ -192,7 +192,7 @@ export const superQuerySchema = {
   careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
   contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
   status: {title: '状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）',order: 16,view: 'number', type: 'number',dictCode: '',},
-  billStatus: {title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',order: 17,view: 'number', type: 'number',dictCode: '',},
+  invoiceStatus: {title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',order: 17,view: 'number', type: 'number',dictCode: '',},
   userName: {title: '业务员',order: 18,view: 'sel_user', type: 'string',},
   remark: {title: '备注',order: 19,view: 'text', type: 'string',},
   version: {title: '版本',order: 21,view: 'number', type: 'number',},

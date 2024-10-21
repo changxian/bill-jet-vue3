@@ -20,11 +20,11 @@
       </div>
 
         <!-- 改开票 -->
-       <div v-if="modifyType === 'billStatus'">
+       <div v-if="modifyType === 'invoiceStatus'">
         <p style="margin:40px 0 20px 10px">单号： {{billNo}}</p>
         <p style="margin:0 0 0 10px">状态：<j-dict-select-tag
                   style="width:300px"
-                  v-model:value="billStatus"
+                  v-model:value="invoiceStatus"
                   :options="billStatusOptions"
                   dictCode=""
                   placeholder="请选择状态"
@@ -48,7 +48,7 @@
   import { ref, nextTick, defineExpose } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { statusList, billStatusList } from '../PurchaseBill.data';
-  import { editStatus, editBillStatus, editInfo} from '../PurchaseBill.api';
+  import { editStatus, editInvoiceStatus, editInfo} from '../PurchaseBill.api';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
@@ -63,7 +63,7 @@
 
 const status = ref('')
 const billNo = ref('')
-const billStatus = ref('')
+const invoiceStatus = ref('')
 const statusOptions = ref(statusList);
 const billStatusOptions = ref(billStatusList)
 
@@ -73,7 +73,7 @@ const remark = ref('')
 
   const titleObj = {
     status: '改状态',
-    billStatus: '改开票',
+    invoiceStatus: '改开票',
     info: '改信息'
   }
   const modifyType = ref('')
@@ -85,7 +85,7 @@ const remark = ref('')
      modifyType.value = type
      billNo.value = data.billNo
      status.value = data.status + ''
-     billStatus.value = data.billStatus + ''
+     invoiceStatus.value = data.invoiceStatus + ''
      careNo.value = data.careNo
      contractCode.value = data.contractCode
      remark.value = data.remark
@@ -100,8 +100,8 @@ const remark = ref('')
     let res:any
     if(modifyType.value === 'status'){
       res = await editStatus({id: row.id, status: status.value})
-    }else if(modifyType.value === 'billStatus'){
-      res = await editBillStatus({id: row.id, billStatus: billStatus.value})
+    }else if(modifyType.value === 'invoiceStatus'){
+      res = await editInvoiceStatus({id: row.id, invoiceStatus: invoiceStatus.value})
     }else if(modifyType.value === 'info'){
       const params = {id: row.id,
       careNo:careNo.value,contractCode:contractCode.value,remark:remark.value}

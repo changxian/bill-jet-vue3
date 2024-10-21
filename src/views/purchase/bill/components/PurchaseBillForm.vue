@@ -123,8 +123,8 @@
               </a-form-item>
             </a-col>
             <!-- <a-col :span="span">
-							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.billStatus" id="PurchaseBillForm-billStatus" name="billStatus">
-								<j-dict-select-tag v-model:value="formData.billStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
+							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.invoiceStatus" id="PurchaseBillForm-invoiceStatus" name="invoiceStatus">
+								<j-dict-select-tag v-model:value="formData.invoiceStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="span">
@@ -212,7 +212,7 @@ const formData = reactive({
   careNo: '',
   contractCode: '',
   status: '',
-  billStatus: undefined,
+  invoiceStatus: undefined,
   userName: '',
   remark: '',
   delFlag: undefined,
@@ -352,7 +352,7 @@ function resetForm() {
   formData.debtAmount = 0
   formData.hisDebtAmount = undefined
   formData.status = ''
-  formData.billStatus = undefined
+  formData.invoiceStatus = undefined
   formData.careNo = ''
   formData.contractCode = ''
   formData.remark = ''
