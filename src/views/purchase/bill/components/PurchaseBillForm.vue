@@ -305,6 +305,10 @@ function edit(record) {
     if(record.hasCopy){
       formData.id = ''
       formData.billNo = ''
+      formData.createBy = ''
+      formData.createTime = ''
+      formData.updateTime = ''
+      formData.updateBy = ''
     }
   });
 }
