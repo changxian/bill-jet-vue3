@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/purchase/debt/purchaseDebt/deleteBatch',
   importExcel = '/purchase/debt/purchaseDebt/importExcel',
   exportXls = '/purchase/debt/purchaseDebt/exportXls',
+  repay ='/purchase/repay/purchaseRepay/repay',
 }
 
 /**
@@ -70,3 +71,14 @@ export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
+/**
+ * 供应商欠款还款
+ * @param params
+ * @param isUpdate
+ */
+export const repay = (params) => {
+  let url =  Api.repay  ;
+  return defHttp.post({ url: url, params }, { isTransformResponse: false });
+}
+
+

@@ -151,9 +151,9 @@ function debtHandle(){
     return createMessage.warning('请选择相关单')
   }
   const params = {
-    ...selectedRows.value[0],
-    ...selectedBillData[0]
+    ...selectedRows.value[0]
   }
+  params.bills=selectedBillData;
   deptDialogRef.value.show(params)
 }
 function oneKeyDebt() {

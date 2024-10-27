@@ -114,9 +114,9 @@
       useSearchForm: false,
       showActionColumn:false,
       clickToRowSelect: true,
-      rowSelection: {
-        type: 'radio'
-      },
+      // rowSelection: {
+      //   type: 'radio'
+      // },
       actionColumn: {
         width: 120,
         fixed: 'right',
