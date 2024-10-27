@@ -303,6 +303,8 @@ function edit(record) {
     formData.status = record.status + ''
     getGoods(formData.id)
     if(record.hasCopy){
+      formData.status= ''
+      formData.invoiceStatus= undefined
       formData.id = ''
       formData.billNo = ''
       formData.createBy = ''
