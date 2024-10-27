@@ -302,8 +302,9 @@ function edit(record) {
     Object.assign(formData, tmpData);
     formData.status = record.status + ''
     getGoods(formData.id)
-    if(record.copyId){
+    if(record.hasCopy){
       formData.id = ''
+      formData.billNo = ''
     }
   });
 }

@@ -36,7 +36,7 @@
     title.value = disableSubmit.value ? '详情' : '编辑';
     visible.value = true;
     nextTick(() => {
-      record.copyId = false;
+      record.hasCopy = false;
       registerForm.value.edit(record);
     });
   }
@@ -45,7 +45,7 @@
     title.value = '新增';
     visible.value = true;
     nextTick(() => {
-      record.copyId = true;
+      record.hasCopy = true;
       registerForm.value.edit(record);
     });
   }
