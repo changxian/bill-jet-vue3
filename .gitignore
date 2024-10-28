@@ -39,3 +39,4 @@ os_del.cmd
 /.project
 *.baiduyun.uploading.cfg
 *.bcmap
+/**/*.bcmap
