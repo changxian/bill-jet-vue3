@@ -6,7 +6,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-            <FastDate v-model:modelValue="fastDateParam"/>
+            <FastDate v-model:modelValue="fastDateParam" startDateKey="repayDate_begin" endDateKey="repayDate_end"/>
          <a-col :lg="6">
             <a-form-item name="supplierName">
               <template #label><span title="供应商名称">供应商名</span></template>
@@ -76,7 +76,7 @@
 
 
  const queryParam = reactive<any>({});
- const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+ const fastDateParam = reactive<any>({repayDate_begin: '', repayDate_end: ''});
  const formRef = ref()
 
     const detailLoading = ref(false)
@@ -84,7 +84,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '进货开单',
+      title: '还款明细',
       api: purchaseRepayList,
       columns,
       canResize:false,

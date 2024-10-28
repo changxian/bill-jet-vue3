@@ -15,16 +15,26 @@
 <script lang="ts" setup>
 import { ref, reactive, defineEmits, defineProps, watch } from 'vue';
 import dayjs from 'dayjs';
+import {string} from "vue-types";
 
 const props = defineProps({
   modelValue: {
     type: Object,
     default: { startDate: '', endDate: '' },
   },
+  startDateKey:{
+    type: string,
+    default: 'startDate'
+  },
+  endDateKey:{
+    type: string,
+    default: 'endDate' ,
+  }
+
 });
 const emits = defineEmits(['update:modelValue', 'update']);
 const queryParam = reactive<any>({
-  date: [props.modelValue.startDate, props.modelValue.endDate],
+  date: [props.modelValue[props.startDateKey], props.modelValue[props.endDateKey]],
 });
 const dateOptions = [
   { label: '今天', value: 'today' },
@@ -81,17 +91,17 @@ function handleDate(val) {
   return obj[val] ? obj[val]() : ['', ''];
 }
 
-watch(()=>props.modelValue.startDate,(newVal)=>{
-     queryParam.date = [newVal ,props.modelValue.endDate]
+watch(()=>props.modelValue[props.startDateKey],(newVal)=>{
+     queryParam.date = [newVal ,props.modelValue[props.endDateKey]]
 })
-watch(()=>props.modelValue.endDate,(newVal)=>{
-    queryParam.date = [props.modelValue.startDate ,newVal]
+watch(()=>props.modelValue[props.endDateKey],(newVal)=>{
+    queryParam.date = [props.modelValue[props.startDateKey] ,newVal]
 })
 function handleChange(type) {
   const date = handleDate(type);
   queryParam.date = handleDate(type);
-  props.modelValue.startDate = date[0]
-  props.modelValue.endDate = date[1]
+  props.modelValue[props.startDateKey] = date[0]
+  props.modelValue[props.endDateKey] = date[1]
 //   emits('update:modelValue', { startDate: date[0], endDate: date[1] });
 //   emits('update', { startDate: date[0], endDate: date[1] });
 }
@@ -103,8 +113,8 @@ function changeDate(val) {
     }else{
         date = ['', '']
     }
-    props.modelValue.startDate = date[0]
-    props.modelValue.endDate = date[1]
+    props.modelValue[props.startDateKey] = date[0]
+    props.modelValue[props.endDateKey] = date[1]
     // emits('update:modelValue', { startDate: date[0], endDate: date[1] });
 }
 </script>

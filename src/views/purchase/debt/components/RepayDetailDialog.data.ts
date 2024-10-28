@@ -57,7 +57,7 @@ export const columns: BasicColumn[] = [
   {
     title: '公司名称',
     align: "center",
-    dataIndex: 'companyName'
+    dataIndex: 'collectCompanyName'
   },
   {
     title: '操作员',
