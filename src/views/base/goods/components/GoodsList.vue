@@ -5,11 +5,11 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleCategoryEdit" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:edit-outlined"> 改类别</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCostEdit" :disabled="selectedRowKeys.length == 0" preIcon="ant-design:plus-outlined"> 更新成本</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleUpdateStock" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:plus-outlined"> 变动库存</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleModify('category')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 改类别</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateCost')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 更新成本</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateStocks')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 变动库存</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'bill:jxc_goods:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"
           >导入</j-upload-button
@@ -38,24 +38,29 @@
     <GoodsModal @register="registerModal" @success="handleSuccess" />
     <!-- 客户价表单 -->
     <CustPriceList @register="registerCustPriceModal" />
+    <!-- 商品信息修改 -->
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
+    <!-- 商品库存明细 -->
   </div>
 </template>
 
 <script lang="ts" name="bill-goods" setup>
-  import { computed, reactive, unref, watch } from 'vue';
-  import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
-  import {useModal} from '/@/components/Modal';
-  import {useListPage} from '/@/hooks/system/useListPage';
+  import { computed, reactive, ref, unref, watch } from 'vue';
+  import { BasicColumn, BasicTable, TableAction } from '/@/components/Table';
+  import { useModal } from '/@/components/Modal';
+  import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import {columns, searchFormSchema} from './goods.data';
-  import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
-  import {useUserStore} from '/@/store/modules/user';
+  import { columns, searchFormSchema} from './goods.data';
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
+  import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
+  import ModifyModal from './ModifyModal.vue';
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
   const { createMessage } = useMessage();
+  const modifyModalRef = ref();
   //注册model
   const [registerModal, { openModal }] = useModal();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
@@ -123,7 +128,7 @@
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
   function handleOk(){
-    console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value)
+    console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value);
     if(selectedRowKeys.value.length > 0 ){
        emits('get-select', selectedRows.value, selectedRowKeys.value);
        emits('db-ok');
@@ -169,67 +174,31 @@
     }
     console.log(selectedRowKeys.value, selectedRows.value[0]);
     custPriceModal(true, {
-      goodsId: unref(selectedRowKeys.value[0]),
       goodsName: unref(selectedRows.value[0].name),
-      row: selectedRows.value[0]
+      row: selectedRows.value[0],
     });
   }
   /**
    * 编辑类别
    */
-  function handleCategoryEdit(record: Recordable) {
+  function handleModify(type) {
     if (unref(selectedRowKeys).length != 1) {
       createMessage.warn('请选择一个商品');
       return;
     }
-    openModal(true, {
-      record,
-      isUpdate: true,
-      showFooter: true,
-      categoryId: categoryId.value,
-    });
+    const row = selectedRows.value[0];
+    modifyModalRef.value.show(type, row);
   }
   /**
-   * 更新成本
+   * 库存明细[可以选择一个商品 或者 不选商品]
    */
-  function handleCostEdit(record: Recordable) {
-    if (unref(selectedRowKeys).length != 1) {
+  function handleStockDetail() {
+    if (unref(selectedRowKeys).length > 1) {
       createMessage.warn('请选择一个商品');
       return;
     }
     openModal(true, {
-      record,
-      isUpdate: true,
-      showFooter: true,
-      categoryId: categoryId.value,
-    });
-  }
-  /**
-   * 变动库存
-   */
-  function handleUpdateStock(record: Recordable) {
-    if (unref(selectedRowKeys).length != 1) {
-      createMessage.warn('请选择一个商品');
-      return;
-    }
-    openModal(true, {
-      record,
-      isUpdate: true,
-      showFooter: true,
-      categoryId: categoryId.value,
-    });
-  }
-  /**
-   * 库存明细
-   */
-  function handleStockDetail(record: Recordable) {
-    if (unref(selectedRowKeys).length != 1) {
-      createMessage.warn('请选择一个商品');
-      return;
-    }
-    openModal(true, {
-      record,
-      isUpdate: true,
+      row,
       showFooter: true,
       categoryId: categoryId.value,
     });

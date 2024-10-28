@@ -3,6 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   treeList = '/bill/goods/queryGoodsTreeList',
   searchBy = '/bill/goods/category/searchBy',
+  editCategory = '/bill/goods/editCategory',
 }
 
 /**
@@ -14,3 +15,10 @@ export const queryGoodsCategoryList = (params?) => defHttp.get({ url: Api.treeLi
  * 根据关键字搜索部门
  */
 export const searchByKeywords = (params) => defHttp.get({ url: Api.searchBy, params });
+
+/**
+ * 修改商品的类别
+ */
+export const editCategory = (params) => {
+  return defHttp.post({ url: Api.editCategory, params }, { isTransformResponse: false });
+};

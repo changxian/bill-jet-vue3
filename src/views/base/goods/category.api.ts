@@ -5,6 +5,7 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/bill/goods/category/list',
+  allList = '/bill/goods/category/allList',
   save = '/bill/goods/category/add',
   edit = '/bill/goods/category/edit',
   deleteOne = '/bill/goods/category/delete',
@@ -22,11 +23,16 @@ export const getExportUrl = Api.exportXls;
  */
 export const getImportUrl = Api.importExcel;
 /**
- * 列表接口
+ * 分页列表接口
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
 
+/**
+ * 不分页列表接口
+ * @param params
+ */
+export const allList = Api.allList;
 /**
  * 删除单个
  */

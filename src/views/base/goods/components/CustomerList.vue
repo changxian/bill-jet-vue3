@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-    <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleGoodsSubmit" destroyOnClose title="客户搜索" width="1100px" >
+    <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleGoodsSubmit" destroyOnClose title="客户搜索" width="1100px">
       <!--查询区域-->
       <div class="jeecg-basic-table-form-container">
         <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -11,20 +11,18 @@
                 <j-input placeholder="请输入客户名称" v-model:value="queryParam.orgName" allow-clear></j-input>
               </a-form-item>
             </a-col>
-            <template v-if="toggleSearchStatus">
-              <a-col :lg="6">
-                <a-form-item name="phone">
-                  <template #label><span title="电话">电话</span></template>
-                  <j-input placeholder="请输入电话" v-model:value="queryParam.phone" allow-clear></j-input>
-                </a-form-item>
-              </a-col>
-              <a-col :lg="6">
-                <a-form-item name="contact">
-                  <template #label><span title="联系人">联系人</span></template>
-                  <j-input placeholder="请输入联系人" v-model:value="queryParam.contact" allow-clear></j-input>
-                </a-form-item>
-              </a-col>
-            </template>
+            <a-col :lg="6">
+              <a-form-item name="phone">
+                <template #label><span title="电话">电话</span></template>
+                <j-input placeholder="请输入电话" v-model:value="queryParam.phone" allow-clear></j-input>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="contact">
+                <template #label><span title="联系人">联系人</span></template>
+                <j-input placeholder="请输入联系人" v-model:value="queryParam.contact" allow-clear></j-input>
+              </a-form-item>
+            </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
@@ -44,30 +42,26 @@
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
-  import {BasicColumn, BasicTable, TableAction} from '/@/components/Table';
-  import { computed, reactive, ref, unref, watch, defineEmits } from 'vue';
+  import { BasicTable } from '/@/components/Table';
+  import { reactive, ref, watch, defineEmits } from 'vue';
   import { useListPage } from '/src/hooks/system/useListPage';
   import { columns } from '../Customer.data';
   import { list } from '../Customer.api';
+  import { saveInitCustPrice2 } from '../CustPrice.api';
   import JInput from '/src/components/Form/src/jeecg/components/JInput.vue';
   import { useUserStore } from '/src/store/modules/user';
-  import { BasicModal, useModal,useModalInner } from "@/components/Modal";
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { BasicForm } from "@/components/Form";
 
   const emit = defineEmits(['success']);
   const { createMessage } = useMessage();
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
-  let row
+  let row;
   const [registerModal, { openModal, closeModal }] = useModalInner(async (data) => {
-    row = data.row
+    row = data.row;
   });
   const userStore = useUserStore();
-  const goodsId = ref<number>(0);
-  const goodsName = ref<string>('');
-
   const props = defineProps({
     data: {
       type: Object,
@@ -94,6 +88,7 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
+        params['goodsId'] = row.id;
         return Object.assign(params, queryParam);
       },
     },
@@ -115,13 +110,37 @@
     () => reload()
   );
 
-// 确定
-function handleGoodsSubmit(){
-  console.log('selectedRowKeys, selectedRows:', selectedRowKeys, selectedRows)
-  console.log('row:', row)
-    emit('success');
-   closeModal();
-}
+  // 确定
+  async function handleGoodsSubmit() {
+    // console.log('selectedRowKeys, selectedRows:', selectedRowKeys, selectedRows.value[0].orgName);
+    // console.log('row:', row);
+    const data: any = {};
+    debugger;
+    if (!data.goodsId) {
+      data.goodsId = row.id;
+    }
+    if (!data.goodsName) {
+      data.goodsName = row.name;
+    }
+    if (!data.goodsType) {
+      data.goodsType = row.type;
+    }
+    if (!data.price) {
+      data.price = row.price;
+    }
+    if (!data.custIds) {
+      data.custIds = selectedRowKeys.value;
+    }
+    console.log('data:', data);
+    await saveInitCustPrice2(data, false).then((res) => {
+      if (res.success) {
+        emit('success');
+        closeModal();
+      } else {
+        createMessage.warning(res.message);
+      }
+    });
+  }
   /**
    * 查询
    */
