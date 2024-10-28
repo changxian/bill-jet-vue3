@@ -100,7 +100,7 @@ const emit = defineEmits(['refresh']);
 const formRef = ref();
 const useForm = Form.useForm;
 const formData = reactive<Record<string, any>>({
-  // id: '',
+  id: '',
   type: undefined,
   repayDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   supplierId: '',
