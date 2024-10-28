@@ -180,14 +180,15 @@ selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
 
 
 const handleOk = (e: MouseEvent) => {
-  console.log('ok:',e);
   selectedGoods.forEach(item=>{
-    item.goodsId = item.id
-    item.goodsName = item.name
-    item.goodsCode = item.code
-    item.goodsType = item.type
-    item.goodsUnit = item.unit
-    item.count = item.stock
+    item.goodsId = item.id;
+    item.goodsName = item.name;
+    item.goodsCode = item.code;
+    item.goodsType = item.type;
+    item.goodsUnit = item.unit;
+    item.count = 0;
+    item.costAmount = 0;
+
   })
   if(goodsNameRepeat.value){
      selectedGoods = removedExistGoods(selectedGoods)
