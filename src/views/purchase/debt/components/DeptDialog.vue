@@ -49,10 +49,10 @@
               </a-form-item>
             </a-col>
             <a-col :span="24">
-              <a-form-item label="收款公司" v-bind="validateInfos.collectCompanyName"
-                           id="PurchaseDebtForm-collectCompanyName" name="collectCompanyName">
-                <a-input v-model:value="formData.collectCompanyName" placeholder="请输入收款公司"
-                         allow-clear></a-input>
+              <a-form-item label="公司名称" v-bind="validateInfos.collectCompanyId"
+                           id="PurchaseBillForm-collectCompanyId" name="collectCompanyId">
+                <j-select-company v-model:value="formData.collectCompanyId" @change="changeCompany"
+                                  allow-clear/>
               </a-form-item>
             </a-col>
             <a-col :span="24">
@@ -85,6 +85,7 @@ import {Form} from 'ant-design-vue';
 import {useMessage} from '/@/hooks/web/useMessage';
 import {useUserStore} from '/@/store/modules/user';
 import {repay, saveOrUpdate} from "@/views/purchase/debt/PurchaseDebt.api";
+import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
 
 const userStore = useUserStore();
 const visible = ref(false)
@@ -119,7 +120,13 @@ const confirmLoading = ref<boolean>(false);
 const validatorRules = reactive({
   repayAmount: [{required: true, message: '请输入还款金额!'},]
 });
-
+function changeCompany(val, selectRows) {
+  console.log(' changeCompany val', val, 'selectRows:', selectRows);
+  if (selectRows?.length > 0) {
+    formData.collectCompanyName = selectRows[0].compName;
+    formData.collectCompanyId = selectRows[0].id;
+  }
+}
 const {
   resetFields,
   validate,

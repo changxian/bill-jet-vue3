@@ -56,9 +56,9 @@
               </a-form-item>
             </a-col>
             <a-col :span="24">
-              <a-form-item label="公司名称" v-bind="validateInfos.companyId"
-                           id="PurchaseBillForm-companyId" name="companyId">
-                <j-select-company v-model:value="formData.companyId" @change="changeCompany"
+              <a-form-item label="公司名称" v-bind="validateInfos.collectCompanyId"
+                           id="PurchaseBillForm-collectCompanyId" name="collectCompanyId">
+                <j-select-company v-model:value="formData.collectCompanyId" @change="changeCompany"
                                   allow-clear/>
               </a-form-item>
             </a-col>
@@ -125,6 +125,7 @@ function changeCompany(val, selectRows) {
   console.log(' changeCompany val', val, 'selectRows:', selectRows);
   if (selectRows?.length > 0) {
     formData.collectCompanyName = selectRows[0].compName;
+    formData.collectCompanyId = selectRows[0].id;
   }
 }
 
