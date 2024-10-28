@@ -10,7 +10,7 @@
             <a-col :span="24">
               <a-form-item label="供应商名" v-bind="validateInfos.supplierName"
                            id="PurchaseDebtForm-supplierName" name="supplierName">
-                <a-input v-model:value="formData.supplierName" placeholder="请输入供应商名"
+                <a-input  :disabled="true" v-model:value="formData.supplierName" placeholder="请输入供应商名"
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -18,7 +18,7 @@
               <a-form-item label="还款日期" v-bind="validateInfos.billDate"
                            id="PurchaseBillForm-billDate" name="billDate">
                 <a-date-picker
-                  placeholder="请选择开单日期"
+                  placeholder="请选择还款日期"
                   v-model:value="formData.repayDate"
                   showTime
                   value-format="YYYY-MM-DD HH:mm:ss"
@@ -30,14 +30,14 @@
             <a-col :span="24">
               <a-form-item label="欠款单号" v-bind="validateInfos.billNo"
                            id="PurchaseDebtForm-billNo" name="billNo">
-                <a-input v-model:value="formData.billNo" placeholder="请输入单号"
+                <a-input  :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号"
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="24">
               <a-form-item label="需还款总额" v-bind="validateInfos.debtAmount"
                            id="PurchaseDebtForm-purchaseDebtAmount" name="debtAmount">
-                <a-input-number v-model:value="formData.debtAmount" placeholder="请输入需还款总额"
+                <a-input  :disabled="true" v-model:value="formData.debtAmount" placeholder="请输入需还款总额"
                                 style="width: 100%"/>
               </a-form-item>
             </a-col>
@@ -58,7 +58,7 @@
             <a-col :span="24">
               <a-form-item label="操作员" v-bind="validateInfos.userName"
                            id="PurchaseDebtForm-userName" name="userName">
-                <a-input v-model:value="formData.userName" placeholder="请输入操作员"
+                <a-input  :disabled="true" v-model:value="formData.userName" placeholder="请输入操作员"
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -84,7 +84,7 @@ import dayjs from 'dayjs';
 import {Form} from 'ant-design-vue';
 import {useMessage} from '/@/hooks/web/useMessage';
 import {useUserStore} from '/@/store/modules/user';
-import {repay, saveOrUpdate} from "@/views/purchase/debt/PurchaseDebt.api";
+import {repay} from "@/views/purchase/debt/PurchaseDebt.api";
 import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
 
 const userStore = useUserStore();
