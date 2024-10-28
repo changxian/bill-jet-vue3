@@ -40,7 +40,7 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
@@ -53,8 +53,11 @@
     </BasicTable>
     <!-- 表单区域 -->
     <div class="tbl-wrap">
-         <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
+      <a-spin :spinning="detailLoading">
+        <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
         </BasicTable>
+      </a-spin>
+
     </div>
   </div>
     </div>
@@ -66,23 +69,23 @@
     import JModal from '/@/components/Modal/src/JModal/JModal.vue';
     import { BasicTable, useTable } from '/@/components/Table';
     import { useListPage } from '/@/hooks/system/useListPage';
-    import { columns, detailColumns } from './DebtDetailDialog.data';
-    import {list, getExportUrl} from '../PurchaseDebt.api'
+    import { columns, detailColumns } from './RepayDetailDialog.data';
+    import {getExportUrl, repayDetailList, purchaseRepayList} from '../PurchaseDebt.api'
     import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
-     import dayjs from 'dayjs';
+
 
  const queryParam = reactive<any>({});
  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
  const formRef = ref()
 
-
+    const detailLoading = ref(false)
    const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '进货开单',
-      api: list,
+      api: purchaseRepayList,
       columns,
       canResize:false,
       useSearchForm: false,
@@ -119,14 +122,14 @@
 
     const dataSourceDetail:any = ref([])
     const { tableContext: tableContextDetail } = useListPage({
-    designScope: 'basic-table-demo',
-    tableProps: {
-      title: '',
-      columns: detailColumns,
-    showActionColumn:false,
-      rowkey: 'id',
-      pagination: false
-    },
+      designScope: 'basic-table-demo',
+      tableProps: {
+        title: '',
+        columns: detailColumns,
+        showActionColumn:false,
+        rowkey: 'id',
+        pagination: false
+      },
   });
    const [registerTableDetail, ] = tableContextDetail;
   
@@ -137,7 +140,17 @@
   function searchQuery() {
     reload();
   }
-  
+    function rowClick(record){
+
+
+      detailLoading.value = true
+      repayDetailList({repayId: record.id}).then(res=>{
+        dataSourceDetail.value = [...res]
+      }).finally(()=>{
+        detailLoading.value = false
+      })
+
+    }
     /**
    * 重置
    */

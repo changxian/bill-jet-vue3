@@ -13,6 +13,8 @@ enum Api {
   exportXls = '/purchase/debt/purchaseDebt/exportXls',
   repay ='/purchase/repay/purchaseRepay/repay',
   oneKeyRepay ='/purchase/repay/purchaseRepay/oneKeyRepay',
+  purchaseRepayList='/purchase/repay/purchaseRepay/list',
+  repayDetailList='/purchase/repay/purchaseRepay/repayDetail',
 }
 
 /**
@@ -31,6 +33,9 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+// 供应商还款
+export const purchaseRepayList = (params) => defHttp.get({ url: Api.purchaseRepayList, params });
+export const repayDetailList = (params) => defHttp.get({ url: Api.repayDetailList, params });
 
 /**
  * 删除单个
