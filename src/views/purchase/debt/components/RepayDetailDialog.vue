@@ -48,8 +48,12 @@
         <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
           <!--插槽:table标题-->
           <template #tableTitle>
-            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
-            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleRevoke" preIcon="ant-design:edit-outlined"> 撤回</a-button>
+            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"
+                      @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改
+            </a-button>
+            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"
+                      @click="handleRevoke" preIcon="ant-design:edit-outlined"> 撤回
+            </a-button>
 
             <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'"
                       preIcon="ant-design:export-outlined" @click="onExportXls"> 导出
@@ -82,8 +86,10 @@ import {columns, detailColumns} from './RepayDetailDialog.data';
 import {getExportUrl, repayDetailList, purchaseRepayList, repayRevoke} from '../PurchaseDebt.api'
 import {JInput} from "@/components/Form";
 import FastDate from '/@/components/FastDate.vue';
-import DeptDialog from "@/views/purchase/debt/components/DeptDialog.vue";
 
+import { useMessage } from "/@/hooks/web/useMessage";
+
+const { createConfirm } = useMessage();
 
 const queryParam = reactive<any>({});
 const fastDateParam = reactive<any>({repayDate_begin: '', repayDate_end: ''});
@@ -174,18 +180,29 @@ function searchReset() {
 }
 
 function handleEdit() {
-  if(selectedRows.value.length === 0) {
+  if (selectedRows.value.length === 0) {
     return createMessage.warning('请选择一条数据')
   }
 
   const params = {
     ...selectedRows.value[0]
   }
-  epayEditDialogRef.value.show(params,false)
+  epayEditDialogRef.value.show(params, false)
 }
+
 function handleRevoke() {
-  repayRevoke().then(() => {
-    reload();
+
+  createConfirm({
+    iconType: 'warning',
+    title: '确认还款撤回',
+    content: '是否还款撤回选中数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      repayRevoke({ids: selectedRowKeys.value}).then(() => {
+        reload();
+      });
+    }
   });
 }
 

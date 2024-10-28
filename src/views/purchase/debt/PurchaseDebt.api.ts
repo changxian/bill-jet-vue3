@@ -76,16 +76,9 @@ export const batchDelete = (params, handleSuccess) => {
  * @param handleSuccess
  */
 export const repayRevoke = (params) => {
-  createConfirm({
-    iconType: 'warning',
-    title: '确认还款撤回',
-    content: '是否还款撤回选中数据',
-    okText: '确认',
-    cancelText: '取消',
-    onOk: () => {
-      return defHttp.post({url: Api.repayRevoke,   params}, {joinParamsToUrl: true});
-    }
-  });
+
+      return defHttp.post({url: Api.repayRevoke,   data:params}, {joinParamsToUrl: true});
+
 }
 
  /**
