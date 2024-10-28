@@ -51,7 +51,7 @@
             <a-col :span="24">
               <a-form-item label="还款金额" v-bind="validateInfos.repayAmount"
                            id="PurchaseDebtForm-repayAmount" name="repayAmount">
-                <a-input-number v-model:value="formData.repayAmount" placeholder="请输入还款金额"
+                <a-input-number @change="repayAmountChange" v-model:value="formData.repayAmount" placeholder="请输入还款金额"
                                 style="width: 100%"/>
               </a-form-item>
             </a-col>
@@ -131,7 +131,9 @@ function changeCompany(val, selectRows) {
 
 //表单验证
 const validatorRules = reactive({
-  repayAmount: [{required: true, message: '请输入还款金额!'},]
+  repayAmount: [{required: true, message: '请输入还款金额!'},],
+  collectCompanyId: [{required: true, message: '请选择公司!'},],
+
 });
 
 const {
@@ -171,7 +173,11 @@ async function handleOk() {
   emit('refresh')
 
 }
-
+function  repayAmountChange(value){
+  if(value>formData.debtAmount){
+    formData.repayAmount=formData.debtAmount;
+  }
+}
 function show(record) {
   visible.value = true
   const tmpData = {};
