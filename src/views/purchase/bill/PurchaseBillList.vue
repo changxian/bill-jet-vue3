@@ -19,7 +19,7 @@
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
         <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -54,6 +54,8 @@
         </BasicTable>
        </a-spin>
     </div>
+
+    <RepayDetailDialog ref="repayDetailDialogRef"/>
   </div>
 </template>
 
@@ -67,11 +69,11 @@
   import PurchaseBillModal from './components/PurchaseBillModal.vue'
   import ModifyModal from './components/ModifyModal.vue'
   import { useUserStore } from '/@/store/modules/user';
-  import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import RepayDetailDialog from "@/views/purchase/debt/components/RepayDetailDialog.vue";
 
   const { createMessage, createConfirm } = useMessage();
-
+  const repayDetailDialogRef = ref()
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -146,7 +148,13 @@
     });
     searchQuery();
   }
-
+  function debtDetailHandle() {
+    if(selectedRows.value.length === 0) {
+      repayDetailDialogRef.value.show()
+    }else{
+      repayDetailDialogRef.value.show()
+    }
+  }
   /**
    * 新增事件
    */
