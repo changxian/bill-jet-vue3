@@ -1,7 +1,9 @@
 const fields = [
   { text: '序号', field: 'seq' },
+  { text: 'NO', field: 'seq2' },
   { text: '订单编号', field: 'orderNo' },
   { text: '订单号', field: 'orderNo2' },
+  { text: '訂單號', field: 'orderNo3' },
 
   { text: '商品编号', field: 'code' },
   { text: '物料编号', field: 'code2' },
@@ -9,10 +11,12 @@ const fields = [
   { text: '编码', field: 'code4' },
   { text: '产品编号', field: 'code5' },
   { text: '产品货号', field: 'code6' },
+  { text: '产品代码', field: 'code12' },
   { text: '货号', field: 'code7' },
   { text: '品号', field: 'code8' },
   { text: '药品编号', field: 'code9' },
   { text: '產品編號', field: 'code10' },
+  { text: '貨號', field: 'code11' },
 
   { text: '商品名称', field: 'name' },
   { text: '物料名称', field: 'name2' },
@@ -32,10 +36,15 @@ const fields = [
   { text: '规格', field: 'spec2' },
   { text: '型号', field: 'spec3' },
   { text: '規格型號', field: 'spec4' },
+  { text: '细码明细', field: 'spec5' },
 
   { text: '剂型', field: 'spec_2' },
 
-  { text: '品名及规格', field: 'nameSpec' },
+  { text: '名称及规格', field: 'nameSpec' },
+  { text: '名稱及規格', field: 'nameSpec3' },
+  { text: '品名及规格', field: 'nameSpec5' },
+  { text: '材料名称及规格', field: 'nameSpec2' },
+  { text: '物料名称及规格', field: 'nameSpec4' },
 
   { text: '包装', field: 'pack' },
 
@@ -45,22 +54,27 @@ const fields = [
   { text: '颜色', field: 'color' },
 
   { text: '数量', field: 'count' },
+  { text: '數量', field: 'count2' },
 
   { text: '重量', field: 'weight' },
 
   { text: '单价', field: 'price' },
   { text: '单价(元)', field: 'price2' },
   { text: '零售价', field: 'price3' },
+  { text: '單價', field: 'price4' },
 
   { text: '金额', field: 'amount' },
+  { text: '金额（元）', field: 'amount2' },
+  { text: '金額', field: 'amount3' },
 
   { text: '备注', field: 'remark' },
 
-  { text: '生产产商', field: 'firm' },
   { text: '产商', field: 'firm2' },
-  { text: '生产厂商', field: 'firm3' },
   { text: '厂商', field: 'firm4' },
-  { text: '生产企业', field: 'firm5' },
+  { text: '生产产商', field: 'firm' },
+  { text: '生产厂商', field: 'firm3' },
+  { text: '生产厂家', field: 'firm5' },
+  { text: '生产企业', field: 'firm6' },
 
   { text: '产商地址', field: 'firmAddress' },
   { text: '生产地址', field: 'firmAddress2' },
@@ -71,8 +85,11 @@ const fields = [
   { text: '生产批号', field: 'batchNum2' },
 
   { text: '有效期', field: 'validity' },
+
+  { text: '生产日期有效期至', field: 'productDateValidity' },
   { text: '批准文号', field: 'approvalNo' },
   { text: '注册证号', field: 'certificateNo' },
+  { text: '生产许可证号', field: 'productApprovalNo' },
 ];
 
 const default_prot = {
