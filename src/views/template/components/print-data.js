@@ -28,6 +28,8 @@ export default {
   checkBy: '孟验收', // 验收
   operator: '任操作员', // 操作员
 
+  salesman: '宋业务员', // 业务员
+
   deliverBy: '发某某', // 发货人
   deliverStore: '发某某', // 发货仓库
 
