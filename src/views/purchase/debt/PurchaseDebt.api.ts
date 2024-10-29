@@ -12,9 +12,11 @@ enum Api {
   importExcel = '/purchase/debt/purchaseDebt/importExcel',
   exportXls = '/purchase/debt/purchaseDebt/exportXls',
   repay ='/purchase/repay/purchaseRepay/repay',
+  repayEdit ='/purchase/repay/purchaseRepay/repayEdit',
   oneKeyRepay ='/purchase/repay/purchaseRepay/oneKeyRepay',
   purchaseRepayList='/purchase/repay/purchaseRepay/list',
   repayDetailList='/purchase/repay/purchaseRepay/repayDetail',
+  repayRevoke='/purchase/repay/purchaseRepay/repayRevoke',
 }
 
 /**
@@ -69,6 +71,17 @@ export const batchDelete = (params, handleSuccess) => {
 }
 
 /**
+ * 还款撤回
+ * @param params
+ * @param handleSuccess
+ */
+export const repayRevoke = (params) => {
+
+      return defHttp.post({url: Api.repayRevoke,   data:params}, {joinParamsToUrl: true});
+
+}
+
+ /**
  * 保存或者更新
  * @param params
  * @param isUpdate
@@ -84,6 +97,15 @@ export const saveOrUpdate = (params, isUpdate) => {
  */
 export const repay = (params) => {
   let url =  Api.repay  ;
+  return defHttp.post({ url: url, params }, { isTransformResponse: false });
+}
+/**
+ * 供应商欠款还款
+ * @param params
+ * @param isUpdate
+ */
+export const repayEdit = (params) => {
+  let url =  Api.repayEdit  ;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
 /**

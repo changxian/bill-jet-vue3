@@ -7,47 +7,7 @@
         <a-form ref="formRef" class="antd-modal-form" :model="formData" :labelCol="labelCol"
                 :wrapperCol="wrapperCol" name="PurchaseDebtForm">
           <a-row>
-            <a-col :span="24">
-              <a-form-item label="供应商名" v-bind="validateInfos.supplierName"
-                           id="PurchaseDebtForm-supplierName" name="supplierName">
-                <a-input  :disabled="true" v-model:value="formData.supplierName" placeholder="请输入供应商名"
-                         allow-clear></a-input>
-              </a-form-item>
-            </a-col>
-            <a-col :span="span">
-              <a-form-item label="还款日期" v-bind="validateInfos.billDate"
-                           id="PurchaseBillForm-billDate" name="billDate">
-                <a-date-picker
-                  placeholder="请选择还款日期"
-                  v-model:value="formData.repayDate"
-                  showTime
-                  value-format="YYYY-MM-DD HH:mm:ss"
-                  style="width: 100%"
-                  allow-clear
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :span="24">
-              <a-form-item label="欠款单号" v-bind="validateInfos.billNo"
-                           id="PurchaseDebtForm-billNo" name="billNo">
-                <a-input  :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号"
-                         allow-clear></a-input>
-              </a-form-item>
-            </a-col>
-            <a-col :span="24">
-              <a-form-item label="需还款总额" v-bind="validateInfos.debtAmount"
-                           id="PurchaseDebtForm-purchaseDebtAmount" name="debtAmount">
-                <a-input  :disabled="true" v-model:value="formData.debtAmount" placeholder="请输入需还款总额"
-                                style="width: 100%"/>
-              </a-form-item>
-            </a-col>
-            <a-col :span="24">
-              <a-form-item label="还款金额" v-bind="validateInfos.repayAmount"
-                           id="PurchaseDebtForm-repayAmount" name="repayAmount">
-                <a-input-number @change="repayAmountChange" v-model:value="formData.repayAmount" placeholder="请输入还款金额"
-                                style="width: 100%"/>
-              </a-form-item>
-            </a-col>
+
             <a-col :span="24">
               <a-form-item label="公司名称" v-bind="validateInfos.collectCompanyId"
                            id="PurchaseBillForm-collectCompanyId" name="collectCompanyId">
@@ -55,14 +15,6 @@
                                   allow-clear/>
               </a-form-item>
             </a-col>
-            <a-col :span="24">
-              <a-form-item label="操作员" v-bind="validateInfos.userName"
-                           id="PurchaseDebtForm-userName" name="userName">
-                <a-input  :disabled="true" v-model:value="formData.userName" placeholder="请输入操作员"
-                         allow-clear></a-input>
-              </a-form-item>
-            </a-col>
-
             <a-col :span="24">
               <a-form-item label="备注" v-bind="validateInfos.remark" id="PurchaseDebtForm-remark"
                            name="remark">
@@ -94,22 +46,9 @@ const formRef = ref();
 const useForm = Form.useForm;
 const formData = reactive<Record<string, any>>({
   id: '',
-  type: undefined,
-  repayDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  supplierId: '',
-  userName: userStore.getUserInfo.username,
+  collectCompanyId: '',
   collectCompanyName: '',
-  debtAmount: '',
-  billNo: '',
-  repayAmount: '',
-  supplierName: '',
-  supplierPhone: '',
-  supplierContact: '',
-  supplierAddress: '',
-  purchaseDebtAmount: undefined,
-  returnDebtAmount: undefined,
   remark: '',
-  bills:[]
 });
 const {createMessage} = useMessage();
 const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
@@ -118,19 +57,13 @@ const confirmLoading = ref<boolean>(false);
 
 //表单验证
 const validatorRules = reactive({
-  repayAmount: [{required: true, message: '请输入还款金额!'},],
-  collectCompanyId: [{required: true, message: '请选择公司!'},],
+  repayAmount: [{required: true, message: '请输入还款金额!'},]
 });
 function changeCompany(val, selectRows) {
   console.log(' changeCompany val', val, 'selectRows:', selectRows);
   if (selectRows?.length > 0) {
     formData.collectCompanyName = selectRows[0].compName;
     formData.collectCompanyId = selectRows[0].id;
-  }
-}
-function  repayAmountChange(value){
-  if(value>formData.debtAmount){
-    formData.repayAmount=formData.debtAmount;
   }
 }
 const {

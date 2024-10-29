@@ -220,11 +220,12 @@ export class VAxios {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res: AxiosResponse<Result>) => {
+
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
               const ret = transformRequestHook(res, opt);
               //zhangyafei---添加回调方法
-              if(res.data.success ){
+              if(res.data.success || res.config.responseType=='blob'){
                 config.success && config.success(res.data);
                 resolve(ret);
               }else{

@@ -154,7 +154,8 @@ function debtHandle(){
     ...selectedRows.value[0]
   }
   params.bills=selectedBillData;
-  deptDialogRef.value.show(params)
+  params.id="";
+  deptDialogRef.value.show(params,true)
 }
 function oneKeyDebt() {
   if(selectedRows.value.length === 0) {
@@ -163,7 +164,8 @@ function oneKeyDebt() {
   const params = {
     ...selectedRows.value[0],
   }
-  oneKeyDeptDialogRef.value.show(params)
+  params.id="";
+  oneKeyDeptDialogRef.value.show(params,true)
 }
 function debtDetailHandle() {
   if(selectedRows.value.length === 0) {

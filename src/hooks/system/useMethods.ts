@@ -22,12 +22,15 @@ export function useMethods() {
    */
   async function exportXls(name, url, params, isXlsx = false) {
     //update-begin---author:wangshuai---date:2024-01-25---for:【QQYUN-8118】导出超时时间设置长点---
+
     const data = await defHttp.get({ url: url, params: params, responseType: 'blob', timeout: 60000 }, { isTransformResponse: false });
+
     //update-end---author:wangshuai---date:2024-01-25---for:【QQYUN-8118】导出超时时间设置长点---
     if (!data) {
       createMessage.warning('文件下载失败');
       return;
     }
+
     //update-begin---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
     let reader = new FileReader()
     reader.readAsText(data, 'utf-8')
