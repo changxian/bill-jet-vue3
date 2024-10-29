@@ -62,7 +62,7 @@
     <BasicTable @register="registerTable" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
           导出</a-button
         >
 
@@ -75,16 +75,14 @@
 
 <script lang="ts" name="purchase.checkbill-PurchaseCheckBill" setup>
 
- import {ref, defineExpose, reactive, defineEmits} from 'vue'
-    import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-    import { BasicTable, useTable } from '/@/components/Table';
+ import {ref, defineExpose, reactive} from 'vue'
+    import { BasicTable } from '/@/components/Table';
     import { useListPage } from '/@/hooks/system/useListPage';
     import { columns} from './PurchaseCheckBill.data';
-    import {list, getExportUrl} from '../debt/PurchaseDebt.api'
-    import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
     import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
-    import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue'; 
+    import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+ import {getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
 
  const queryParam = reactive<any>({ companyId: '', companyName: ''});
  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
@@ -110,9 +108,8 @@ function changeSupplier(val, selectRows) {
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '进货开单',
+      title: '进货对账单',
       api: list,
-      // columns: typeCountColumns,
       canResize:false,
       columns,
       useSearchForm: false,
@@ -128,7 +125,7 @@ function changeSupplier(val, selectRows) {
       }
     },
     exportConfig: {
-      name: "进货开单",
+      name: "进货对账单",
       url: getExportUrl,
       params: queryParam,
     },
