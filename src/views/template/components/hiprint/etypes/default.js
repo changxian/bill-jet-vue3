@@ -26,6 +26,8 @@ const fields = [
   { text: '药品名称', field: 'name10' },
   { text: '產品名稱', field: 'name11' },
 
+  { text: '名称简写', field: 'shortName' },
+
   { text: '规格型号', field: 'spec' },
   { text: '规格', field: 'spec2' },
   { text: '型号', field: 'spec3' },
@@ -48,34 +50,26 @@ const fields = [
 
   { text: '单价', field: 'price' },
   { text: '单价(元)', field: 'price2' },
+  { text: '零售价', field: 'price3' },
 
   { text: '金额', field: 'amount' },
-
-  { text: '零售价', field: 'price' },
 
   { text: '备注', field: 'remark' },
 
   { text: '生产产商', field: 'firm' },
-  { text: '产商', field: 'firm' },
-  { text: '生产厂商', field: 'firm' },
-  { text: '厂商', field: 'firm' },
-  { text: '生产企业', field: 'firm' },
+  { text: '产商', field: 'firm2' },
+  { text: '生产厂商', field: 'firm3' },
+  { text: '厂商', field: 'firm4' },
+  { text: '生产企业', field: 'firm5' },
 
-  { text: '生产地址', field: 'firm' },
-
-
-  { text: '货品名称', field: 'name4' },
-  { text: '品名', field: 'name7' },
-  { text: '名称', field: 'name8' },
-  { text: '商品名称', field: 'name9' },
-  { text: '名称简写', field: 'shortName' },
-  { text: '生产企业', field: 'firm1' },
-  { text: '厂商', field: 'firm2' },
   { text: '产商地址', field: 'firmAddress' },
-  { text: '生产地址', field: 'firmAddress1' },
+  { text: '生产地址', field: 'firmAddress2' },
+
   { text: '生产日期', field: 'productDate' },
+
   { text: '批号', field: 'batchNum' },
   { text: '生产批号', field: 'batchNum2' },
+
   { text: '有效期', field: 'validity' },
   { text: '批准文号', field: 'approvalNo' },
   { text: '注册证号', field: 'certificateNo' },

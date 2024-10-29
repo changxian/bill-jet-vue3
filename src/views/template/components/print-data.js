@@ -12,11 +12,14 @@ export default {
   debt: '8888', // 往期欠款
   totalDebt: '', // 累计欠款
   hotLine: '吴先生', // 售后热线
+  contact: '联某某', // 联系人
+  contactTel: '28899889988', // 联系人电话
 
   billNo: '202410070009', // 制单号、票据编号
   billDate: '2024/10/06', // 开单日期
   billBy: '刘开票人', // 开票人员
   createBy: '刘制单员', // 制单人员
+  createDate: '2024/10/06', // 制单时间
   authBy: '张审核人', // 审核人
   auth2By: '李复核人', // 复核人员
   haulier: '杨承运人', // 承运人
@@ -31,14 +34,16 @@ export default {
   deliveryNo: 'B0933jjsd', // 送货车号
   deliveryDate: '2024/10/07', // 送货日期
   deliveryBy: '宋某某', // 送货人
+  deliveryTel: '宋某某', // 送货人
+  deliveryCompany: '宋某某******公司', // 送货人物流公司
 
   // 客户
   company_1: 'XXXXXX某某某有限公司', // 客户名称
   address_1: '北京市贵阳市观山湖区金融城XXX银行', // 地址
   tel_1: '188888888/199999999', //  客户电话
   fax_1: '666666', // 客户传真
-  contact: '张某某', // 联系人
-  contactTel: '18899889988', // 联系人电话
+  contact_1: '张某某', // 联系人
+  contactTel_1: '18899889988', // 联系人电话
   signer: '王五王五', // 签收人
   signCom: '北京某某科技有限公司', // 收货单位
 
