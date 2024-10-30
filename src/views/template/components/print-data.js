@@ -53,7 +53,7 @@ export default {
   fax_1: '666666', // 客户传真
   contact_1: '张某某', // 联系人
   contactTel_1: '18899889988', // 联系人电话
-  signer: '王五王五', // 签收人
+  signer: '王五王五', // 签收人 收货人
   signCom: '北京某某科技有限公司', // 收货单位
 
   logoTest: '',
@@ -77,7 +77,6 @@ export default {
       remark: '备注信息',
       count: '120',
       amount: '9089.11',
-      first: 1, // tail 标记是第一条数据
     },
     {
       code: '2',
@@ -158,7 +157,6 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
-      tail: 1, // tail 标记是最后一条数据
     },
     {
       code: '7',
@@ -175,7 +173,6 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
-      tail: 1, // tail 标记是最后一条数据
     },
     {
       code: '8',
@@ -192,7 +189,6 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
-      tail: 1, // tail 标记是最后一条数据
     },
     {
       code: '9',
@@ -209,7 +205,6 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
-      tail: 1, // tail 标记是最后一条数据
     },
     {
       code: '10',
@@ -226,7 +221,118 @@ export default {
       remark: '女',
       count: '420',
       amount: '19089.31',
-      tail: 1, // tail 标记是最后一条数据
+    },
+    {
+      code: '11',
+      seq: 11,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
+    },
+    {
+      code: '5',
+      seq: 5,
+      spec: '规格5',
+      spec2: '剂型1',
+      firm: '生产厂商5',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 15,
+      name: '黄小菊',
+      remark: '备注信息',
+      count: '420',
+      amount: '19089.66',
+    },
+    {
+      code: '6',
+      seq: 6,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
+    },
+    {
+      code: '7',
+      seq: 7,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
+    },
+    {
+      code: '8',
+      seq: 8,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
+    },
+    {
+      code: '9',
+      seq: 9,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
+    },
+    {
+      code: '10',
+      seq: 10,
+      spec: '规格6',
+      spec2: '剂型1',
+      firm: '生产厂商6',
+      batchNum: 'A112344',
+      approvalNum: 'C112344',
+      validity: '2024/10/10',
+      unit: '件',
+      price: 144,
+      name: '黄小菊',
+      remark: '女',
+      count: '420',
+      amount: '19089.31',
     },
     {
       code: '11',

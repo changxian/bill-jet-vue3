@@ -1,6 +1,7 @@
 const fields = [
   { text: '序号', field: 'seq' },
-  { text: 'NO', field: 'seq2' },
+  { text: '行号', field: 'seq2' },
+  { text: 'NO', field: 'seq3' },
   { text: '订单编号', field: 'orderNo' },
   { text: '订单号', field: 'orderNo2' },
   { text: '訂單號', field: 'orderNo3' },
@@ -66,8 +67,10 @@ const fields = [
   { text: '金额', field: 'amount' },
   { text: '金额（元）', field: 'amount2' },
   { text: '金額', field: 'amount3' },
+  { text: '金额（RMB）', field: 'amount4' },
 
   { text: '备注', field: 'remark' },
+  { text: '备注（订单号）', field: 'orderNo' },
 
   { text: '产商', field: 'firm2' },
   { text: '厂商', field: 'firm4' },
