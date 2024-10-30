@@ -9994,6 +9994,9 @@ var hiprint = function (t) {
           }
         }
 
+        // 更新自定义页码
+        if (a[0] && a[0].innerHTML) a[0].innerHTML = a[0].innerHTML.replaceAll('innerPaperCount', hinnn._paperList.length);
+
         return a;
       }, t.prototype.resize = function (t, e, n, i) {
         this.width = e, this.height = n, this.paperType = t, this.rotate = i, this.designPaper.resize(e, n);
