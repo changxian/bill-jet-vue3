@@ -1,156 +1,181 @@
-import {BasicColumn} from '/@/components/Table';
-import {FormSchema} from '/@/components/Table';
-import { rules} from '/@/utils/helper/validator';
-import { render } from '/@/utils/common/renderUtils';
-import { getWeekMonthQuarterYear } from '/@/utils';
-//列表数据
+import { BasicColumn } from '/@/components/Table';
+
+// 状态  1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
+export const statusList = [
+  { value: '1', label: '未打印' },
+  { value: '2', label: '已打印' },
+  { value: '3', label: '签回' },
+  { value: '4', label: '过账' },
+  { value: '5', label: '审核' },
+  { value: '6', label: '已开票' },
+  { value: '9', label: '作废' },
+];
+// 开票状态（1未开、2不开、3已开、4无信息、9其他）
+export const billStatusList = [
+  { value: '1', label: '未开' },
+  { value: '2', label: '不开' },
+  { value: '3', label: '已开' },
+  { value: '4', label: '无信息' },
+  { value: '9', label: '其他' },
+];
+//送货单列表数据
 export const columns: BasicColumn[] = [
   {
     title: '单号',
-    align: "center",
-    dataIndex: 'billNo'
+    align: 'center',
+    dataIndex: 'billNo',
   },
   {
-    title: '交易类型（1：送货，2：退货）',
-    align: "center",
-    dataIndex: 'type_dictText'
+    title: '交易类型',
+    align: 'center',
+    dataIndex: 'type_dictText',
   },
   {
     title: '开单日期',
-    align: "center",
-    dataIndex: 'billDate'
+    align: 'center',
+    dataIndex: 'billDate',
   },
   {
-    title: '公司名称(记录开票时的公司名称）',
-    align: "center",
-    dataIndex: 'companyName_dictText'
+    title: '公司名称',
+    align: 'center',
+    dataIndex: 'companyName_dictText',
   },
   {
     title: '客户名称',
-    align: "center",
-    dataIndex: 'custName_dictText'
+    align: 'center',
+    dataIndex: 'custName_dictText',
   },
   {
     title: '客户电话',
-    align: "center",
-    dataIndex: 'custPhone'
+    align: 'center',
+    dataIndex: 'custPhone',
   },
   {
     title: '客户联系人',
-    align: "center",
-    dataIndex: 'custContact'
+    align: 'center',
+    dataIndex: 'custContact',
   },
   {
     title: '客户地址',
-    align: "center",
-    dataIndex: 'custAddress'
+    align: 'center',
+    dataIndex: 'custAddress',
   },
   {
-    title: '数量（本单商品数量）',
-    align: "center",
-    dataIndex: 'count'
+    title: '数量',
+    align: 'center',
+    dataIndex: 'count',
   },
   {
     title: '本单金额',
-    align: "center",
-    dataIndex: 'amount'
+    align: 'center',
+    dataIndex: 'amount',
   },
   {
     title: '已付款金额',
-    align: "center",
-    dataIndex: 'paymentAmount'
+    align: 'center',
+    dataIndex: 'paymentAmount',
   },
   {
     title: '优惠金额',
-    align: "center",
-    dataIndex: 'discountAmount'
+    align: 'center',
+    dataIndex: 'discountAmount',
   },
   {
-    title: '未付款（欠款）金额',
-    align: "center",
-    dataIndex: 'debtAmount'
+    title: '欠款金额',
+    align: 'center',
+    dataIndex: 'debtAmount',
   },
   {
     title: '往期欠款金额',
-    align: "center",
-    dataIndex: 'hisDebtAmount'
+    align: 'center',
+    dataIndex: 'hisDebtAmount',
   },
   {
     title: '送货车号',
-    align: "center",
-    dataIndex: 'careNo'
+    align: 'center',
+    dataIndex: 'careNo',
   },
   {
     title: '合同号',
-    align: "center",
-    dataIndex: 'contractCode'
+    align: 'center',
+    dataIndex: 'contractCode',
   },
   {
-    title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',
-    align: "center",
-    dataIndex: 'status'
+    title: '状态',
+    align: 'center',
+    dataIndex: 'status',
   },
   {
-    title: '开票状态（未开、不开、已开、无信息、其他）',
-    align: "center",
-    dataIndex: 'invoiceStatus_dictText'
+    title: '开票状态',
+    align: 'center',
+    dataIndex: 'invoiceStatus_dictText',
   },
   {
     title: '成本',
-    align: "center",
-    dataIndex: 'costAmount'
+    align: 'center',
+    dataIndex: 'costAmount',
   },
   {
     title: '利润',
-    align: "center",
-    dataIndex: 'profitAmount'
+    align: 'center',
+    dataIndex: 'profitAmount',
   },
   {
     title: '业务员',
-    align: "center",
-    dataIndex: 'userName_dictText'
+    align: 'center',
+    dataIndex: 'userName_dictText',
   },
   {
     title: '备注',
-    align: "center",
-    dataIndex: 'remark'
-  },
-  {
-    title: '版本',
-    align: "center",
-    dataIndex: 'version'
+    align: 'center',
+    dataIndex: 'remark',
   },
   {
     title: '制单人',
-    align: "center",
-    dataIndex: 'createName'
+    align: 'center',
+    dataIndex: 'createName',
   },
 ];
-
-// 高级查询数据
-export const superQuerySchema = {
-  billNo: {title: '单号',order: 0,view: 'text', type: 'string',},
-  type: {title: '交易类型（1：送货，2：退货）',order: 1,view: 'number', type: 'number',dictCode: '',},
-  billDate: {title: '开单日期',order: 2,view: 'datetime', type: 'string',},
-  companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'sel_user', type: 'string',},
-  custName: {title: '客户名称',order: 4,view: 'sel_user', type: 'string',},
-  custPhone: {title: '客户电话',order: 5,view: 'text', type: 'string',},
-  custContact: {title: '客户联系人',order: 6,view: 'text', type: 'string',},
-  custAddress: {title: '客户地址',order: 7,view: 'text', type: 'string',},
-  count: {title: '数量（本单商品数量）',order: 8,view: 'number', type: 'number',},
-  amount: {title: '本单金额',order: 9,view: 'number', type: 'number',},
-  paymentAmount: {title: '已付款金额',order: 10,view: 'number', type: 'number',},
-  discountAmount: {title: '优惠金额',order: 11,view: 'number', type: 'number',},
-  debtAmount: {title: '未付款（欠款）金额',order: 12,view: 'number', type: 'number',},
-  hisDebtAmount: {title: '往期欠款金额',order: 13,view: 'number', type: 'number',},
-  careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
-  contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
-  status: {title: '状态（未打印、已打印、签回、过账、审核、已开票、作废）',order: 16,view: 'number', type: 'number',},
-  invoiceStatus: {title: '开票状态（未开、不开、已开、无信息、其他）',order: 17,view: 'number', type: 'number',},
-  costAmount: {title: '成本',order: 18,view: 'number', type: 'number',},
-  profitAmount: {title: '利润',order: 19,view: 'number', type: 'number',},
-  userName: {title: '业务员',order: 20,view: 'sel_user', type: 'string',},
-  remark: {title: '备注',order: 21,view: 'text', type: 'string',},
-  version: {title: '版本',order: 23,view: 'number', type: 'number',},
-  createName: {title: '制单人',order: 24,view: 'text', type: 'string',},
-};
+// 开单页面商品列表数据
+export const detailColumns: BasicColumn[] = [
+  {
+    title: '商品编号(条码)',
+    align: 'center',
+    dataIndex: 'goodsCode',
+  },
+  {
+    title: '商品名称',
+    align: 'center',
+    dataIndex: 'goodsName',
+  },
+  {
+    title: '规格型号',
+    align: 'center',
+    dataIndex: 'goodsType',
+  },
+  {
+    title: '单位',
+    align: 'center',
+    dataIndex: 'goodsUnit',
+  },
+  {
+    title: '数量',
+    align: 'center',
+    dataIndex: 'count',
+  },
+  {
+    title: '单价',
+    align: 'center',
+    dataIndex: 'price',
+  },
+  {
+    title: '金额',
+    align: 'center',
+    dataIndex: 'costAmount',
+  },
+  {
+    title: '备注',
+    align: 'center',
+    dataIndex: 'remark',
+  },
+];

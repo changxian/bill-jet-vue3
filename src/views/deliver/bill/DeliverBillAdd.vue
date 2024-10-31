@@ -1,12 +1,10 @@
 <template>
-  <j-modal :title="title" :width="width" :fullscreen="true" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel" cancelText="关闭">
-    <DeliverBillForm ref="registerForm" :showBtn="false" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></DeliverBillForm>
-  </j-modal>
+  <DeliverBillForm ref="registerForm" :showBtn="true" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></DeliverBillForm>
 </template>
 
 <script lang="ts" setup>
-  import { ref, nextTick, defineExpose } from 'vue';
-  import DeliverBillForm from './DeliverBillForm.vue';
+  import { ref, nextTick, defineExpose, onMounted, onUpdated } from 'vue';
+  import DeliverBillForm from './components/DeliverBillForm.vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   
   const title = ref<string>('');
@@ -15,6 +13,11 @@
   const disableSubmit = ref<boolean>(false);
   const registerForm = ref();
   const emit = defineEmits(['register', 'success']);
+
+  onMounted(() => {
+    console.log('组件已挂载',99999999999);
+    visible.value=true;
+  });
 
   /**
    * 新增
@@ -35,27 +38,15 @@
     title.value = disableSubmit.value ? '详情' : '编辑';
     visible.value = true;
     nextTick(() => {
-      record.hasCopy = false;
       registerForm.value.edit(record);
     });
   }
-
-  /**
-   * 拷贝新增按钮点击事件
-   */
-  function copyAdd(record){
-    title.value = '新增';
-    visible.value = true;
-    nextTick(() => {
-      record.hasCopy = true;
-      registerForm.value.edit(record);
-    });
-  }
+  
   /**
    * 确定按钮点击事件
    */
   function handleOk() {
-    registerForm.value.clickSave();
+    registerForm.value.submitForm();
   }
 
   /**
@@ -76,7 +67,6 @@
   defineExpose({
     add,
     edit,
-    copyAdd,
     disableSubmit,
   });
 </script>

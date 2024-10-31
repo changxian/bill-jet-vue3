@@ -16,6 +16,7 @@ enum Api {
   getCategoryData = '/sys/category/loadAllData',
   companyList = '/company/tenantCompany/list',
   supplierList = '/purchase/supplier/supplier/list',
+  customerList = '/deliver/customer/customer/list',
 }
 
 /**
@@ -29,6 +30,12 @@ export const getCompanyList = (params) => defHttp.get({ url: Api.companyList, pa
  * @param params
  */
 export const getSupplierList = (params) => defHttp.get({ url: Api.supplierList, params });
+
+/**
+ * 供应商列表接口
+ * @param params
+ */
+export const getCustomerList = (params) => defHttp.get({ url: Api.customerList, params });
 
 /**
  * 上传父路径

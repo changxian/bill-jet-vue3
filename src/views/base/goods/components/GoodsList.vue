@@ -50,8 +50,8 @@
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import { columns, searchFormSchema} from './goods.data';
-  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
+  import { columns, searchFormSchema } from './goods.data';
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
@@ -109,7 +109,7 @@
       },
       rowSelection: {
         type: 'checkbox',
-        onChange: function(ids, rows) {
+        onChange: function (ids, rows) {
           emits('get-select', rows, ids);
         },
       },
@@ -127,11 +127,11 @@
 
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
-  function handleOk(){
+  function handleOk() {
     console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value);
-    if(selectedRowKeys.value.length > 0 ){
-       emits('get-select', selectedRows.value, selectedRowKeys.value);
-       emits('db-ok');
+    if (selectedRowKeys.value.length > 0) {
+      emits('get-select', selectedRows.value, selectedRowKeys.value);
+      emits('db-ok');
     }
   }
   watch(
