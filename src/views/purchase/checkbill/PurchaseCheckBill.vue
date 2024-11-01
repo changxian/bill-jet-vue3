@@ -15,8 +15,8 @@
             </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
-              <a-form-item label="欠款单" name="isDebt">
-                  <a-radio-group v-model:value="queryParam.isDebt" name="radioGroup">
+              <a-form-item label="欠款单" name="hasDebt">
+                  <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
                   <a-radio value="1">是</a-radio>
                   <a-radio value="2">否</a-radio>
                 </a-radio-group>
@@ -98,6 +98,7 @@
 function changeSupplier(val, selectRows) {
   console.log(' changeSupplier val', val, 'selectRows:', selectRows);
   if (selectRows?.length > 0) {
+    queryParam.supplierId = selectRows[0].id;
     queryParam.supplierName = selectRows[0].orgName;
     queryParam.supplierPhone = selectRows[0].phone;
     queryParam.supplierContact = selectRows[0].contact;

@@ -7,7 +7,7 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 const numCountCol =  {
     title: '数量统计',
     align: "center",
-    dataIndex: 'numCount'
+    dataIndex: 'num'
   }
   const amountCol =  {
     title: '金额统计',
@@ -24,7 +24,7 @@ const detailCol =  {
     title: '合计',
     align: "center",
     slots: { customRender: 'count' },
-    dataIndex: 'count'
+    dataIndex: 'total'
   }
 // 按商品统计
 export const goodsCountColumns: BasicColumn[] = [

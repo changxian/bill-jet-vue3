@@ -80,7 +80,7 @@
     import { BasicTable, useTable } from '/@/components/Table';
     import { useListPage } from '/@/hooks/system/useListPage';
     import { goodsCountColumns, typeCountColumns, supplierCountColumns,userCountColumns, careNoCountColumns } from './PurchaseStatistics.data';
-    import {list, getExportUrl} from '../debt/PurchaseDebt.api'
+    import {list, getExportUrl} from './PurchaseStatistics.api'
     import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
     import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';

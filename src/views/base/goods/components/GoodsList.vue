@@ -47,10 +47,16 @@
   import {useModal} from '/@/components/Modal';
   import {useListPage} from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
+  const modelName = true;
+
+
   import {columns, searchFormSchema} from './goods.data';
+
+
   import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './goods.api';
   import {useUserStore} from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
+
   import CustPriceList from './CustPriceList.vue';
 
   const queryParam = reactive<any>({});
@@ -59,6 +65,8 @@
   //注册model
   const [registerModal, { openModal }] = useModal();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
+
+ 
 
   const props = defineProps({
     data: {
