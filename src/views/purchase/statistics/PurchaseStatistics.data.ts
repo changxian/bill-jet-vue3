@@ -7,7 +7,7 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 const numCountCol =  {
     title: '数量统计',
     align: "center",
-    dataIndex: 'num'
+    dataIndex: 'count'
   }
   const amountCol =  {
     title: '金额统计',
@@ -20,11 +20,11 @@ const detailCol =  {
     dataIndex: 'detail',
     slots: { customRender: 'detail' },
   }
-  const countCol =  {
+  const countTotalCol =  {
     title: '合计',
     align: "center",
     slots: { customRender: 'count' },
-    dataIndex: 'total'
+    dataIndex: 'countTotal'
   }
 // 按商品统计
 export const goodsCountColumns: BasicColumn[] = [
@@ -60,12 +60,12 @@ export const typeCountColumns: BasicColumn[] = [
     {
         title: '类别',
         align: 'center',
-        dataIndex: 'type',
+        dataIndex: 'name',
        },
     numCountCol,
     amountCol,
     detailCol,
-    countCol
+    countTotalCol
   ];
   
     // 按供应商
@@ -73,12 +73,12 @@ export const supplierCountColumns: BasicColumn[] = [
     {
         title: '供应商',
         align: 'center',
-        dataIndex: 'supplierName',
+        dataIndex: 'name',
        },
     numCountCol,
     amountCol,
     detailCol,
-    countCol
+    countTotalCol
   ];
   
       // 按用户
@@ -86,23 +86,23 @@ export const userCountColumns: BasicColumn[] = [
     {
         title: '用户',
         align: 'center',
-        dataIndex: 'userName',
+        dataIndex: 'name',
        },
     numCountCol,
     amountCol,
     detailCol,
-    countCol
+    countTotalCol
   ];
 // 按车号
 export const careNoCountColumns: BasicColumn[] = [
     {
         title: '车号',
         align: 'center',
-        dataIndex: 'careNo',
+        dataIndex: 'name',
        },
     numCountCol,
     amountCol,
     detailCol,
-    countCol
+    countTotalCol
   ];
   
