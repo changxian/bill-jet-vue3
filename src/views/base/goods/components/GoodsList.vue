@@ -54,7 +54,6 @@
   import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
-
   import CustPriceList from './CustPriceList.vue';
   import ModifyModal from './ModifyModal.vue';
 
@@ -65,8 +64,6 @@
   //注册model
   const [registerModal, { openModal }] = useModal();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
-
- 
 
   const props = defineProps({
     data: {
