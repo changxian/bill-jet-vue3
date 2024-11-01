@@ -64,7 +64,7 @@
       },
       beforeFetch: (params) => {
         params['categoryId'] = categoryId.value;
-        params['custId'] = custId.value
+        params['custId'] = custId.value;
         return Object.assign(params, queryParam);
       },
     },

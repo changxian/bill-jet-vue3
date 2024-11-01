@@ -102,17 +102,17 @@
 </template>
 
 <script lang="ts" name="deliver.customer-customer" setup>
-  import {computed, reactive, ref, unref, watch} from 'vue';
-  import {BasicTable, TableAction} from '/@/components/Table';
-  import {useListPage} from '/@/hooks/system/useListPage';
-  import {columns} from './Customer.data';
-  import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './Customer.api';
+  import { computed, reactive, ref, unref, watch } from 'vue';
+  import { BasicTable, TableAction } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns } from './Customer.data';
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './Customer.api';
   import CustPriceList from './custprice/GoodsCustPriceList.vue';
   import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
   import CustomerModal from './components/CustomerModal.vue';
-  import {useUserStore} from '/@/store/modules/user';
-  import {useModal} from '@/components/Modal';
-  import {useMessage} from '@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { createMessage } = useMessage();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();

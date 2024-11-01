@@ -24,8 +24,6 @@
 
   //注册modal
   const [registerCustModal, { openModal: custPriceOpenModal }] = useModal();
-
-  const goodsId = ref<number>(0);
   const goodsName = ref<string>('');
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -55,7 +53,7 @@
         },
       },
       beforeFetch: (params) => {
-        return Object.assign(params, { goodsId: unref(goodsId), goodsName: unref(goodsName) });
+        return Object.assign(params, { goodsName: unref(goodsName) });
       },
     },
   });
@@ -66,9 +64,8 @@
   //表单赋值
   let row;
   const [registerModal, { closeModal }] = useModalInner(async (data) => {
-    goodsId.value = data.goodsId;
     goodsName.value = data.goodsName;
-    row = data.row
+    row = data.row;
     success();
   });
   //设置标题
@@ -107,7 +104,7 @@
   // 模拟将指定数据保存
   async function feakSave({ value, key, id }) {
     await updatePrice({ id: id, price: value });
-    reload()
+    reload();
   }
 
   async function beforeEditSubmit({ record, index, key, value }) {
@@ -124,10 +121,9 @@
   function handleAddCust() {
     custPriceOpenModal(true, {
       isUpdate: false,
-      goodsId: unref(goodsId),
       goodsName: unref(goodsName),
       showFooter: true,
-      row
+      row,
     });
   }
 

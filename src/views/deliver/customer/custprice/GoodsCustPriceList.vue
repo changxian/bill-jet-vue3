@@ -25,7 +25,7 @@
   import GoodsList from '../goods/GoodsList.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-const { createConfirm } = useMessage();
+  const { createConfirm } = useMessage();
   //注册modal
   const [registerGoodsModal, { openModal: goodsOpenModal }] = useModal();
 

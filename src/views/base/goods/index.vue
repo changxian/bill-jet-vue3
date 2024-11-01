@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup name="system-depart-user">
-  import { provide, ref } from 'vue';
+  import { computed, provide, ref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import GoodsTree from './components/GoodsTree.vue';
@@ -22,16 +22,24 @@
 
   const { prefixCls } = useDesign('depart-user');
   provide('prefixCls', prefixCls);
-  const emits = defineEmits(['get-select', 'db-ok'])
+  const emits = defineEmits(['get-select', 'db-ok']);
   // 当前选中的部门信息
   let departData = ref({});
 
+  // const props = defineProps({
+  //   data: {
+  //     type: Object,
+  //     required: true,
+  //     defaultValue: () => {},
+  //   },
+  // });
+  // const billType = computed(() => props.data?.billType);
   // 左侧树选择后触发
   function onTreeSelect(data: any) {
     departData.value = data;
   }
   function getSelect(rows, ids) {
-    emits('get-select', rows, ids)
+    emits('get-select', rows, ids);
   }
 </script>
 
@@ -39,10 +47,10 @@
   @import 'index.less';
   .goods-tbl-wrap {
     .ant-row {
-        width:100% !important
+      width: 100% !important;
     }
     .ant-col {
-        max-width:100% !important
+      max-width: 100% !important;
     }
-}
+  }
 </style>

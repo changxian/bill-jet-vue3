@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  list = '/deliver/customer/customer/list',
+  list = '/deliver/customer/customer/listIgnoreAdded',
 }
 
 /**

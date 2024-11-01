@@ -8,12 +8,20 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'deliver.bill:jxc_deliver_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:edit-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -28,7 +36,7 @@
           </a-button>
         </a-dropdown>
         <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
+        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" />-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -39,6 +47,14 @@
     </BasicTable>
     <!-- 表单区域 -->
     <DeliverBillModal ref="registerModal" @success="handleSuccess"></DeliverBillModal>
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
+    <div class="tbl-wrap">
+      <a-spin :spinning="detailLoading">
+        <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
+      </a-spin>
+    </div>
+
+<!--    <RepayDetailDialog ref="repayDetailDialogRef"/>-->
   </div>
 </template>
 
@@ -46,17 +62,23 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './DeliverBill.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
+  import { columns, detailColumns } from './DeliverBill.data';
+  import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import DeliverBillModal from './components/DeliverBillModal.vue'
+  import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
+  // import RepayDetailDialog from "@/views/purchase/debt/components/RepayDetailDialog.vue";
+  import ModifyModal from './components/ModifyModal.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
+  const { createMessage, createConfirm } = useMessage();
+  const repayDetailDialogRef = ref();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
+  const modifyModalRef = ref();
   const userStore = useUserStore();
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -64,8 +86,9 @@
       title: '送货开单',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
       useSearchForm: false,
+      clickToRowSelect: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -73,18 +96,19 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
       },
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: "送货开单",
+      name: '送货开单',
       url: getExportUrl,
       params: queryParam,
     },
 	  importConfig: {
 	    url: getImportUrl,
-	    success: handleSuccess
+	    success: handleSuccess,
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -96,27 +120,46 @@
     sm: 20,
   });
 
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
-
-  /**
-   * 高级查询事件
-   */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
+  // 删除数据
+  function handleDel() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+  }
+  // 修改状态、开票、信息
+  function handleModify(type) {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    if (type === 'status' && row.status === 5) {
+      return createMessage.warning('已经审核了，就不能修改了');
+    }
+    modifyModalRef.value.show(type, row);
   }
 
+  /**
+   * 欠款明细事件
+   */
+  function debtDetailHandle() {
+    if (selectedRows.value.length === 0) {
+      repayDetailDialogRef.value.show();
+    } else {
+      repayDetailDialogRef.value.show();
+    }
+  }
   /**
    * 新增事件
    */
   function handleAdd() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
     registerModal.value.disableSubmit = false;
-    registerModal.value.add();
+    const row = selectedRows.value[0];
+    registerModal.value.copyAdd(row);
   }
-  
   /**
    * 编辑事件
    */
@@ -162,7 +205,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'deliver.bill:jxc_deliver_bill:edit'
+        auth: 'deliver.bill:jxc_deliver_bill:edit',
       },
     ];
   }
@@ -182,9 +225,9 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'deliver.bill:jxc_deliver_bill:delete'
-      }
-    ]
+        auth: 'deliver.bill:jxc_deliver_bill:delete',
+      },
+    ];
   }
 
   /**
@@ -216,7 +259,33 @@
     }
   }
 
+  const dataSourceDetail: any = ref([]);
+  const { tableContext: tableContextDetail } = useListPage({
+    designScope: 'basic-table-demo',
+    tableProps: {
+      title: '商品详情',
+      columns: detailColumns,
+      rowkey: 'id',
+      pagination: false,
+    },
+  });
 
+  /**
+   * BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
+   * selectedRows选中的行信息、selectedRowKeys 选中的行rowkey
+   */
+  const [registerTableDetail, ] = tableContextDetail;
+  const currentRowId = ref('');
+  const detailLoading = ref(false);
+  function rowClick(record) {
+    detailLoading.value = true;
+    currentRowId.value = record.id;
+    billDetail({billId: record.id}).then(res=>{
+      dataSourceDetail.value = [...res];
+    }).finally(()=>{
+      detailLoading.value = false
+    });
+  }
 </script>
 
 <style lang="less" scoped>

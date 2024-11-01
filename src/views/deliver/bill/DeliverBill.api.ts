@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
@@ -11,7 +11,34 @@ enum Api {
   deleteBatch = '/deliver/bill/deliverBill/deleteBatch',
   importExcel = '/deliver/bill/deliverBill/importExcel',
   exportXls = '/deliver/bill/deliverBill/exportXls',
+  billDetail = '/deliver/bill/deliverBill/billDetail',
+  editStatus = '/deliver/bill/deliverBill/editStatus',
+  editInvoiceStatus = '/deliver/bill/deliverBill/editInvoiceStatus',
+  editInfo = '/deliver/bill/deliverBill/editInfo',
+  queryById = '/deliver/bill/deliverBill/queryById',
 }
+
+/**
+ * 修改送货单状态api
+ * @param params
+ */
+export const editStatus = (params) => {
+  return defHttp.post({ url: Api.editStatus, params }, { isTransformResponse: false });
+};
+/**
+ * 修改送货单开票状态api
+ * @param params
+ */
+export const editInvoiceStatus = (params) => {
+  return defHttp.post({ url: Api.editInvoiceStatus, params }, { isTransformResponse: false });
+};
+/**
+ * 修改送货单信息api
+ * @param params
+ */
+export const editInfo = (params) => {
+  return defHttp.post({ url: Api.editInfo, params }, { isTransformResponse: false });
+};
 
 /**
  * 导出api
@@ -29,6 +56,12 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 送货单详情接口
+ * @param params
+ */
+export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params });
 
 /**
  * 删除单个
