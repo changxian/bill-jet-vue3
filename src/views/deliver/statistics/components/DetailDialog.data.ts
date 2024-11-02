@@ -1,10 +1,10 @@
 import {BasicColumn} from '/@/components/Table';
  
 
-export const supplierCol = {
-    title: '供应商',
+export const custCol = {
+    title: '客户',
     align: "center",
-    dataIndex: 'supplierName'
+    dataIndex: 'custName'
 }
 export const userCol = {
     title: '用户',
@@ -37,9 +37,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'type_dictText'
   },
   {
-    title: '供应商',
+    title: '客户',
     align: "center",
-    dataIndex: 'supplierName'
+    dataIndex: 'custName'
   }, 
   {
     title: '商品编号(条码)',

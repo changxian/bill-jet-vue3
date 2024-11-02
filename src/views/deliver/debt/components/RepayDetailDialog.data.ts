@@ -35,9 +35,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billNo'
   },
   {
-    title: '供应商名称',
+    title: '客户名称',
     align: "center",
-    dataIndex: 'supplierName'
+    dataIndex: 'custName'
   }, 
   {
     title: '日期',
@@ -94,10 +94,10 @@ export const superQuerySchema = {
   type: {title: '开单类型（1：送货开单，2：退货开单）',order: 1,view: 'number', type: 'number',dictCode: '',},
   billDate: {title: '开单日期',order: 2,view: 'datetime', type: 'string',},
   companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'sel_user', type: 'string',},
-  supplierName: {title: '供应商名称',order: 4,view: 'sel_user', type: 'string',},
-  supplierPhone: {title: '供应商电话',order: 5,view: 'text', type: 'string',},
-  supplierContact: {title: '供应商联系人',order: 6,view: 'text', type: 'string',},
-  supplierAddress: {title: '供应商地址',order: 7,view: 'text', type: 'string',},
+  custName: {title: '客户名称',order: 4,view: 'sel_user', type: 'string',},
+  custPhone: {title: '客户电话',order: 5,view: 'text', type: 'string',},
+  custContact: {title: '客户联系人',order: 6,view: 'text', type: 'string',},
+  custAddress: {title: '客户地址',order: 7,view: 'text', type: 'string',},
   count: {title: '数量（本单商品数量）',order: 8,view: 'number', type: 'number',},
   amount: {title: '本单金额',order: 9,view: 'number', type: 'number',},
   paymentAmount: {title: '已付款金额',order: 10,view: 'number', type: 'number',},

@@ -8,9 +8,9 @@
                 :wrapperCol="wrapperCol" name="DeliverDebtForm">
           <a-row>
             <a-col :span="24">
-              <a-form-item label="供应商名" v-bind="validateInfos.supplierName"
-                           id="DeliverDebtForm-supplierName" name="supplierName">
-                <a-input  :disabled="true" v-model:value="formData.supplierName" placeholder="请输入供应商名"
+              <a-form-item label="客户名" v-bind="validateInfos.custName"
+                           id="DeliverDebtForm-custName" name="custName">
+                <a-input  :disabled="true" v-model:value="formData.custName" placeholder="请输入客户名"
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -96,16 +96,16 @@ const formData = reactive<Record<string, any>>({
   id: '',
   type: undefined,
   repayDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  supplierId: '',
+  custId: '',
   userName: userStore.getUserInfo.username,
   collectCompanyName: '',
   debtAmount: '',
   billNo: '',
   repayAmount: '',
-  supplierName: '',
-  supplierPhone: '',
-  supplierContact: '',
-  supplierAddress: '',
+  custName: '',
+  custPhone: '',
+  custContact: '',
+  custAddress: '',
   deliverDebtAmount: undefined,
   returnDebtAmount: undefined,
   remark: '',
@@ -181,7 +181,7 @@ function show(record) {
   })
   //赋值
   Object.assign(formData, tmpData);
-  formData.collectCompanyName = record.supplierName
+  formData.collectCompanyName = record.custName
   formData.userName = userStore.getUserInfo.username
   var billNo="";
   var debtAmount=0;

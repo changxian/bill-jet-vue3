@@ -10,28 +10,28 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商id" v-bind="validateInfos.supplierId" id="DeliverDebtForm-supplierId" name="supplierId">
-								<a-input v-model:value="formData.supplierId" placeholder="请输入供应商id"  allow-clear ></a-input>
+							<a-form-item label="客户id" v-bind="validateInfos.custId" id="DeliverDebtForm-custId" name="custId">
+								<a-input v-model:value="formData.custId" placeholder="请输入客户id"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商名" v-bind="validateInfos.supplierName" id="DeliverDebtForm-supplierName" name="supplierName">
-								<a-input v-model:value="formData.supplierName" placeholder="请输入供应商名"  allow-clear ></a-input>
+							<a-form-item label="客户名" v-bind="validateInfos.custName" id="DeliverDebtForm-custName" name="custName">
+								<a-input v-model:value="formData.custName" placeholder="请输入客户名"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商手机" v-bind="validateInfos.supplierPhone" id="DeliverDebtForm-supplierPhone" name="supplierPhone">
-								<a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商手机"  allow-clear ></a-input>
+							<a-form-item label="客户手机" v-bind="validateInfos.custPhone" id="DeliverDebtForm-custPhone" name="custPhone">
+								<a-input v-model:value="formData.custPhone" placeholder="请输入客户手机"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商联系人" v-bind="validateInfos.supplierContact" id="DeliverDebtForm-supplierContact" name="supplierContact">
-								<a-input v-model:value="formData.supplierContact" placeholder="请输入供应商联系人"  allow-clear ></a-input>
+							<a-form-item label="客户联系人" v-bind="validateInfos.custContact" id="DeliverDebtForm-custContact" name="custContact">
+								<a-input v-model:value="formData.custContact" placeholder="请输入客户联系人"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="供应商地址" v-bind="validateInfos.supplierAddress" id="DeliverDebtForm-supplierAddress" name="supplierAddress">
-								<a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商地址"  allow-clear ></a-input>
+							<a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverDebtForm-custAddress" name="custAddress">
+								<a-input v-model:value="formData.custAddress" placeholder="请输入客户地址"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -76,11 +76,11 @@
   const formData = reactive<Record<string, any>>({
     id: '',
     type: undefined,
-    supplierId: '',   
-    supplierName: '',   
-    supplierPhone: '',   
-    supplierContact: '',   
-    supplierAddress: '',   
+    custId: '',   
+    custName: '',   
+    custPhone: '',   
+    custContact: '',   
+    custAddress: '',   
     deliverDebtAmount: undefined,
     returnDebtAmount: undefined,
     remark: '',   
@@ -91,10 +91,10 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
-    supplierId: [{ required: true, message: '请输入供应商id!'},],
-    supplierName: [{ required: true, message: '请输入供应商名!'},],
-    supplierPhone: [{ required: true, message: '请输入供应商手机!'},],
-    supplierContact: [{ required: true, message: '请输入供应商联系人!'},],
+    custId: [{ required: true, message: '请输入客户id!'},],
+    custName: [{ required: true, message: '请输入客户名!'},],
+    custPhone: [{ required: true, message: '请输入客户手机!'},],
+    custContact: [{ required: true, message: '请输入客户联系人!'},],
     deliverDebtAmount: [{ required: true, message: '请输入送货欠款金额!'},],
     returnDebtAmount: [{ required: true, message: '请输入退货欠款金额!'},],
   });

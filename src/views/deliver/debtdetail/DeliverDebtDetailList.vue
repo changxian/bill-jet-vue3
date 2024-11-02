@@ -103,11 +103,11 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
-  const supplierId = ref('')
+  const custId = ref('')
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '供应商欠款明细',
+      title: '客户欠款明细',
       api: list,
       columns,
       canResize:false,
@@ -123,11 +123,11 @@
       },
       beforeFetch: async (params) => {
         let rangerQuery = await setRangeQuery();
-        return Object.assign(params, rangerQuery, {supplierId: supplierId.value});
+        return Object.assign(params, rangerQuery, {custId: custId.value});
       },
     },
     exportConfig: {
-      name: "供应商欠款明细",
+      name: "客户欠款明细",
       url: getExportUrl,
       params: queryParam,
     },
@@ -282,7 +282,7 @@
     return queryParamClone;
   }
   function searchByCustId(id){
-    supplierId.value = id
+    custId.value = id
     reload()
   }
   function getSelectedData(){

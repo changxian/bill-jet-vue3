@@ -17,9 +17,9 @@
               v-model:value="queryType"
               style="width:120px"
             >
-              <a-select-option value="supplierName">名称</a-select-option>
-              <a-select-option value="supplierPhone">手机</a-select-option>
-              <a-select-option value="supplierContact">联系人</a-select-option>
+              <a-select-option value="custName">名称</a-select-option>
+              <a-select-option value="custPhone">手机</a-select-option>
+              <a-select-option value="custContact">联系人</a-select-option>
           </a-select>
           <a-input placeholder="请输入" v-model:value="queryTypeValue" allow-clear ></a-input>
           <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
@@ -79,7 +79,7 @@
   import DeliverDebtDetailList from '/@/views/deliver/debtdetail/DeliverDebtDetailList.vue'
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  const queryType = ref('supplierName')
+  const queryType = ref('custName')
   const queryTypeValue = ref('')
 
   const { createMessage } = useMessage();
@@ -94,7 +94,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '欠款供应商',
+      title: '欠款客户',
       api: list,
       columns,
       canResize:false,
@@ -116,7 +116,7 @@
       },
     },
     exportConfig: {
-      name: "供应商欠款",
+      name: "客户欠款",
       url: getExportUrl,
       params: queryParam,
     },
@@ -144,7 +144,7 @@ function rowClick(record){
 
 function debtHandle(){
   if(selectedRows.value.length === 0) {
-    return createMessage.warning('请选择供应商')
+    return createMessage.warning('请选择客户')
   }
   const selectedBillData = deliverDebtDetailListRef.value.getSelectedData().selectedRows
   if(selectedBillData.length === 0) {
@@ -159,7 +159,7 @@ function debtHandle(){
 }
 function oneKeyDebt() {
   if(selectedRows.value.length === 0) {
-    return createMessage.warning('请选择供应商')
+    return createMessage.warning('请选择客户')
   }
   const params = {
     ...selectedRows.value[0],

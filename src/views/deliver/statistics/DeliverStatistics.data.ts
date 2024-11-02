@@ -68,10 +68,10 @@ export const typeCountColumns: BasicColumn[] = [
     countTotalCol
   ];
   
-    // 按供应商
-export const supplierCountColumns: BasicColumn[] = [
+    // 按客户
+export const custCountColumns: BasicColumn[] = [
     {
-        title: '供应商',
+        title: '客户',
         align: 'center',
         dataIndex: 'name',
        },

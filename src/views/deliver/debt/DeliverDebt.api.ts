@@ -35,7 +35,7 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
-// 供应商还款
+// 客户还款
 export const deliverRepayList = (params) => defHttp.get({ url: Api.deliverRepayList, params });
 export const repayDetailList = (params) => defHttp.get({ url: Api.repayDetailList, params });
 
@@ -91,7 +91,7 @@ export const saveOrUpdate = (params, isUpdate) => {
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
 /**
- * 供应商欠款还款
+ * 客户欠款还款
  * @param params
  * @param isUpdate
  */
@@ -100,7 +100,7 @@ export const repay = (params) => {
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
 /**
- * 供应商欠款还款
+ * 客户欠款还款
  * @param params
  * @param isUpdate
  */
@@ -109,7 +109,7 @@ export const repayEdit = (params) => {
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
 /**
- * 供应商欠款还款
+ * 客户欠款还款
  * @param params
  * @param isUpdate
  */

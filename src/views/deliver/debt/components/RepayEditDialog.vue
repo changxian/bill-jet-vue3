@@ -114,7 +114,7 @@ function show(record) {
   })
   //赋值
   Object.assign(formData, tmpData);
-  formData.collectCompanyName = record.supplierName
+  formData.collectCompanyName = record.custName
   formData.userName = userStore.getUserInfo.username
   var billNo="";
   var debtAmount=0;

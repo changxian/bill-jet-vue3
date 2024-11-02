@@ -82,7 +82,7 @@
 const titleObj = {
    goodsCountColumns: '送货统计明细-商品',
    typeCountColumns: '送货统计明细-类别',
-   supplierCountColumns: '送货统计明细-供应商',
+   custCountColumns: '送货统计明细-客户',
    userCountColumns: '送货统计明细-用户',
    careNoCountColumns: '送货统计明细-车号',
  }

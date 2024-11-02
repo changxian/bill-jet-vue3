@@ -28,18 +28,18 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商名称" id="DeliverBillForm-supplierId" name="supplierId">
-                <j-select-supplier v-model:value="queryParam.supplierId" @change="changeCust" allow-clear />
+              <a-form-item label="客户名称" id="DeliverBillForm-custId" name="custId">
+                <j-select-cust v-model:value="queryParam.custId" @change="changeCust" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商电话"  id="DeliverBillForm-supplierPhone" name="supplierPhone">
-                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入供应商电话" allow-clear></a-input>
+              <a-form-item label="客户电话"  id="DeliverBillForm-custPhone" name="custPhone">
+                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商联系人"  id="DeliverBillForm-supplierContact" name="supplierContact">
-                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入供应商联系人" allow-clear></a-input>
+              <a-form-item label="客户联系人"  id="DeliverBillForm-custContact" name="custContact">
+                <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
           </template>
@@ -98,10 +98,10 @@
 function changeCust(val, selectRows) {
   console.log(' changeCust val', val, 'selectRows:', selectRows);
   if (selectRows?.length > 0) {
-    queryParam.supplierId = selectRows[0].id;
-    queryParam.supplierName = selectRows[0].orgName;
-    queryParam.supplierPhone = selectRows[0].phone;
-    queryParam.supplierContact = selectRows[0].contact;
+    queryParam.custId = selectRows[0].id;
+    queryParam.custName = selectRows[0].orgName;
+    queryParam.custPhone = selectRows[0].phone;
+    queryParam.custContact = selectRows[0].contact;
   }
 }
 

@@ -10,9 +10,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'billDate'
   },
   {
-    title: '供应商',
+    title: '客户',
     align: "center",
-    dataIndex: 'supplierName'
+    dataIndex: 'custName'
   }, 
   {
     title: '单号',

@@ -6,7 +6,7 @@
           <FastDate v-model:modelValue="fastDateParam" />
           <a-col :lg="6">
             <a-form-item name="name" label="筛选">
-              <JInput v-model:value="queryParam.supplierName" class="query-group-cust" allow-clear></JInput>
+              <JInput v-model:value="queryParam.custName" class="query-group-cust" allow-clear></JInput>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
@@ -42,7 +42,7 @@
            <a-radio-group v-model:value="queryParam.queryType" @change="changeType">
                 <a-radio value="goodsCountColumns">按商品</a-radio>
                 <a-radio value="typeCountColumns">按类别</a-radio>
-                <a-radio value="supplierCountColumns">按供应商</a-radio>
+                <a-radio value="custCountColumns">按客户</a-radio>
                 <a-radio value="userCountColumns">按用户</a-radio>
                 <a-radio value="careNoCountColumns">按车号</a-radio>
               </a-radio-group>
@@ -79,7 +79,7 @@
     import JModal from '/@/components/Modal/src/JModal/JModal.vue';
     import { BasicTable, useTable } from '/@/components/Table';
     import { useListPage } from '/@/hooks/system/useListPage';
-    import { goodsCountColumns, typeCountColumns, supplierCountColumns,userCountColumns, careNoCountColumns } from './DeliverStatistics.data';
+    import { goodsCountColumns, typeCountColumns, custCountColumns,userCountColumns, careNoCountColumns } from './DeliverStatistics.data';
     import {list, getExportUrl} from './DeliverStatistics.api'
     import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
@@ -92,7 +92,7 @@
  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
  const formRef = ref()
  const columnObj = {
-  goodsCountColumns, typeCountColumns, supplierCountColumns,userCountColumns, careNoCountColumns
+  goodsCountColumns, typeCountColumns, custCountColumns,userCountColumns, careNoCountColumns
  }
   function getColumns(){
      return columnObj[queryParam.queryType]

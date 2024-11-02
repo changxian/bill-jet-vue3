@@ -11,9 +11,9 @@
               <FastDate v-model:modelValue="fastDateParam" startDateKey="repayDate_begin"
                         endDateKey="repayDate_end"/>
               <a-col :lg="6">
-                <a-form-item name="supplierName">
-                  <template #label><span title="供应商名称">供应商名</span></template>
-                  <JInput v-model:value="queryParam.supplierName" class="query-group-cust"></JInput>
+                <a-form-item name="custName">
+                  <template #label><span title="客户名称">客户名</span></template>
+                  <JInput v-model:value="queryParam.custName" class="query-group-cust"></JInput>
                 </a-form-item>
               </a-col>
               <template v-if="toggleSearchStatus">
@@ -210,8 +210,8 @@ const visible = ref(false)
 
 function show(record) {
   visible.value = true
-  if (record?.supplierName) {
-    queryParam.supplierName = record.supplierName
+  if (record?.custName) {
+    queryParam.custName = record.custName
     reload();
   }
 }
