@@ -3,7 +3,7 @@
     <!--引用表格-->
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk">
       <!--插槽:table标题-->
-      <template #tableTitle>
+      <template v-if="billType != 'deliver'" #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleModify('category')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 改类别</a-button>
@@ -30,7 +30,7 @@
         </a-dropdown>
       </template>
       <!--操作栏-->
-      <template #action="{ record }">
+      <template v-if="billType != 'deliver'" #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
     </BasicTable>
@@ -50,7 +50,7 @@
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import { columns, searchFormSchema } from './goods.data';
+  import { searchFormSchema } from './goods.data';
   import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
@@ -71,13 +71,87 @@
       required: true,
       defaultValue: () => {},
     },
+    billType: { type: String, default: '' },
+    customerId: { type: String, default: '' },
   });
-
+  // 开单类型【送货开单：deliver】
+  const billType = computed(() => props?.billType);
+  // 开单时选择的客户
+  const customerId = computed(() => props?.customerId);
+  console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
 
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
-
+  //列表数据
+  const columns: BasicColumn[] = [
+    {
+      title: '商品类别',
+      align: 'center',
+      dataIndex: 'categoryId_dictText',
+    },
+    {
+      title: '商品编号',
+      align: 'center',
+      dataIndex: 'code',
+    },
+    {
+      title: '商品名称',
+      align: 'center',
+      dataIndex: 'name',
+    },
+    {
+      title: '规格型号',
+      align: 'center',
+      dataIndex: 'type',
+    },
+    {
+      title: '面积',
+      align: 'center',
+      dataIndex: 'area',
+    },
+    {
+      title: '单位',
+      align: 'center',
+      dataIndex: 'unit',
+    },
+    {
+      title: '库存数量',
+      align: 'center',
+      dataIndex: 'stock',
+    },
+    {
+      title: '成本',
+      align: 'center',
+      dataIndex: 'cost',
+    },
+    {
+      title: '售价',
+      align: 'center',
+      dataIndex: 'price',
+    },
+    {
+      title: '客户价',
+      align: 'center',
+      dataIndex: 'custPrice',
+      ifShow: billType.value === 'deliver',
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status_dictText',
+    },
+    {
+      title: '备注',
+      align: 'center',
+      dataIndex: 'remark',
+    },
+    {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+    },
+  ];
   // 注册table数据
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tableContext, onExportXls, onImportXls } = useListPage({
@@ -105,6 +179,8 @@
       } as BasicColumn,
       beforeFetch: (params) => {
         params['categoryId'] = categoryId.value;
+        params['billType'] = billType.value;
+        params['custId'] = customerId.value;
         return Object.assign(params, queryParam);
       },
       rowSelection: {

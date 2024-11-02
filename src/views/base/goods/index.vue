@@ -7,7 +7,7 @@
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
       <a-card :bordered="false" style="height: 100%">
-        <GoodsList :data="departData" @db-ok="emits('db-ok')" @get-select="getSelect"/>
+        <GoodsList :data="departData" :billType="billType" :customerId="customerId" @db-ok="emits('db-ok')" @get-select="getSelect"/>
       </a-card>
     </a-col>
   </a-row>
@@ -26,14 +26,12 @@
   // 当前选中的部门信息
   let departData = ref({});
 
-  // const props = defineProps({
-  //   data: {
-  //     type: Object,
-  //     required: true,
-  //     defaultValue: () => {},
-  //   },
-  // });
-  // const billType = computed(() => props.data?.billType);
+  const props = defineProps({
+    billType: { type: String, default: '' },
+    customerId: { type: String, default: '' },
+  });
+  const billType = computed(() => props?.billType);
+  const customerId = computed(() => props?.customerId);
   // 左侧树选择后触发
   function onTreeSelect(data: any) {
     departData.value = data;
@@ -41,6 +39,11 @@
   function getSelect(rows, ids) {
     emits('get-select', rows, ids);
   }
+
+  defineExpose({
+    billType,
+    customerId,
+  });
 </script>
 
 <style lang="less">

@@ -1,89 +1,5 @@
-import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-// import {rules} from '/@/utils/helper/validator';
-// import {render} from '/@/utils/common/renderUtils';
-// import {getWeekMonthQuarterYear} from '/@/utils';
-//列表数据
-export const columns: BasicColumn[] = [
-  {
-    title: '商品类别',
-    align: 'center',
-    dataIndex: 'categoryId_dictText',
-    ifShow: true,
-  },
-  {
-    title: '商品编号',
-    align: 'center',
-    dataIndex: 'code',
-    ifShow: true,
-  },
-  {
-    title: '商品名称',
-    align: 'center',
-    dataIndex: 'name',
-    ifShow: true,
-  },
-  {
-    title: '规格型号',
-    align: 'center',
-    dataIndex: 'type',
-    ifShow: true,
-  },
-  {
-    title: '面积',
-    align: 'center',
-    dataIndex: 'area',
-    ifShow: true,
-  },
-  {
-    title: '单位',
-    align: 'center',
-    dataIndex: 'unit',
-    ifShow: true,
-  },
-  {
-    title: '库存数量',
-    align: 'center',
-    dataIndex: 'stock',
-    ifShow: true,
-  },
-  {
-    title: '成本',
-    align: 'center',
-    dataIndex: 'cost',
-    ifShow: true,
-  },
-  {
-    title: '售价',
-    align: 'center',
-    dataIndex: 'price',
-    ifShow: true,
-  },
-  {
-    title: '客户价',
-    align: 'center',
-    dataIndex: 'custPrice',
-    ifShow: false,
-  },
-  {
-    title: '状态',
-    align: 'center',
-    dataIndex: 'status_dictText',
-    ifShow: true,
-  },
-  {
-    title: '备注',
-    align: 'center',
-    dataIndex: 'remark',
-    ifShow: true,
-  },
-  {
-    title: '创建时间',
-    align: 'center',
-    dataIndex: 'createTime',
-    ifShow: true,
-  },
-];
+
 //查询数据
 export const searchFormSchema: FormSchema[] = [
   // Input 是精确查询, JInput 是模糊查询
@@ -105,18 +21,18 @@ export const searchFormSchema: FormSchema[] = [
     component: 'JInput',
     //colProps: {span: 6},
   },
-  {
-    label: '状态',
-    field: 'status',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'jxc_goods_status',
-      placeholder: '请选择',
-      // 删除请选择选项
-      showChooseOption: false,
-      stringToNumber: false,
-    },
-  },
+  // {
+  //   label: '状态',
+  //   field: 'status',
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'jxc_goods_status',
+  //     placeholder: '请选择',
+  //     // 删除请选择选项
+  //     showChooseOption: false,
+  //     stringToNumber: false,
+  //   },
+  // },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [

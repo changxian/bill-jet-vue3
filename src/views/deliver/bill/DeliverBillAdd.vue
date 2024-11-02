@@ -16,7 +16,7 @@
 
   onMounted(() => {
     console.log('组件已挂载',99999999999);
-    visible.value=true;
+    visible.value = true;
   });
 
   /**

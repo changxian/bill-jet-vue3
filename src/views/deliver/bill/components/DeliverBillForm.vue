@@ -135,7 +135,7 @@
 						</a-col>
 						-->
           </a-row>
-          <BillGoodsList ref="goodsRef" @change-goods="changeGoods"></BillGoodsList>
+          <BillGoodsList ref="goodsRef" :customerId="customerId" @change-goods="changeGoods"></BillGoodsList>
           <a-row>
             <a-col :span="span">
               <a-form-item label="开单类型" v-bind="validateInfos.type" id="DeliverBillForm-type" name="type">
@@ -272,7 +272,6 @@
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
-
   // 表单禁用
   const disabled = computed(() => {
     if (props.formBpm === true) {
@@ -291,6 +290,8 @@
       formData.companyName = selectRows[0].compName;
     }
   }
+  // 传递给商品选择页面的参数
+  const customerId = ref<string>('');
   // 选择开单客户
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
@@ -299,6 +300,8 @@
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
+      customerId.value = selectRows[0].id;
+      console.log(' customerId val', customerId.value );
     }
   }
   // 计算金额
@@ -336,7 +339,7 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
+        if (record.hasOwnProperty(key)) {
           tmpData[key] = record[key];
         }
       });
@@ -344,7 +347,7 @@
       Object.assign(formData, tmpData);
       formData.status = record.status + '';
       getGoods(formData.id);
-      if (record.hasCopy){
+      if (record.hasCopy) {
         formData.status = '';
         formData.invoiceStatus = undefined;
         formData.id = '';
@@ -420,7 +423,7 @@
     const params = {
       ...formData,
       ...goodsRef.value.getData(),
-    }
+    };
     console.log('params:', params);
     confirmLoading.value = true;
     saveOrUpdate(params)
@@ -492,6 +495,7 @@
     edit,
     clickSave,
     submitForm,
+    customerId,
   });
 </script>
 

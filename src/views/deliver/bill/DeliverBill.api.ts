@@ -72,7 +72,7 @@ export const deleteOne = (params,handleSuccess) => {
   return defHttp.delete({url: Api.deleteOne, params}, {joinParamsToUrl: true}).then(() => {
     handleSuccess();
   });
-}
+};
 
 /**
  * 批量删除
@@ -90,9 +90,9 @@ export const batchDelete = (params, handleSuccess) => {
       return defHttp.delete({url: Api.deleteBatch, data: params}, {joinParamsToUrl: true}).then(() => {
         handleSuccess();
       });
-    }
+    },
   });
-}
+};
 
 /**
  * 保存或者更新
@@ -102,4 +102,4 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
-}
+};

@@ -18,7 +18,7 @@
           @ok="handleOk"
         >
           <div style="width:98%">
-            <goodsSelectList @get-select="getSelect"  @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
+            <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
           </div>
         </BasicModal>
     </a-row>
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, defineEmits } from 'vue';
+  import { ref, computed, defineEmits, defineProps } from 'vue';
   import goodsSelectList from '@/views/base/goods/index.vue';
   import { BasicModal, useModal } from '/@/components/Modal';
   import { BasicColumn, BasicTable } from '/@/components/Table';
@@ -63,7 +63,6 @@
     openModal();
     refreshKey.value = ref(new Date().getTime());
   };
-
   let selectedGoods: any = [];
   function getSelect(rows, ids) {
     selectedGoods = [...rows];
@@ -160,17 +159,32 @@
   /**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
   selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
   const [registerTable, { reload }, { rowSelection }] = tableContext;
- 
+
+  const props = defineProps({
+    customerId: { type: String, default: '' },
+  });
+  // 客户id
+  const customerId = computed(() => {
+    if (props.customerId != '') {
+      return props.customerId;
+    }
+  });
+  // 传递给商品选择页面的参数
+  const billType = 'deliver';
   // 校验商品是否可重复添加
   const goodsNameRepeat = ref(false);
   const editAmountEditPrice = ref(false);
   const onlyChooseGoods = ref(false);
+  const autoCustPrice = ref(false);
+  const singleCustPrice = ref(false);
   const decimalPlaces = ref(2);
-
+  // 加载系统开单设置
   getMyBillSetting().then(res=>{
     goodsNameRepeat.value = !!res.goodsNameRepeat;
     editAmountEditPrice.value = !!res.editAmountEditPrice;
     onlyChooseGoods.value = !!res.onlyChooseGoods;
+    autoCustPrice.value = !!res.autoCustPrice;
+    singleCustPrice.value = !!res.singleCustPrice;
     if (res.decimalPlaces === 0 || res.decimalPlaces) {
       decimalPlaces.value = res.decimalPlaces;
     }
@@ -285,6 +299,8 @@
   defineExpose({
     getData,
     setValue,
+    billType,
+    customerId,
   });
 </script>
 
