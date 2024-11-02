@@ -2,7 +2,7 @@
   <div>
     <a-row>
       <a-col :span="8" style="position:relative">
-        <a-form-item label="商品搜索"  id="PurchaseBillForm-companyId" name="goodsName">
+        <a-form-item label="商品搜索"  id="DeliverBillForm-companyId" name="goodsName">
           <div style="display: flex">
             <a-input v-model:value="goodsName" placeholder="条码/编号/名称/简拼/规格" />
             <a-button type="primary" style="margin-left: 10px" @click="showModal">选择</a-button>
@@ -25,11 +25,11 @@
     <div class="tbl-wrap">
          <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
         <template #tableTitle>
-             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'purchase.bill:jxc_purchase_bill:add'">插入行</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'purchase.bill:jxc_purchase_bill:add'">删除</a-button>
-             <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">剪切</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">复制</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">粘贴</a-button> -->
+             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
+             <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
+             <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
+             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
+             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴</a-button> -->
         </template>
         </BasicTable>
         <div class="count-wrap">

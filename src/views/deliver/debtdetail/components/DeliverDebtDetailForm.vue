@@ -2,81 +2,76 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
-        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="DeliverBillDetailForm">
+        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="DeliverDebtDetailForm">
           <a-row>
 						<a-col :span="24">
-							<a-form-item label="公司id" v-bind="validateInfos.companyId" id="DeliverBillDetailForm-companyId" name="companyId">
-								<a-input v-model:value="formData.companyId" placeholder="请输入公司id"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="单号" v-bind="validateInfos.billNo" id="DeliverBillDetailForm-billNo" name="billNo">
+							<a-form-item label="单号" v-bind="validateInfos.billNo" id="DeliverDebtDetailForm-billNo" name="billNo">
 								<a-input v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="客户id" v-bind="validateInfos.custId" id="DeliverBillDetailForm-custId" name="custId">
-								<a-input v-model:value="formData.custId" placeholder="请输入客户id"  allow-clear ></a-input>
+							<a-form-item label="日期" v-bind="validateInfos.billDate" id="DeliverDebtDetailForm-billDate" name="billDate">
+								<a-date-picker placeholder="请选择日期"  v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="商品类别" v-bind="validateInfos.categoryName" id="DeliverBillDetailForm-categoryName" name="categoryName">
-								<a-input v-model:value="formData.categoryName" placeholder="请输入商品类别"  allow-clear ></a-input>
+							<a-form-item label="欠款类型（1：送货欠款，2：退货欠款）" v-bind="validateInfos.type" id="DeliverDebtDetailForm-type" name="type">
+								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择欠款类型（1：送货欠款，2：退货欠款）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="商品编号" v-bind="validateInfos.doogsCode" id="DeliverBillDetailForm-doogsCode" name="doogsCode">
-								<a-input v-model:value="formData.doogsCode" placeholder="请输入商品编号"  allow-clear ></a-input>
+							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="DeliverDebtDetailForm-amount" name="amount">
+								<a-input-number v-model:value="formData.amount" placeholder="请输入本单金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="商品名称" v-bind="validateInfos.doogsName" id="DeliverBillDetailForm-doogsName" name="doogsName">
-								<a-input v-model:value="formData.doogsName" placeholder="请输入商品名称"  allow-clear ></a-input>
+							<a-form-item label="付款金额" v-bind="validateInfos.paymentAmount" id="DeliverDebtDetailForm-paymentAmount" name="paymentAmount">
+								<a-input-number v-model:value="formData.paymentAmount" placeholder="请输入付款金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="规格型号" v-bind="validateInfos.doogsType" id="DeliverBillDetailForm-doogsType" name="doogsType">
-								<a-input v-model:value="formData.doogsType" placeholder="请输入规格型号"  allow-clear ></a-input>
+							<a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="DeliverDebtDetailForm-discountAmount" name="discountAmount">
+								<a-input-number v-model:value="formData.discountAmount" placeholder="请输入优惠金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="单位" v-bind="validateInfos.doogsUnit" id="DeliverBillDetailForm-doogsUnit" name="doogsUnit">
-								<a-input v-model:value="formData.doogsUnit" placeholder="请输入单位"  allow-clear ></a-input>
+							<a-form-item label="欠款金额" v-bind="validateInfos.debtAmount" id="DeliverDebtDetailForm-debtAmount" name="debtAmount">
+								<a-input-number v-model:value="formData.debtAmount" placeholder="请输入欠款金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="送货价" v-bind="validateInfos.costAmount" id="DeliverBillDetailForm-costAmount" name="costAmount">
-								<a-input-number v-model:value="formData.costAmount" placeholder="请输入送货价" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="金额" v-bind="validateInfos.amount" id="DeliverBillDetailForm-amount" name="amount">
-								<a-input-number v-model:value="formData.amount" placeholder="请输入金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="数量" v-bind="validateInfos.count" id="DeliverBillDetailForm-count" name="count">
-								<a-input-number v-model:value="formData.count" placeholder="请输入数量" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="业务员" v-bind="validateInfos.userName" id="DeliverBillDetailForm-userName" name="userName">
-								<a-input v-model:value="formData.userName" placeholder="请输入业务员"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="送货车号" v-bind="validateInfos.careNo" id="DeliverBillDetailForm-careNo" name="careNo">
+							<a-form-item label="送货车号" v-bind="validateInfos.careNo" id="DeliverDebtDetailForm-careNo" name="careNo">
 								<a-input v-model:value="formData.careNo" placeholder="请输入送货车号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="版本" v-bind="validateInfos.version" id="DeliverBillDetailForm-version" name="version">
-								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
+							<a-form-item label="合同号" v-bind="validateInfos.contractCode" id="DeliverDebtDetailForm-contractCode" name="contractCode">
+								<a-input v-model:value="formData.contractCode" placeholder="请输入合同号"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="备注" v-bind="validateInfos.remark" id="DeliverBillDetailForm-remark" name="remark">
+							<a-form-item label="业务员_id" v-bind="validateInfos.userId" id="DeliverDebtDetailForm-userId" name="userId">
+								<a-input v-model:value="formData.userId" placeholder="请输入业务员_id"  allow-clear ></a-input>
+							</a-form-item>
+						</a-col>
+						<a-col :span="24">
+							<a-form-item label="业务员" v-bind="validateInfos.userName" id="DeliverDebtDetailForm-userName" name="userName">
+								<a-input v-model:value="formData.userName" placeholder="请输入业务员"  allow-clear ></a-input>
+							</a-form-item>
+						</a-col>
+						<a-col :span="24">
+							<a-form-item label="制单人" v-bind="validateInfos.createName" id="DeliverDebtDetailForm-createName" name="createName">
+								<a-input v-model:value="formData.createName" placeholder="请输入制单人"  allow-clear ></a-input>
+							</a-form-item>
+						</a-col>
+						<a-col :span="24">
+							<a-form-item label="备注" v-bind="validateInfos.remark" id="DeliverDebtDetailForm-remark" name="remark">
 								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
+							</a-form-item>
+						</a-col>
+						<a-col :span="24">
+							<a-form-item label="版本" v-bind="validateInfos.version" id="DeliverDebtDetailForm-version" name="version">
+								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -90,8 +85,9 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
   import { defHttp } from '/@/utils/http/axios';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
-  import { saveOrUpdate } from '../DeliverBillDetail.api';
+  import { saveOrUpdate } from '../DeliverDebtDetail.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   const props = defineProps({
@@ -104,22 +100,21 @@
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    companyId: '',   
     billNo: '',   
-    custId: '',   
-    categoryName: '',   
-    doogsCode: '',   
-    doogsName: '',   
-    doogsType: '',   
-    doogsUnit: '',   
-    costAmount: undefined,
+    billDate: '',   
+    type: undefined,
     amount: undefined,
-    count: undefined,
-    userName: '',   
+    paymentAmount: undefined,
+    discountAmount: undefined,
+    debtAmount: undefined,
     careNo: '',   
+    contractCode: '',   
+    userId: '',   
+    userName: '',   
+    createName: '',   
+    remark: '',   
     delFlag: undefined,
     version: undefined,
-    remark: '',   
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });

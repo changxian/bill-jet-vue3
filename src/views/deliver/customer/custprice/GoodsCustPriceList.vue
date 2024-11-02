@@ -3,8 +3,8 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @edit-end="handleEditEnd" @edit-cancel="handleEditCancel" :beforeEditSubmit="beforeEditSubmit" >
       <template #tableTitle>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增 </a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined">清空</a-button>
-        <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined">清空</a-button>
+        <a-button  type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       </template>
       <!--操作栏-->
       <template #action="{ record }">

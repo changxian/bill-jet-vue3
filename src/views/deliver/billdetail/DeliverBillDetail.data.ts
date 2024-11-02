@@ -46,7 +46,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'doogsUnit'
   },
   {
-    title: '进货价',
+    title: '送货价',
     align: "center",
     dataIndex: 'costAmount'
   },
@@ -92,7 +92,7 @@ export const superQuerySchema = {
   doogsName: {title: '商品名称',order: 5,view: 'text', type: 'string',},
   doogsType: {title: '规格型号',order: 6,view: 'text', type: 'string',},
   doogsUnit: {title: '单位',order: 7,view: 'text', type: 'string',},
-  costAmount: {title: '进货价',order: 8,view: 'number', type: 'number',},
+  costAmount: {title: '送货价',order: 8,view: 'number', type: 'number',},
   amount: {title: '金额',order: 9,view: 'number', type: 'number',},
   count: {title: '数量',order: 10,view: 'number', type: 'number',},
   userName: {title: '业务员',order: 11,view: 'text', type: 'string',},

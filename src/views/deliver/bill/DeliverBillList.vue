@@ -68,7 +68,7 @@
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
-  // import RepayDetailDialog from "@/views/purchase/debt/components/RepayDetailDialog.vue";
+  // import RepayDetailDialog from "@/views/deliver/debt/components/RepayDetailDialog.vue";
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
 
