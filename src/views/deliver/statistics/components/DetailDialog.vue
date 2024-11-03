@@ -83,7 +83,7 @@ const titleObj = {
    goodsCountColumns: '送货统计明细-商品',
    typeCountColumns: '送货统计明细-类别',
    custCountColumns: '送货统计明细-客户',
-   userCountColumns: '送货统计明细-用户',
+   operatorCountColumns: '送货统计明细-用户',
    careNoCountColumns: '送货统计明细-车号',
  }
  const title = ref('')
@@ -153,7 +153,7 @@ const visible = ref(false)
 
     function show(type, record){
         title.value = titleObj[type] || '统计明细'
-        if(type === 'userCountColumns'){
+        if(type === 'operatorCountColumns'){
             const tmp = [...columnList.value]
             tmp.splice(3,1,userCol)
             columnList.value = tmp

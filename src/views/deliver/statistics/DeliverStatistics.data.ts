@@ -82,7 +82,7 @@ export const custCountColumns: BasicColumn[] = [
   ];
   
       // 按用户
-export const userCountColumns: BasicColumn[] = [
+export const operatorCountColumns: BasicColumn[] = [
     {
         title: '用户',
         align: 'center',

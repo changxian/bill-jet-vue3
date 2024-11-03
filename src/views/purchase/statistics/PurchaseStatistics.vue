@@ -43,7 +43,7 @@
                 <a-radio value="goodsCountColumns">按商品</a-radio>
                 <a-radio value="typeCountColumns">按类别</a-radio>
                 <a-radio value="supplierCountColumns">按供应商</a-radio>
-                <a-radio value="userCountColumns">按用户</a-radio>
+                <a-radio value="operatorCountColumns">按用户</a-radio>
                 <a-radio value="careNoCountColumns">按车号</a-radio>
               </a-radio-group>
         </a-row>
@@ -79,7 +79,7 @@
     import JModal from '/@/components/Modal/src/JModal/JModal.vue';
     import { BasicTable, useTable } from '/@/components/Table';
     import { useListPage } from '/@/hooks/system/useListPage';
-    import { goodsCountColumns, typeCountColumns, supplierCountColumns,userCountColumns, careNoCountColumns } from './PurchaseStatistics.data';
+    import { goodsCountColumns, typeCountColumns, supplierCountColumns,operatorCountColumns, careNoCountColumns } from './PurchaseStatistics.data';
     import {list, getExportUrl} from './PurchaseStatistics.api'
     import {JInput} from "@/components/Form";
     import FastDate from '/@/components/FastDate.vue';
@@ -92,7 +92,7 @@
  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
  const formRef = ref()
  const columnObj = {
-  goodsCountColumns, typeCountColumns, supplierCountColumns,userCountColumns, careNoCountColumns
+  goodsCountColumns, typeCountColumns, supplierCountColumns,operatorCountColumns, careNoCountColumns
  }
   function getColumns(){
      return columnObj[queryParam.queryType]
