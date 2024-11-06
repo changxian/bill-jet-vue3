@@ -2,9 +2,9 @@
   <div>
     <a-row>
       <a-col :span="8" style="position:relative">
-        <a-form-item label="商品搜索"  id="DeliverBillForm-companyId" name="goodsName">
+        <a-form-item label="商品搜索" id="DeliverBillForm-companyId" name="goodsName">
           <div style="display: flex">
-            <a-input v-model:value="goodsName" placeholder="条码/编号/名称/简拼/规格" />
+            <a-input v-model:value="goodsName" placeholder="条码/编号/名称/规格" />
             <a-button type="primary" style="margin-left: 10px" @click="showModal">选择</a-button>
             <div v-if="goodsNameRepeat" style="color:red;position:absolute;left:104%;width:150px;top:6px"> 商品不可重复选择</div>
           </div>
@@ -118,9 +118,15 @@
       editComponent: 'InputNumber',
     },
     {
-      title: '金额',
+      title: '成本金额',
       align: 'center',
       dataIndex: 'costAmount',
+      ifShow: false,
+    },
+    {
+      title: '金额',
+      align: 'center',
+      dataIndex: 'amount',
       editable: false,
       edit: true,
       editComponent: 'InputNumber',
@@ -173,10 +179,17 @@
   const billType = 'deliver';
   // 校验商品是否可重复添加
   const goodsNameRepeat = ref(false);
+  // 修改金额单价变动
   const editAmountEditPrice = ref(false);
+  // 金额计算方式
+  const buyPriceComputeMethod = ref(false);
+  // 只允许选择商品开单
   const onlyChooseGoods = ref(false);
+  // 自动记录客户价
   const autoCustPrice = ref(false);
+  // 启用一客一价
   const singleCustPrice = ref(false);
+  // 小数位数
   const decimalPlaces = ref(2);
   // 加载系统开单设置
   getMyBillSetting().then(res=>{
@@ -185,21 +198,30 @@
     onlyChooseGoods.value = !!res.onlyChooseGoods;
     autoCustPrice.value = !!res.autoCustPrice;
     singleCustPrice.value = !!res.singleCustPrice;
+    buyPriceComputeMethod.value = res.buyPriceComputeMethod;
     if (res.decimalPlaces === 0 || res.decimalPlaces) {
       decimalPlaces.value = res.decimalPlaces;
     }
   });
 
-
+  //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach(item=>{
+      debugger;
       item.goodsId = item.id;
       item.goodsName = item.name;
       item.goodsCode = item.code;
       item.goodsType = item.type;
       item.goodsUnit = item.unit;
-      item.count = 0;
-      item.amount = 0;
+      if (singleCustPrice.value && item.custPrice) {
+        item.price = item.custPrice;
+      }
+      // 根据金额计算方式来计算金额amount
+      // num_price、weight_num_price、area_num_price、volume_num_price
+      // weight_price、area_price、volume_price、write
+      item.amount = item.price;
+      item.costAmount = item.cost;
+      item.count = 1;
     });
     if (goodsNameRepeat.value) {
       selectedGoods = removedExistGoods(selectedGoods);
@@ -212,13 +234,13 @@
     emit('change-goods', [...dataSource.value]);
     closeModal();
   };
-  // 去掉已重发的商品
+  // 去掉已重复的商品
   function removedExistGoods(goods) {
     const ids = dataSource.value.map(item=>item.id);
     const tmp = goods.filter(item => ids.indexOf(item.id) === -1);
     return tmp;
   }
-
+  // 总计数量
   const countNum = computed(()=>{
     let num = 0;
     dataSource.value.forEach(item=>{
@@ -226,12 +248,14 @@
     });
     return num;
   });
+  // 总计金额
   const countMoney = computed(()=>{
-    let num = 0;
+    debugger;
+    let num = 0.0;
     dataSource.value.forEach(item=>{
-      num += item.costAmount; // 售价 或 客户价
+      num = parseFloat(num) + parseFloat(item.amount); // 售价 或 客户价
     });
-    return num;
+    return num.toFixed(decimalPlaces.value);
   });
 
   // 增加一行空商品数据
@@ -245,6 +269,8 @@
       goodsUnit: '',
       count: '',
       cost: '',
+      price: '',
+      amount: '',
       costAmount: '',
       remark: '',
     };
@@ -266,18 +292,23 @@
       },
     });
   }
-  // 计算价格
+  // 商品列表修改单价数量金额时执行该方法
   function beforeEditSubmit({ record, index, key, value }) {
+    debugger;
     console.log('==', record, index, key, value);
     // 售价 或 客户价
-    if (key === 'cost') {
-      record.costAmount = value * record.count;
+    // 根据金额计算方式来计算金额amount
+    // num_price、weight_num_price、area_num_price、volume_num_price
+    // weight_price、area_price、volume_price、write
+    if (key === 'price') {
+      record.amount = (value * record.count).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     } else if (key === 'count') {
-      record.costAmount = value * record.cost;
+      record.amount = (value * record.price).toFixed(decimalPlaces.value);
+      record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
-    } else if (editAmountEditPrice.value && key === 'costAmount') {
-      record.cost = ((value * 100 / record.count)/100).toFixed(decimalPlaces.value);
+    } else if (editAmountEditPrice.value && key === 'amount') {
+      record.price = ((value * 100/record.count)/100).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     }
   }
@@ -299,6 +330,7 @@
   defineExpose({
     getData,
     setValue,
+    goodsName,
     billType,
     customerId,
   });

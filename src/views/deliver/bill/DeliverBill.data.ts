@@ -38,12 +38,12 @@ export const columns: BasicColumn[] = [
   {
     title: '公司名称',
     align: 'center',
-    dataIndex: 'companyName_dictText',
+    dataIndex: 'companyName',
   },
   {
     title: '客户名称',
     align: 'center',
-    dataIndex: 'custName_dictText',
+    dataIndex: 'custName',
   },
   {
     title: '客户电话',

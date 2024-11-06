@@ -18,7 +18,7 @@
       @ok="handleOk"
     >
        <div style="width:98%">
-            <goodsSelectList @get-select="getSelect"  @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
+            <goodsSelectList @get-select="getSelect"  @db-ok="handleOk" :billType="billType" :key="refreshKey"></goodsSelectList>
         </div>
         </BasicModal>
     </a-row>
@@ -55,6 +55,7 @@ import {useUserStore} from '/@/store/modules/user';
 const emit = defineEmits(['change-goods'])
  const { createMessage, createConfirm } = useMessage();
 
+const billType = 'purchase';
 const goodsId = ref('');
 const goodsName = ref('');
 
@@ -287,7 +288,8 @@ function getData(){
 
 defineExpose({
     getData,
-    setValue
+    setValue,
+    billType,
 });
 </script>
 

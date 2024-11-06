@@ -33,7 +33,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-user v-model:value="formData.userId" allow-clear />
+                <j-select-user v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -154,7 +154,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="未付款" v-bind="validateInfos.debtAmount" id="DeliverBillForm-debtAmount" name="debtAmount">
-                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
+                <a-input-number disabled v-model:value="formData.debtAmount" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -162,7 +162,7 @@
                 <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
-            <a-col :span="span">
+            <!-- <a-col :span="span">
               <a-form-item
                 label="状态"
                 v-bind="validateInfos.status"
@@ -177,7 +177,7 @@
                   allow-clear
                 />
               </a-form-item>
-            </a-col>
+            </a-col>-->
             <a-col :span="8">
               <a-form-item label="备注" id="DeliverBillForm-remark" name="remark" >
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
@@ -250,6 +250,7 @@
     invoiceStatus: undefined,
     costAmount: undefined,
     profitAmount: undefined,
+    userId: '',
     userName: '',
     remark: '',
     delFlag: undefined,
@@ -287,7 +288,16 @@
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      formData.companyId = selectRows[0].id;
       formData.companyName = selectRows[0].compName;
+    }
+  }
+  // 选择业务员信息
+  function changeUser(val, selectRows) {
+    console.log(' changeUser val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      formData.userId = selectRows[0].id;
+      formData.userName = selectRows[0].realname;
     }
   }
   // 传递给商品选择页面的参数
@@ -296,22 +306,34 @@
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
       customerId.value = selectRows[0].id;
-      console.log(' customerId val', customerId.value );
+      console.log(' customerId val', customerId.value);
+      // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
     }
   }
   // 计算金额
   let amount = 0;
   function changeGoods(goods) {
-    let num = 0;
+    // 销售金额
+    let num = 0.0;
+    // 成本金额
+    let cost = 0.0;
+    // 利润金额
+    let profit = 0.0;
     goods.forEach(item => {
-      num += item.amount;
+      debugger;
+      num = parseFloat(num) + parseFloat(item.amount);
+      cost = parseFloat(cost) + parseFloat(item.costAmount);
     });
     amount = num;
+    formData.costAmount = cost;
+    profit = parseFloat(amount) - parseFloat(cost);
+    formData.profitAmount = profit;
     calcDebtAmount();
   }
   // 修改已付款、优惠金额时计算欠款金额
@@ -374,12 +396,12 @@
       createMessage.warning('请选择客户');
       return false;
     }
-    if (!formData.companyId){
+    if (!formData.companyId) {
       createMessage.warning('请选择公司');
       return false;
     }
     const goods = goodsRef.value.getData().details;
-    if (goods.length === 0){
+    if (goods.length === 0) {
       createMessage.warning('请选择商品');
       return false;
     }
@@ -400,6 +422,7 @@
     formData.custContact = '';
     formData.count = undefined;
     formData.amount = undefined;
+    formData.costAmount = undefined;
     formData.paymentAmount = 0;
     formData.discountAmount = 0;
     formData.debtAmount = 0;
@@ -416,7 +439,7 @@
   // 保存按钮点击事件
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
-    if (!validateForm()){
+    if (!validateForm()) {
       return;
     }
     console.log('formData:', formData);

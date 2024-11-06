@@ -26,107 +26,107 @@ export const billStatusList = [
 export const columns: BasicColumn[] = [
   {
     title: '单号',
-    align: "center",
+    align: 'center',
     dataIndex: 'billNo'
   },
   {
     title: '开单类型',
-    align: "center",
+    align: 'center',
     dataIndex: 'type_dictText'
   },
   {
     title: '开单日期',
-    align: "center",
+    align: 'center',
     dataIndex: 'billDate'
   },
   {
     title: '公司名称',
-    align: "center",
+    align: 'center',
     dataIndex: 'companyName'
   },
   {
     title: '供应商名称',
-    align: "center",
+    align: 'center',
     dataIndex: 'supplierName'
   },
   {
     title: '供应商电话',
-    align: "center",
+    align: 'center',
     dataIndex: 'supplierPhone'
   },
   {
     title: '供应商联系人',
-    align: "center",
+    align: 'center',
     dataIndex: 'supplierContact'
   },
   {
     title: '供应商地址',
-    align: "center",
+    align: 'center',
     dataIndex: 'supplierAddress'
   },
   {
     title: '数量',
-    align: "center",
+    align: 'center',
     dataIndex: 'count'
   },
   {
     title: '本单金额',
-    align: "center",
+    align: 'center',
     dataIndex: 'amount'
   },
   {
     title: '已付款金额',
-    align: "center",
+    align: 'center',
     dataIndex: 'paymentAmount'
   },
   {
     title: '优惠金额',
-    align: "center",
+    align: 'center',
     dataIndex: 'discountAmount'
   },
   {
     title: '未付款（欠款）金额',
-    align: "center",
+    align: 'center',
     dataIndex: 'debtAmount'
   },
   {
     title: '往期欠款金额',
-    align: "center",
+    align: 'center',
     dataIndex: 'hisDebtAmount'
   },
   {
     title: '送货车号',
-    align: "center",
+    align: 'center',
     dataIndex: 'careNo'
   },
   {
     title: '合同号',
-    align: "center",
+    align: 'center',
     dataIndex: 'contractCode'
   },
   {
     title: '状态',
-    align: "center",
+    align: 'center',
     dataIndex: 'status_dictText'
   },
   {
     title: '开票状态',
-    align: "center",
+    align: 'center',
     dataIndex: 'billStatus_dictText'
   },
   {
     title: '业务员',
-    align: "center",
+    align: 'center',
     dataIndex: 'userName'
   },
   {
     title: '备注',
-    align: "center",
+    align: 'center',
     dataIndex: 'remark'
   },
   {
     title: '制单人',
-    align: "center",
+    align: 'center',
     dataIndex: 'createName'
   },
 ];
@@ -174,6 +174,7 @@ export const detailColumns: BasicColumn[] = [
 }
 ];
 // 高级查询数据
+/*
 export const superQuerySchema = {
   billNo: {title: '单号',order: 0,view: 'text', type: 'string',},
   type: {title: '开单类型（1：进货开单，2：退货开单）',order: 1,view: 'number', type: 'number',dictCode: '',},
@@ -198,3 +199,4 @@ export const superQuerySchema = {
   version: {title: '版本',order: 21,view: 'number', type: 'number',},
   createName: {title: '制单人',order: 22,view: 'text', type: 'string',},
 };
+*/

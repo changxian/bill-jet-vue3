@@ -60,14 +60,12 @@
 
 <script lang="ts" name="deliver.bill-deliverBill" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
   import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
-  import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
   // import RepayDetailDialog from "@/views/deliver/debt/components/RepayDetailDialog.vue";
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
@@ -89,6 +87,7 @@
       canResize: false,
       useSearchForm: false,
       clickToRowSelect: true,
+      showIndexColumn: true,
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -265,6 +264,7 @@
     tableProps: {
       title: '商品详情',
       columns: detailColumns,
+      showIndexColumn: true,
       rowkey: 'id',
       pagination: false,
     },

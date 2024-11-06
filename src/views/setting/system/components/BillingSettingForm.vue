@@ -92,7 +92,7 @@
                     class="option-item" :span="6">
               <p style="margin-bottom: 10px">
                 <label class="underLine-label">{{item.fieldDesc}}列名:</label>
-                <input class="underLine-text" v-model="item.fieldTitle" /></p>
+                <input class="underLine-text" v-model="item.fieldTitle"/></p>
              </a-col>
           </a-row>
 

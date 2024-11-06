@@ -5,8 +5,8 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/deliver/bill/deliverBill/list',
-  save='/deliver/bill/deliverBill/add',
-  edit='/deliver/bill/deliverBill/edit',
+  save = '/deliver/bill/deliverBill/add',
+  edit = '/deliver/bill/deliverBill/edit',
   deleteOne = '/deliver/bill/deliverBill/delete',
   deleteBatch = '/deliver/bill/deliverBill/deleteBatch',
   importExcel = '/deliver/bill/deliverBill/importExcel',
