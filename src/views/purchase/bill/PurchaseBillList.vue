@@ -4,6 +4,92 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <FastDate v-model:modelValue="fastDateParam" />
+          <a-col :lg="6">
+            <a-form-item name="billNo" label="单号">
+              <JInput v-model:value="queryParam.billNo" class="query-group-cust" allow-clear></JInput>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :lg="6">
+              <a-form-item name="supplierName" label="供应商">
+                <JInput v-model:value="queryParam.supplierName" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="supplierContact" label="联系人">
+                <JInput v-model:value="queryParam.supplierContact" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item name="operatorName" label="制单员">
+                <JInput v-model:value="queryParam.operatorName" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="状态" name="status">
+                <a-select v-model:value="queryParam.status" allow-clear>
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="1">未打印</a-select-option>
+                  <a-select-option value="2">已打印</a-select-option>
+                  <a-select-option value="3">签回</a-select-option>
+                  <a-select-option value="4">过账</a-select-option>
+                  <a-select-option value="5">审核</a-select-option>
+                  <a-select-option value="6">已开票</a-select-option>
+                  <a-select-option value="9">作废</a-select-option>
+
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="欠款" name="hasDebt">
+                <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
+                  <a-radio value="">所有</a-radio>
+                  <a-radio value="1">是</a-radio>
+                  <a-radio value="2">否</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="开票" name="invoiceStatus">
+                <a-select v-model:value="queryParam.invoiceStatus" allow-clear>
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="1">未开</a-select-option>
+                  <a-select-option value="2">不开</a-select-option>
+                  <a-select-option value="3">已开</a-select-option>
+                  <a-select-option value="4">无信息</a-select-option>
+                  <a-select-option value="9">作废</a-select-option>
+
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="类型" name="type">
+                <a-select v-model:value="queryParam.type" allow-clear>
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="1">进货还款</a-select-option>
+                  <a-select-option value="2">退货还款</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="公司" name="companyId">
+                <j-select-company v-model:value="queryParam.companyId"   allow-clear />
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -45,6 +131,14 @@
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
+
+      <p>总计
+        <span class="total_span">数量：{{totalCount}}</span>
+        <span class="total_span">金额：{{totalAmount}}</span>
+        <span class="total_span">已付款：{{totalPaymentAmount}}</span>
+        <span class="total_span">优惠：{{totalDiscountAmount}}</span>
+        <span class="total_span">未付款：{{totalDebtAmount}}</span>
+      </p>
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
@@ -63,7 +157,7 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema, detailColumns } from './PurchaseBill.data';
+  import { columns,   detailColumns } from './PurchaseBill.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl,billDetail } from './PurchaseBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseBillModal from './components/PurchaseBillModal.vue'
@@ -71,7 +165,10 @@
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
   import RepayDetailDialog from "@/views/purchase/debt/components/RepayDetailDialog.vue";
-
+  import {JInput} from "@/components/Form";
+  import FastDate from "@/components/FastDate.vue";
+  import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
+  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
   const { createMessage, createConfirm } = useMessage();
   const repayDetailDialogRef = ref()
   const formRef = ref();
@@ -79,7 +176,15 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const modifyModalRef = ref();
+  const totalCount = ref(0);
+  const totalAmount = ref(0);
+  const totalPaymentAmount = ref(0);
+  const totalDiscountAmount = ref(0);
+  const totalDebtAmount = ref(0);
+
+
   const userStore = useUserStore();
+
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -94,8 +199,20 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        return Object.assign(params, queryParam);
+        return Object.assign(params, queryParam, fastDateParam);
       },
+      afterFetch: async (resultItems) => {
+        resultItems.forEach((item)=>{
+          totalCount.value+=item.count;
+          totalAmount.value+=item.amount;
+          totalPaymentAmount.value+=item.paymentAmount;
+          totalDiscountAmount.value+=item.discountAmount;
+          totalDebtAmount.value+=item.debtAmount;
+
+        });
+
+      },
+
       rowSelection: { type: 'radio'}, 
     },
     exportConfig: {
@@ -136,8 +253,6 @@
     sm: 20,
   });
 
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
 
   /**
    * 高级查询事件
@@ -319,4 +434,5 @@ function rowClick(record){
       width: 100%;
     }
   }
+  .total_span{margin: 0 5px}
 </style>

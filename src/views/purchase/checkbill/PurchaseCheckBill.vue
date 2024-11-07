@@ -17,8 +17,9 @@
             <a-col :lg="6">
               <a-form-item label="欠款单" name="hasDebt">
                   <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
-                  <a-radio value="1">是</a-radio>
-                  <a-radio value="2">否</a-radio>
+                    <a-radio value="">所有</a-radio>
+                    <a-radio value="1">是</a-radio>
+                    <a-radio value="2">否</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>
