@@ -201,17 +201,18 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
       },
-      afterFetch: async (resultItems) => {
-        resultItems.forEach((item)=>{
-          totalCount.value+=item.count;
-          totalAmount.value+=item.amount;
-          totalPaymentAmount.value+=item.paymentAmount;
-          totalDiscountAmount.value+=item.discountAmount;
-          totalDebtAmount.value+=item.debtAmount;
-
-        });
-
-      },
+      summaryFunc:summaryFunc,
+      // afterFetch: async (resultItems) => {
+      //   resultItems.forEach((item)=>{
+      //     totalCount.value+=item.count;
+      //     totalAmount.value+=item.amount;
+      //     totalPaymentAmount.value+=item.paymentAmount;
+      //     totalDiscountAmount.value+=item.discountAmount;
+      //     totalDebtAmount.value+=item.debtAmount;
+      //
+      //   });
+      //
+      // },
 
       rowSelection: { type: 'radio'}, 
     },
@@ -237,6 +238,31 @@
         return createMessage.warning('请先选择数据');
       }
       batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+  }
+  function summaryFunc(resultItems)  {
+    totalCount.value=0;
+    totalAmount.value=0;
+    totalPaymentAmount.value=0;
+    totalDiscountAmount.value=0;
+    totalDebtAmount.value=0;
+    resultItems.forEach((item)=>{
+      totalCount.value+=item.count;
+      totalAmount.value+=item.amount;
+      totalPaymentAmount.value+=item.paymentAmount;
+      totalDiscountAmount.value+=item.discountAmount;
+      totalDebtAmount.value+=item.debtAmount;
+
+    });
+    return [{
+      _row:"合计",
+      _index:"合计",
+      count:totalCount.value,
+      amount:totalAmount.value,
+      paymentAmount:totalPaymentAmount.value,
+      discountAmount:totalDiscountAmount.value,
+      debtAmount:totalDebtAmount.value,
+    }]
+
   }
   function handleModify(type) {
       if(selectedRowKeys.value.length === 0){

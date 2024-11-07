@@ -67,32 +67,32 @@ export const columns: BasicColumn[] = [
   {
     title: '数量',
     align: 'center',
-    dataIndex: 'count'
+    dataIndex: 'count', 
   },
   {
     title: '本单金额',
     align: 'center',
-    dataIndex: 'amount'
+    dataIndex: 'amount', 
   },
   {
     title: '已付款金额',
     align: 'center',
-    dataIndex: 'paymentAmount'
+    dataIndex: 'paymentAmount', 
   },
   {
     title: '优惠金额',
     align: 'center',
-    dataIndex: 'discountAmount'
+    dataIndex: 'discountAmount', 
   },
   {
     title: '未付款（欠款）金额',
     align: 'center',
-    dataIndex: 'debtAmount'
+    dataIndex: 'debtAmount', 
   },
   {
     title: '往期欠款金额',
     align: 'center',
-    dataIndex: 'hisDebtAmount'
+    dataIndex: 'hisDebtAmount', 
   },
   {
     title: '送货车号',
