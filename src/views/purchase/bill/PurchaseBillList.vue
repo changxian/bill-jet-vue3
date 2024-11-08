@@ -131,14 +131,16 @@
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
-
-      <p>总计
+    <div style="position: relative;height: 20px;padding: 0 0 0 18px">
+      <p :class="{'p_san': hasPan}" >总计
         <span class="total_span">数量：{{totalCount}}</span>
         <span class="total_span">金额：{{totalAmount}}</span>
         <span class="total_span">已付款：{{totalPaymentAmount}}</span>
         <span class="total_span">优惠：{{totalDiscountAmount}}</span>
         <span class="total_span">未付款：{{totalDebtAmount}}</span>
       </p>
+    </div>
+
     <!-- 表单区域 -->
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
@@ -182,7 +184,7 @@
   const totalDiscountAmount = ref(0);
   const totalDebtAmount = ref(0);
 
-
+  const hasPan = ref(true);
   const userStore = useUserStore();
 
   //注册table数据
@@ -202,17 +204,22 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc:summaryFunc,
-      // afterFetch: async (resultItems) => {
-      //   resultItems.forEach((item)=>{
-      //     totalCount.value+=item.count;
-      //     totalAmount.value+=item.amount;
-      //     totalPaymentAmount.value+=item.paymentAmount;
-      //     totalDiscountAmount.value+=item.discountAmount;
-      //     totalDebtAmount.value+=item.debtAmount;
-      //
-      //   });
-      //
-      // },
+      afterFetch: async (resultItems) => {
+        hasPan.value= resultItems.length>0;
+        totalCount.value=0;
+        totalAmount.value=0;
+        totalPaymentAmount.value=0;
+        totalDiscountAmount.value=0;
+        totalDebtAmount.value=0;
+        resultItems.forEach((item)=>{
+          totalCount.value+=item.count;
+          totalAmount.value+=item.amount;
+          totalPaymentAmount.value+=item.paymentAmount;
+          totalDiscountAmount.value+=item.discountAmount;
+          totalDebtAmount.value+=item.debtAmount;
+
+        });
+      },
 
       rowSelection: { type: 'radio'}, 
     },
@@ -240,19 +247,6 @@
       batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   function summaryFunc(resultItems)  {
-    totalCount.value=0;
-    totalAmount.value=0;
-    totalPaymentAmount.value=0;
-    totalDiscountAmount.value=0;
-    totalDebtAmount.value=0;
-    resultItems.forEach((item)=>{
-      totalCount.value+=item.count;
-      totalAmount.value+=item.amount;
-      totalPaymentAmount.value+=item.paymentAmount;
-      totalDiscountAmount.value+=item.discountAmount;
-      totalDebtAmount.value+=item.debtAmount;
-
-    });
     return [{
       _row:"合计",
       _index:"合计",
@@ -461,4 +455,8 @@ function rowClick(record){
     }
   }
   .total_span{margin: 0 5px}
+  .p_san{
+     position: absolute;
+    top: -50px;
+  }
 </style>
