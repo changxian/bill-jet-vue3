@@ -1,5 +1,6 @@
 const fields = [
   { text: '序号', field: 'seq' },
+  { text: '行号', field: 'seq1' },
   { text: 'NO', field: 'seq2' },
   { text: '订单编号', field: 'orderNo' },
   { text: '订单号', field: 'orderNo2' },
@@ -17,6 +18,8 @@ const fields = [
   { text: '药品编号', field: 'code9' },
   { text: '產品編號', field: 'code10' },
   { text: '貨號', field: 'code11' },
+  { text: 'Barcode', field: 'code13' },
+  { text: '条形码', field: 'code14' },
 
   { text: '商品名称', field: 'name' },
   { text: '物料名称', field: 'name2' },
@@ -53,21 +56,37 @@ const fields = [
 
   { text: '颜色', field: 'color' },
 
+  { text: '长(m)', field: 'length' },
+  { text: '长度(m)', field: 'length1' },
+
+  { text: '宽(m)', field: 'wide' },
+  { text: '宽度(m)', field: 'wide1' },
+
+  { text: '高(m)', field: 'high' },
+  { text: '高度(m)', field: 'high2' },
+
+  { text: '面积(m²)', field: 'area' },
+
   { text: '数量', field: 'count' },
   { text: '數量', field: 'count2' },
+  { text: 'QTY', field: 'count3' },
 
   { text: '重量', field: 'weight' },
+  { text: '重量(kg)', field: 'weight1' },
 
   { text: '单价', field: 'price' },
   { text: '单价(元)', field: 'price2' },
   { text: '零售价', field: 'price3' },
   { text: '單價', field: 'price4' },
+  { text: 'Price', field: 'price5' },
 
   { text: '金额', field: 'amount' },
   { text: '金额（元）', field: 'amount2' },
   { text: '金額', field: 'amount3' },
+  { text: 'Amount', field: 'amount4' },
 
   { text: '备注', field: 'remark' },
+  { text: 'Description', field: 'description' },
 
   { text: '产商', field: 'firm2' },
   { text: '厂商', field: 'firm4' },
