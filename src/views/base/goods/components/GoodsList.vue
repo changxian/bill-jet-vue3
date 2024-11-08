@@ -56,6 +56,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
   import ModifyModal from './ModifyModal.vue';
+  import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
@@ -78,80 +79,110 @@
   const billType = computed(() => props?.billType);
   // 开单时选择的客户
   const customerId = computed(() => props?.customerId);
+  // 当前选中的部门ID，可能会为空，代表未选择部门
+  const categoryId = computed(() => props.data?.id);
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
 
-  // 当前选中的部门ID，可能会为空，代表未选择部门
-  const categoryId = computed(() => props.data?.id);
+  // 显示重量列
+  const showWeightCol = ref(false);
+  // 显示面积列
+  const showAreaCol = ref(false);
+  // 显示体积列
+  const showVolumeCol = ref(false);
   //列表数据
-  const columns: BasicColumn[] = [
-    {
-      title: '商品类别',
-      align: 'center',
-      dataIndex: 'categoryId_dictText',
-    },
-    {
-      title: '商品编号',
-      align: 'center',
-      dataIndex: 'code',
-    },
-    {
-      title: '商品名称',
-      align: 'center',
-      dataIndex: 'name',
-    },
-    {
-      title: '规格型号',
-      align: 'center',
-      dataIndex: 'type',
-    },
-    {
-      title: '面积',
-      align: 'center',
-      dataIndex: 'area',
-    },
-    {
-      title: '单位',
-      align: 'center',
-      dataIndex: 'unit',
-    },
-    {
-      title: '库存数量',
-      align: 'center',
-      dataIndex: 'stock',
-    },
-    {
-      title: '成本',
-      align: 'center',
-      dataIndex: 'cost',
-    },
-    {
-      title: '售价',
-      align: 'center',
-      dataIndex: 'price',
-    },
-    {
-      title: '客户价',
-      align: 'center',
-      dataIndex: 'custPrice',
-      ifShow: billType.value === 'deliver',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status_dictText',
-    },
-    {
-      title: '备注',
-      align: 'center',
-      dataIndex: 'remark',
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime',
-    },
-  ];
+  let columns: BasicColumn[] = [];
+  // 加载系统开单设置
+  getMyBillSetting().then(res => {
+    debugger;
+    showWeightCol.value = !!res.showWeightCol;
+    showAreaCol.value = !!res.showAreaCol;
+    showVolumeCol.value = !!res.showVolumeCol;
+    columns = [
+      {
+        title: '类别',
+        align: 'center',
+        dataIndex: 'categoryId_dictText',
+      },
+      {
+        title: '编号',
+        align: 'center',
+        dataIndex: 'code',
+      },
+      {
+        title: '名称',
+        align: 'center',
+        dataIndex: 'name',
+      },
+      {
+        title: '规格型号',
+        align: 'center',
+        dataIndex: 'type',
+      },
+      {
+        title: '单位',
+        align: 'center',
+        dataIndex: 'unit',
+      },
+      {
+        title: '进货价',
+        align: 'center',
+        dataIndex: 'cost',
+      },
+      {
+        title: '销售价',
+        align: 'center',
+        dataIndex: 'price',
+      },
+      {
+        title: '库存',
+        align: 'center',
+        dataIndex: 'stock',
+      },
+      {
+        title: '重量',
+        align: 'center',
+        dataIndex: 'weight',
+        ifShow: showWeightCol.value,
+      },
+      {
+        title: '面积',
+        align: 'center',
+        dataIndex: 'area',
+        ifShow: showAreaCol.value,
+      },
+      {
+        title: '体积',
+        align: 'center',
+        dataIndex: 'volume',
+        ifShow: showVolumeCol.value,
+      },
+      {
+        title: '客户价',
+        align: 'center',
+        dataIndex: 'custPrice',
+        ifShow: billType.value === 'deliver',
+      },
+      {
+        title: '状态',
+        align: 'center',
+        dataIndex: 'status_dictText',
+      },
+      {
+        title: '备注',
+        align: 'center',
+        dataIndex: 'remark',
+      },
+      {
+        title: '创建时间',
+        align: 'center',
+        dataIndex: 'createTime',
+      },
+    ];
+  });
+
+  //列表数据
+  // const columns: BasicColumn[] =
   // 注册table数据
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tableContext, onExportXls, onImportXls } = useListPage({
