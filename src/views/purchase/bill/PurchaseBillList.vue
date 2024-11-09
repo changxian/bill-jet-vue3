@@ -170,7 +170,13 @@
   import {JInput} from "@/components/Form";
   import FastDate from "@/components/FastDate.vue";
   import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
+  import {useRoute} from 'vue-router'
+   const route = useRoute();
   const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+  if(route.query){
+    fastDateParam.startDate = route.query.startDate
+    fastDateParam.endDate = route.query.endDate
+  }
   const { createMessage, createConfirm } = useMessage();
   const repayDetailDialogRef = ref()
   const formRef = ref();

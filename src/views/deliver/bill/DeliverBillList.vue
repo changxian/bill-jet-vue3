@@ -69,7 +69,13 @@
   // import RepayDetailDialog from "@/views/deliver/debt/components/RepayDetailDialog.vue";
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-
+  import {useRoute} from 'vue-router'
+   const route = useRoute();
+    const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+  if(route.query){
+    fastDateParam.startDate = route.query.startDate
+    fastDateParam.endDate = route.query.endDate
+  }
   const { createMessage, createConfirm } = useMessage();
   const repayDetailDialogRef = ref();
   const formRef = ref();

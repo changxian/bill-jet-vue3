@@ -1,108 +1,50 @@
-import {BasicColumn} from '/@/components/Table';
-import {FormSchema} from '/@/components/Table';
-import { rules} from '/@/utils/helper/validator';
-import { render } from '/@/utils/common/renderUtils';
-import { getWeekMonthQuarterYear } from '/@/utils';
+import dayjs from 'dayjs'
 
-const numCountCol =  {
-    title: '数量统计',
-    align: "center",
-    dataIndex: 'count'
+export const queryTimeObj = {
+  today: function(){
+      const end = dayjs().format('YYYY-MM-DD')
+      const start = dayjs().format('YYYY-MM-DD')
+      return [start, end]
+  },
+  yesterday: function(){
+      const end = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
+      const start = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  beforeYesterday: function(){
+      const end = dayjs().subtract(2, 'day').format('YYYY-MM-DD')
+      const start = dayjs().subtract(2, 'day').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  day30: function(){
+      const end = dayjs().format('YYYY-MM-DD')
+      const start = dayjs().subtract(30, 'day').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  thisWeek: function(){
+      const end = dayjs().endOf('week').format('YYYY-MM-DD')
+      const start = dayjs().startOf('week').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  thisMonth: function(){
+      const end = dayjs().endOf('month').format('YYYY-MM-DD')
+      const start = dayjs().startOf('month').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  lastMonth: function(){
+      const end = dayjs().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
+      const start = dayjs().add(-1, 'month').startOf('month').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  thisYear: function(){
+      const end = dayjs().endOf('year').format('YYYY-MM-DD')
+      const start = dayjs().startOf('year').format('YYYY-MM-DD')
+      return [start, end]
+  },
+  lastYear: function(){
+      const end = dayjs().add(-1, 'year').endOf('year').format('YYYY-MM-DD')
+      const start = dayjs().add(-1, 'year').startOf('year').format('YYYY-MM-DD')
+      return [start, end]
   }
-  const amountCol =  {
-    title: '金额统计',
-    align: "center",
-    dataIndex: 'amount'
-  }
-const detailCol =  {
-    title: '明细',
-    align: "center",
-    dataIndex: 'detail',
-    slots: { customRender: 'detail' },
-  }
-  const countTotalCol =  {
-    title: '合计',
-    align: "center",
-    slots: { customRender: 'count' },
-    dataIndex: 'countTotal'
-  }
-// 按商品统计
-export const goodsCountColumns: BasicColumn[] = [
-    {
-        title: '名称',
-        align: 'center',
-        dataIndex: 'goodsName',
-       },
-    {
-        title: '编号(条码)',
-        align: 'center',
-        dataIndex: 'goodsCode',
-       },
+}
 
-       {
-        title: '规格',
-        align: 'center',
-        dataIndex: 'goodsType',
-       },
-       {
-        title: '单位',
-        align: 'center',
-        dataIndex: 'goodsUnit',
-       },
-    numCountCol,
-    amountCol,
-    detailCol,
-    // countCol
-  ];
-  
-  // 按类别统计
-export const typeCountColumns: BasicColumn[] = [
-    {
-        title: '类别',
-        align: 'center',
-        dataIndex: 'name',
-       },
-    numCountCol,
-    amountCol,
-    detailCol,
-    countTotalCol
-  ];
-  
-    // 按供应商
-export const supplierCountColumns: BasicColumn[] = [
-    {
-        title: '供应商',
-        align: 'center',
-        dataIndex: 'name',
-       },
-    numCountCol,
-    amountCol,
-    detailCol,
-    countTotalCol
-  ];
-  
-      // 按用户
-export const operatorCountColumns: BasicColumn[] = [
-    {
-        title: '用户',
-        align: 'center',
-        dataIndex: 'name',
-       },
-    numCountCol,
-    amountCol,
-    detailCol,
-    countTotalCol
-  ];
-// 按车号
-export const careNoCountColumns: BasicColumn[] = [
-    {
-        title: '车号',
-        align: 'center',
-        dataIndex: 'name',
-       },
-    numCountCol,
-    amountCol,
-    detailCol,
-    countTotalCol
-  ];
-  
