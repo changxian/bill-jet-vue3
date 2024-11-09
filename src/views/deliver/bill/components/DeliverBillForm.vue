@@ -326,7 +326,6 @@
     // 利润金额
     let profit = 0.0;
     goods.forEach(item => {
-      debugger;
       num = parseFloat(num) + parseFloat(item.amount);
       cost = parseFloat(cost) + parseFloat(item.costAmount);
     });

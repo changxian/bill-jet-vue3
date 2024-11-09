@@ -207,7 +207,6 @@
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach(item=>{
-      debugger;
       item.goodsId = item.id;
       item.goodsName = item.name;
       item.goodsCode = item.code;
@@ -250,7 +249,6 @@
   });
   // 总计金额
   const countMoney = computed(()=>{
-    debugger;
     let num = 0.0;
     dataSource.value.forEach(item=>{
       num = parseFloat(num) + parseFloat(item.amount); // 售价 或 客户价
@@ -294,7 +292,6 @@
   }
   // 商品列表修改单价数量金额时执行该方法
   function beforeEditSubmit({ record, index, key, value }) {
-    debugger;
     console.log('==', record, index, key, value);
     // 售价 或 客户价
     // 根据金额计算方式来计算金额amount

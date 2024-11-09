@@ -115,7 +115,6 @@
     // console.log('selectedRowKeys, selectedRows:', selectedRowKeys, selectedRows.value[0].orgName);
     // console.log('row:', row);
     const data: any = {};
-    debugger;
     if (!data.goodsId) {
       data.goodsId = row.id;
     }
