@@ -1,4 +1,6 @@
 // token key
+import {getAuthCache} from "@/utils/auth";
+
 export const TOKEN_KEY = 'TOKEN__';
 
 export const LOCALE_KEY = 'LOCALE__';
@@ -14,6 +16,10 @@ export const COLS_DATA = 'COLS_DATA__';
 
 // dynamic cols
 export const DYNAMIC_COLS_DATA = 'DYNAMIC_COLS_DATA__';
+export const SYSTEM_SETTING_DATA = 'SYSTEM_SETTING_DATA__';
+export const BILL_SETTING_DATA = 'BILL_SETTING_DATA__';
+
+
 
 // dict info key
 export const DB_DICT_DATA_KEY = 'UI_CACHE_DB_DICT_DATA';

@@ -98,7 +98,6 @@ export function useListPage(options: ListPageOptions) {
       if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
         paramsForm['selections'] = selectedRowKeys.value.join(',');
       }
-      console.log();
       return handleExportXls(title as string, realUrl, filterObj(paramsForm));
       //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {

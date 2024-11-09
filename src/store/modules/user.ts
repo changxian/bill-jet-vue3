@@ -14,6 +14,8 @@ import {
   OAUTH2_THIRD_LOGIN_TENANT_ID,
   COLS_DATA,
   DYNAMIC_COLS_DATA,
+  SYSTEM_SETTING_DATA,
+  BILL_SETTING_DATA
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
@@ -37,6 +39,8 @@ interface UserState {
   dictItems?: dictType | null;
   cols: Object[];
   dynamicCols?: Object | null;
+  systemSetting?:Object | null;
+  billSetting?:Object | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -59,6 +63,8 @@ export const useUserStore = defineStore({
     cols: [],
     // 扩展列
     dynamicCols: null,
+    systemSetting:null,
+    billSetting:null,
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
@@ -99,6 +105,21 @@ export const useUserStore = defineStore({
       }
       return getAuthCache(DYNAMIC_COLS_DATA);
     },
+
+    getSystemSetting() {
+      if (null != this.systemSetting) {
+        return this.systemSetting;
+      }
+      return getAuthCache(SYSTEM_SETTING_DATA);
+    },
+    getBillSetting( ) {
+      if (null != this.billSetting) {
+        return this.billSetting;
+      }
+      return getAuthCache(BILL_SETTING_DATA);
+    },
+
+
     getRoleList(): RoleEnum[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
     },
@@ -146,6 +167,16 @@ export const useUserStore = defineStore({
       this.dynamicCols = dynamicCols;
       setAuthCache(DYNAMIC_COLS_DATA, dynamicCols);
     },
+    setSystemSetting(systemSetting) {
+      this.systemSetting = systemSetting;
+      setAuthCache(SYSTEM_SETTING_DATA, systemSetting);
+    },
+    setBillSetting(billSetting) {
+      this.billSetting = billSetting;
+      setAuthCache(BILL_SETTING_DATA, billSetting);
+    },
+
+
     setAllDictItemsByLocal() {
       // update-begin--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
       if (!this.dictItems) {
@@ -297,7 +328,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems, cols, dynamicCols } = await getUserInfo();
+      const { userInfo, sysAllDictItems, cols, dynamicCols ,systemSetting,billSetting} = await getUserInfo();
 
       if (userInfo) {
         const { roles = [] } = userInfo;
@@ -325,6 +356,15 @@ export const useUserStore = defineStore({
       // 添加备注列信息到缓存
       if (dynamicCols) {
         this.setDynamicCols(dynamicCols);
+      }
+
+      // 添加系统设置信息到缓存
+      if (systemSetting) {
+        this.setSystemSetting(systemSetting);
+      }
+      // 添加开单设置息到缓存
+      if (billSetting) {
+        this.setBillSetting(billSetting);
       }
       return userInfo;
     },

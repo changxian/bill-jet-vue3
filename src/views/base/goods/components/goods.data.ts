@@ -1,5 +1,7 @@
-import { FormSchema } from '/@/components/Table';
-
+import {BasicColumn, FormSchema} from '/@/components/Table';
+import {useUserStore} from "@/store/modules/user";
+const userStore = useUserStore(); 
+const billSetting = userStore.getBillSetting;
 //查询数据
 export const searchFormSchema: FormSchema[] = [
   // Input 是精确查询, JInput 是模糊查询
@@ -144,3 +146,87 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
   },
 ];
+export function getGoodsColumns(billType){
+  const goodsColumns: BasicColumn[] =  [
+    {
+      title: '类别',
+      align: 'center',
+      dataIndex: 'categoryId_dictText',
+    },
+    {
+      title: '编号',
+      align: 'center',
+      dataIndex: 'code',
+    },
+    {
+      title: '名称',
+      align: 'center',
+      dataIndex: 'name',
+    },
+    {
+      title: '规格型号',
+      align: 'center',
+      dataIndex: 'type',
+    },
+    {
+      title: '单位',
+      align: 'center',
+      dataIndex: 'unit',
+    },
+    {
+      title: '进货价',
+      align: 'center',
+      dataIndex: 'cost',
+    },
+    {
+      title: '销售价',
+      align: 'center',
+      dataIndex: 'price',
+    },
+    {
+      title: '库存',
+      align: 'center',
+      dataIndex: 'stock',
+    },
+    {
+      title: '重量',
+      align: 'center',
+      dataIndex: 'weight',
+      ifShow: billSetting.showWeightCol
+    },{
+      title: '面积',
+      align: 'center',
+      dataIndex: 'area',
+      ifShow: billSetting.showAreaCol
+    }, {
+      title: '体积',
+      align: 'center',
+      dataIndex: 'volume',
+      ifShow: billSetting.showVolumeCol
+    },
+    {
+      title: '客户价',
+      align: 'center',
+      dataIndex: 'custPrice',
+      ifShow: billType === 'deliver',
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status_dictText',
+    },
+    {
+      title: '备注',
+      align: 'center',
+      dataIndex: 'remark',
+    },
+    {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+    }];
+    return goodsColumns;
+}
+//列表数据
+
+

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk" :columns="columns">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk" >
       <!--插槽:table标题-->
       <template v-if="billType != 'deliver'" #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
@@ -50,7 +50,7 @@
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import { searchFormSchema } from './goods.data';
+  import {getGoodsColumns, searchFormSchema} from './goods.data';
   import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
@@ -58,6 +58,7 @@
   import ModifyModal from './ModifyModal.vue';
   import { getMyBillSetting } from '@/views/setting/system/index.api';
   import {goodsCountColumns} from "@/views/purchase/statistics/PurchaseStatistics.data";
+  import {assignWith} from "lodash-es";
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
@@ -85,113 +86,17 @@
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
 
-  // 显示重量列
-  const showWeightCol = ref(false);
-  // 显示面积列
-  const showAreaCol = ref(false);
-  // 显示体积列
-  const showVolumeCol = ref(false);
-  //列表数据
-  const columns = ref([
-    {
-      title: '类别',
-      align: 'center',
-      dataIndex: 'categoryId_dictText',
-    },
-    {
-      title: '编号',
-      align: 'center',
-      dataIndex: 'code',
-    },
-    {
-      title: '名称',
-      align: 'center',
-      dataIndex: 'name',
-    },
-    {
-      title: '规格型号',
-      align: 'center',
-      dataIndex: 'type',
-    },
-    {
-      title: '单位',
-      align: 'center',
-      dataIndex: 'unit',
-    },
-    {
-      title: '进货价',
-      align: 'center',
-      dataIndex: 'cost',
-    },
-    {
-      title: '销售价',
-      align: 'center',
-      dataIndex: 'price',
-    },
-    {
-      title: '库存',
-      align: 'center',
-      dataIndex: 'stock',
-    },{
-      title: '客户价',
-      align: 'center',
-      dataIndex: 'custPrice',
-      ifShow: billType.value === 'deliver',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status_dictText',
-    },
-    {
-      title: '备注',
-      align: 'center',
-      dataIndex: 'remark',
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime',
-    }]);
-  // 加载系统开单设置
-  getMyBillSetting().then(res => {
-
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if(showWeightCol.value){
-      columns.value.push( {
-        title: '重量',
-        align: 'center',
-        dataIndex: 'weight'
-      })
-    }
-    if(showAreaCol.value){
-      columns.value.push({
-        title: '面积',
-        align: 'center',
-        dataIndex: 'area'
-      })
-    }
-    if(showVolumeCol.value){
-      columns.value.push( {
-        title: '体积',
-        align: 'center',
-        dataIndex: 'volume'
-      })
-    }
-
-  });
+const  columns=getGoodsColumns(billType.value);
 
   //列表数据
   // const columns: BasicColumn[] =
   // 注册table数据
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { tableContext, onExportXls, onImportXls } = useListPage({
+  const { tableContext, onExportXls, onImportXls } = useListPage(reactive({
     tableProps: {
       title: '商品信息',
       api: list,
-      // columns,
+      columns,
       cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       canResize: false,
@@ -232,7 +137,7 @@
       url: getImportUrl,
       success: handleSuccess,
     },
-  });
+  }));
 
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
