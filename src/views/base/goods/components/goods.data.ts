@@ -146,8 +146,9 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
   },
 ];
+// 列表数据
 export function getGoodsColumns(billType){
-  const goodsColumns: BasicColumn[] =  [
+  const goodsColumns: BasicColumn[] = [
     {
       title: '类别',
       align: 'center',
@@ -192,17 +193,19 @@ export function getGoodsColumns(billType){
       title: '重量',
       align: 'center',
       dataIndex: 'weight',
-      ifShow: billSetting.showWeightCol
-    },{
+      ifShow: billSetting.showWeightCol,
+    },
+    {
       title: '面积',
       align: 'center',
       dataIndex: 'area',
-      ifShow: billSetting.showAreaCol
-    }, {
+      ifShow: billSetting.showAreaCol,
+    },
+    {
       title: '体积',
       align: 'center',
       dataIndex: 'volume',
-      ifShow: billSetting.showVolumeCol
+      ifShow: billSetting.showVolumeCol,
     },
     {
       title: '客户价',
@@ -224,9 +227,7 @@ export function getGoodsColumns(billType){
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-    }];
-    return goodsColumns;
+    },
+  ];
+  return goodsColumns;
 }
-//列表数据
-
-

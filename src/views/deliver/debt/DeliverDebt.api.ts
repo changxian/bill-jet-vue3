@@ -5,18 +5,18 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/deliver/debt/deliverDebt/list',
-  save='/deliver/debt/deliverDebt/add',
-  edit='/deliver/debt/deliverDebt/edit',
+  save = '/deliver/debt/deliverDebt/add',
+  edit = '/deliver/debt/deliverDebt/edit',
   deleteOne = '/deliver/debt/deliverDebt/delete',
   deleteBatch = '/deliver/debt/deliverDebt/deleteBatch',
   importExcel = '/deliver/debt/deliverDebt/importExcel',
   exportXls = '/deliver/debt/deliverDebt/exportXls',
-  repay ='/deliver/repay/deliverRepay/repay',
-  repayEdit ='/deliver/repay/deliverRepay/repayEdit',
-  oneKeyRepay ='/deliver/repay/deliverRepay/oneKeyRepay',
-  deliverRepayList='/deliver/repay/deliverRepay/list',
-  repayDetailList='/deliver/repay/deliverRepay/repayDetail',
-  repayRevoke='/deliver/repay/deliverRepay/repayRevoke',
+  repay = '/deliver/repay/deliverRepay/repay',
+  repayEdit = '/deliver/repay/deliverRepay/repayEdit',
+  oneKeyRepay = '/deliver/repay/deliverRepay/oneKeyRepay',
+  deliverRepayList = '/deliver/repay/deliverRepay/list',
+  repayDetailList = '/deliver/repay/deliverRepay/repayDetail',
+  repayRevoke = '/deliver/repay/deliverRepay/repayRevoke',
 }
 
 /**

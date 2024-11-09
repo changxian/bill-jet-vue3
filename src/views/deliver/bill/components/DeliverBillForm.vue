@@ -128,11 +128,6 @@
 								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
 							</a-form-item>
 						</a-col>
-						<a-col :span="span">
-							<a-form-item label="制单人" v-bind="validateInfos.createName" id="DeliverBillForm-createName" name="createName">
-								<a-input v-model:value="formData.createName" placeholder="请输入制单人"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
 						-->
           </a-row>
           <BillGoodsList ref="goodsRef" :customerId="customerId" @change-goods="changeGoods"></BillGoodsList>
@@ -162,6 +157,11 @@
                 <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
+            <a-col :span="span">
+              <a-form-item label="制单人" v-bind="validateInfos.operatorName" id="DeliverBillForm-operatorName" name="operatorName">
+                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
             <!-- <a-col :span="span">
               <a-form-item
                 label="状态"
@@ -179,7 +179,7 @@
               </a-form-item>
             </a-col>-->
             <a-col :span="8">
-              <a-form-item label="备注" id="DeliverBillForm-remark" name="remark" >
+              <a-form-item label="备注" id="DeliverBillForm-remark" name="remark">
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
               </a-form-item>
             </a-col>
@@ -195,8 +195,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
@@ -210,12 +209,16 @@
   import type { Rule } from 'ant-design-vue/es/form';
   import { billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
+  import { useUserStore } from '@/store/modules/user';
 
+  const userStore = useUserStore();
+  // 小数位数
+  const decimalPlaces = userStore.getBillSetting.decimalPlaces;
   const span = 6;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
   const typeOptions = ref([
-    { value: 1, label: '送货开单' },
+    { value: 3, label: '送货开单' },
     { value: 2, label: '退货开单' },
   ]);
 
@@ -255,7 +258,9 @@
     remark: '',
     delFlag: undefined,
     version: undefined,
-    createName: '',
+    createName: userStore.getUserInfo.realname,
+    operatorId: userStore.getUserInfo.id,
+    operatorName: userStore.getUserInfo.realname,
   });
 
   const rules: Record<string, Rule[]> = {
@@ -332,7 +337,7 @@
     amount = num;
     formData.costAmount = cost;
     profit = parseFloat(amount) - parseFloat(cost);
-    formData.profitAmount = profit;
+    formData.profitAmount = profit.toFixed(decimalPlaces);
     calcDebtAmount();
   }
   // 修改已付款、优惠金额时计算欠款金额
@@ -342,7 +347,7 @@
   // 计算欠款金额
   function calcDebtAmount() {
     if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
-      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount;
+      formData.debtAmount = (amount - formData.paymentAmount - formData.discountAmount).toFixed(decimalPlaces);
     }
   }
   /**
@@ -431,8 +436,10 @@
     formData.careNo = '';
     formData.contractCode = '';
     formData.remark = '';
-    formData.createName = '';
     formData.userName = '';
+    formData.createName = userStore.getUserInfo.realname;
+    formData.operatorId = userStore.getUserInfo.id;
+    formData.operatorName = userStore.getUserInfo.realname;
     goodsRef.value.setValue([]);
   }
   // 保存按钮点击事件

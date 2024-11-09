@@ -45,9 +45,9 @@
         </a-dropdown>
       </template> -->
       <!--操作栏-->
-      <template #action="{ record }">
+      <!--<template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-      </template>
+      </template>-->
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>

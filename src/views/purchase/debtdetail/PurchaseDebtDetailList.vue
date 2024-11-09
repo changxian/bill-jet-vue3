@@ -60,7 +60,7 @@
     <!--引用表格-->
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
-      <template #tableTitle>
+      <!--<template #tableTitle>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -74,11 +74,11 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-      </template>
+      </template>-->
       <!--操作栏-->
-      <template #action="{ record }">
+      <!--<template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-      </template>
+      </template>-->
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>

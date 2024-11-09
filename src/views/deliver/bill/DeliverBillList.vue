@@ -45,6 +45,19 @@
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+      <p :class="{'p_san': hasPan}" >总计
+        <span class="total_span">数量：{{totalCount}}</span>
+        <span class="total_span" v-if="showWeightCol">重量({{weightColTitle}})：{{totalWeight}}</span>
+        <span class="total_span" v-if="showAreaCol">面积({{areaColTitle}})：{{totalArea}}</span>
+        <span class="total_span" v-if="showVolumeCol">体积({{volumeColTitle}})：{{totalVolume}}</span>
+        <span class="total_span">金额：{{totalAmount}}</span>
+        <span class="total_span">已付款：{{totalPaymentAmount}}</span>
+        <span class="total_span">优惠：{{totalDiscountAmount}}</span>
+        <span class="total_span">未付款：{{totalDebtAmount}}</span>
+      </p>
+    </div>
+
     <!-- 表单区域 -->
     <DeliverBillModal ref="registerModal" @success="handleSuccess"></DeliverBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
@@ -53,8 +66,7 @@
         <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
       </a-spin>
     </div>
-
-<!--    <RepayDetailDialog ref="repayDetailDialogRef"/>-->
+    <RepayDetailDialog ref="repayDetailDialogRef"/>
   </div>
 </template>
 
@@ -66,15 +78,17 @@
   import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
-  // import RepayDetailDialog from "@/views/deliver/debt/components/RepayDetailDialog.vue";
+  import RepayDetailDialog from '@/views/deliver/debt/components/RepayDetailDialog.vue';
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import {useRoute} from 'vue-router'
-   const route = useRoute();
-    const fastDateParam = reactive<any>({startDate: '', endDate: ''});
-  if(route.query){
-    fastDateParam.startDate = route.query.startDate
-    fastDateParam.endDate = route.query.endDate
+  import { getMyBillSetting } from '@/views/setting/system/index.api';
+
+  import { useRoute } from 'vue-router';
+  const route = useRoute();
+  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  if (route.query) {
+    fastDateParam.startDate = route.query.startDate;
+    fastDateParam.endDate = route.query.endDate;
   }
   const { createMessage, createConfirm } = useMessage();
   const repayDetailDialogRef = ref();
@@ -84,6 +98,42 @@
   const registerModal = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
+  // 总计：数量
+  const totalCount = ref(0);
+  // 总计：重量
+  const totalWeight = ref(0);
+  // 总计：面积
+  const totalArea = ref(0);
+  // 总计：体积
+  const totalVolume = ref(0);
+  // 总计：金额
+  const totalAmount = ref(0);
+  // 总计：已付款
+  const totalPaymentAmount = ref(0);
+  // 总计：优惠
+  const totalDiscountAmount = ref(0);
+  // 总计：未付款
+  const totalDebtAmount = ref(0);
+  // 总计：历史未付款
+  const totalHisDebtAmount = ref(0);
+  // 总计：成本
+  const totalCostAmount = ref(0);
+  // 总计：利润
+  const totalProfitAmount = ref(0);
+  const hasPan = ref(true);
+
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
+
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -94,12 +144,41 @@
       useSearchForm: false,
       clickToRowSelect: true,
       showIndexColumn: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
+      },
+      summaryFunc: summaryFunc,
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        totalCount.value = 0;
+        totalWeight.value = 0;
+        totalArea.value = 0;
+        totalVolume.value = 0;
+        totalAmount.value = 0;
+        totalPaymentAmount.value = 0;
+        totalDiscountAmount.value = 0;
+        totalDebtAmount.value = 0;
+        totalHisDebtAmount.value = 0;
+        totalCostAmount.value = 0;
+        totalProfitAmount.value = 0;
+        resultItems.forEach((item) => {
+          totalCount.value += item.count;
+          totalWeight.value += item.weight;
+          totalArea.value += item.area;
+          totalVolume.value += item.volume;
+          totalAmount.value += item.amount;
+          totalPaymentAmount.value += item.paymentAmount;
+          totalDiscountAmount.value += item.discountAmount;
+          totalDebtAmount.value += item.debtAmount;
+          totalHisDebtAmount.value += item.hisDebtAmount;
+          totalCostAmount.value += item.costAmount;
+          totalProfitAmount.value += item.profitAmount;
+        });
       },
       rowSelection: { type: 'radio' },
     },
@@ -113,7 +192,7 @@
 	    success: handleSuccess,
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  const [ registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,
@@ -125,6 +204,51 @@
     sm: 20,
   });
 
+  // 加载系统开单设置
+  getMyBillSetting().then((res) => {
+    debugger;
+    showWeightCol.value = !!res.showWeightCol;
+    showAreaCol.value = !!res.showAreaCol;
+    showVolumeCol.value = !!res.showVolumeCol;
+    if (res.decimalPlaces === 0 || res.decimalPlaces) {
+      decimalPlaces.value = res.decimalPlaces;
+    }
+    // 循环数据
+    res.dynaFieldsGroup['1'].forEach(item => {
+      // 重量小计
+      if (item.fieldName === 'wtSubtotal') {
+        weightColTitle.value = item.fieldTitle;
+      }
+      // 面积小计
+      if (item.fieldName === 'mjSubtotal') {
+        areaColTitle.value = item.fieldTitle;
+      }
+      // 体积小计
+      if (item.fieldName === 'tjSubtotal') {
+        volumeColTitle.value = item.fieldTitle;
+      }
+    });
+  });
+  // 增加合计行
+  function summaryFunc(resultItems) {
+    return [
+      {
+        _row: '合计',
+        _index: '合计',
+        count: totalCount.value,
+        weight: totalWeight.value,
+        area: totalArea.value,
+        volume: totalVolume.value,
+        amount: totalAmount.value,
+        paymentAmount: totalPaymentAmount.value,
+        discountAmount: totalDiscountAmount.value,
+        debtAmount: totalDebtAmount.value,
+        costAmount: totalCostAmount.value,
+        hisDebtAmount: totalHisDebtAmount.value,
+        profitAmount: totalProfitAmount.value,
+      },
+    ];
+  }
   // 删除数据
   function handleDel() {
     if (selectedRowKeys.value.length === 0) {
@@ -317,5 +441,10 @@
     :deep(.ant-picker),:deep(.ant-input-number){
       width: 100%;
     }
+  }
+  .total_span{margin: 0 5px}
+  .p_san{
+    position: absolute;
+    top: -50px;
   }
 </style>

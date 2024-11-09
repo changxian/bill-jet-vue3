@@ -11,9 +11,7 @@
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateStocks')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 变动库存</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'bill:jxc_goods:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"
-          >导入</j-upload-button
-        >
+        <j-upload-button type="primary" v-auth="'bill:jxc_goods:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -50,15 +48,12 @@
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import {getGoodsColumns, searchFormSchema} from './goods.data';
+  import { getGoodsColumns, searchFormSchema } from './goods.data';
   import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
   import ModifyModal from './ModifyModal.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
-  import {goodsCountColumns} from "@/views/purchase/statistics/PurchaseStatistics.data";
-  import {assignWith} from "lodash-es";
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
@@ -86,7 +81,7 @@
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
 
-const  columns=getGoodsColumns(billType.value);
+  const columns = getGoodsColumns(billType.value);
 
   //列表数据
   // const columns: BasicColumn[] =

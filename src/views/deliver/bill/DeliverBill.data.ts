@@ -21,29 +21,89 @@ export const billStatusList = [
 //送货单列表数据
 export const columns: BasicColumn[] = [
   {
+    title: '日期',
+    align: 'center',
+    dataIndex: 'billDate',
+  },
+  {
+    title: '公司',
+    align: 'center',
+    dataIndex: 'companyName',
+  },
+  {
+    title: '客户',
+    align: 'center',
+    dataIndex: 'custName',
+  },
+  {
+    title: '单类型',
+    align: 'center',
+    dataIndex: 'type_dictText',
+  },
+  {
     title: '单号',
     align: 'center',
     dataIndex: 'billNo',
   },
   {
-    title: '交易类型',
+    title: '本单数量',
     align: 'center',
-    dataIndex: 'type_dictText',
+    dataIndex: 'count',
   },
   {
-    title: '开单日期',
+    title: '本单金额',
     align: 'center',
-    dataIndex: 'billDate',
+    dataIndex: 'amount',
   },
   {
-    title: '公司名称',
+    title: '付款金额',
     align: 'center',
-    dataIndex: 'companyName',
+    dataIndex: 'paymentAmount',
   },
   {
-    title: '客户名称',
+    title: '优惠金额',
     align: 'center',
-    dataIndex: 'custName',
+    dataIndex: 'discountAmount',
+  },
+  {
+    title: '欠款金额',
+    align: 'center',
+    dataIndex: 'debtAmount',
+  },
+  {
+    title: '送货车号',
+    align: 'center',
+    dataIndex: 'careNo',
+  },
+  {
+    title: '合同号',
+    align: 'center',
+    dataIndex: 'contractCode',
+  },
+  {
+    title: '状态',
+    align: 'center',
+    dataIndex: 'status_dictText',
+  },
+  {
+    title: '开票',
+    align: 'center',
+    dataIndex: 'invoiceStatus_dictText',
+  },
+  {
+    title: '制单员',
+    align: 'center',
+    dataIndex: 'createName',
+  },
+  {
+    title: '业务员',
+    align: 'center',
+    dataIndex: 'userName_dictText',
+  },
+  {
+    title: '备注',
+    align: 'center',
+    dataIndex: 'remark',
   },
   {
     title: '客户电话',
@@ -61,54 +121,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'custAddress',
   },
   {
-    title: '数量',
-    align: 'center',
-    dataIndex: 'count',
-  },
-  {
-    title: '本单金额',
-    align: 'center',
-    dataIndex: 'amount',
-  },
-  {
-    title: '已付款金额',
-    align: 'center',
-    dataIndex: 'paymentAmount',
-  },
-  {
-    title: '优惠金额',
-    align: 'center',
-    dataIndex: 'discountAmount',
-  },
-  {
-    title: '欠款金额',
-    align: 'center',
-    dataIndex: 'debtAmount',
-  },
-  {
     title: '往期欠款金额',
     align: 'center',
     dataIndex: 'hisDebtAmount',
-  },
-  {
-    title: '送货车号',
-    align: 'center',
-    dataIndex: 'careNo',
-  },
-  {
-    title: '合同号',
-    align: 'center',
-    dataIndex: 'contractCode',
-  },
-  {
-    title: '状态',
-    align: 'center',
-    dataIndex: 'status',
-  },
-  {
-    title: '开票状态',
-    align: 'center',
-    dataIndex: 'invoiceStatus_dictText',
   },
   {
     title: '成本',
@@ -119,21 +134,6 @@ export const columns: BasicColumn[] = [
     title: '利润',
     align: 'center',
     dataIndex: 'profitAmount',
-  },
-  {
-    title: '业务员',
-    align: 'center',
-    dataIndex: 'userName_dictText',
-  },
-  {
-    title: '备注',
-    align: 'center',
-    dataIndex: 'remark',
-  },
-  {
-    title: '制单人',
-    align: 'center',
-    dataIndex: 'createName',
   },
 ];
 // 开单页面商品列表数据
