@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
   import { ref, nextTick, defineExpose } from 'vue';
-  import DeliverDebtForm from './DeliverDebtForm.vue'
+  import DeliverDebtForm from './DeliverDebtForm.vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   
   const title = ref<string>('');

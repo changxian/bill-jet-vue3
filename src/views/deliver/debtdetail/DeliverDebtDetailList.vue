@@ -4,29 +4,28 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <a-col :lg="3">
-            <a-form-item name="billNo">
-              <template #label><span title="单号">单号</span></template>
-              <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :lg="6">
+          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end"/>
+          <!--<a-col :lg="6">
             <a-form-item name="billDate">
               <template #label><span title="日期">日期</span></template>
               <a-range-picker showTime value-format="YYYY-MM-DD HH:mm:ss" v-model:value="queryParam.billDate" class="query-group-cust"/>
             </a-form-item>
-          </a-col>
+          </a-col>-->
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item name="type">
-                <template #label><span title="欠款类型">欠款类型</span></template>
-                <a-input placeholder="请输入欠款类型" v-model:value="queryParam.type" allow-clear ></a-input>
+                <template #label><span title="类型">类型</span></template>
+                <a-select v-model:value="queryParam.type">
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="3">送货欠款</a-select-option>
+                  <a-select-option value="2">退货欠款</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item name="userName">
-                <template #label><span title="业务员">业务员</span></template>
-                <a-input placeholder="请输入业务员" v-model:value="queryParam.userName" allow-clear ></a-input>
+              <a-form-item name="billNo">
+                <template #label><span title="单号">单号</span></template>
+                <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
@@ -36,11 +35,17 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
+              <a-form-item name="userName">
+                <template #label><span title="业务员">业务员</span></template>
+                <a-input placeholder="请输入业务员" v-model:value="queryParam.userName" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <!--<a-col :lg="6">
               <a-form-item name="remark">
                 <template #label><span title="备注">备注</span></template>
                 <a-input placeholder="请输入备注" v-model:value="queryParam.remark" allow-clear ></a-input>
               </a-form-item>
-            </a-col>
+            </a-col>-->
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
@@ -76,9 +81,11 @@
   import DeliverDebtDetailModal from './components/DeliverDebtDetailModal.vue'
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
+  import FastDate from '@/components/FastDate.vue';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
+  const fastDateParam = reactive<any>({ billDate_begin: '', billDate_end: '' });
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
@@ -89,9 +96,9 @@
       title: '客户欠款明细',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
       useSearchForm: false,
-      showActionColumn:false,
+      showActionColumn: false,
       clickToRowSelect: true,
       // rowSelection: {
       //   type: 'radio'
@@ -101,8 +108,9 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        let rangerQuery = await setRangeQuery();
-        return Object.assign(params, rangerQuery, {custId: custId.value});
+        // let rangerQuery = await setRangeQuery();
+        // return Object.assign(params, rangerQuery, {custId: custId.value});
+        return Object.assign(params, fastDateParam, { custId: custId.value });
       },
     },
     exportConfig: {
@@ -142,6 +150,8 @@
    */
   function searchReset() {
     formRef.value.resetFields();
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
     selectedRowKeys.value = [];
     //刷新数据
     reload();
@@ -152,7 +162,7 @@
   /**
    * 设置范围查询条件
    */
-  async function setRangeQuery(){
+  async function setRangeQuery() {
     let queryParamClone = cloneDeep(queryParam);
     if (rangeField) {
       let fieldsValue = rangeField.split(',');

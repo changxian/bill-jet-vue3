@@ -108,6 +108,7 @@
     custAddress: '',
     deliverDebtAmount: undefined,
     returnDebtAmount: undefined,
+    deductionAmount: 0,
     remark: '',
     bills: [],
   });
