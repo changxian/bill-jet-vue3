@@ -28,26 +28,6 @@
         </div>
         <!--引用表格-->
         <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
-          <!--插槽:table标题-->
-          <!-- <template #tableTitle>
-            <a-dropdown v-if="selectedRowKeys.length > 0">
-              <template #overlay>
-                <a-menu>
-                  <a-menu-item key="1" @click="batchHandleDelete">
-                    <Icon icon="ant-design:delete-outlined"></Icon>
-                    删除
-                  </a-menu-item>
-                </a-menu>
-              </template>
-              <a-button v-auth="'deliver.debt:jxc_deliver_debt:deleteBatch'">批量操作
-                <Icon icon="mdi:chevron-down"></Icon>
-              </a-button>
-            </a-dropdown>
-          </template> -->
-          <!--操作栏-->
-          <!--<template #action="{ record }">
-            <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-          </template>-->
           <template v-slot:bodyCell="{ column, record, index, text }">
           </template>
         </BasicTable>
@@ -66,10 +46,10 @@
 
 <script lang="ts" name="deliver.debt-deliverDebt" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, TableAction } from '/@/components/Table';
+  import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './DeliverDebt.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverDebt.api';
+  import { list, getExportUrl } from './DeliverDebt.api';
   import DeliverDebtModal from './components/DeliverDebtModal.vue';
   import DeptDialog from './components/DeptDialog.vue';
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue';
@@ -82,7 +62,7 @@
   const queryTypeValue = ref('');
 
   const { createMessage } = useMessage();
-  const deptDialogRef = ref() ;
+  const deptDialogRef = ref();
   const oneKeyDeptDialogRef = ref();
   const repayDetailDialogRef = ref();
   const formRef = ref();
@@ -91,7 +71,7 @@
   const registerModal = ref();
   const userStore = useUserStore();
   //注册table数据
-  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
+  const { prefixCls, tableContext, onExportXls } = useListPage({
     tableProps: {
       title: '欠款客户',
       api: list,
@@ -119,10 +99,6 @@
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess
-	  },
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
   const labelCol = reactive({
@@ -143,11 +119,11 @@
 
   function debtHandle() {
     if (selectedRows.value.length === 0) {
-      return createMessage.warning('请选择客户');
+      return createMessage.warning('请选择一位欠款客户');
     }
     const selectedBillData = deliverDebtDetailListRef.value.getSelectedData().selectedRows;
     if (selectedBillData.length === 0) {
-      return createMessage.warning('请选择相关单');
+      return createMessage.warning('请选择相关欠款单');
     }
     const params = {
       ...selectedRows.value[0],
@@ -158,7 +134,7 @@
   }
   function oneKeyDebt() {
     if (selectedRows.value.length === 0) {
-      return createMessage.warning('请选择客户');
+      return createMessage.warning('请选择一位欠款客户');
     }
     const params = {
       ...selectedRows.value[0],
@@ -177,81 +153,10 @@
   }
 
   /**
-   * 新增事件
-   */
-  function handleAdd() {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.add();
-  }
-  
-  /**
-   * 编辑事件
-   */
-  function handleEdit(record: Recordable) {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
-  }
-   
-  /**
-   * 详情
-   */
-  function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
-  }
-   
-  /**
-   * 删除事件
-   */
-  async function handleDelete(record) {
-    await deleteOne({ id: record.id }, handleSuccess);
-  }
-   
-  /**
-   * 批量删除事件
-   */
-  async function batchHandleDelete() {
-    await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
-  }
-   
-  /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
-  }
-   
-  /**
-   * 操作栏
-   */
-  function getTableAction(record) {
-    return [
-      {
-        label: '编辑',
-        onClick: handleEdit.bind(null, record),
-        auth: 'deliver.debt:jxc_deliver_debt:edit'
-      },
-    ];
-  }
-   
-  /**
-   * 下拉操作栏
-   */
-  function getDropDownAction(record) {
-    return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      }, {
-        label: '删除',
-        popConfirm: {
-          title: '是否确认删除',
-          confirm: handleDelete.bind(null, record),
-          placement: 'topLeft',
-        },
-        auth: 'deliver.debt:jxc_deliver_debt:delete'
-      }
-    ]
   }
 
   /**
@@ -270,55 +175,51 @@
     //刷新数据
     reload();
   }
-  
-
-
 
 </script>
 
 <style lang="less" scoped>
-.p-2{
-  background-color: #fff;
-  button{
-    margin: 0 10px;
+  .p-2 {
+    background-color: #fff;
+    button {
+      margin: 0 10px;
+    }
   }
-}
-.deliver-debt-List{
-  
-  display: flex;
-  .left-tbl{
-    width:550px
+  .deliver-debt-List {
+    display: flex;
+    .left-tbl {
+      width: 550px;
+    }
+    .right-tbl {
+      flex: 1;
+      overflow-x: auto;
+    }
   }
-  .right-tbl{
-    flex:1;
-    overflow-x:auto;
-  }
-}
   .jeecg-basic-table-form-container {
     padding: 0;
-    .query-wrap{
-      display:flex;
-      padding-top:10px;
-      padding-bottom:15px;
+    .query-wrap {
+      display: flex;
+      padding-top: 10px;
+      padding-bottom: 15px;
     }
     .table-page-search-submitButtons {
       display: block;
       margin-bottom: 24px;
       white-space: nowrap;
     }
-    .query-group-cust{
+    .query-group-cust {
       min-width: 100px !important;
     }
-    .query-group-split-cust{
+    .query-group-split-cust {
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
-    .ant-form-item:not(.ant-form-item-with-help){
+    .ant-form-item:not(.ant-form-item-with-help) {
       margin-bottom: 16px;
       height: 32px;
     }
-    :deep(.ant-picker),:deep(.ant-input-number){
+    :deep(.ant-picker),:deep(.ant-input-number) {
       width: 100%;
     }
   }

@@ -19,8 +19,8 @@
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item name="type">
-                <template #label><span title="欠款类型（1：送货欠款，2：退货欠款）">欠款类型</span></template>
-                <a-input placeholder="请输入欠款类型（1：送货欠款，2：退货欠款）" v-model:value="queryParam.type" allow-clear ></a-input>
+                <template #label><span title="欠款类型">欠款类型</span></template>
+                <a-input placeholder="请输入欠款类型" v-model:value="queryParam.type" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
@@ -59,26 +59,6 @@
     </div>
     <!--引用表格-->
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
-      <!--插槽:table标题-->
-      <!--<template #tableTitle>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button v-auth="'deliver.debtdetail:jxc_deliver_debt_detail:deleteBatch'">批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
-        </a-dropdown>
-      </template>-->
-      <!--操作栏-->
-      <!--<template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-      </template>-->
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
@@ -88,22 +68,21 @@
 </template>
 
 <script lang="ts" name="deliver.debtdetail-deliverDebtDetail" setup>
-  import { ref, reactive,defineExpose } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { ref, reactive, defineExpose } from 'vue';
+  import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './DeliverDebtDetail.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverDebtDetail.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
+  import { columns } from './DeliverDebtDetail.data';
+  import { list, getExportUrl } from './DeliverDebtDetail.api';
   import DeliverDebtDetailModal from './components/DeliverDebtDetailModal.vue'
   import { useUserStore } from '/@/store/modules/user';
-  import { cloneDeep } from "lodash-es";
+  import { cloneDeep } from 'lodash-es';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
-  const custId = ref('')
+  const custId = ref('');
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -127,114 +106,28 @@
       },
     },
     exportConfig: {
-      name: "客户欠款明细",
+      name: '客户欠款明细',
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess
-	  },
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
 
-
-  /**
-   * 高级查询事件
-   */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
-  }
-
-  /**
-   * 新增事件
-   */
-  function handleAdd() {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.add();
-  }
-  
-  /**
-   * 编辑事件
-   */
-  function handleEdit(record: Recordable) {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
-  }
-   
-  /**
-   * 详情
-   */
-  function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
-  }
-   
-  /**
-   * 删除事件
-   */
-  async function handleDelete(record) {
-    await deleteOne({ id: record.id }, handleSuccess);
-  }
-   
-  /**
-   * 批量删除事件
-   */
-  async function batchHandleDelete() {
-    await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
-  }
-   
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
-  }
-   
-  /**
-   * 操作栏
-   */
-  function getTableAction(record) {
-    return [
-      {
-        label: '编辑',
-        onClick: handleEdit.bind(null, record),
-        auth: 'deliver.debtdetail:jxc_deliver_debt_detail:edit'
-      },
-    ];
-  }
-   
-  /**
-   * 下拉操作栏
-   */
-  function getDropDownAction(record) {
-    return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      }, {
-        label: '删除',
-        popConfirm: {
-          title: '是否确认删除',
-          confirm: handleDelete.bind(null, record),
-          placement: 'topLeft',
-        },
-        auth: 'deliver.debtdetail:jxc_deliver_debt_detail:delete'
-      }
-    ]
   }
 
   /**
@@ -253,12 +146,8 @@
     //刷新数据
     reload();
   }
-  
 
-
-
-  
-  let rangeField = 'billDate,'
+  let rangeField = 'billDate,';
   
   /**
    * 设置范围查询条件
@@ -267,34 +156,34 @@
     let queryParamClone = cloneDeep(queryParam);
     if (rangeField) {
       let fieldsValue = rangeField.split(',');
-      fieldsValue.forEach(item => {
+      fieldsValue.forEach((item) => {
         if (queryParamClone[item]) {
           let range = queryParamClone[item];
-          queryParamClone[item+'_begin'] = range[0];
-          queryParamClone[item+'_end'] = range[1];
+          queryParamClone[item + '_begin'] = range[0];
+          queryParamClone[item + '_end'] = range[1];
           delete queryParamClone[item];
         } else {
-          queryParamClone[item+'_begin'] = '';
-          queryParamClone[item+'_end'] = '';
+          queryParamClone[item + '_begin'] = '';
+          queryParamClone[item + '_end'] = '';
         }
-      })
+      });
     }
     return queryParamClone;
   }
-  function searchByCustId(id){
-    custId.value = id
-    reload()
+  function searchByCustId(id) {
+    custId.value = id;
+    reload();
   }
-  function getSelectedData(){
+  function getSelectedData() {
     return {
-      selectedRowKeys: selectedRowKeys.value, 
-      selectedRows: selectedRows.value
-    }
+      selectedRowKeys: selectedRowKeys.value,
+      selectedRows: selectedRows.value,
+    };
   }
   defineExpose({
     searchByCustId,
-    getSelectedData
-  })
+    getSelectedData,
+  });
 </script>
 
 <style lang="less" scoped>

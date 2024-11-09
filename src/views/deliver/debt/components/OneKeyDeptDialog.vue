@@ -10,7 +10,7 @@
             <a-col :span="24">
               <a-form-item label="客户名" v-bind="validateInfos.custName"
                            id="DeliverDebtForm-custName" name="custName">
-                <a-input  :disabled="true" v-model:value="formData.custName" placeholder="请输入客户名"
+                <a-input :disabled="true" v-model:value="formData.custName" placeholder="请输入客户名"
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -85,122 +85,123 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, defineExpose, reactive, defineEmits} from 'vue'
-import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-import dayjs from 'dayjs';
-import {Form} from 'ant-design-vue';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {useUserStore} from '/@/store/modules/user';
-import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-import {oneKeyRepay} from "@/views/deliver/debt/DeliverDebt.api";
+  import { ref, defineExpose, reactive, defineEmits } from 'vue'
+  import JModal from '/@/components/Modal/src/JModal/JModal.vue';
+  import dayjs from 'dayjs';
+  import { Form } from 'ant-design-vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import { oneKeyRepay } from '@/views/deliver/debt/DeliverDebt.api';
 
-const userStore = useUserStore();
-const visible = ref(false)
-const emit = defineEmits(['refresh']);
-const formRef = ref();
-const useForm = Form.useForm;
-const formData = reactive<Record<string, any>>({
-  id: '',
-  type: undefined,
-  repayDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  custId: '',
-  userName: userStore.getUserInfo.username,
-  collectCompanyName: '',
-  debtAmount: '',
-  repayAmount: 0,
-  custName: '',
-  custPhone: '',
-  custContact: '',
-  custAddress: '',
-  deliverDebtAmount: undefined,
-  returnDebtAmount: undefined,
-  remark: '',
-});
-const {createMessage} = useMessage();
-const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
-const wrapperCol = ref<any>({xs: {span: 24}, sm: {span: 16}});
-const confirmLoading = ref<boolean>(false);
+  const userStore = useUserStore();
+  const visible = ref(false);
+  const emit = defineEmits(['refresh']);
+  const formRef = ref();
+  const useForm = Form.useForm;
+  const formData = reactive<Record<string, any>>({
+    id: '',
+    type: undefined,
+    repayDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    custId: '',
+    userId: userStore.getUserInfo.id,
+    userName: userStore.getUserInfo.realname,
+    collectCompanyName: '',
+    debtAmount: '',
+    repayAmount: 0,
+    custName: '',
+    custPhone: '',
+    custContact: '',
+    custAddress: '',
+    deliverDebtAmount: undefined,
+    returnDebtAmount: undefined,
+    remark: '',
+  });
+  const { createMessage } = useMessage();
+  const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
+  const wrapperCol = ref<any>({xs: {span: 24}, sm: {span: 16}});
+  const confirmLoading = ref<boolean>(false);
 
-function changeCompany(val, selectRows) {
-  console.log(' changeCompany val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    formData.collectCompanyName = selectRows[0].compName;
-    formData.collectCompanyId = selectRows[0].id;
-  }
-}
-
-//表单验证
-const validatorRules = reactive({
-  repayAmount: [{required: true, message: '请输入还款金额!'},],
-  collectCompanyId: [{required: true, message: '请选择公司!'},],
-
-});
-
-const {
-  resetFields,
-  validate,
-  validateInfos
-} = useForm(formData, validatorRules, {immediate: false});
-
-async function handleOk() {
-  try {
-    // 触发表单验证
-    await validate();
-
-  } catch ({errorFields}) {
-    if (errorFields) {
-      const firstField = errorFields[0];
-      if (firstField) {
-        formRef.value.scrollToField(firstField.name, {behavior: 'smooth', block: 'center'});
-      }
+  function changeCompany(val, selectRows) {
+    console.log(' changeCompany val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      formData.collectCompanyName = selectRows[0].compName;
+      formData.collectCompanyId = selectRows[0].id;
     }
-    return Promise.reject(errorFields);
   }
-  confirmLoading.value = true;
-  await oneKeyRepay(formData )
-    .then((res) => {
-      if (res.success) {
-        createMessage.success(res.message);
-        emit('refresh')
-        visible.value = false
-      } else {
-        createMessage.warning(res.message);
+
+  //表单验证
+  const validatorRules = reactive({
+    repayAmount: [{ required: true, message: '请输入还款金额!' }],
+    collectCompanyId: [{ required: true, message: '请选择公司!' }],
+  });
+
+  const {
+    resetFields,
+    validate,
+    validateInfos
+  } = useForm(formData, validatorRules, {immediate: false});
+
+  async function handleOk() {
+    try {
+      // 触发表单验证
+      await validate();
+    } catch ({ errorFields }) {
+      if (errorFields) {
+        const firstField = errorFields[0];
+        if (firstField) {
+          formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
+        }
       }
-    })
-    .finally(() => {
-      confirmLoading.value = false;
+      return Promise.reject(errorFields);
+    }
+    if (formData.repayAmount > 0) {
+      confirmLoading.value = true;
+      await oneKeyRepay(formData)
+        .then((res) => {
+          if (res.success) {
+            createMessage.success(res.message);
+            emit('refresh');
+            visible.value = false;
+          } else {
+            createMessage.warning(res.message);
+          }
+        })
+        .finally(() => {
+          confirmLoading.value = false;
+        });
+      emit('refresh');
+    } else {
+      createMessage.warning('还款金额必须大于 0 ');
+    }
+  }
+  function repayAmountChange(value) {
+    if (value > formData.debtAmount) {
+      formData.repayAmount = formData.debtAmount;
+    }
+  }
+  function show(record) {
+    visible.value = true;
+    const tmpData = {};
+    Object.keys(formData).forEach((key) => {
+      if (record.hasOwnProperty(key)) {
+        tmpData[key] = record[key];
+      }
     });
-  emit('refresh')
-
-}
-function  repayAmountChange(value){
-  if(value>formData.debtAmount){
-    formData.repayAmount=formData.debtAmount;
+    //赋值
+    Object.assign(formData, tmpData);
+    formData.debtAmount = formData.deliverDebtAmount;
+    formData.repayAmount = 0;
   }
-}
-function show(record) {
-  visible.value = true
-  const tmpData = {};
-  Object.keys(formData).forEach((key) => {
-    if (record.hasOwnProperty(key)) {
-      tmpData[key] = record[key]
-    }
-  })
-  //赋值
-  Object.assign(formData, tmpData);
-  formData.debtAmount =  formData.deliverDebtAmount;
-  formData.repayAmount=0;
-}
 
-function handleCancel() {
-  resetFields();
-  visible.value = false
-}
+  function handleCancel() {
+    resetFields();
+    visible.value = false;
+  }
 
-defineExpose({
-  show
-})
-
+  defineExpose({
+    show,
+  });
 </script>
 
 <style lang="less" scoped>
