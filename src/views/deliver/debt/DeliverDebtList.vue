@@ -60,7 +60,7 @@
 
   const queryType = ref('custName');
   const queryTypeValue = ref('');
-
+  const deliverDebtDetailListRef = ref('deliverDebtDetailListRef');
   const { createMessage } = useMessage();
   const deptDialogRef = ref();
   const oneKeyDeptDialogRef = ref();
@@ -102,16 +102,16 @@
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
-  const deliverDebtDetailListRef = ref('deliverDebtDetailListRef');
+
   function rowClick(record) {
     console.log('record:');
     deliverDebtDetailListRef.value.searchByCustId(record.id);

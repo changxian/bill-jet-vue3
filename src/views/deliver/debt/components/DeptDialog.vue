@@ -126,6 +126,7 @@
     if (selectRows?.length > 0) {
       formData.collectCompanyName = selectRows[0].compName;
       formData.collectCompanyId = selectRows[0].id;
+      formData.type = selectRows[0].type;
     }
   }
   function repayAmountChange(value) {

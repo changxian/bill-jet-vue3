@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <a-col :lg="6">
+          <a-col :lg="3">
             <a-form-item name="billNo">
               <template #label><span title="单号">单号</span></template>
               <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>

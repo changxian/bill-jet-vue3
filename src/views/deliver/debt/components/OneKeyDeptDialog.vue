@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, defineExpose, reactive, defineEmits } from 'vue'
+  import { ref, defineExpose, reactive, defineEmits } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import dayjs from 'dayjs';
   import { Form } from 'ant-design-vue';
@@ -118,8 +118,8 @@
     remark: '',
   });
   const { createMessage } = useMessage();
-  const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
-  const wrapperCol = ref<any>({xs: {span: 24}, sm: {span: 16}});
+  const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
+  const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
 
   function changeCompany(val, selectRows) {
@@ -127,6 +127,7 @@
     if (selectRows?.length > 0) {
       formData.collectCompanyName = selectRows[0].compName;
       formData.collectCompanyId = selectRows[0].id;
+      formData.type = selectRows[0].type;
     }
   }
 
