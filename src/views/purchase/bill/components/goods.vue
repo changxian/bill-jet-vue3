@@ -51,7 +51,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import {getMyBillSetting} from '@/views/setting/system/index.api'
 import {useUserStore} from '/@/store/modules/user';
 
-
+const userStore = useUserStore();
 const emit = defineEmits(['change-goods'])
  const { createMessage, createConfirm } = useMessage();
 
@@ -71,6 +71,7 @@ function getSelect(rows, ids) {
     selectedGoods = [...rows]
 }
 
+const billSetting = userStore.getBillSetting;
 const columns: BasicColumn[] = [
      {
     title: '商品编号(条码)',
@@ -113,6 +114,31 @@ const columns: BasicColumn[] = [
     editComponent: 'InputNumber',
   },
   {
+    title: '重量',
+    align: 'center',
+    dataIndex: 'weight',
+    editable: false,
+    edit: true,
+    editComponent: 'InputNumber',
+    ifShow: billSetting.showWeightCol
+  },{
+    title: '面积',
+    align: 'center',
+    dataIndex: 'area',
+    editable: false,
+    edit: true,
+    editComponent: 'InputNumber',
+    ifShow: billSetting.showAreaCol
+  }, {
+    title: '体积',
+    align: 'center',
+    dataIndex: 'volume',
+    editable: false,
+    edit: true,
+    editComponent: 'InputNumber',
+    ifShow: billSetting.showVolumeCol
+  },
+  {
     title: '进货价',
     align: 'center',
     dataIndex: 'cost',
@@ -137,7 +163,8 @@ const columns: BasicColumn[] = [
     editComponent: 'Input',
   }
   ];
-  const userStore = useUserStore();
+
+
   const dataSource:any = ref([])
   // 列表页面公共参数、方法
   let delIds:any = []
