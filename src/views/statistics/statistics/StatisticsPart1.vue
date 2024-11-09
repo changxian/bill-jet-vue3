@@ -63,7 +63,7 @@ function changeQueryTime(){
 <style lang="less" scoped>
 
 .part {
-    margin-top:20px;
+    margin-top:10px;
 
     .deliver {
         display:flex;
