@@ -80,7 +80,7 @@
     import { useListPage } from '/@/hooks/system/useListPage';
     import { columns} from './DeliverCheckBill.data';
     import FastDate from '/@/components/FastDate.vue';
-    import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCust.vue';
+    import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCustomer.vue';
     import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
  import {getExportUrl, list} from "@/views/deliver/checkbill/DeliverCheckBill.api";
 
