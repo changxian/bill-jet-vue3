@@ -1,17 +1,17 @@
 <template>
     <div class="statistics-page">
-      <TestInput/>
-      <StatisticsPart1/>
-      <StatisticsPart2/>
+<!--      <TestInput/>-->
+      <ModuleTotal/>
+      <ModuleDateTotal/>
       <StatisticsPart3/>
     </div> 
 </template>
 
 <script lang="ts" setup>
-
-import TestInput from './TestInput.vue'
-import StatisticsPart1 from './StatisticsPart1.vue'
-import StatisticsPart2 from './StatisticsPart2.vue'
+//
+//import TestInput from './TestInput.vue'
+import ModuleTotal from './ModuleTotal.vue'
+import ModuleDateTotal from './ModuleDateTotal.vue'
 import StatisticsPart3 from './StatisticsPart3.vue'
  
  

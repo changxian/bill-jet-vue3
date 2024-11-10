@@ -1,19 +1,10 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  list = '/purchase/statistics/purchaseStatistics/list',
-  exportXls = '/purchase/statistics/purchaseStatistics/exportXls',
+  moduleTotal = '/statistics/statistics/moduleTotal',
+  moduleDateTotal = '/statistics/statistics/moduleDateTotal',
 }
 
-/**
- * 导出api
- * @param params
- */
-export const getExportUrl = Api.exportXls;
 
-
-/**
- * 列表接口
- * @param params
- */
-export const list = (params) => defHttp.get({ url: Api.list, params });
+export const moduleTotal = (params) => defHttp.get({ url: Api.moduleTotal, params });
+export const moduleDateTotal = (params) => defHttp.get({ url: Api.moduleDateTotal, params });

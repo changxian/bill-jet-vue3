@@ -35,6 +35,9 @@
         <div class="count-wrap">
             <span class="name">总计</span>  
             <span class="name">数量:</span>  <span class="num">{{countNum}}</span>
+            <span class="name">重量:</span>  <span class="num">{{weightNum}}</span>
+            <span class="name">面积:</span>  <span class="num">{{areaNum}}</span>
+            <span class="name">体积:</span>  <span class="num">{{volumeNum}}</span>
             <span class="name">金额:</span>  <span class="num">￥{{countMoney}} 元</span>
         </div>
     </div>
@@ -215,6 +218,9 @@ const handleOk = (e: MouseEvent) => {
     item.goodsType = item.type;
     item.goodsUnit = item.unit;
     item.count = 0;
+    item.weight = 0;
+    item.area = 0;
+    item.volume = 0;
     item.costAmount = 0;
 
   })
@@ -244,12 +250,36 @@ const countNum = computed(()=>{
     })
     return num
 })
+const weightNum = computed(()=>{
+  let  weight = 0
+  dataSource.value.forEach(item=>{
+    weight += item.weight;
+  })
+  return weight
+})
+
+const areaNum = computed(()=>{
+  let  area = 0
+  dataSource.value.forEach(item=>{
+    area += item.area;
+  })
+  return area
+})
+const volumeNum = computed(()=>{
+  let  volume = 0
+  dataSource.value.forEach(item=>{
+    volume += item.volume;
+  })
+  return volume
+})
+
+
 const countMoney = computed(()=>{
-    let  num = 0
+    let  costAmount = 0
     dataSource.value.forEach(item=>{
-        num += item.costAmount;
+      costAmount += item.costAmount;
     })
-    return num
+    return costAmount
 })
 
 function addRow(){
@@ -260,9 +290,12 @@ function addRow(){
         goodsName: '',
         goodsType: '',
         goodsUnit: '',
-        count: '',
-        cost: '',
-        costAmount: '',
+        count: 0,
+        weight: 0,
+        area: 0,
+        volume:0,
+        cost: 0,
+        costAmount: 0,
         remark: '',
     }
     dataSource.value.push(row)
@@ -286,7 +319,7 @@ function delRow(){
 
 }
   function beforeEditSubmit({ record, index, key, value }) {
-     console.log('==', record, index, key, value)
+
      if(key === 'cost'){
         record.costAmount = value * record.count;
         emit('change-goods', [...dataSource.value])
@@ -309,6 +342,9 @@ function getData(){
     return {
         details: dataSource.value,
         count: countNum.value,
+        weight: weightNum.value,
+        area: areaNum.value,
+        volume: volumeNum.value,
         amount: countMoney.value
     }
 }

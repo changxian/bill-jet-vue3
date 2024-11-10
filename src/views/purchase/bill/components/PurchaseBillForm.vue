@@ -203,19 +203,21 @@ const formData = reactive({
   supplierPhone: '',
   supplierAddress: '',
   supplierContact: '',
-  count: undefined,
-  amount: undefined,
+  count: 0,
+  weight: 0,
+  area: 0,
+  volume: 0,
+  amount: 0,
   paymentAmount: 0,
   discountAmount: 0,
   debtAmount: 0,
-  hisDebtAmount: undefined,
+  hisDebtAmount: 0,
   careNo: '',
   contractCode: '',
   status: '',
   invoiceStatus: undefined,
   userName: '',
   remark: '',
-  delFlag: undefined,
   version: undefined,
   createName: '',
 });
@@ -352,12 +354,15 @@ function resetForm() {
   formData.supplierPhone = ''
   formData.supplierAddress = ''
   formData.supplierContact = ''
-  formData.count = undefined
-  formData.amount = undefined
+  formData.count = 0
+  formData.weight = 0
+  formData.area = 0
+  formData.volume = 0
+  formData.amount = 0
   formData.paymentAmount = 0
   formData.discountAmount = 0
   formData.debtAmount = 0
-  formData.hisDebtAmount = undefined
+  formData.hisDebtAmount = 0
   formData.status = ''
   formData.invoiceStatus = undefined
   formData.careNo = ''
