@@ -1,5 +1,5 @@
 <template>
-  <j-modal title="进货欠款还款" width="700px" maxHeight="400px" :visible="visible" @ok="handleOk"
+  <j-modal title="进货欠款还款" :width="700" :maxHeight="400" :visible="visible" @ok="handleOk"
            @cancel="handleCancel"
            cancelText="关闭">
     <div style="padding:20px 30px">

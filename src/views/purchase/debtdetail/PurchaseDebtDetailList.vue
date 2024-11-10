@@ -114,6 +114,8 @@
       useSearchForm: false,
       showActionColumn:false,
       clickToRowSelect: true,
+      clearSelectOnPageChange:true,
+      clearSelection:true,
       // rowSelection: {
       //   type: 'radio'
       // },
@@ -122,6 +124,8 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
+        selectedRowKeys.value = []
+        selectedRows.value=[]
         let rangerQuery = await setRangeQuery();
         return Object.assign(params, rangerQuery, {supplierId: supplierId.value});
       },

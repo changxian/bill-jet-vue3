@@ -101,6 +101,7 @@
       useSearchForm: false,
       showActionColumn:false,
       clickToRowSelect: true,
+      clearSelectOnPageChange:true,
       rowSelection: {
         type: 'radio'
       },
@@ -125,7 +126,7 @@
 	    success: handleSuccess
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource,setSelectedRowKeys }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
   const labelCol = reactive({
     xs:24,
     sm:4,

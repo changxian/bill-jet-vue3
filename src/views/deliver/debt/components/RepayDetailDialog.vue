@@ -1,5 +1,5 @@
 <template>
-  <j-modal title="还款明细" width="1000px" :fullscreen="true" maxHeight="800px" :visible="visible"
+  <j-modal title="还款明细"  : width="1000" :fullscreen="true" :maxHeight="800" :visible="visible"
            @cancel="handleCancel">
     <div style="padding:20px 30px">
       <div class="p-2">

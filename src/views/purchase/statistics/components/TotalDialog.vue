@@ -1,5 +1,5 @@
  <template>
-    <j-modal :title="title"  width="80%" maxHeight="750px" :visible="visible"  @cancel="handleCancel">
+    <j-modal :title="title"  width="80%" :maxHeight="750" :visible="visible"  @cancel="handleCancel">
     <div style="padding:20px 30px">
       <div class="p-2">
     <!--查询区域-->

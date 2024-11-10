@@ -126,6 +126,7 @@ export function useListPage(options: ListPageOptions) {
    * @param options 是否显示确认框
    */
   function doRequest(api: () => Promise<any>, options?: IDoRequestOptions) {
+
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
@@ -134,6 +135,7 @@ export function useListPage(options: ListPageOptions) {
           if (options?.reload ?? true) {
             reload();
           }
+
           if (options?.clearSelection ?? true) {
             selectedRowKeys.value = [];
           }

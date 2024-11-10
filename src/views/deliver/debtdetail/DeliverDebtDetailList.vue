@@ -108,6 +108,8 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
+        selectedRowKeys.value = []
+        selectedRows.value=[]
         // let rangerQuery = await setRangeQuery();
         // return Object.assign(params, rangerQuery, {custId: custId.value});
         return Object.assign(params, fastDateParam, { custId: custId.value });

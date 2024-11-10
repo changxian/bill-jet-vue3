@@ -1,5 +1,5 @@
 <template>
-  <j-modal :title="title" :width="width" maxHeight="400px" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
+  <j-modal :title="title" :width="width" :maxHeight="400" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
            cancelText="关闭">
     <div style="padding: 20px 30px">
       <!-- 改状态 -->
