@@ -75,7 +75,7 @@
     </div>
     <template #footer></template>
   </j-modal>
-  <RepayEditDialog ref="epayEditDialogRef"/>
+  <RepayEditDialog ref="repayEditDialogRef"/>
 </template>
 <script lang="ts" setup>
 import {ref, defineExpose, reactive, defineEmits} from 'vue'
@@ -94,7 +94,7 @@ const { createConfirm } = useMessage();
 const queryParam = reactive<any>({});
 const fastDateParam = reactive<any>({repayDate_begin: '', repayDate_end: ''});
 const formRef = ref()
-const epayEditDialogRef = ref()
+const repayEditDialogRef = ref()
 const detailLoading = ref(false)
 const toggleSearchStatus = ref<boolean>(false);
 //注册table数据
@@ -187,7 +187,7 @@ function handleEdit() {
   const params = {
     ...selectedRows.value[0]
   }
-  epayEditDialogRef.value.show(params, false)
+  repayEditDialogRef.value.show(params, false)
 }
 
 function handleRevoke() {

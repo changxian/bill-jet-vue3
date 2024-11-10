@@ -14,7 +14,7 @@
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
-            <a-col :span="span">
+            <a-col :span="24">
               <a-form-item label="还款日期" v-bind="validateInfos.billDate"
                            id="PurchaseBillForm-billDate" name="billDate">
                 <a-date-picker
