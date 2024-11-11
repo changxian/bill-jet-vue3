@@ -80,22 +80,22 @@ const total={
   amount: 0,
   debtAmount: 0
 };
- const purchaseDateTypeTotal= reactive(total)
- const purchaseReturnDateTypeTotal = reactive(total)
- const deliverDateTypeTotal = reactive(total)
- const deliverReturnDateTypeTotal = reactive(total)
+ const purchaseDateTypeTotal= ref(total)
+ const purchaseReturnDateTypeTotal = ref(total)
+ const deliverDateTypeTotal = ref(total)
+ const deliverReturnDateTypeTotal = ref(total)
 
   const purchaseDateTypeOption = {
-    title: { text: '送货数据', left: 'center' },
-  };
-    const purchaseReturnDateTypeOption = {
-    title: { text: '送货退货数据', left: 'center' },
-  };
-    const deliverDateTypeOption = {
     title: { text: '进货数据', left: 'center' },
   };
-    const deliverReturnDateTypeOption = {
+    const purchaseReturnDateTypeOption = {
     title: { text: '进货退货数据', left: 'center' },
+  };
+    const deliverDateTypeOption = {
+    title: { text: '送货数据', left: 'center' },
+  };
+    const deliverReturnDateTypeOption = {
+    title: { text: '送货退货数据', left: 'center' },
   };
 
 const purchaseDateTypeData = ref([])
