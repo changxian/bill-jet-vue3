@@ -15,7 +15,7 @@
                     <LineMulti :chartData="purchaseDateTypeData" height="400px" :option="purchaseDateTypeOption" type="line"></LineMulti>
                     <div class="total-wrap">
                         <span class="total">总计</span> 
-                        <span class="txt">数量：</span> <span class="val">{{purchaseDateTypeTotal.num}}</span>
+                        <span class="txt">数量：</span> <span class="val">{{purchaseDateTypeTotal.count}}</span>
                         <span class="txt">重量：</span> <span class="val">{{purchaseDateTypeTotal.weight}}</span>
                         <span class="txt">面积：</span> <span class="val">{{purchaseDateTypeTotal.area}}</span>
                         <span class="txt">体积：</span> <span class="val">{{purchaseDateTypeTotal.volume}}</span>
@@ -27,7 +27,7 @@
                     <LineMulti :chartData="purchaseReturnDateTypeData" height="400px" :option="purchaseReturnDateTypeOption" type="line"></LineMulti>
                     <div class="total-wrap">
                         <span class="total">总计</span> 
-                        <span class="txt">数量：</span> <span class="val">{{purchaseReturnDateTypeTotal.num}}</span>
+                        <span class="txt">数量：</span> <span class="val">{{purchaseReturnDateTypeTotal.count}}</span>
                         <span class="txt">重量：</span> <span class="val">{{purchaseReturnDateTypeTotal.weight}}</span>
                         <span class="txt">面积：</span> <span class="val">{{purchaseReturnDateTypeTotal.area}}</span>
                         <span class="txt">体积：</span> <span class="val">{{purchaseReturnDateTypeTotal.volume}}</span>
@@ -41,7 +41,7 @@
                     <LineMulti :chartData="deliverDateTypeData" height="400px" :option="deliverDateTypeOption" type="line"></LineMulti>
                     <div class="total-wrap">
                         <span class="total">总计</span> 
-                        <span class="txt">数量：</span> <span class="val">{{deliverDateTypeTotal.num}}</span>
+                        <span class="txt">数量：</span> <span class="val">{{deliverDateTypeTotal.count}}</span>
                         <span class="txt">重量：</span> <span class="val">{{deliverDateTypeTotal.weight}}</span>
                         <span class="txt">面积：</span> <span class="val">{{deliverDateTypeTotal.area}}</span>
                         <span class="txt">体积：</span> <span class="val">{{deliverDateTypeTotal.volume}}</span>
@@ -53,7 +53,7 @@
                     <LineMulti :chartData="deliverReturnDateTypeData" height="400px" :option="deliverReturnDateTypeOption" type="line"></LineMulti>
                     <div class="total-wrap">
                         <span class="total">总计</span> 
-                        <span class="txt">数量：</span> <span class="val">{{deliverReturnDateTypeTotal.num}}</span>
+                        <span class="txt">数量：</span> <span class="val">{{deliverReturnDateTypeTotal.count}}</span>
                         <span class="txt">重量：</span> <span class="val">{{deliverReturnDateTypeTotal.weight}}</span>
                         <span class="txt">面积：</span> <span class="val">{{deliverReturnDateTypeTotal.area}}</span>
                         <span class="txt">体积：</span> <span class="val">{{deliverReturnDateTypeTotal.volume}}</span>
@@ -73,7 +73,7 @@ import {queryTimeObj} from './Statistics.data'
 import {moduleDateTotal} from "@/views/statistics/statistics/Statistics.api";
  
 const total={
-  num: 0,
+  count: 0,
   weight: 0,
   area: 0,
   volume: 0,
