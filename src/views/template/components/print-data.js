@@ -26,6 +26,7 @@ export default {
   billBy: '刘开票人', // 开票人员
   createBy: '刘制单员', // 制单人员
   createDate: '2024/10/06', // 制单时间
+  createTime: '2024/10/06 12:12:12', // 制单时间
   authBy: '张审核人', // 审核人
   auth2By: '李复核人', // 复核人员
   haulier: '杨承运人', // 承运人

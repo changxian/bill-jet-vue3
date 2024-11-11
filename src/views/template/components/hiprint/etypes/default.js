@@ -7,6 +7,7 @@ const fields = [
   { text: '訂單號', field: 'orderNo3' },
 
   { text: '商品编号', field: 'code' },
+  { text: '商品编码', field: 'code16' },
   { text: '物料编号', field: 'code2' },
   { text: '编号', field: 'code3' },
   { text: '编码', field: 'code4' },
@@ -20,6 +21,7 @@ const fields = [
   { text: '貨號', field: 'code11' },
   { text: 'Barcode', field: 'code13' },
   { text: '条形码', field: 'code14' },
+  { text: '商品条码', field: 'code15' },
 
   { text: '商品名称', field: 'name' },
   { text: '物料名称', field: 'name2' },
@@ -32,6 +34,7 @@ const fields = [
   { text: '品名', field: 'name9' },
   { text: '药品名称', field: 'name10' },
   { text: '產品名稱', field: 'name11' },
+  { text: '配件/工时项目', field: 'name12' },
 
   { text: '名称简写', field: 'shortName' },
 
@@ -87,9 +90,10 @@ const fields = [
   { text: '金额（RMB）', field: 'amount4' },
 
   { text: '备注', field: 'remark' },
+  { text: '備注', field: 'remark1' },
+
   { text: 'Description', field: 'description' },
 
-  { text: '备注', field: 'remark' },
   { text: '备注（订单号）', field: 'orderNo' },
 
   { text: '产商', field: 'firm2' },
