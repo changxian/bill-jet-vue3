@@ -196,6 +196,24 @@ export function getGoodsColumns(billType){
       ifShow: billSetting.showWeightCol,
     },
     {
+      title: '长',
+      align: 'center',
+      dataIndex: 'length',
+      ifShow: billSetting.showLengthWidthHeightCol || billSetting.showLengthWidthCol,
+    },
+    {
+      title: '宽',
+      align: 'center',
+      dataIndex: 'width',
+      ifShow: billSetting.showLengthWidthHeightCol || billSetting.showLengthWidthCol,
+    },
+    {
+      title: '高',
+      align: 'center',
+      dataIndex: 'height',
+      ifShow: billSetting.showLengthWidthHeightCol || billSetting.showLengthWidthCol,
+    },
+    {
       title: '面积',
       align: 'center',
       dataIndex: 'area',

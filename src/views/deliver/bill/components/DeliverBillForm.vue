@@ -262,6 +262,10 @@
     operatorId: userStore.getUserInfo.id,
     operatorName: userStore.getUserInfo.realname,
   });
+  // 给开单类型设置默认值
+  if (typeOptions.value.length > 0) {
+    formData.type = typeOptions.value[0].value;
+  }
 
   const rules: Record<string, Rule[]> = {
     companyId: [{ required: true, message: '必填', trigger: 'blur' }],
@@ -281,11 +285,7 @@
   // 表单禁用
   const disabled = computed(() => {
     if (props.formBpm === true) {
-      if (props.formData.disabled === false) {
-        return false;
-      } else {
-        return true;
-      }
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
@@ -297,7 +297,7 @@
       formData.companyName = selectRows[0].compName;
     }
   }
-  // 选择业务员信息
+  // 选择业务员信息【返回的val数据是username，不是ID值】
   function changeUser(val, selectRows) {
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {

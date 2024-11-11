@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end"/>
+          <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" startDateKey="billDate_begin" endDateKey="billDate_end"/>
           <!--<a-col :lg="6">
             <a-form-item name="billDate">
               <template #label><span title="日期">日期</span></template>
@@ -29,9 +29,9 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item name="createName">
+              <a-form-item name="operatorName">
                 <template #label><span title="制单人">制单人</span></template>
-                <a-input placeholder="请输入制单人" v-model:value="queryParam.createName" allow-clear ></a-input>
+                <a-input placeholder="请输入制单人" v-model:value="queryParam.operatorName" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
@@ -90,6 +90,8 @@
   const registerModal = ref();
   const userStore = useUserStore();
   const custId = ref('');
+  // 快速日期默认类型
+  const fastDateType = ref('month3');
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -108,10 +110,10 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        selectedRowKeys.value = []
-        selectedRows.value=[]
-        // let rangerQuery = await setRangeQuery();
-        // return Object.assign(params, rangerQuery, {custId: custId.value});
+        selectedRowKeys.value = [];
+        selectedRows.value = [];
+        //let rangerQuery = await setRangeQuery();
+        //return Object.assign(params, rangerQuery, {custId: custId.value});
         return Object.assign(params, fastDateParam, { custId: custId.value });
       },
     },

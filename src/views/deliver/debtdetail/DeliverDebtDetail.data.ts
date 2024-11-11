@@ -55,7 +55,7 @@ export const columns: BasicColumn[] = [
   {
     title: '制单人',
     align: 'center',
-    dataIndex: 'createName',
+    dataIndex: 'operatorName',
   },
   {
     title: '备注',

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineEmits, defineProps, watch } from 'vue';
+  import { ref, reactive, defineEmits, defineProps, watch, computed } from 'vue';
   import dayjs from 'dayjs';
   import { string } from 'vue-types';
 
@@ -29,6 +29,16 @@
       type: string,
       default: 'endDate',
     },
+    fastDateType: {
+      type: String,
+      default: '',
+    },
+  });
+  // 快速日期默认选项
+  const fastDateType = computed(() => {
+    if (props.fastDateType != '') {
+      return props.fastDateType;
+    }
   });
   const emits = defineEmits(['update:modelValue', 'update']);
   const queryParam = reactive<any>({
@@ -104,7 +114,7 @@
     //emits('update', { startDate: date[0], endDate: date[1] });
   }
   function changeDate(val) {
-    // console.log('val1:', val)
+    // console.log('val1:', val);
     let date = ['', ''];
     if (val) {
       date = val;
@@ -114,6 +124,11 @@
     props.modelValue[props.startDateKey] = date[0];
     props.modelValue[props.endDateKey] = date[1];
     // emits('update:modelValue', { startDate: date[0], endDate: date[1] });
+  }
+  // 设置默认值
+  if (options.value.length > 0) {
+    queryParam.type = fastDateType;
+    handleChange(queryParam.type);
   }
 </script>
 

@@ -98,7 +98,7 @@ export const columns: BasicColumn[] = [
   {
     title: '业务员',
     align: 'center',
-    dataIndex: 'userName_dictText',
+    dataIndex: 'userName',
   },
   {
     title: '备注',
