@@ -5,37 +5,20 @@
         <a-row :gutter="24">
           <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" />
           <a-col :lg="6">
-            <a-form-item name="name" label="筛选">
-              <JInput v-model:value="queryParam.custName" class="query-group-cust" allow-clear></JInput>
+            <a-form-item label="单类型" name="type">
+              <a-select v-model:value="queryParam.type" allow-clear>
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="3">送货开单</a-select-option>
+                <a-select-option value="2">退货开单</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
-          <template v-if="toggleSearchStatus">
-            <a-col :lg="6">
-              <a-form-item label="类型" name="type">
-                <a-select v-model:value="queryParam.type" allow-clear>
-                  <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="3">送货开单</a-select-option>
-                  <a-select-option value="2">退货开单</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item label="公司" name="companyId">
-                <j-select-company v-model:value="queryParam.companyId" @change="changeCompany" allow-clear />
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
-              <a-col :lg="6">
-                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>
-              </a-col>
-            </span>
+        </a-row>
+        <a-row>
+          <a-col :lg="6">
+            <a-form-item label="公司" name="companyId">
+              <j-select-company v-model:value="queryParam.companyId" @change="changeCompany" allow-clear />
+            </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="24" style="padding: 0 0 10px 20px">
@@ -47,6 +30,27 @@
             <a-radio value="operatorCountColumns">按用户</a-radio>
             <a-radio value="careNoCountColumns">按车号</a-radio>
           </a-radio-group>
+        </a-row>
+        <a-row>
+          <a-col :lg="6">
+            <a-form-item name="name" label="筛选">
+              <JInput v-model:value="queryParam.name" class="query-group-cust" allow-clear></JInput>
+            </a-form-item>
+          </a-col>
+          <!--<template v-if="toggleSearchStatus">
+          </template>-->
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; margin-left: 20px; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <!--<a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>-->
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>

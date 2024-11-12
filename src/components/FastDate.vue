@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineEmits, defineProps, watch, computed } from 'vue';
+  import { ref, reactive, defineEmits, defineProps, watch } from 'vue';
   import dayjs from 'dayjs';
   import { string } from 'vue-types';
 
@@ -34,12 +34,7 @@
       default: '',
     },
   });
-  // 快速日期默认选项
-  // const fastDateType = computed(() => {
-  //   if (props.fastDateType != '') {
-  //     return props.fastDateType;
-  //   }
-  // });
+
   const emits = defineEmits(['update:modelValue', 'update']);
   const queryParam = reactive<any>({
     date: [props.modelValue[props.startDateKey], props.modelValue[props.endDateKey]],

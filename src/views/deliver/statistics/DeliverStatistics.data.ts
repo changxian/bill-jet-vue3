@@ -6,40 +6,40 @@ const billSetting = userStore.getBillSetting;
 const numCountCol = {
   title: '数量合计',
   align: 'center',
-  dataIndex: 'count',
+  dataIndex: 'countSubtotal',
 };
 const amountCol = {
   title: '金额合计',
   align: 'center',
-  dataIndex: 'amount',
+  dataIndex: 'amountSubtotal',
 };
 const weightCol = {
   title: '重量合计',
   align: 'center',
-  dataIndex: 'wtSubtotal',
+  dataIndex: 'weightSubtotal',
   ifShow: billSetting.showWeightCol,
 };
 const areaCol = {
   title: '面积合计',
   align: 'center',
-  dataIndex: 'mjSubtotal',
+  dataIndex: 'areaSubtotal',
   ifShow: billSetting.showAreaCol,
 };
 const volumeCol = {
   title: '体积合计',
   align: 'center',
-  dataIndex: 'tjSubtotal',
+  dataIndex: 'volumeSubtotal',
   ifShow: billSetting.showVolumeCol,
 };
 const costAmountCol = {
   title: '成本合计',
   align: 'center',
-  dataIndex: 'costAmount',
+  dataIndex: 'costSubtotal',
 };
 const profitAmountCol = {
   title: '利润合计',
   align: 'center',
-  dataIndex: 'profitAmount',
+  dataIndex: 'profitSubtotal',
 };
 const detailCol = {
   title: '明细',
@@ -127,7 +127,7 @@ export const userNameCountColumns: BasicColumn[] = [
   {
     title: '业务员',
     align: 'center',
-    dataIndex: 'userName',
+    dataIndex: 'name',
   },
   numCountCol,
   weightCol,
@@ -145,7 +145,7 @@ export const operatorCountColumns: BasicColumn[] = [
   {
     title: '用户',
     align: 'center',
-    dataIndex: 'operatorName',
+    dataIndex: 'name',
   },
   numCountCol,
   weightCol,
