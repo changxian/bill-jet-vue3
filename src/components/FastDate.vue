@@ -35,11 +35,11 @@
     },
   });
   // 快速日期默认选项
-  const fastDateType = computed(() => {
-    if (props.fastDateType != '') {
-      return props.fastDateType;
-    }
-  });
+  // const fastDateType = computed(() => {
+  //   if (props.fastDateType != '') {
+  //     return props.fastDateType;
+  //   }
+  // });
   const emits = defineEmits(['update:modelValue', 'update']);
   const queryParam = reactive<any>({
     date: [props.modelValue[props.startDateKey], props.modelValue[props.endDateKey]],
@@ -126,8 +126,8 @@
     // emits('update:modelValue', { startDate: date[0], endDate: date[1] });
   }
   // 设置默认值
-  if (options.value.length > 0) {
-    queryParam.type = fastDateType;
+  if (props.fastDateType && options.value.length > 0) {
+    queryParam.type = props.fastDateType;
     handleChange(queryParam.type);
   }
 </script>
