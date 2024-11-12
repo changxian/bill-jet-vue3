@@ -25,7 +25,6 @@
 
 <script lang="ts" setup>
  import Pie from '/@/components/chart/Pie.vue';
- import LineMulti from '/@/components/chart/LineMulti.vue';
  import { ref } from 'vue';
  import {queryTimeObj} from './Statistics.data'
 
