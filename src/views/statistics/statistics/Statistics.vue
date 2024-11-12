@@ -3,7 +3,7 @@
 <!--      <TestInput/>-->
       <ModuleTotal/>
       <ModuleDateTotal/>
-      <StatisticsPart3/>
+      <HotGoods/>
     </div> 
 </template>
 
@@ -12,7 +12,7 @@
 //import TestInput from './TestInput.vue'
 import ModuleTotal from './ModuleTotal.vue'
 import ModuleDateTotal from './ModuleDateTotal.vue'
-import StatisticsPart3 from './StatisticsPart3.vue'
+import HotGoods from './HotGoods.vue'
  
  
 </script>
