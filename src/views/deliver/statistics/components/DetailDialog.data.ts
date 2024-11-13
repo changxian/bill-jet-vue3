@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
   {
     title: '日期',
     align: 'center',
-    dataIndex: 'repayDate',
+    dataIndex: 'billDate',
   },
   {
     title: '单号',
@@ -52,7 +52,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'goodsCode',
   },
   {
-    title: '商品名称',
+    title: '名称',
     align: 'center',
     dataIndex: 'goodsName',
   },
@@ -65,11 +65,6 @@ export const columns: BasicColumn[] = [
     title: '单位',
     align: 'center',
     dataIndex: 'goodsUnit',
-  },
-  {
-    title: '数量',
-    align: 'center',
-    dataIndex: 'count',
   },
   {
     title: '进价',
@@ -95,7 +90,7 @@ export const columns: BasicColumn[] = [
   {
     title: '重量小计',
     align: 'center',
-    dataIndex: 'wtSubtotal',
+    dataIndex: 'weightSubtotal',
     ifShow: billSetting.showWeightCol,
   },
   {
@@ -125,7 +120,7 @@ export const columns: BasicColumn[] = [
   {
     title: '面积小计',
     align: 'center',
-    dataIndex: 'mjSubtotal',
+    dataIndex: 'areaSubtotal',
     ifShow: billSetting.showAreaCol,
   },
   {
@@ -137,7 +132,7 @@ export const columns: BasicColumn[] = [
   {
     title: '体积小计',
     align: 'center',
-    dataIndex: 'tjSubtotal',
+    dataIndex: 'volumeSubtotal',
     ifShow: billSetting.showVolumeCol,
   },
   {
@@ -148,12 +143,12 @@ export const columns: BasicColumn[] = [
   {
     title: '成本',
     align: 'center',
-    dataIndex: 'cost',
+    dataIndex: 'costAmount',
   },
   {
     title: '利润',
     align: 'center',
-    dataIndex: 'profit',
+    dataIndex: 'profitAmount',
   },
   {
     title: '备注',

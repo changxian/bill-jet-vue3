@@ -7,41 +7,42 @@
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-row :gutter="24">
               <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" />
-              <a-col :lg="4">
+              <a-col :lg="5">
+                <a-form-item label="单类型" name="type">
+                  <a-select v-model:value="queryParam.type">
+                    <a-select-option value="">所有</a-select-option>
+                    <a-select-option value="3">送货开单</a-select-option>
+                    <a-select-option value="2">退货开单</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row>
+              <a-col v-if="queryParam.goodsId != ''" :lg="6">
+                <a-form-item name="custName" label="客户名称">
+                  <JInput v-model:value="queryParam.custName" class="query-group-cust"></JInput>
+                </a-form-item>
+              </a-col>
+              <a-col v-if="queryParam.goodsId == ''" :lg="6">
                 <a-form-item name="goodsName" label="商品名称">
                   <JInput v-model:value="queryParam.goodsName" class="query-group-cust"></JInput>
                 </a-form-item>
               </a-col>
-              <template v-if="toggleSearchStatus">
-                <a-col :lg="6">
-                  <a-form-item label="类型" name="type">
-                    <a-select v-model:value="queryParam.type">
-                      <a-select-option value="">所有</a-select-option>
-                      <a-select-option value="3">送货开单</a-select-option>
-                      <a-select-option value="2">退货开单</a-select-option>
-                    </a-select>
-                  </a-form-item>
-                </a-col>
-                <a-col :lg="6">
-                  <a-form-item name="goodsCode" label="商品编号">
-                    <JInput v-model:value="queryParam.goodsCode" class="query-group-cust"></JInput>
-                  </a-form-item>
-                </a-col>
-                <a-col :lg="6">
-                  <a-form-item name="goodsType" label="规格">
-                    <JInput v-model:value="queryParam.goodsType" class="query-group-cust"></JInput>
-                  </a-form-item>
-                </a-col>
-              </template>
+              <a-col v-if="queryParam.goodsId == ''" :lg="5">
+                <a-form-item name="goodsCode" label="编号">
+                  <JInput v-model:value="queryParam.goodsCode" class="query-group-cust"></JInput>
+                </a-form-item>
+              </a-col>
+              <a-col v-if="queryParam.goodsId == ''" :lg="5">
+                <a-form-item name="goodsType" label="规格">
+                  <JInput v-model:value="queryParam.goodsType" class="query-group-cust"></JInput>
+                </a-form-item>
+              </a-col>
               <a-col :xl="6" :lg="7" :md="8" :sm="24">
-                <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+                <span style="float: left; margin-left: 20px; overflow: hidden" class="table-page-search-submitButtons">
                   <a-col :lg="6">
                     <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
                     <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                    <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                      {{ toggleSearchStatus ? '收起' : '展开' }}
-                      <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                    </a>
                   </a-col>
                 </span>
               </a-col>
@@ -67,12 +68,12 @@
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, userCol, careNoCol } from './DetailDialog.data';
-  import { list, getExportUrl } from '../../debt/DeliverDebt.api';
+  import { detailsList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
   import { useUserStore } from '@/store/modules/user';
 
-  const ustore = useUserStore();
+  const uStore = useUserStore();
   const queryParam = reactive<any>({});
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   const formRef = ref();
@@ -99,14 +100,13 @@
   };
   const title = ref('');
   const columnList = ref(columns);
-  const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '送货开单',
-      api: list,
-      cols: ustore.getCols, // 添加列备注信息
-      dynamicCols: ustore.getDynamicCols['jxc_goods'], // 添加扩展列信息
+      api: detailsList,
+      cols: uStore.getCols, // 添加列备注信息
+      dynamicCols: uStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       canResize: false,
       useSearchForm: false,
       showActionColumn: false,
@@ -160,7 +160,15 @@
 
   const visible = ref(false);
 
-  function show(type, record) {
+  function show(param, record) {
+    debugger;
+    queryParam['goodsId'] = param.goodsId;
+    queryParam['categoryId'] = param.categoryId;
+    queryParam['custId'] = param.custId;
+    queryParam['userId'] = param.userId;
+    queryParam['operatorId'] = param.operatorId;
+    queryParam['careNo'] = param.careNo;
+    let type = param.queryType;
     title.value = titleObj[type] || '统计明细';
     if (type === 'operatorCountColumns') {
       const tmp = [...columnList.value];

@@ -15,8 +15,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="欠款类型（1：送货欠款，2：退货欠款）" v-bind="validateInfos.type" id="DeliverDebtDetailForm-type" name="type">
-								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择欠款类型（1：送货欠款，2：退货欠款）"  allow-clear />
+							<a-form-item label="欠款类型" v-bind="validateInfos.type" id="DeliverDebtDetailForm-type" name="type">
+								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择欠款类型"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -100,19 +100,19 @@
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    billNo: '',   
-    billDate: '',   
+    billNo: '',
+    billDate: '',
     type: undefined,
     amount: undefined,
     paymentAmount: undefined,
     discountAmount: undefined,
     debtAmount: undefined,
-    careNo: '',   
-    contractCode: '',   
-    userId: '',   
-    userName: '',   
-    createName: '',   
-    remark: '',   
+    careNo: '',
+    contractCode: '',
+    userId: '',
+    userName: '',
+    createName: '',
+    remark: '',
     delFlag: undefined,
     version: undefined,
   });

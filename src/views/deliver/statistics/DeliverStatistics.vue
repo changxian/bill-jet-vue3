@@ -86,16 +86,16 @@
   import TotalDialog from './components/TotalDialog.vue';
   import { useUserStore } from '@/store/modules/user';
 
-  const ustore = useUserStore();
-  const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '' });
+  const uStore = useUserStore();
+  const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '', custId: '', goodsId: '', categoryId: '', operatorId: '', userId: '', careNo: '' });
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   // 快速日期默认类型
   const fastDateType = ref('month');
   const formRef = ref();
   const columnObj = { goodsCountColumns, typeCountColumns, custCountColumns, userNameCountColumns, operatorCountColumns, careNoCountColumns };
-  function getColumns() {
-    return columnObj[queryParam.queryType];
-  }
+  // function getColumns() {
+  //   return columnObj[queryParam.queryType];
+  // }
 
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
@@ -112,7 +112,7 @@
       title: '送货开单',
       api: list,
       // columns: typeCountColumns,
-      cols: ustore.getCols, // 添加列备注信息
+      cols: uStore.getCols, // 添加列备注信息
       canResize: false,
       useSearchForm: false,
       showActionColumn: false,
@@ -146,12 +146,37 @@
   });
 
   function changeType() {
+    queryParam.goodsId = '';
+    queryParam.categoryId = '';
+    queryParam.custId = '';
+    queryParam.userId = '';
+    queryParam.operatorId = '';
+    queryParam.careNo = '';
     columns.value = columnObj[queryParam.queryType];
     reload();
   }
   const detailDialogRef = ref();
   function lookDetail(record) {
-    detailDialogRef.value.show(queryParam.queryType, record);
+    debugger;
+    if (queryParam.queryType === 'goodsCountColumns') {
+      queryParam.goodsId = record.id;
+    }
+    if (queryParam.queryType === 'typeCountColumns') {
+      queryParam.categoryId = record.id;
+    }
+    if (queryParam.queryType === 'custCountColumns') {
+      queryParam.custId = record.id;
+    }
+    if (queryParam.queryType === 'userNameCountColumns') {
+      queryParam.userId = record.id;
+    }
+    if (queryParam.queryType === 'operatorCountColumns') {
+      queryParam.operatorId = record.id;
+    }
+    if (queryParam.queryType === 'careNoCountColumns') {
+      queryParam.careNo = record.id;
+    }
+    detailDialogRef.value.show(queryParam, record);
   }
   const totalDialogRef = ref();
   function lookTotal(record) {

@@ -44,7 +44,7 @@ const profitAmountCol = {
 const detailCol = {
   title: '明细',
   align: 'center',
-  dataIndex: 'detail',
+  dataIndex: 'id',
   slots: { customRender: 'detail' },
 };
 const countTotalCol = {

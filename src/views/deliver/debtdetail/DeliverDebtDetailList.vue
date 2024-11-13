@@ -12,7 +12,7 @@
             </a-form-item>
           </a-col>-->
           <template v-if="toggleSearchStatus">
-            <a-col :lg="6">
+            <a-col :lg="5">
               <a-form-item name="type">
                 <template #label><span title="类型">类型</span></template>
                 <a-select v-model:value="queryParam.type">
@@ -22,19 +22,19 @@
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
+            <a-col :lg="5">
               <a-form-item name="billNo">
                 <template #label><span title="单号">单号</span></template>
                 <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
+            <a-col :lg="7">
               <a-form-item name="operatorName">
                 <template #label><span title="制单人">制单人</span></template>
                 <a-input placeholder="请输入制单人" v-model:value="queryParam.operatorName" allow-clear ></a-input>
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
+            <a-col :lg="7">
               <a-form-item name="userName">
                 <template #label><span title="业务员">业务员</span></template>
                 <a-input placeholder="请输入业务员" v-model:value="queryParam.userName" allow-clear ></a-input>

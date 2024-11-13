@@ -12,7 +12,7 @@
                         endDateKey="repayDate_end"/>
               <a-col :lg="4">
                 <a-form-item name="custName">
-                  <template #label><span title="客户名称">客户名</span></template>
+                  <template #label><span title="客户">客户</span></template>
                   <JInput v-model:value="queryParam.custName" class="query-group-cust"></JInput>
                 </a-form-item>
               </a-col>
