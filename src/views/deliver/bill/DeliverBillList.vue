@@ -194,10 +194,10 @@
   });
   const [ registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
@@ -216,15 +216,15 @@
     // 循环数据
     res.dynaFieldsGroup['1'].forEach(item => {
       // 重量小计
-      if (item.fieldName === 'wtSubtotal') {
+      if (item.fieldName === 'weightSubtotal') {
         weightColTitle.value = item.fieldTitle;
       }
       // 面积小计
-      if (item.fieldName === 'mjSubtotal') {
+      if (item.fieldName === 'areaSubtotal') {
         areaColTitle.value = item.fieldTitle;
       }
       // 体积小计
-      if (item.fieldName === 'tjSubtotal') {
+      if (item.fieldName === 'volumeSubtotal') {
         volumeColTitle.value = item.fieldTitle;
       }
     });
@@ -296,7 +296,6 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
   /**
    * 详情
    */
@@ -304,28 +303,24 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
   /**
    * 操作栏
    */
@@ -338,7 +333,6 @@
       },
     ];
   }
-   
   /**
    * 下拉操作栏
    */
@@ -347,7 +341,8 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
