@@ -194,7 +194,7 @@
     Object.keys(_fastDateParam).forEach(key => {
       fastDateParam[key] = _fastDateParam[key];
     });
-    let type = param.queryType;
+    let type = queryParam.queryType;
     title.value = titleObj[type] || '统计明细';
     const tmp = [...columnList.value];
     if (type === 'operatorCountColumns') {
