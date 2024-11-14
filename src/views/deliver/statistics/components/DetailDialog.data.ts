@@ -23,6 +23,11 @@ export const careNoCol = {
   align: 'center',
   dataIndex: 'careNo',
 };
+export const categoryCol = {
+  title: '类别',
+  align: 'center',
+  dataIndex: 'categoryName',
+};
 
 // 明细列表数据
 export const columns: BasicColumn[] = [

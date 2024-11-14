@@ -56,6 +56,17 @@
             <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
           </template>
         </BasicTable>
+        <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+          <p :class="{'p_san': hasPan}" >总计
+            <span class="total_span">数量：{{countSubtotal}}</span>
+            <span class="total_span" v-if="showWeightCol">重量({{weightColTitle}})：{{weightSubtotal}}</span>
+            <span class="total_span" v-if="showAreaCol">面积({{areaColTitle}})：{{areaSubtotal}}</span>
+            <span class="total_span" v-if="showVolumeCol">体积({{volumeColTitle}})：{{volumeSubtotal}}</span>
+            <span class="total_span">金额：{{amountSubtotal}}</span>
+            <span class="total_span">成本：{{costSubtotal}}</span>
+            <span class="total_span">利润：{{profitSubtotal}}</span>
+          </p>
+        </div>
         <!-- 表单区域 -->
       </div>
     </div>
@@ -67,13 +78,40 @@
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, userCol, careNoCol } from './DetailDialog.data';
+  import { columns, userCol, careNoCol, custCol, operatorCol, categoryCol } from './DetailDialog.data';
   import { detailsList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
   import { useUserStore } from '@/store/modules/user';
 
   const uStore = useUserStore();
+  // 总计：数量
+  const countSubtotal = ref(0);
+  // 总计：重量
+  const weightSubtotal = ref(0);
+  // 总计：面积
+  const areaSubtotal = ref(0);
+  // 总计：体积
+  const volumeSubtotal = ref(0);
+  // 总计：金额
+  const amountSubtotal = ref(0);
+  // 总计：成本
+  const costSubtotal = ref(0);
+  // 总计：利润
+  const profitSubtotal = ref(0);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
+
+  const hasPan = ref(true);
   const queryParam = reactive<any>({});
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   const formRef = ref();
@@ -170,18 +208,33 @@
     queryParam['careNo'] = param.careNo;
     let type = param.queryType;
     title.value = titleObj[type] || '统计明细';
+    const tmp = [...columnList.value];
     if (type === 'operatorCountColumns') {
-      const tmp = [...columnList.value];
-      tmp.splice(3,1, userCol);
+      tmp.splice(3, 1, operatorCol);
       columnList.value = tmp;
     } else if (type === 'careNoCountColumns') {
-      const tmp = [...columnList.value];
       tmp.splice(3, 1, careNoCol);
       columnList.value = tmp;
+    } else if (type === 'custCountColumns') {
+      tmp.splice(3, 1, custCol);
+      columnList.value = tmp;
+    } else if (type === 'userNameCountColumns') {
+      tmp.splice(3, 1, userCol);
+      columnList.value = tmp;
+    } else if (type === 'typeCountColumns') {
+      tmp.splice(3, 1, categoryCol);
+      columnList.value = tmp;
     } else {
+      // goodsCountColumns: '送货统计明细-商品',
+      //   typeCountColumns: '送货统计明细-类别',
+      //   custCountColumns: '送货统计明细-客户',
+      //   userNameCountColumns: '送货统计明细-业务员',
+      //   operatorCountColumns: '送货统计明细-用户',
+      //   careNoCountColumns: '送货统计明细-车号',
       columnList.value = columns;
     }
     visible.value = true;
+    reload();
   }
   function handleCancel() {
     visible.value = false;
