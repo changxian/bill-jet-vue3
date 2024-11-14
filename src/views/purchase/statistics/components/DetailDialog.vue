@@ -166,7 +166,7 @@ function show(_queryParam, _fastDateParam, _record) {
   Object.keys(_fastDateParam).forEach(key => {
     fastDateParam[key] = _fastDateParam[key];
   });
-  console.log("===========fastDateParam=======", fastDateParam )
+
   let queryType = queryParam.queryType
   title.value = titleObj[queryType] || '统计明细'
   if (queryType === 'operatorCountColumns') {

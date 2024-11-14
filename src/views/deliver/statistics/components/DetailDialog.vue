@@ -186,14 +186,14 @@
 
   const visible = ref(false);
 
-  function show(param, record) {
-    debugger;
-    queryParam['goodsId'] = param.goodsId;
-    queryParam['categoryId'] = param.categoryId;
-    queryParam['custId'] = param.custId;
-    queryParam['userId'] = param.userId;
-    queryParam['operatorId'] = param.operatorId;
-    queryParam['careNo'] = param.careNo;
+  function show(_queryParam, _fastDateParam, _record) {
+
+    Object.keys(_queryParam).forEach(key => {
+      queryParam[key] = _queryParam[key];
+    });
+    Object.keys(_fastDateParam).forEach(key => {
+      fastDateParam[key] = _fastDateParam[key];
+    });
     let type = param.queryType;
     title.value = titleObj[type] || '统计明细';
     const tmp = [...columnList.value];

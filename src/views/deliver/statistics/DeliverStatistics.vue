@@ -259,7 +259,6 @@
 
   const detailDialogRef = ref();
   function lookDetail(record) {
-    debugger;
     if (queryParam.queryType === 'goodsCountColumns') {
       queryParam.goodsId = record.id;
     }
@@ -278,11 +277,11 @@
     if (queryParam.queryType === 'careNoCountColumns') {
       queryParam.careNo = record.id;
     }
-    detailDialogRef.value.show(queryParam, record);
+    detailDialogRef.value.show(queryParam,fastDateParam, record);
   }
   const totalDialogRef = ref();
   function lookTotal(record) {
-    totalDialogRef.value.show(record);
+    totalDialogRef.value.show(queryParam,fastDateParam,record);
   }
   /**
    * 查询
