@@ -89,7 +89,7 @@
  
 
  const queryParam = reactive<any>({queryType: 'goodsCountColumns', companyId: '', companyName: ''});
- const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+ const fastDateParam = reactive<any>({timeType:"month3",startDate: '', endDate: ''});
  const formRef = ref()
  const columnObj = {
   goodsCountColumns, typeCountColumns, supplierCountColumns,operatorCountColumns, careNoCountColumns
@@ -152,7 +152,7 @@ function changeType(){
 }
    const detailDialogRef = ref()
    function lookDetail(record){
-    detailDialogRef.value.show(queryParam.queryType, record)
+    detailDialogRef.value.show(queryParam,fastDateParam, record);
    }
     const totalDialogRef = ref()
    function lookTotal(record){

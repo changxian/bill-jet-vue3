@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" startDateKey="billDate_begin" endDateKey="billDate_end"/>
+          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end"/>
           <!--<a-col :lg="6">
             <a-form-item name="billDate">
               <template #label><span title="日期">日期</span></template>
@@ -85,13 +85,12 @@
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ billDate_begin: '', billDate_end: '' });
+  const fastDateParam = reactive<any>({timeType:'month3', billDate_begin: '', billDate_end: '' });
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
   const custId = ref('');
-  // 快速日期默认类型
-  const fastDateType = ref('month3');
+ 
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {

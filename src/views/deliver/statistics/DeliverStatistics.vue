@@ -3,7 +3,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" />
+          <FastDate v-model:modelValue="fastDateParam"   />
           <a-col :lg="6">
             <a-form-item label="单类型" name="type">
               <a-select v-model:value="queryParam.type" allow-clear>
@@ -68,8 +68,8 @@
         <a-button @click="lookTotal(record)" preIcon="ant-design:credit-card-outlined"></a-button>
       </template>
     </BasicTable>
-    <DetailDialog ref="detailDialogRef" :fastDateType="fastDateType" />
-    <TotalDialog ref="totalDialogRef" :fastDateType="fastDateType" />
+    <DetailDialog ref="detailDialogRef"   />
+    <TotalDialog ref="totalDialogRef" />
   </div>
 </template>
 
@@ -88,9 +88,9 @@
 
   const uStore = useUserStore();
   const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '', custId: '', goodsId: '', categoryId: '', operatorId: '', userId: '', careNo: '' });
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType:'thisMonth',startDate: '', endDate: '' });
   // 快速日期默认类型
-  const fastDateType = ref('month');
+ 
   const formRef = ref();
   const columnObj = { goodsCountColumns, typeCountColumns, custCountColumns, userNameCountColumns, operatorCountColumns, careNoCountColumns };
   // function getColumns() {

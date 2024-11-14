@@ -8,7 +8,7 @@
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam"
                   :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-row :gutter="24">
-              <FastDate v-model:modelValue="fastDateParam" startDateKey="repayDate_begin" :fastDateType="fastDateType"
+              <FastDate v-model:modelValue="fastDateParam" startDateKey="repayDate_begin"  
                         endDateKey="repayDate_end"/>
               <a-col :lg="4">
                 <a-form-item name="custName">
@@ -89,13 +89,12 @@
   const { createMessage } = useMessage();
   const { createConfirm } = useMessage();
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ repayDate_begin: '', repayDate_end: '' });
+  const fastDateParam = reactive<any>({timeType:'thisMonth', repayDate_begin: '', repayDate_end: '' });
   const formRef = ref();
   const repayEditDialogRef = ref();
   const detailLoading = ref(false);
   const toggleSearchStatus = ref<boolean>(false);
-  // 快速日期默认类型
-  const fastDateType = ref('month');
+ 
 
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({

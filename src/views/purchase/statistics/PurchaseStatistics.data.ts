@@ -7,12 +7,12 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 const numCountCol =  {
     title: '数量统计',
     align: "center",
-    dataIndex: 'count'
+    dataIndex: 'countSubtotal'
   }
   const amountCol =  {
     title: '金额统计',
     align: "center",
-    dataIndex: 'amount'
+    dataIndex: 'amountSubtotal'
   }
 const detailCol =  {
     title: '明细',

@@ -1,7 +1,7 @@
 <template>
   <a-col :lg="6" :md="8" :sm="12">
-    <a-form-item name="type" label="快速日期">
-      <a-select v-model:value="queryParam.type" style="width: 100%" placeholder="请选择" :options="options" @change="handleChange" allowClear></a-select>
+    <a-form-item name="timeType" label="快速日期">
+      <a-select v-model:value="queryParam.timeType" style="width: 100%" placeholder="请选择" :options="options" @change="handleChange" allowClear></a-select>
     </a-form-item>
   </a-col>
   <a-col :lg="6">
@@ -19,7 +19,7 @@
   const props = defineProps({
     modelValue: {
       type: Object,
-      default: { startDate: '', endDate: '' },
+      default: {timeType:'', startDate: '', endDate: '' },
     },
     startDateKey: {
       type: string,
@@ -28,23 +28,22 @@
     endDateKey: {
       type: string,
       default: 'endDate',
-    },
-    fastDateType: {
-      type: String,
-      default: '',
-    },
+    }
   });
 
   const emits = defineEmits(['update:modelValue', 'update']);
   const queryParam = reactive<any>({
-    date: [props.modelValue[props.startDateKey], props.modelValue[props.endDateKey]],
+    date: [props.modelValue[props.startDateKey], props.modelValue[props.endDateKey]],timeType: props.modelValue.timeType
   });
+  if(props.modelValue.timeType){
+    handleChange(props.modelValue.timeType);
+  }
   const dateOptions = [
     { label: '今天', value: 'today' },
     { label: '昨天', value: 'yesterday' },
     { label: '前天', value: 'beforeYesterday' },
     { label: '最近三天', value: 'day3' },
-    { label: '本月', value: 'month' },
+    { label: '本月', value: 'thisMonth' },
     { label: '上月', value: 'lastMonth' },
     { label: '最近三月', value: 'month3' },
     { label: '最近六月', value: 'month6' },
@@ -70,7 +69,7 @@
         const d = dayjs().format('YYYY-MM-DD');
         return [s, d];
       },
-      month: function () {
+      thisMonth: function () {
         const s = dayjs().startOf('month').format('YYYY-MM-DD');
         const d = dayjs().endOf('month').format('YYYY-MM-DD');
         return [s, d];
@@ -100,11 +99,12 @@
   watch(()=>props.modelValue[props.endDateKey],(newVal)=>{
     queryParam.date = [props.modelValue[props.startDateKey] ,newVal]
   });
-  function handleChange(type) {
-    const date = handleDate(type);
-    queryParam.date = handleDate(type);
+  function handleChange(timeType) {
+    const date = handleDate(timeType);
+    queryParam.date = handleDate(timeType);
     props.modelValue[props.startDateKey] = date[0];
     props.modelValue[props.endDateKey] = date[1];
+    props.modelValue['timeType'] = timeType;
     //emits('update:modelValue', { startDate: date[0], endDate: date[1] });
     //emits('update', { startDate: date[0], endDate: date[1] });
   }
@@ -118,13 +118,11 @@
     }
     props.modelValue[props.startDateKey] = date[0];
     props.modelValue[props.endDateKey] = date[1];
+    props.modelValue['timeType'] = '';
+    queryParam['timeType'] = '';
     // emits('update:modelValue', { startDate: date[0], endDate: date[1] });
   }
-  // 设置默认值
-  if (props.fastDateType && options.value.length > 0) {
-    queryParam.type = props.fastDateType;
-    handleChange(queryParam.type);
-  }
+
 </script>
 
 <style lang="less" scoped>

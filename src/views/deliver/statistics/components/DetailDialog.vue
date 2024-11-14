@@ -6,7 +6,7 @@
         <div class="jeecg-basic-table-form-container">
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-row :gutter="24">
-              <FastDate v-model:modelValue="fastDateParam" :fastDateType="fastDateType" />
+              <FastDate v-model:modelValue="fastDateParam"  />
               <a-col :lg="5">
                 <a-form-item label="单类型" name="type">
                   <a-select v-model:value="queryParam.type">
@@ -75,21 +75,9 @@
 
   const uStore = useUserStore();
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({timeType:'', startDate: '', endDate: '' });
   const formRef = ref();
-
-  const props = defineProps({
-    fastDateType: {
-      type: String,
-      default: '',
-    },
-  });
-  // 快速日期默认选项
-  const fastDateType = computed(() => {
-    if (props.fastDateType != '') {
-      return props.fastDateType;
-    }
-  });
+ 
   const titleObj = {
     goodsCountColumns: '送货统计明细-商品',
     typeCountColumns: '送货统计明细-类别',
