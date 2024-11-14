@@ -37,17 +37,11 @@
               <JInput v-model:value="queryParam.name" class="query-group-cust" allow-clear></JInput>
             </a-form-item>
           </a-col>
-          <!--<template v-if="toggleSearchStatus">
-          </template>-->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; margin-left: 20px; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
                 <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <!--<a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>-->
               </a-col>
             </span>
           </a-col>
@@ -70,22 +64,22 @@
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
-        <span class="total_span">数量：{{countSubtotal}}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{weightColTitle}})：{{weightSubtotal}}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{areaColTitle}})：{{areaSubtotal}}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{volumeColTitle}})：{{volumeSubtotal}}</span>
-        <span class="total_span">金额：{{amountSubtotal}}</span>
-        <span class="total_span">成本：{{costSubtotal}}</span>
-        <span class="total_span">利润：{{profitSubtotal}}</span>
+        <span class="total_span">数量：{{ countSubtotal }}</span>
+        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightSubtotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaSubtotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeSubtotal }}</span>
+        <span class="total_span">金额：{{ amountSubtotal }}</span>
+        <span class="total_span">成本：{{ costSubtotal }}</span>
+        <span class="total_span">利润：{{ profitSubtotal }}</span>
       </p>
     </div>
-    <DetailDialog ref="detailDialogRef"   />
-    <TotalDialog ref="totalDialogRef"   />
+    <DetailDialog ref="detailDialogRef" />
+    <TotalDialog ref="totalDialogRef" />
   </div>
 </template>
 
 <script lang="ts" name="deliver.statistics-DeliverStatistics" setup>
-  import { ref, defineExpose, reactive, defineEmits } from 'vue';
+  import { ref, defineExpose, reactive } from 'vue';
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { goodsCountColumns, typeCountColumns, custCountColumns, userNameCountColumns, operatorCountColumns, careNoCountColumns } from './DeliverStatistics.data';
@@ -95,10 +89,8 @@
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import DetailDialog from './components/DetailDialog.vue';
   import TotalDialog from './components/TotalDialog.vue';
-  import { useUserStore } from '@/store/modules/user';
   import { getMyBillSetting } from '@/views/setting/system/index.api';
 
-  const uStore = useUserStore();
   // 总计：数量
   const countSubtotal = ref(0);
   // 总计：重量
@@ -127,9 +119,7 @@
 
   const hasPan = ref(true);
   const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '', custId: '', goodsId: '', categoryId: '', operatorId: '', userId: '', careNo: '' });
-  const fastDateParam = reactive<any>({ timeType:'thisMonth',startDate: '', endDate: '' });
-  // 快速日期默认类型
- 
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
   const columnObj = { goodsCountColumns, typeCountColumns, custCountColumns, userNameCountColumns, operatorCountColumns, careNoCountColumns };
   // function getColumns() {
@@ -144,14 +134,13 @@
   }
 
   const columns = ref(goodsCountColumns);
-  const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
   const { prefixCls, tableContext, onExportXls } = useListPage({
     tableProps: {
       title: '送货开单',
       api: list,
       // columns: typeCountColumns,
-      cols: uStore.getCols, // 添加列备注信息
+      // cols: uStore.getCols, // 添加列备注信息
       canResize: false,
       useSearchForm: false,
       showActionColumn: false,
@@ -164,25 +153,15 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
       },
-      summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        countSubtotal.value = 0;
-        weightSubtotal.value = 0;
-        areaSubtotal.value = 0;
-        volumeSubtotal.value = 0;
-        amountSubtotal.value = 0;
-        costSubtotal.value = 0;
-        profitSubtotal.value = 0;
-        resultItems.forEach((item) => {
-          countSubtotal.value += item.countSubtotal;
-          weightSubtotal.value += item.weightSubtotal;
-          areaSubtotal.value += item.areaSubtotal;
-          volumeSubtotal.value += item.volumeSubtotal;
-          amountSubtotal.value += item.amountSubtotal;
-          costSubtotal.value += item.costSubtotal;
-          profitSubtotal.value += item.profitSubtotal;
-        });
+        countSubtotal.value = resultItems[0].countTotal;
+        weightSubtotal.value = resultItems[0].weightTotal;
+        areaSubtotal.value = resultItems[0].areaTotal;
+        volumeSubtotal.value = resultItems[0].volumeTotal;
+        amountSubtotal.value = resultItems[0].amountTotal;
+        costSubtotal.value = resultItems[0].costAmountTotal;
+        profitSubtotal.value = resultItems[0].profitAmountTotal;
       },
       rowSelection: { type: 'radio' },
     },
@@ -240,25 +219,10 @@
       }
     });
   });
-  // 增加合计行
-  function summaryFunc(resultItems) {
-    return [
-      {
-        _row: '合计',
-        _index: '合计',
-        countSubtotal: countSubtotal.value,
-        weightSubtotal: weightSubtotal.value,
-        areaSubtotal: areaSubtotal.value,
-        volumeSubtotal: volumeSubtotal.value,
-        amountSubtotal: amountSubtotal.value,
-        costSubtotal: costSubtotal.value,
-        profitSubtotal: profitSubtotal.value,
-      },
-    ];
-  }
 
   const detailDialogRef = ref();
   function lookDetail(record) {
+    debugger;
     if (queryParam.queryType === 'goodsCountColumns') {
       queryParam.goodsId = record.id;
     }
@@ -277,11 +241,11 @@
     if (queryParam.queryType === 'careNoCountColumns') {
       queryParam.careNo = record.id;
     }
-    detailDialogRef.value.show(queryParam,fastDateParam, record);
+    detailDialogRef.value.show(queryParam, fastDateParam, record);
   }
   const totalDialogRef = ref();
   function lookTotal(record) {
-    totalDialogRef.value.show(queryParam,fastDateParam,record);
+    totalDialogRef.value.show(queryParam, fastDateParam,record);
   }
   /**
    * 查询
@@ -301,10 +265,7 @@
     reload();
   }
 
-  defineExpose({
-
-  });
-
+  defineExpose({});
 </script>
 
 <style lang="less" scoped>
@@ -312,5 +273,12 @@
     display: block;
     margin-bottom: 24px;
     white-space: nowrap;
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
   }
 </style>

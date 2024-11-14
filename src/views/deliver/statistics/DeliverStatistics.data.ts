@@ -1,7 +1,25 @@
 import { BasicColumn } from '/@/components/Table';
 import { useUserStore } from '@/store/modules/user';
+import { ref } from 'vue';
 const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
+const weightColTitle = ref('');
+const areaColTitle = ref('');
+const volumeColTitle = ref('');
+billSetting.dynaFieldsGroup['1'].forEach((item) => {
+  // 重量小计
+  if (item.fieldName === 'weightSubtotal') {
+    weightColTitle.value = item.fieldTitle;
+  }
+  // 面积小计
+  if (item.fieldName === 'areaSubtotal') {
+    areaColTitle.value = item.fieldTitle;
+  }
+  // 体积小计
+  if (item.fieldName === 'volumeSubtotal') {
+    volumeColTitle.value = item.fieldTitle;
+  }
+});
 
 const numCountCol = {
   title: '数量合计',
@@ -14,19 +32,19 @@ const amountCol = {
   dataIndex: 'amountSubtotal',
 };
 const weightCol = {
-  title: '重量合计',
+  title: '重量合计(' + weightColTitle.value + ')',
   align: 'center',
   dataIndex: 'weightSubtotal',
   ifShow: billSetting.showWeightCol,
 };
 const areaCol = {
-  title: '面积合计',
+  title: '面积合计(' + areaColTitle.value + ')',
   align: 'center',
   dataIndex: 'areaSubtotal',
   ifShow: billSetting.showAreaCol,
 };
 const volumeCol = {
-  title: '体积合计',
+  title: '体积合计(' + volumeColTitle.value + ')',
   align: 'center',
   dataIndex: 'volumeSubtotal',
   ifShow: billSetting.showVolumeCol,

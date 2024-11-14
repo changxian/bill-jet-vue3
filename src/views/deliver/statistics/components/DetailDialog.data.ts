@@ -1,7 +1,25 @@
 import { BasicColumn } from '/@/components/Table';
 import { useUserStore } from '@/store/modules/user';
+import { ref } from 'vue';
 const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
+const weightColTitle = ref('');
+const areaColTitle = ref('');
+const volumeColTitle = ref('');
+billSetting.dynaFieldsGroup['1'].forEach((item) => {
+  // 重量小计
+  if (item.fieldName === 'weightSubtotal') {
+    weightColTitle.value = item.fieldTitle;
+  }
+  // 面积小计
+  if (item.fieldName === 'areaSubtotal') {
+    areaColTitle.value = item.fieldTitle;
+  }
+  // 体积小计
+  if (item.fieldName === 'volumeSubtotal') {
+    volumeColTitle.value = item.fieldTitle;
+  }
+});
 
 export const custCol = {
   title: '客户',
@@ -93,7 +111,7 @@ export const columns: BasicColumn[] = [
     ifShow: billSetting.showWeightCol,
   },
   {
-    title: '重量小计',
+    title: '重量小计(' + weightColTitle.value + ')',
     align: 'center',
     dataIndex: 'weightSubtotal',
     ifShow: billSetting.showWeightCol,
@@ -123,7 +141,7 @@ export const columns: BasicColumn[] = [
     ifShow: billSetting.showAreaCol,
   },
   {
-    title: '面积小计',
+    title: '面积小计(' + areaColTitle.value + ')',
     align: 'center',
     dataIndex: 'areaSubtotal',
     ifShow: billSetting.showAreaCol,
@@ -135,7 +153,7 @@ export const columns: BasicColumn[] = [
     ifShow: billSetting.showVolumeCol,
   },
   {
-    title: '体积小计',
+    title: '体积小计(' + volumeColTitle.value + ')',
     align: 'center',
     dataIndex: 'volumeSubtotal',
     ifShow: billSetting.showVolumeCol,

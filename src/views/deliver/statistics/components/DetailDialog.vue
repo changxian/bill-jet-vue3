@@ -6,7 +6,7 @@
         <div class="jeecg-basic-table-form-container">
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-row :gutter="24">
-              <FastDate v-model:modelValue="fastDateParam"  />
+              <FastDate v-model:modelValue="fastDateParam" />
               <a-col :lg="5">
                 <a-form-item label="单类型" name="type">
                   <a-select v-model:value="queryParam.type">
@@ -58,13 +58,13 @@
         </BasicTable>
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">
           <p :class="{'p_san': hasPan}" >总计
-            <span class="total_span">数量：{{countSubtotal}}</span>
-            <span class="total_span" v-if="showWeightCol">重量({{weightColTitle}})：{{weightSubtotal}}</span>
-            <span class="total_span" v-if="showAreaCol">面积({{areaColTitle}})：{{areaSubtotal}}</span>
-            <span class="total_span" v-if="showVolumeCol">体积({{volumeColTitle}})：{{volumeSubtotal}}</span>
-            <span class="total_span">金额：{{amountSubtotal}}</span>
-            <span class="total_span">成本：{{costSubtotal}}</span>
-            <span class="total_span">利润：{{profitSubtotal}}</span>
+            <span class="total_span">数量：{{ countSubtotal }}</span>
+            <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightSubtotal }}</span>
+            <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaSubtotal }}</span>
+            <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeSubtotal }}</span>
+            <span class="total_span">金额：{{ amountSubtotal }}</span>
+            <span class="total_span">成本：{{ costSubtotal }}</span>
+            <span class="total_span">利润：{{ profitSubtotal }}</span>
           </p>
         </div>
         <!-- 表单区域 -->
@@ -74,7 +74,7 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-  import { ref, defineExpose, reactive, defineProps, computed } from 'vue';
+  import { ref, defineExpose, reactive } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -82,9 +82,8 @@
   import { detailsList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
-  import { useUserStore } from '@/store/modules/user';
+  import { getMyBillSetting } from '@/views/setting/system/index.api';
 
-  const uStore = useUserStore();
   // 总计：数量
   const countSubtotal = ref(0);
   // 总计：重量
@@ -113,9 +112,8 @@
 
   const hasPan = ref(true);
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({timeType:'', startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType: '', startDate: '', endDate: '' });
   const formRef = ref();
- 
   const titleObj = {
     goodsCountColumns: '送货统计明细-商品',
     typeCountColumns: '送货统计明细-类别',
@@ -131,8 +129,6 @@
     tableProps: {
       title: '送货开单',
       api: detailsList,
-      cols: uStore.getCols, // 添加列备注信息
-      dynamicCols: uStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       canResize: false,
       useSearchForm: false,
       showActionColumn: false,
@@ -144,6 +140,26 @@
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
+      },
+      // summaryFunc: summaryFunc,
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        countSubtotal.value = 0;
+        weightSubtotal.value = 0;
+        areaSubtotal.value = 0;
+        volumeSubtotal.value = 0;
+        amountSubtotal.value = 0;
+        costSubtotal.value = 0;
+        profitSubtotal.value = 0;
+        resultItems.forEach((item) => {
+          countSubtotal.value += item.countSubtotal;
+          weightSubtotal.value += item.weightSubtotal;
+          areaSubtotal.value += item.areaSubtotal;
+          volumeSubtotal.value += item.volumeSubtotal;
+          amountSubtotal.value += item.amountSubtotal;
+          costSubtotal.value += item.costSubtotal;
+          profitSubtotal.value += item.profitSubtotal;
+        });
       },
       rowSelection: { type: 'radio' },
     },
@@ -164,6 +180,48 @@
     xs: 24,
     sm: 20,
   });
+
+  // 加载系统开单设置
+  getMyBillSetting().then((res) => {
+    debugger;
+    showWeightCol.value = !!res.showWeightCol;
+    showAreaCol.value = !!res.showAreaCol;
+    showVolumeCol.value = !!res.showVolumeCol;
+    if (res.decimalPlaces === 0 || res.decimalPlaces) {
+      decimalPlaces.value = res.decimalPlaces;
+    }
+    // 循环数据
+    res.dynaFieldsGroup['1'].forEach((item) => {
+      // 重量小计
+      if (item.fieldName === 'weightSubtotal') {
+        weightColTitle.value = item.fieldTitle;
+      }
+      // 面积小计
+      if (item.fieldName === 'areaSubtotal') {
+        areaColTitle.value = item.fieldTitle;
+      }
+      // 体积小计
+      if (item.fieldName === 'volumeSubtotal') {
+        volumeColTitle.value = item.fieldTitle;
+      }
+    });
+  });
+  // 增加合计行
+  function summaryFunc(resultItems) {
+    return [
+      {
+        _row: '合计',
+        _index: '合计',
+        countSubtotal: countSubtotal.value,
+        weightSubtotal: weightSubtotal.value,
+        areaSubtotal: areaSubtotal.value,
+        volumeSubtotal: volumeSubtotal.value,
+        amountSubtotal: amountSubtotal.value,
+        costSubtotal: costSubtotal.value,
+        profitSubtotal: profitSubtotal.value,
+      },
+    ];
+  }
 
   /**
    * 查询
@@ -187,11 +245,10 @@
   const visible = ref(false);
 
   function show(_queryParam, _fastDateParam, _record) {
-
-    Object.keys(_queryParam).forEach(key => {
+    Object.keys(_queryParam).forEach((key) => {
       queryParam[key] = _queryParam[key];
     });
-    Object.keys(_fastDateParam).forEach(key => {
+    Object.keys(_fastDateParam).forEach((key) => {
       fastDateParam[key] = _fastDateParam[key];
     });
     let type = queryParam.queryType;
@@ -213,12 +270,6 @@
       tmp.splice(3, 1, categoryCol);
       columnList.value = tmp;
     } else {
-      // goodsCountColumns: '送货统计明细-商品',
-      //   typeCountColumns: '送货统计明细-类别',
-      //   custCountColumns: '送货统计明细-客户',
-      //   userNameCountColumns: '送货统计明细-业务员',
-      //   operatorCountColumns: '送货统计明细-用户',
-      //   careNoCountColumns: '送货统计明细-车号',
       columnList.value = columns;
     }
     visible.value = true;
@@ -237,5 +288,12 @@
     display: block;
     margin-bottom: 24px;
     white-space: nowrap;
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
   }
 </style>

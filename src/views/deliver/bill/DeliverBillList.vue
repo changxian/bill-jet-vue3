@@ -437,8 +437,10 @@
       width: 100%;
     }
   }
-  .total_span{margin: 0 5px}
-  .p_san{
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
     position: absolute;
     top: -50px;
   }
