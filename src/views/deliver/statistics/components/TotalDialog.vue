@@ -65,8 +65,8 @@
             <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
             <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
             <span class="total_span">金额：{{ amountTotal }}</span>
-            <span class="total_span">成本：{{ costTotal }}</span>
-            <span class="total_span">利润：{{ profitTotal }}</span>
+            <span class="total_span">成本：{{ costAmountTotal }}</span>
+            <span class="total_span">利润：{{ profitAmountTotal }}</span>
           </p>
         </div>
         <!-- 表单区域 -->
@@ -97,9 +97,9 @@
   // 总计：金额
   const amountTotal = ref(0);
   // 总计：成本
-  const costTotal = ref(0);
+  const costAmountTotal = ref(0);
   // 总计：利润
-  const profitTotal = ref(0);
+  const profitAmountTotal = ref(0);
   // 小数位数
   const decimalPlaces = ref(2);
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
@@ -144,8 +144,8 @@
         areaTotal.value = resultItems[0].areaTotal;
         volumeTotal.value = resultItems[0].volumeTotal;
         amountTotal.value = resultItems[0].amountTotal;
-        costTotal.value = resultItems[0].costAmountTotal;
-        profitTotal.value = resultItems[0].profitAmountTotal;
+        costAmountTotal.value = resultItems[0].costAmountTotal;
+        profitAmountTotal.value = resultItems[0].profitAmountTotal;
       },
       rowSelection: { type: 'radio' },
     },
