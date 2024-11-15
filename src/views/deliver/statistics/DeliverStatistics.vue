@@ -243,9 +243,25 @@
     }
     detailDialogRef.value.show(queryParam, fastDateParam, record);
   }
+  // 合计列表
   const totalDialogRef = ref();
   function lookTotal(record) {
-    totalDialogRef.value.show(queryParam, fastDateParam,record);
+    if (queryParam.queryType === 'typeCountColumns') {
+      queryParam.categoryId = record.id;
+    }
+    if (queryParam.queryType === 'custCountColumns') {
+      queryParam.custId = record.id;
+    }
+    if (queryParam.queryType === 'userNameCountColumns') {
+      queryParam.userId = record.id;
+    }
+    if (queryParam.queryType === 'operatorCountColumns') {
+      queryParam.operatorId = record.id;
+    }
+    if (queryParam.queryType === 'careNoCountColumns') {
+      queryParam.careNo = record.id;
+    }
+    totalDialogRef.value.show(queryParam, fastDateParam, record);
   }
   /**
    * 查询

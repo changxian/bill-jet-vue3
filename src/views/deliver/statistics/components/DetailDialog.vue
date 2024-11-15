@@ -58,13 +58,13 @@
         </BasicTable>
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">
           <p :class="{'p_san': hasPan}" >总计
-            <span class="total_span">数量：{{ countSubtotal }}</span>
-            <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightSubtotal }}</span>
-            <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaSubtotal }}</span>
-            <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeSubtotal }}</span>
-            <span class="total_span">金额：{{ amountSubtotal }}</span>
-            <span class="total_span">成本：{{ costSubtotal }}</span>
-            <span class="total_span">利润：{{ profitSubtotal }}</span>
+            <span class="total_span">数量：{{ countTotal }}</span>
+            <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
+            <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
+            <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
+            <span class="total_span">金额：{{ amountTotal }}</span>
+            <span class="total_span">成本：{{ costTotal }}</span>
+            <span class="total_span">利润：{{ profitTotal }}</span>
           </p>
         </div>
         <!-- 表单区域 -->
@@ -85,19 +85,19 @@
   import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   // 总计：数量
-  const countSubtotal = ref(0);
+  const countTotal = ref(0);
   // 总计：重量
-  const weightSubtotal = ref(0);
+  const weightTotal = ref(0);
   // 总计：面积
-  const areaSubtotal = ref(0);
+  const areaTotal = ref(0);
   // 总计：体积
-  const volumeSubtotal = ref(0);
+  const volumeTotal = ref(0);
   // 总计：金额
-  const amountSubtotal = ref(0);
+  const amountTotal = ref(0);
   // 总计：成本
-  const costSubtotal = ref(0);
+  const costTotal = ref(0);
   // 总计：利润
-  const profitSubtotal = ref(0);
+  const profitTotal = ref(0);
   // 小数位数
   const decimalPlaces = ref(2);
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
@@ -144,22 +144,13 @@
       // summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        countSubtotal.value = 0;
-        weightSubtotal.value = 0;
-        areaSubtotal.value = 0;
-        volumeSubtotal.value = 0;
-        amountSubtotal.value = 0;
-        costSubtotal.value = 0;
-        profitSubtotal.value = 0;
-        resultItems.forEach((item) => {
-          countSubtotal.value += item.countSubtotal;
-          weightSubtotal.value += item.weightSubtotal;
-          areaSubtotal.value += item.areaSubtotal;
-          volumeSubtotal.value += item.volumeSubtotal;
-          amountSubtotal.value += item.amountSubtotal;
-          costSubtotal.value += item.costSubtotal;
-          profitSubtotal.value += item.profitSubtotal;
-        });
+        countTotal.value = resultItems[0].countTotal;
+        weightTotal.value = resultItems[0].weightTotal;
+        areaTotal.value = resultItems[0].areaTotal;
+        volumeTotal.value = resultItems[0].volumeTotal;
+        amountTotal.value = resultItems[0].amountTotal;
+        costTotal.value = resultItems[0].costAmountTotal;
+        profitTotal.value = resultItems[0].profitAmountTotal;
       },
       rowSelection: { type: 'radio' },
     },
@@ -212,13 +203,13 @@
       {
         _row: '合计',
         _index: '合计',
-        countSubtotal: countSubtotal.value,
-        weightSubtotal: weightSubtotal.value,
-        areaSubtotal: areaSubtotal.value,
-        volumeSubtotal: volumeSubtotal.value,
-        amountSubtotal: amountSubtotal.value,
-        costSubtotal: costSubtotal.value,
-        profitSubtotal: profitSubtotal.value,
+        countTotal: countTotal.value,
+        weightTotal: weightTotal.value,
+        areaTotal: areaTotal.value,
+        volumeTotal: volumeTotal.value,
+        amountTotal: amountTotal.value,
+        costTotal: costTotal.value,
+        profitTotal: profitTotal.value,
       },
     ];
   }
