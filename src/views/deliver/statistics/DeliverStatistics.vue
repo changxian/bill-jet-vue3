@@ -90,7 +90,7 @@
   import DetailDialog from './components/DetailDialog.vue';
   import TotalDialog from './components/TotalDialog.vue';
   import { getMyBillSetting } from '@/views/setting/system/index.api';
-
+  const hasPan = ref(true);
   // 总计：数量
   const countSubtotal = ref(0);
   // 总计：重量
@@ -117,7 +117,7 @@
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
 
-  const hasPan = ref(true);
+
   const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '', custId: '', goodsId: '', categoryId: '', operatorId: '', userId: '', careNo: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
@@ -196,7 +196,7 @@
 
   // 加载系统开单设置
   getMyBillSetting().then((res) => {
-    debugger;
+
     showWeightCol.value = !!res.showWeightCol;
     showAreaCol.value = !!res.showAreaCol;
     showVolumeCol.value = !!res.showVolumeCol;
@@ -222,7 +222,7 @@
 
   const detailDialogRef = ref();
   function lookDetail(record) {
-    debugger;
+
     if (queryParam.queryType === 'goodsCountColumns') {
       queryParam.goodsId = record.id;
     }
