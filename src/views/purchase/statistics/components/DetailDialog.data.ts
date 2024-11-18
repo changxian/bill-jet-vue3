@@ -67,14 +67,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'count',
    },
    {
-    title: '进货价',
-    align: 'center',
-    dataIndex: 'cost',
-   },
-   {
     title: '金额',
     align: 'center',
-    dataIndex: 'costAmount',
+    dataIndex: 'amount',
    },
    {
     title: '备注',
@@ -109,12 +104,12 @@ export const totalColumns: BasicColumn[] = [
      {
       title: '数量',
       align: 'center',
-      dataIndex: 'count',
+      dataIndex: 'countSubtotal',
      },
-     {
-      title: '金额合计',
-      align: 'center',
-      dataIndex: 'costAmount',
-     }
+  {
+    title: '金额',
+    align: 'center',
+    dataIndex: 'amountSubtotal',
+  }
   ];
   

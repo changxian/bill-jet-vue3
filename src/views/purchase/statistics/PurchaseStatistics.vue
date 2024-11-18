@@ -241,15 +241,35 @@ function changeType() {
 const detailDialogRef = ref()
 
 function lookDetail(record) {
+  setParam(record)
   detailDialogRef.value.show(queryParam, fastDateParam, record);
 }
 
 const totalDialogRef = ref()
 
 function lookTotal(record) {
-  totalDialogRef.value.show(record)
-}
+  setParam(record)
+  totalDialogRef.value.show(queryParam, fastDateParam, record);
 
+}
+function setParam(record){
+  if (queryParam.queryType === 'goodsCountColumns') {
+    queryParam.goodsId = record.id;
+  }
+  if (queryParam.queryType === 'typeCountColumns') {
+    queryParam.categoryId = record.id;
+  }
+  if (queryParam.queryType === 'supplierCountColumns') {
+    queryParam.supplierId = record.id;
+  }
+
+  if (queryParam.queryType === 'operatorCountColumns') {
+    queryParam.operatorId = record.id;
+  }
+  if (queryParam.queryType === 'careNoCountColumns') {
+    queryParam.careNo = record.id;
+  }
+}
 /**
  * 查询
  */

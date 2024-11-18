@@ -63,6 +63,15 @@
             <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
           </template>
         </BasicTable>
+        <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+          <p :class="{'p_san': hasPan}" >总计
+            <span class="total_span">数量：{{ countTotal }}</span>
+            <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
+            <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
+            <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
+            <span class="total_span">金额：{{ amountTotal }}</span>
+          </p>
+        </div>
         <!-- 表单区域 -->
       </div>
     </div>
@@ -79,7 +88,35 @@ import {list, getExportUrl} from '../../debt/PurchaseDebt.api'
 import {JInput} from "@/components/Form";
 import FastDate from '/@/components/FastDate.vue';
 import dayjs from 'dayjs';
+import { getMyBillSetting } from '@/views/setting/system/index.api';
+import {totalList} from "@/views/purchase/statistics/PurchaseStatistics.api";
+// 总计：数量
+const countTotal = ref(0);
+// 总计：重量
+const weightTotal = ref(0);
+// 总计：面积
+const areaTotal = ref(0);
+// 总计：体积
+const volumeTotal = ref(0);
+// 总计：金额
+const amountTotal = ref(0);
+// 总计：成本
+const costAmountTotal = ref(0);
+// 总计：利润
+const profitAmountTotal = ref(0);
+// 小数位数
+const decimalPlaces = ref(2);
+// 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+const showWeightCol = ref(false);
+const weightColTitle = ref('');
+// 显示面积列【合计 和 列表皆显示】
+const showAreaCol = ref(false);
+const areaColTitle = ref('');
+// 显示体积列【合计 和 列表皆显示】
+const showVolumeCol = ref(false);
+const volumeColTitle = ref('');
 
+const hasPan = ref(true);
 const queryParam = reactive<any>({});
 const fastDateParam = reactive<any>({startDate: '', endDate: ''});
 const formRef = ref()
@@ -91,7 +128,7 @@ const toggleSearchStatus = ref<boolean>(false);
 const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
   tableProps: {
     title: '进货开单',
-    api: list,
+    api: totalList,
     canResize: false,
     useSearchForm: false,
     showActionColumn: false,
@@ -103,6 +140,15 @@ const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
     },
     beforeFetch: async (params) => {
       return Object.assign(params, queryParam, fastDateParam);
+    },
+    // summaryFunc: summaryFunc,
+    afterFetch: async (resultItems) => {
+      hasPan.value = resultItems.length > 0;
+      countTotal.value = resultItems[0].countTotal;
+      weightTotal.value = resultItems[0].weightTotal;
+      areaTotal.value = resultItems[0].areaTotal;
+      volumeTotal.value = resultItems[0].volumeTotal;
+      amountTotal.value = resultItems[0].amountTotal;
     },
     rowSelection: {type: 'radio'},
   },
@@ -125,7 +171,30 @@ const wrapperCol = reactive({
   sm: 20,
 });
 
-
+// 加载系统开单设置
+getMyBillSetting().then((res) => {
+  showWeightCol.value = !!res.showWeightCol;
+  showAreaCol.value = !!res.showAreaCol;
+  showVolumeCol.value = !!res.showVolumeCol;
+  if (res.decimalPlaces === 0 || res.decimalPlaces) {
+    decimalPlaces.value = res.decimalPlaces;
+  }
+  // 循环数据
+  res.dynaFieldsGroup['1'].forEach((item) => {
+    // 重量小计
+    if (item.fieldName === 'weightSubtotal') {
+      weightColTitle.value = item.fieldTitle;
+    }
+    // 面积小计
+    if (item.fieldName === 'areaSubtotal') {
+      areaColTitle.value = item.fieldTitle;
+    }
+    // 体积小计
+    if (item.fieldName === 'volumeSubtotal') {
+      volumeColTitle.value = item.fieldTitle;
+    }
+  });
+});
 /**
  * 查询
  */
@@ -177,5 +246,12 @@ defineExpose({
   display: block;
   margin-bottom: 24px;
   white-space: nowrap;
+}
+.total_span {
+  margin: 0 5px;
+}
+.p_san {
+  position: absolute;
+  top: -50px;
 }
 </style>
