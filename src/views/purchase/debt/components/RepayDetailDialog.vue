@@ -118,7 +118,7 @@ const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
     rowSelection: {type: 'radio'},
   },
   exportConfig: {
-    name: "进货开单",
+    name: "还款明细",
     url: getExportUrl,
     params: queryParam,
   },

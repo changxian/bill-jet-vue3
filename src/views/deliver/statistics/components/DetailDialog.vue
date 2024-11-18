@@ -155,7 +155,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货开单',
+      name: '送货明细',
       url: getExportUrl,
       params: queryParam,
     },

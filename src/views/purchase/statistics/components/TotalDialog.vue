@@ -84,7 +84,7 @@ import JModal from '/@/components/Modal/src/JModal/JModal.vue';
 import {BasicTable, useTable} from '/@/components/Table';
 import {useListPage} from '/@/hooks/system/useListPage';
 import {totalColumns} from './DetailDialog.data';
-import {list, getExportUrl} from '../../debt/PurchaseDebt.api'
+import {list, totalExportXls} from '../../debt/PurchaseDebt.api'
 import {JInput} from "@/components/Form";
 import FastDate from '/@/components/FastDate.vue';
 import dayjs from 'dayjs';
@@ -153,8 +153,8 @@ const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
     rowSelection: {type: 'radio'},
   },
   exportConfig: {
-    name: "进货开单",
-    url: getExportUrl,
+    name: "进货统计合计",
+    url: totalExportXls,
     params: queryParam,
   },
 
