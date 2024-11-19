@@ -19,35 +19,35 @@
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item name="category">
-                <template #label><span title="产品类别(单机版/云端版)">产品类别</span></template>
-                <a-input placeholder="请输入产品类别(单机版/云端版)" v-model:value="queryParam.category" allow-clear ></a-input>
+                <template #label><span title="产品类别">产品类别</span></template>
+                <j-dict-select-tag v-model:value="queryParam.category" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="type">
-                <template #label><span title="产品类型(送货单版/进销存版)">产品类型</span></template>
-                <a-input placeholder="请输入产品类型(送货单版/进销存版)" v-model:value="queryParam.packType" allow-clear ></a-input>
+                <template #label><span title="产品类型">产品类型</span></template>
+                <j-dict-select-tag v-model:value="queryParam.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="orgNum">
-                <template #label><span title="支持企业数(单机1个公司、云端版支持4家公司切换开单)">支持企业</span></template>
-                <a-input-number placeholder="请输入支持企业数(单机1个公司、云端版支持4家公司切换开单)" v-model:value="queryParam.orgNum"></a-input-number>           
+                <template #label><span title="支持企业数">支持企业</span></template>
+                <a-input-number placeholder="请输入支持企业数" v-model:value="queryParam.orgNum"></a-input-number>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="accountNum">
-                <template #label><span title="支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)">支持账号</span></template>
-                <a-input-number placeholder="请输入支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)" v-model:value="queryParam.accountNum"></a-input-number>           
+                <template #label><span title="支持账号数">支持账号</span></template>
+                <a-input-number placeholder="请输入支持账号数" v-model:value="queryParam.accountNum"></a-input-number>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item name="goodsNum">
                 <template #label><span title="支持商品数量()">支持商品</span></template>
-                <a-input-number placeholder="请输入支持商品数量()" v-model:value="queryParam.goodsNum"></a-input-number>           
+                <a-input-number placeholder="请输入支持商品数量" v-model:value="queryParam.goodsNum"></a-input-number>
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
+            <!--<a-col :lg="6">
               <a-form-item name="price">
                 <template #label><span title="产品标准价格">产品标准</span></template>
                 <a-input-number placeholder="请输入产品标准价格" v-model:value="queryParam.price"></a-input-number>           
@@ -82,7 +82,7 @@
                 <template #label><span title="产品启用状态(1 启用, 0 停用)">产品启用</span></template>
                 <a-input placeholder="请输入产品启用状态(1 启用, 0 停用)" v-model:value="queryParam.status" allow-clear ></a-input>
               </a-form-item>
-            </a-col>
+            </a-col>-->
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
@@ -104,8 +104,8 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'syspack:sys_pack:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'syspack:sys_pack:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'syspack:sys_pack:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'syspack:sys_pack:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button type="primary" v-auth="'syspack:sys_pack:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -115,9 +115,9 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button v-auth="'syspack:sys_pack:deleteBatch'">批量操作
+          <!--<a-button v-auth="'syspack:sys_pack:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
+          </a-button>-->
         </a-dropdown>
         <!-- 高级查询 -->
         <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
@@ -140,13 +140,13 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './SysPack.data';
+  import { columns } from './SysPack.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './SysPack.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
-  import SysPackModal from './components/SysPackModal.vue'
+  import SysPackModal from './components/SysPackModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { useDrawer } from '/@/components/Drawer';
   import PackPermissionDrawer from './components/PackPermissionDrawer.vue';
+  import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -160,10 +160,10 @@
       api: list,
       columns,
       showIndexColumn: true,
-      canResize:false,
+      canResize: false,
       useSearchForm: false,
       actionColumn: {
-        width: 120,
+        width: 180,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
@@ -171,7 +171,7 @@
       },
     },
     exportConfig: {
-      name: "系统套餐信息",
+      name: '系统套餐信息',
       url: getExportUrl,
       params: queryParam,
     },
@@ -182,28 +182,15 @@
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
-
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
-
-  /**
-   * 高级查询事件
-   */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
-  }
 
   /**
    * 新增事件
@@ -279,16 +266,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'syspack:sys_pack:delete'
-      }
-    ]
+        auth: 'syspack:sys_pack:delete',
+      },
+    ];
   }
 
   /**

@@ -10,33 +10,33 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品类别(单机版/云端版)" v-bind="validateInfos.category" id="SysPackForm-category" name="category">
-								<j-dict-select-tag v-model:value="formData.category" dictCode="sys_pack_category" placeholder="请选择产品类别(单机版/云端版)"  allow-clear />
+							<a-form-item label="产品类别" v-bind="validateInfos.category" id="SysPackForm-category" name="category">
+								<j-dict-select-tag v-model:value="formData.category" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品类型(送货单版/进销存版)" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
-								<j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型(送货单版/进销存版)"  allow-clear />
+							<a-form-item label="产品类型" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
+								<j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="支持企业数" v-bind="validateInfos.orgNum" id="SysPackForm-orgNum" name="orgNum">
-								<a-input-number v-model:value="formData.orgNum" placeholder="请输入支持企业数(单机1个公司、云端版支持4家公司切换开单)" style="width: 100%" />
+								<a-input-number v-model:value="formData.orgNum" placeholder="请输入支持企业数" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="支持账号数" v-bind="validateInfos.accountNum" id="SysPackForm-accountNum" name="accountNum">
-								<a-input-number v-model:value="formData.accountNum" placeholder="请输入支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)" style="width: 100%" />
+								<a-input-number v-model:value="formData.accountNum" placeholder="请输入支持账号数" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="支持商品数量" v-bind="validateInfos.goodsNum" id="SysPackForm-goodsNum" name="goodsNum">
-								<a-input-number v-model:value="formData.goodsNum" placeholder="请输入支持商品数量()" style="width: 100%" />
+								<a-input-number v-model:value="formData.goodsNum" placeholder="请输入支持商品数量" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品标准价格" v-bind="validateInfos.price" id="SysPackForm-price" name="price">
-								<a-input-number v-model:value="formData.price" placeholder="请输入产品标准价格" style="width: 100%" />
+							<a-form-item label="产品价格" v-bind="validateInfos.price" id="SysPackForm-price" name="price">
+								<a-input-number v-model:value="formData.price" placeholder="请输入产品价格" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -45,8 +45,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品折扣价" v-bind="validateInfos.discountedPrice" id="SysPackForm-discountedPrice" name="discountedPrice">
-								<a-input-number v-model:value="formData.discountedPrice" placeholder="请输入产品折扣价" style="width: 100%" />
+							<a-form-item label="折扣价" v-bind="validateInfos.discountedPrice" id="SysPackForm-discountedPrice" name="discountedPrice">
+								<a-input-number v-model:value="formData.discountedPrice" placeholder="请输入折扣价" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -59,6 +59,11 @@
 								<a-input v-model:value="formData.specificationUnit" placeholder="请输入规格单位"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+            <a-col :span="12">
+              <a-form-item label="启用状态" v-bind="validateInfos.status" id="SysPackForm-status" name="status">
+                <j-dict-select-tag v-model:value="formData.status" dictCode="jxc_status" placeholder="请选择启用状态" allow-clear />
+              </a-form-item>
+            </a-col>
 						<a-col :span="12">
 							<a-form-item label="产品描述" v-bind="validateInfos.discription" id="SysPackForm-discription" name="discription">
 								<a-textarea v-model:value="formData.discription" :rows="4" placeholder="请输入产品描述" />
@@ -78,7 +83,6 @@
 
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
@@ -87,17 +91,17 @@
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: () => ({})},
-    formBpm: { type: Boolean, default: true }
+    formData: { type: Object, default: () => ({}) },
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    packName: '',   
-    category: '',   
-    packType: '',   
+    packName: '',
+    category: '',
+    packType: '',
     orgNum: undefined,
     accountNum: undefined,
     goodsNum: undefined,
@@ -105,9 +109,10 @@
     discounted: undefined,
     discountedPrice: undefined,
     specification: undefined,
-    specificationUnit: '',   
-    discription: '',   
-    remarks: '',   
+    specificationUnit: '',
+    discription: '',
+    status: '',
+    remarks: '',
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
@@ -115,19 +120,15 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
-    packName: [{ required: true, message: '请输入产品名称!'},],
-    discription: [{ required: true, message: '请输入产品描述!'},],
+    packName: [{ required: true, message: '请输入产品名称!' }],
+    discription: [{ required: true, message: '请输入产品描述!' }],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
@@ -148,10 +149,10 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
