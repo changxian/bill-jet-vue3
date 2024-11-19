@@ -109,7 +109,7 @@
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
+              <a-menu-item key="1" @click="batchHandleDelete" v-auth="'syspack:sys_pack:deleteBatch'">
                 <Icon icon="ant-design:delete-outlined"></Icon>
                 删除
               </a-menu-item>

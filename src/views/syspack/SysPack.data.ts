@@ -21,17 +21,17 @@ export const columns: BasicColumn[] = [
     dataIndex: 'type_dictText'
   },
   {
-    title: '支持企业数(单机1个公司、云端版支持4家公司切换开单)',
+    title: '支持企业数',
     align: "center",
     dataIndex: 'orgNum'
   },
   {
-    title: '支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)',
+    title: '支持账号数',
     align: "center",
     dataIndex: 'accountNum'
   },
   {
-    title: '支持商品数量()',
+    title: '支持商品数量',
     align: "center",
     dataIndex: 'goodsNum'
   },
@@ -61,7 +61,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'specificationUnit'
   },
   {
-    title: '产品启用状态(1 启用, 0 停用)',
+    title: '产品启用状态',
     align: "center",
     dataIndex: 'status_dictText'
   },
@@ -72,13 +72,13 @@ export const superQuerySchema = {
   packName: {title: '产品名称',order: 0,view: 'text', type: 'string',},
   category: {title: '产品类别(单机版/云端版)',order: 2,view: 'list', type: 'string',dictCode: '',},
   packType: {title: '产品类型(送货单版/进销存版)',order: 3,view: 'list', type: 'string',dictCode: '',},
-  orgNum: {title: '支持企业数(单机1个公司、云端版支持4家公司切换开单)',order: 4,view: 'number', type: 'number',},
-  accountNum: {title: '支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)',order: 5,view: 'number', type: 'number',},
-  goodsNum: {title: '支持商品数量()',order: 6,view: 'number', type: 'number',},
+  orgNum: {title: '支持企业数',order: 4,view: 'number', type: 'number',},
+  accountNum: {title: '支持账号数',order: 5,view: 'number', type: 'number',},
+  goodsNum: {title: '支持商品数量',order: 6,view: 'number', type: 'number',},
   price: {title: '产品标准价格',order: 7,view: 'number', type: 'number',},
   discounted: {title: '产品折扣',order: 8,view: 'number', type: 'number',},
   discountedPrice: {title: '产品折扣价',order: 9,view: 'number', type: 'number',},
   specification: {title: '规格',order: 10,view: 'number', type: 'number',},
   specificationUnit: {title: '规格单位',order: 11,view: 'text', type: 'string',},
-  status: {title: '产品启用状态(1 启用, 0 停用)',order: 12,view: 'number', type: 'number',dictCode: '',},
+  status: {title: '产品启用状态',order: 12,view: 'number', type: 'number',dictCode: '',},
 };

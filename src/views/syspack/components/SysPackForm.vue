@@ -11,26 +11,26 @@
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="产品类别(单机版/云端版)" v-bind="validateInfos.category" id="SysPackForm-category" name="category">
-								<j-dict-select-tag v-model:value="formData.category" dictCode="" placeholder="请选择产品类别(单机版/云端版)"  allow-clear />
+								<j-dict-select-tag v-model:value="formData.category" dictCode="sys_pack_category" placeholder="请选择产品类别(单机版/云端版)"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="产品类型(送货单版/进销存版)" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
-								<j-dict-select-tag v-model:value="formData.packType" dictCode="" placeholder="请选择产品类型(送货单版/进销存版)"  allow-clear />
+								<j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型(送货单版/进销存版)"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="支持企业数(单机1个公司、云端版支持4家公司切换开单)" v-bind="validateInfos.orgNum" id="SysPackForm-orgNum" name="orgNum">
+							<a-form-item label="支持企业数" v-bind="validateInfos.orgNum" id="SysPackForm-orgNum" name="orgNum">
 								<a-input-number v-model:value="formData.orgNum" placeholder="请输入支持企业数(单机1个公司、云端版支持4家公司切换开单)" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)" v-bind="validateInfos.accountNum" id="SysPackForm-accountNum" name="accountNum">
+							<a-form-item label="支持账号数" v-bind="validateInfos.accountNum" id="SysPackForm-accountNum" name="accountNum">
 								<a-input-number v-model:value="formData.accountNum" placeholder="请输入支持账号数(云端版支持添加2个子账号，授权后最大支持添加12个子账号)" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="支持商品数量()" v-bind="validateInfos.goodsNum" id="SysPackForm-goodsNum" name="goodsNum">
+							<a-form-item label="支持商品数量" v-bind="validateInfos.goodsNum" id="SysPackForm-goodsNum" name="goodsNum">
 								<a-input-number v-model:value="formData.goodsNum" placeholder="请输入支持商品数量()" style="width: 100%" />
 							</a-form-item>
 						</a-col>
