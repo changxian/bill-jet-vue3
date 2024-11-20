@@ -16,6 +16,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'shortName',
   },
   {
+    title: '默认公司',
+    align: 'center',
+    dataIndex: 'isDefault_dictText',
+  },
+  {
     title: '英文名称',
     align: 'center',
     dataIndex: 'enName',
@@ -54,11 +59,6 @@ export const columns: BasicColumn[] = [
     title: '邮箱',
     align: 'center',
     dataIndex: 'email',
-  },
-  {
-    title: '默认公司',
-    align: 'center',
-    dataIndex: 'isDefault_dictText',
   },
 ];
 

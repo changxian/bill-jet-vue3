@@ -29,7 +29,7 @@
 
 <script lang="ts" name="bill-goodsCategory" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsCategoryModal from './components/CategoryModal.vue';
@@ -48,6 +48,7 @@
       api: list,
       columns,
       canResize: false,
+      showIndexColumn: true,
       // 显示表格设置
       showTableSetting: false,
       // 点击是否选中

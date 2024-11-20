@@ -10,7 +10,7 @@
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   
   const title = ref<string>('');
-  const width = ref<number>(800);
+  const width = ref<number>(500);
   const visible = ref<boolean>(false);
   const disableSubmit = ref<boolean>(false);
   const registerForm = ref();

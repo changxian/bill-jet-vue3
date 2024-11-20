@@ -14,7 +14,7 @@
         <a-button type="primary" v-auth="'company:sys_tenant_company:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button  type="primary" v-auth="'company:sys_tenant_company:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button  type="primary" v-auth="'company:sys_tenant_company:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <!--<a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -26,7 +26,7 @@
           <a-button v-auth="'company:sys_tenant_company:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
-        </a-dropdown>
+        </a-dropdown>-->
         <!-- 高级查询
         <super-query :config="superQueryConfig" @search="handleSuperQuery" />
         -->
@@ -47,12 +47,12 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './TenantCompany.data';
+  import { columns } from './TenantCompany.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './TenantCompany.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import TenantCompanyModal from './components/TenantCompanyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
-  import { cloneDeep } from "lodash-es";
+  import { cloneDeep } from 'lodash-es';
 
   const formRef = ref();
   const queryParam = reactive<any>({});

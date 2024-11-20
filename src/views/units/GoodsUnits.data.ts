@@ -11,9 +11,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
   },
   {
-    title: '是否内置',
+    title: '系统内置',
     align: 'center',
-    dataIndex: 'def',
+    dataIndex: 'def_dictText',
   },
 ];
 
