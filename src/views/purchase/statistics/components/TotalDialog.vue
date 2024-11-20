@@ -81,13 +81,12 @@
 <script lang="ts" setup>
 import {ref, defineExpose, reactive, defineEmits} from 'vue'
 import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-import {BasicTable, useTable} from '/@/components/Table';
+import {BasicTable} from '/@/components/Table';
 import {useListPage} from '/@/hooks/system/useListPage';
 import {totalColumns} from './DetailDialog.data';
-import {list, totalExportXls} from '../../debt/PurchaseDebt.api'
+import { totalExportXls} from '../PurchaseStatistics.api'
 import {JInput} from "@/components/Form";
 import FastDate from '/@/components/FastDate.vue';
-import dayjs from 'dayjs';
 import { getMyBillSetting } from '@/views/setting/system/index.api';
 import {totalList} from "@/views/purchase/statistics/PurchaseStatistics.api";
 // 总计：数量
