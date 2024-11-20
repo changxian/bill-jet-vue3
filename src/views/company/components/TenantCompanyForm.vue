@@ -56,7 +56,7 @@
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="默认公司" v-bind="validateInfos.isDefault" id="TenantCompanyForm-isDefault" name="isDefault">
-								<j-checkbox type="checkbox" v-model:value="formData.isDefault" dictCode="" placeholder="请选择默认公司"  allow-clear />
+								<j-checkbox type="checkbox" v-model:value="formData.isDefault" dictCode="yn" placeholder="请选择默认公司"  allow-clear />
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -77,25 +77,25 @@
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: () => ({})},
-    formBpm: { type: Boolean, default: true }
+    formData: { type: Object, default: () => ({}) },
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    compName: '',   
-    shortName: '',   
-    enName: '',   
-    address: '',   
-    webSite: '',   
-    phone: '',   
-    fax: '',   
-    qq: '',   
-    wechat: '',   
-    email: '',   
-    isDefault: undefined,
+    compName: '',
+    shortName: '',
+    enName: '',
+    address: '',
+    webSite: '',
+    phone: '',
+    fax: '',
+    qq: '',
+    wechat: '',
+    email: '',
+    isDefault: '0',
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
@@ -109,11 +109,7 @@
   // 表单禁用
   const disabled = computed(()=>{
     if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
@@ -190,7 +186,6 @@
         confirmLoading.value = false;
       });
   }
-
 
   defineExpose({
     add,

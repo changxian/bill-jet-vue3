@@ -6,7 +6,7 @@
           <a-row>
 						<a-col :span="24">
 							<a-form-item label="商品单位" v-bind="validateInfos.name" id="GoodsUnitsForm-name" name="name">
-								<a-input v-model:value="formData.name" placeholder="请输入商品单位"  allow-clear ></a-input>
+                <a-input placeholder="必填" v-model:value="formData.name" allow-clear></a-input>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -17,8 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../GoodsUnits.api';
@@ -27,14 +26,15 @@
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({})},
-    formBpm: { type: Boolean, default: true }
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    name: '',   
+    name: '',
+    def: '0',
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
@@ -46,18 +46,13 @@
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */
@@ -73,10 +68,10 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
@@ -141,5 +136,9 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+    margin-top: 50px;
+  }
+  .ant-modal-body {
+    height: 200px;
   }
 </style>

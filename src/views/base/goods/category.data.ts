@@ -13,9 +13,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'def_dictText',
   },
   {
-    title: '状态',
+    title: '启用状态',
     align: 'center',
-    dataIndex: 'delFlag_dictText',
+    dataIndex: 'status_dictText',
   },
 ];
 //查询数据
@@ -32,7 +32,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'JDictSelectTag',
     componentProps: {
       /* 值说明：表名,显示字段，取值字段，where后加的sql */
-      dictCode: "sys_dict_item,item_text,item_value,dict_id='1834250119016280066' order by sort_order asc",
+      // dictCode: "sys_dict_item,item_text,item_value,dict_id='1834250119016280066' order by sort_order asc",
+      dictCode: 'yn',
       placeholder: '请选择',
       // 删除请选择选项
       showChooseOption: false,
@@ -41,11 +42,11 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 5 },
   },
   {
-    label: '状态',
+    label: '启用状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode: 'jxc_delete_status',
+      dictCode: 'jxc_status',
       showChooseOption: false,
     },
     colProps: { span: 5 },
@@ -67,17 +68,12 @@ export const formSchema: FormSchema[] = [
     label: '是否内置',
     field: 'def',
     component: 'JDictSelectTag',
+    defaultValue: '0',
     dynamicRules: ({}) => {
       return [{ required: true, message: '请选择是否内置!' }];
     },
     componentProps: {
-      // (这种是读redis缓存）
-      // 默认是 sys_dict 表
-      // dictCode: 'jxc_yes_no',
-
-      // （这种是读库）
-      /* 值说明：表名,显示字段，取值字段，where后加的sql */
-      dictCode: "sys_dict_item,item_text,item_value,dict_id='1834250119016280066' order by sort_order asc",
+      dictCode: 'yn',
       placeholder: '请选择',
       // 删除请选择选项
       showChooseOption: false,
@@ -85,7 +81,23 @@ export const formSchema: FormSchema[] = [
     colProps: { span: 14 },
   },
   {
-    label: '状态',
+    label: '启用状态',
+    field: 'status',
+    component: 'JDictSelectTag',
+    defaultValue: '1',
+    dynamicRules: ({}) => {
+      return [{ required: true, message: '请选择启用状态!' }];
+    },
+    componentProps: {
+      dictCode: 'jxc_status',
+      placeholder: '请选择',
+      // 删除请选择选项
+      showChooseOption: false,
+    },
+    colProps: { span: 14 },
+  },
+  {
+    label: '删除状态',
     field: 'delFlag',
     component: 'JDictSelectTag',
     defaultValue: 0,

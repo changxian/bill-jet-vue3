@@ -7,10 +7,10 @@
           <a-col :lg="6">
             <a-form-item name="name">
               <template #label><span title="商品单位">商品单位</span></template>
-              <a-input placeholder="请输入商品单位" v-model:value="queryParam.name" allow-clear ></a-input>
+              <j-input placeholder="请输入商品单位" v-model:value="queryParam.name" allow-clear></j-input>
             </a-form-item>
           </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+          <a-col :lg="7">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
@@ -63,13 +63,13 @@
 
 <script lang="ts" name="units-goodsUnits" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './GoodsUnits.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './GoodsUnits.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
   import GoodsUnitsModal from './components/GoodsUnitsModal.vue';
   import { useUserStore } from '/@/store/modules/user';
+  import JInput from '@/components/Form/src/jeecg/components/JInput.vue';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
