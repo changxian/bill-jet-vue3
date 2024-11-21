@@ -422,7 +422,7 @@ export const tenantPackUserColumns: BasicColumn[] = [
  */
 export const tenantUserSchema: FormSchema[] = [
   { field: 'id', label: 'id', component: 'Input', show: false },
-  { field: '用户账号', label: 'username', component: 'Input', show: true },
+  { field: 'username', label: '用户账号', component: 'Input', show: true },
   {
     field: 'realname',
     label: '姓名',
