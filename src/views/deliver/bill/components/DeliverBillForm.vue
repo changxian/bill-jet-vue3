@@ -452,7 +452,7 @@
    * 初始化默认公司数据
    */
   // 默认开单公司
-  const defaultCompany = await queryDefault({});
+  const defaultCompany =  queryDefault({});
   console.log(defaultCompany);
   if (defaultCompany) {
     debugger;
