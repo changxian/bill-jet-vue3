@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
@@ -7,6 +7,7 @@ enum Api {
   list = '/company/tenantCompany/list',
   save = '/company/tenantCompany/add',
   edit = '/company/tenantCompany/edit',
+  queryDefault = '/company/tenantCompany/queryDefault',
   deleteOne = '/company/tenantCompany/delete',
   deleteBatch = '/company/tenantCompany/deleteBatch',
   importExcel = '/company/tenantCompany/importExcel',
@@ -29,6 +30,12 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 列表接口
+ * @param params
+ */
+export const queryDefault = (params) => defHttp.get({ url: Api.queryDefault, params });
 
 /**
  * 删除单个

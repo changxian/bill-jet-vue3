@@ -42,7 +42,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="客户联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
+              <a-form-item label="联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
                 <a-input v-model:value="formData.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -56,79 +56,6 @@
                 <a-input v-model:value="formData.contractCode" placeholder="请输入合同号" allow-clear></a-input>
               </a-form-item>
             </a-col>
-
-<!--
-						<a-col :span="span">
-							<a-form-item label="交易类型（1：送货，2：退货）" v-bind="validateInfos.type" id="DeliverBillForm-type" name="type">
-								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择交易类型（1：送货，2：退货）"  allow-clear />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="公司名称(记录开票时的公司名称）" v-bind="validateInfos.companyName" id="DeliverBillForm-companyName" name="companyName">
-						<j-select-user v-model:value="formData.companyName"      allow-clear />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="数量（本单商品数量）" v-bind="validateInfos.count" id="DeliverBillForm-count" name="count">
-								<a-input-number v-model:value="formData.count" placeholder="请输入数量（本单商品数量）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="DeliverBillForm-amount" name="amount">
-								<a-input-number v-model:value="formData.amount" placeholder="请输入本单金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="DeliverBillForm-paymentAmount" name="paymentAmount">
-								<a-input-number v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="DeliverBillForm-discountAmount" name="discountAmount">
-								<a-input-number v-model:value="formData.discountAmount" placeholder="请输入优惠金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="DeliverBillForm-debtAmount" name="debtAmount">
-								<a-input-number v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="往期欠款金额" v-bind="validateInfos.hisDebtAmount" id="DeliverBillForm-hisDebtAmount" name="hisDebtAmount">
-								<a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="状态（未打印、已打印、签回、过账、审核、已开票、作废）" v-bind="validateInfos.status" id="DeliverBillForm-status" name="status">
-								<a-input-number v-model:value="formData.status" placeholder="请输入状态（未打印、已打印、签回、过账、审核、已开票、作废）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="开票状态（未开、不开、已开、无信息、其他）" v-bind="validateInfos.invoiceStatus" id="DeliverBillForm-invoiceStatus" name="invoiceStatus">
-								<a-input-number v-model:value="formData.invoiceStatus" placeholder="请输入开票状态（未开、不开、已开、无信息、其他）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="成本" v-bind="validateInfos.costAmount" id="DeliverBillForm-costAmount" name="costAmount">
-								<a-input-number v-model:value="formData.costAmount" placeholder="请输入成本" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="利润" v-bind="validateInfos.profitAmount" id="DeliverBillForm-profitAmount" name="profitAmount">
-								<a-input-number v-model:value="formData.profitAmount" placeholder="请输入利润" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="备注" v-bind="validateInfos.remark" id="DeliverBillForm-remark" name="remark">
-								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="版本" v-bind="validateInfos.version" id="DeliverBillForm-version" name="version">
-								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						-->
           </a-row>
           <BillGoodsList ref="goodsRef" :customerId="customerId" @change-goods="changeGoods"></BillGoodsList>
           <a-row>
@@ -195,7 +122,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from "vue";
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
@@ -210,6 +137,7 @@
   import { billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
+  import { queryDefault } from '@/views/company/TenantCompany.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -236,6 +164,7 @@
     billNo: '',
     type: undefined,
     billDate: '',
+    companyId: '',
     companyName: '',
     custName: '',
     custPhone: '',
@@ -289,6 +218,7 @@
     }
     return props.formDisabled;
   });
+
   // 选择开单公司信息
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
@@ -518,6 +448,19 @@
       });
   }
 
+  /**
+   * 初始化默认公司数据
+   */
+  // 默认开单公司
+  const defaultCompany = await queryDefault({});
+  console.log(defaultCompany);
+  if (defaultCompany) {
+    debugger;
+    if (formData.companyId == '') {
+      formData.companyId = defaultCompany.id;
+      formData.companyName = defaultCompany.compName;
+    }
+  }
 
   defineExpose({
     add,

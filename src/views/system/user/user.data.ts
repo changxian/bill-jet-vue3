@@ -520,11 +520,11 @@ export const userTenantColumns: BasicColumn[] = [
     dataIndex: 'phone',
     width: 100,
   },
-  {
-    title: '部门',
-    width: 150,
-    dataIndex: 'orgCodeTxt',
-  },
+  // {
+  //   title: '部门',
+  //   width: 150,
+  //   dataIndex: 'orgCodeTxt',
+  // },
   {
     title: '状态',
     dataIndex: 'status',
