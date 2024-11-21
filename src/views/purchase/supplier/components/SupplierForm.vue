@@ -26,11 +26,7 @@
 							</a-form-item>
 						</a-col>
 
-            <a-col :span="12">
-              <a-form-item label="业务员" v-bind="validateInfos.userId" id="CustomerForm-userName" name="userId">
-                <j-dict-select-tag v-model:value="formData.userId" :url="listTenantUser" value-field="id" label-field="realname" placeholder="请选择业务员"  allow-clear />
-              </a-form-item>
-            </a-col>
+          
 						<a-col :span="12">
 							<a-form-item label="地址" v-bind="validateInfos.address" id="SupplierForm-address" name="address">
 								<a-input v-model:value="formData.address" placeholder="请输入地址"  allow-clear ></a-input>
