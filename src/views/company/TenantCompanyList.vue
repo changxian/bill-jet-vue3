@@ -89,10 +89,10 @@
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,

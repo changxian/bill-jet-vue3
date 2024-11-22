@@ -6,7 +6,7 @@
   import { ref, nextTick, defineExpose, onMounted } from 'vue';
   import DeliverBillForm from './components/DeliverBillForm.vue';
   const title = ref<string>('');
-  const width = ref<number>(800);
+  // const width = ref<number>(800);
   const visible = ref<boolean>(false);
   const disableSubmit = ref<boolean>(false);
   const registerForm = ref();
