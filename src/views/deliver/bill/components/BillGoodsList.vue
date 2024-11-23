@@ -181,8 +181,10 @@
   const goodsNameRepeat = ref(false);
   // 修改金额单价变动
   const editAmountEditPrice = ref(false);
-  // 金额计算方式
+  // 进货价计算方式
   const buyPriceComputeMethod = ref(false);
+  // 金额计算方式
+  const amountComputeMethod = ref('');
   // 只允许选择商品开单
   const onlyChooseGoods = ref(false);
   // 自动记录客户价
@@ -199,6 +201,7 @@
     autoCustPrice.value = !!res.autoCustPrice;
     singleCustPrice.value = !!res.singleCustPrice;
     buyPriceComputeMethod.value = res.buyPriceComputeMethod;
+    amountComputeMethod.value = res.amountComputeMethod;
     if (res.decimalPlaces === 0 || res.decimalPlaces) {
       decimalPlaces.value = res.decimalPlaces;
     }
@@ -215,9 +218,6 @@
       if (singleCustPrice.value && item.custPrice) {
         item.price = item.custPrice;
       }
-      // 根据金额计算方式来计算金额amount
-      // num_price、weight_num_price、area_num_price、volume_num_price
-      // weight_price、area_price、volume_price、write
       item.amount = item.price;
       item.costAmount = item.cost;
       item.count = 1;
@@ -297,15 +297,41 @@
     // 根据金额计算方式来计算金额amount
     // num_price、weight_num_price、area_num_price、volume_num_price
     // weight_price、area_price、volume_price、write
+    // 金额计算方式 amountComputeMethod
     if (key === 'price') {
-      record.amount = (value * record.count).toFixed(decimalPlaces.value);
+      if (amountComputeMethod.value === 'num_price') {
+        record.amount = (value * record.count).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'weight_num_price') {
+        record.amount = (value * record.count * record.weight).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'area_num_price') {
+        record.amount = (value * record.count * record.area).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'volume_num_price') {
+        record.amount = (value * record.count * record.volume).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'weight_price') {
+        record.amount = (value * record.weight).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'area_price') {
+        record.amount = (value * record.area).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'volume_price') {
+        record.amount = (value * record.volume).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'write') {
+        record.amount = 0;
+      }
       emit('change-goods', [...dataSource.value]);
     } else if (key === 'count') {
-      record.amount = (value * record.price).toFixed(decimalPlaces.value);
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
+      if (amountComputeMethod.value === 'num_price') {
+        record.amount = (value * record.price).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'weight_num_price') {
+        record.amount = (value * record.price * record.weight).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'area_num_price') {
+        record.amount = (value * record.price * record.area).toFixed(decimalPlaces.value);
+      } else if (amountComputeMethod.value === 'volume_num_price') {
+        record.amount = (value * record.price * record.volume).toFixed(decimalPlaces.value);
+      }
       emit('change-goods', [...dataSource.value]);
     } else if (editAmountEditPrice.value && key === 'amount') {
-      record.price = ((value * 100/record.count)/100).toFixed(decimalPlaces.value);
+      // 如果用户勾选了修改金额时变动单价
+      record.price = ((value * 100) / record.count / 100).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     }
   }

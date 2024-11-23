@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>
+        <!--<a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>-->
         <a-button
           v-if="selectedRowKeys.length > 0"
           preIcon="ant-design:delete-outlined"
@@ -18,7 +18,7 @@
     </BasicTable>
     <!--  套餐  -->
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess"/>
-      <!--套餐菜单授权抽屉-->
+    <!--套餐菜单授权抽屉-->
     <PackPermissionDrawer @register="packPermissionDrawer" />
   </div>
 </template>

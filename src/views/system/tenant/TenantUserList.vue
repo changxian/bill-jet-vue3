@@ -5,8 +5,8 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-        <!--<JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />-->
-        <a-button type="primary" @click="openQuitModal(true, {})" preIcon="ant-design:user-delete-outlined">离职信息</a-button>
+        <!--<JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
+        <a-button type="primary" @click="openQuitModal(true, {})" preIcon="ant-design:user-delete-outlined">离职信息</a-button>-->
         <div style="margin-left: 10px;margin-top: 5px"> 当前登录企业: <span class="tenant-name">{{loginTenantName}}</span> </div>
       </template>
       <!--操作栏-->
@@ -46,11 +46,11 @@
   import { userTenantColumns, userTenantFormSchema } from '../user/user.data';
   import { useUserStore } from '/@/store/modules/user';
   import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
-  import { getTenantId } from "/@/utils/auth";
-  import { changeOwenUserTenant } from "/@/views/system/usersetting/UserSetting.api";
-  import { getLoginTenantName } from "/@/views/system/tenant/tenant.api";
+  import { getTenantId } from '/@/utils/auth';
+  import { changeOwenUserTenant } from '/@/views/system/usersetting/UserSetting.api';
+  import { getLoginTenantName } from '/@/views/system/tenant/tenant.api';
   import TenantUserDrawer from './components/TenantUserDrawer.vue';
-  import { tenantSaasMessage } from "@/utils/common/compUtils";
+  import { tenantSaasMessage } from '@/utils/common/compUtils';
   import UserPermissionDrawer from './components/UserPermissionDrawer.vue';
   const { createMessage, createConfirm } = useMessage();
 
@@ -284,7 +284,7 @@
 
   getTenantName();
 
-  async function getTenantName(){
+  async function getTenantName() {
     loginTenantName.value = await getLoginTenantName();
   }
   //update-end---author:wangshuai ---date:20230710  for：【QQYUN-5723】4、显示当前登录企业------------

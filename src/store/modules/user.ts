@@ -15,8 +15,9 @@ import {
   COLS_DATA,
   DYNAMIC_COLS_DATA,
   SYSTEM_SETTING_DATA,
-  BILL_SETTING_DATA
-} from '/@/enums/cacheEnum';
+  BILL_SETTING_DATA,
+  DEFAULT_COMPANY_DATA,
+} from "/@/enums/cacheEnum";
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
@@ -41,6 +42,7 @@ interface UserState {
   dynamicCols?: Object | null;
   systemSetting?:Object | null;
   billSetting?:Object | null;
+  defaultCompany?:Object | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -63,8 +65,9 @@ export const useUserStore = defineStore({
     cols: [],
     // 扩展列
     dynamicCols: null,
-    systemSetting:null,
-    billSetting:null,
+    systemSetting: null,
+    billSetting: null,
+    defaultCompany: null,
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
@@ -112,11 +115,17 @@ export const useUserStore = defineStore({
       }
       return getAuthCache(SYSTEM_SETTING_DATA);
     },
-    getBillSetting( ) {
+    getBillSetting() {
       if (null != this.billSetting) {
         return this.billSetting;
       }
       return getAuthCache(BILL_SETTING_DATA);
+    },
+    getDefaultCompany() {
+      if (null != this.defaultCompany) {
+        return this.defaultCompany;
+      }
+      return getAuthCache(DEFAULT_COMPANY_DATA);
     },
 
 
@@ -174,6 +183,10 @@ export const useUserStore = defineStore({
     setBillSetting(billSetting) {
       this.billSetting = billSetting;
       setAuthCache(BILL_SETTING_DATA, billSetting);
+    },
+    setDefaultCompany(defaultCompany) {
+      this.defaultCompany = defaultCompany;
+      setAuthCache(DEFAULT_COMPANY_DATA, defaultCompany);
     },
 
 
