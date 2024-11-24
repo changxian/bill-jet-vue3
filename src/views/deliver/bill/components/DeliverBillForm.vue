@@ -9,16 +9,14 @@
                 <j-select-company v-model:value="formData.companyId" @change="changeCompany" allow-clear />
               </a-form-item>
             </a-col>
-          </a-row>
-          <a-row>
             <a-col :span="span">
               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
                 <j-select-customer v-model:value="formData.custId" @change="changeCustomer" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="客户电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="formData.custPhone" placeholder="请输入客户电话" allow-clear></a-input>
+              <a-form-item label="联系电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
+                <a-input v-model:value="formData.custPhone" placeholder="请输入联系电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -54,6 +52,18 @@
             <a-col :span="span">
               <a-form-item label="合同号" v-bind="validateInfos.contractCode" id="DeliverBillForm-contractCode" name="contractCode">
                 <a-input v-model:value="formData.contractCode" placeholder="请输入合同号" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row v-if="formData.dynamicCustFields && 0 < formData.dynamicCustFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicCustFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicCustFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicCustFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -105,9 +115,30 @@
                 />
               </a-form-item>
             </a-col>-->
-            <a-col :span="8">
+            <a-col :span="span">
+              <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
+                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <!--<a-col :span="8">
               <a-form-item label="备注" id="DeliverBillForm-remark" name="remark">
-                <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
+                <JDictSelectTag
+                  v-model:value="formData.remark"
+                  dictCode="jxc_quick_info,info"
+                  :showChooseOption="false"
+                />
+              </a-form-item>
+            </a-col>-->
+          </a-row>
+          <a-row v-if="formData.dynamicBillFields && 0 < formData.dynamicBillFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicBillFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicBillFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicBillFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -122,7 +153,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from "vue";
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
@@ -137,7 +168,7 @@
   import { billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { queryDefault } from '@/views/company/TenantCompany.api';
+  import { fieldsList } from '@/views/setting/system/index.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -164,8 +195,8 @@
     billNo: '',
     type: undefined,
     billDate: '',
-    companyId: '',
     companyName: '',
+    companyId: '',
     custName: '',
     custPhone: '',
     custContact: '',
@@ -187,6 +218,8 @@
     remark: '',
     delFlag: undefined,
     version: undefined,
+    dynamicCustFields: undefined,
+    dynamicBillFields: undefined,
     createName: userStore.getUserInfo.realname,
     operatorId: userStore.getUserInfo.id,
     operatorName: userStore.getUserInfo.realname,
@@ -218,7 +251,14 @@
     }
     return props.formDisabled;
   });
-
+  function init() {
+    fieldsList({ category: 1, match: '0' }).then((res) => {
+      debugger;
+      formData.dynamicCustFields = res['4'];
+      formData.dynamicBillFields = res['6'];
+    });
+  }
+  init();
   // 选择开单公司信息
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
@@ -370,6 +410,8 @@
     formData.createName = userStore.getUserInfo.realname;
     formData.operatorId = userStore.getUserInfo.id;
     formData.operatorName = userStore.getUserInfo.realname;
+    formData.dynamicCustFields = undefined;
+    formData.dynamicBillFields = undefined;
     goodsRef.value.setValue([]);
   }
   // 保存按钮点击事件
@@ -452,7 +494,7 @@
    * 初始化默认公司数据
    */
   // 默认开单公司
-  const defaultCompany =  queryDefault({});
+  const defaultCompany = userStore.getDefaultCompany;
   console.log(defaultCompany);
   if (defaultCompany) {
     debugger;

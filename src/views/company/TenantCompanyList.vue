@@ -65,7 +65,8 @@
       title: '公司管理',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
+      dynamicCols: userStore.getDynamicCols['sys_tenant_company'], // 添加扩展列信息
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {

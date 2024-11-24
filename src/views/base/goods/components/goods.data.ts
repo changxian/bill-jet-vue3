@@ -185,6 +185,12 @@ export function getGoodsColumns(billType){
       dataIndex: 'price',
     },
     {
+      title: '客户价',
+      align: 'center',
+      dataIndex: 'custPrice',
+      ifShow: billType === 'deliver',
+    },
+    {
       title: '库存',
       align: 'center',
       dataIndex: 'stock',
@@ -224,12 +230,6 @@ export function getGoodsColumns(billType){
       align: 'center',
       dataIndex: 'volume',
       ifShow: billSetting.showVolumeCol,
-    },
-    {
-      title: '客户价',
-      align: 'center',
-      dataIndex: 'custPrice',
-      ifShow: billType === 'deliver',
     },
     {
       title: '状态',

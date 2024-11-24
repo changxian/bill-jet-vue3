@@ -24,7 +24,6 @@
   import { defineComponent, ref, reactive, watchEffect, watch, provide } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { propTypes } from '/@/utils/propTypes';
-  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { SelectValue } from 'ant-design-vue/es/select';
   import { cloneDeep } from 'lodash-es';
@@ -54,7 +53,7 @@
       excludeUserIdList:{
         type: Array,
         default: () => [],
-      }
+      },
       //update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】5、离职人员可以选自己------------
     },
     emits: ['options-change', 'change', 'update:value'],

@@ -209,7 +209,8 @@
 
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
-    selectedGoods.forEach(item=>{
+    selectedGoods.forEach((item) => {
+      debugger;
       item.goodsId = item.id;
       item.goodsName = item.name;
       item.goodsCode = item.code;
@@ -220,6 +221,7 @@
       }
       item.amount = item.price;
       item.costAmount = item.cost;
+      item.dynamicFields = item.dynamicFields;
       item.count = 1;
     });
     if (goodsNameRepeat.value) {
@@ -270,6 +272,7 @@
       price: '',
       amount: '',
       costAmount: '',
+      dynamicFields: undefined,
       remark: '',
     };
     dataSource.value.push(row);
