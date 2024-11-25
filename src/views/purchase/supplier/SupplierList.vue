@@ -100,17 +100,17 @@
 </template>
 
 <script lang="ts" name="purchase.supplier-supplier" setup>
-import {reactive, ref} from 'vue';
-import {BasicTable, TableAction} from '/@/components/Table';
-import {useListPage} from '/@/hooks/system/useListPage';
-import {columns} from './Supplier.data';
-import {batchDelete, deleteOne, getExportUrl, getImportUrl, list} from './Supplier.api';
-import SupplierModal from './components/SupplierModal.vue'
-import {useUserStore} from '/@/store/modules/user';
-import {cloneDeep} from "lodash-es";
-import {JInput} from "@/components/Form";
+  import { reactive, ref } from 'vue';
+  import { BasicTable, TableAction } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns } from './Supplier.data';
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './Supplier.api';
+  import SupplierModal from './components/SupplierModal.vue';
+  import { useUserStore } from '/@/store/modules/user';
+  import { cloneDeep } from 'lodash-es';
+  import { JInput } from '@/components/Form';
 
-const formRef = ref();
+  const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
@@ -121,7 +121,7 @@ const formRef = ref();
       title: '供应商',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
       cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_supplier'], // 添加扩展列信息
       useSearchForm: false,

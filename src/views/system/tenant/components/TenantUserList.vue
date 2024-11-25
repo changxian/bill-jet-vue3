@@ -16,7 +16,7 @@ import { BasicModal, useModalInner } from '/@/components/Modal';
 import { BasicForm, useForm } from '/@/components/Form/index';
 import { userColumns, userSearchFormSchema } from "../tenant.data";
 import { getTenantUserList, leaveTenant } from "../tenant.api";
-import { useListPage } from "/@/hooks/system/useListPage";
+import { useListPage } from '/@/hooks/system/useListPage';
 import { BasicTable, TableAction } from '/@/components/Table';
 
 const tenantId = ref<number>(0);

@@ -59,7 +59,6 @@
                   <a-select-option value="3">已开</a-select-option>
                   <a-select-option value="4">无信息</a-select-option>
                   <a-select-option value="9">作废</a-select-option>
-
                 </a-select>
               </a-form-item>
             </a-col>
@@ -159,26 +158,26 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns,   detailColumns } from './PurchaseBill.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl,billDetail } from './PurchaseBill.api';
+  import { columns, detailColumns } from './PurchaseBill.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl, billDetail } from './PurchaseBill.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import PurchaseBillModal from './components/PurchaseBillModal.vue'
-  import ModifyModal from './components/ModifyModal.vue'
+  import PurchaseBillModal from './components/PurchaseBillModal.vue';
+  import ModifyModal from './components/ModifyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import RepayDetailDialog from "@/views/purchase/debt/components/RepayDetailDialog.vue";
-  import {JInput} from "@/components/Form";
-  import FastDate from "@/components/FastDate.vue";
-  import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
-  import {useRoute} from 'vue-router'
-   const route = useRoute();
-  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
-  if(route.query){
-    fastDateParam.startDate = route.query.startDate
-    fastDateParam.endDate = route.query.endDate
+  import RepayDetailDialog from '@/views/purchase/debt/components/RepayDetailDialog.vue';
+  import { JInput } from '@/components/Form';
+  import FastDate from '@/components/FastDate.vue';
+  import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import { useRoute } from 'vue-router';
+  const route = useRoute();
+  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  if (route.query) {
+    fastDateParam.startDate = route.query.startDate;
+    fastDateParam.endDate = route.query.endDate;
   }
   const { createMessage, createConfirm } = useMessage();
-  const repayDetailDialogRef = ref()
+  const repayDetailDialogRef = ref();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -199,7 +198,8 @@
       title: '进货开单',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       useSearchForm: false,
       clickToRowSelect: true,
       actionColumn: {
@@ -227,10 +227,10 @@
         });
       },
 
-      rowSelection: { type: 'radio'}, 
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: "进货开单",
+      name: '进货开单',
       url: getExportUrl,
       params: queryParam,
     },
@@ -241,10 +241,10 @@
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   function handleDel() {
       if(selectedRowKeys.value.length === 0){
@@ -254,15 +254,14 @@
   }
   function summaryFunc(resultItems)  {
     return [{
-      _row:"合计",
-      _index:"合计",
+      _row:'合计',
+      _index:'合计',
       count:totalCount.value,
       amount:totalAmount.value,
       paymentAmount:totalPaymentAmount.value,
       discountAmount:totalDiscountAmount.value,
       debtAmount:totalDebtAmount.value,
     }]
-
   }
   function handleModify(type) {
       if(selectedRowKeys.value.length === 0){
@@ -290,21 +289,21 @@
     searchQuery();
   }
   function debtDetailHandle() {
-    if(selectedRows.value.length === 0) {
-      repayDetailDialogRef.value.show()
-    }else{
-      repayDetailDialogRef.value.show()
+    if (selectedRows.value.length === 0) {
+      repayDetailDialogRef.value.show();
+    } else {
+      repayDetailDialogRef.value.show();
     }
   }
   /**
    * 新增事件
    */
   function handleAdd() {
-    if(selectedRowKeys.value.length === 0){
-        return createMessage.warning('请先选择数据');
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
     }
     registerModal.value.disableSubmit = false;
-    const row = selectedRows.value[0]
+    const row = selectedRows.value[0];
     registerModal.value.copyAdd(row);
   }
   

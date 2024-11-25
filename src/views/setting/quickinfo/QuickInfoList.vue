@@ -4,6 +4,20 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <a-col :lg="6">
+            <a-form-item name="info">
+              <template #label><span title="内容">内容</span></template>
+              <j-input placeholder="请输入内容" v-model:value="queryParam.info" allow-clear></j-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -11,10 +25,8 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'company:sys_tenant_company:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" v-auth="'company:sys_tenant_company:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'company:sys_tenant_company:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-        <!--<a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button type="primary" v-auth="'quickInfo:jxc_quickInfo:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -23,72 +35,71 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button v-auth="'company:sys_tenant_company:deleteBatch'">批量操作
+          <a-button v-auth="'quickInfo:jxc_quickInfo:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
-        </a-dropdown>-->
-        <!-- 高级查询
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
-        -->
+        </a-dropdown>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-      </template>
-      <template v-slot:bodyCell="{ column, record, index, text }">
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <TenantCompanyModal ref="registerModal" @success="handleSuccess"></TenantCompanyModal>
+    <QuickInfoModal @register="registerModal" @success="handleSuccess"></QuickInfoModal>
   </div>
 </template>
 
-<script lang="ts" name="company-tenantCompany" setup>
-  import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+<script lang="ts" name="setting.quickInfo" setup>
+  import { computed, reactive, ref, unref, watch } from 'vue';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns } from './TenantCompany.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './TenantCompany.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
-  import TenantCompanyModal from './components/TenantCompanyModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import { cloneDeep } from 'lodash-es';
+  import { columns } from './QuickInfo.data';
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './QuickInfo.api';
+  import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
+  import QuickInfoModal from './components/QuickInfoModal.vue';
+  import { useModal } from '@/components/Modal';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
-  const registerModal = ref();
-  const userStore = useUserStore();
+  const [registerModal, { openModal }] = useModal();
+
+  const props = defineProps({
+    data: {
+      type: Object,
+      required: true,
+      defaultValue: () => {},
+    },
+  });
+
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '公司管理',
+      title: '快捷信息',
       api: list,
       columns,
       canResize: false,
-      dynamicCols: userStore.getDynamicCols['sys_tenant_company'], // 添加扩展列信息
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 120,
+        width: 180,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        let rangerQuery = await setRangeQuery();
-        return Object.assign(params, rangerQuery);
+        return Object.assign(params, queryParam);
       },
     },
     exportConfig: {
-      name: '公司管理',
+      name: '快捷信息',
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess
-	  },
+    importConfig: {
+      url: getImportUrl,
+      success: handleSuccess,
+    },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -100,64 +111,59 @@
     sm: 20,
   });
 
-  // 高级查询配置
-  // const superQueryConfig = reactive(superQuerySchema);
-
-  /**
-   * 高级查询事件
-   */
-  // function handleSuperQuery(params) {
-  //   Object.keys(params).map((k) => {
-  //     queryParam[k] = params[k];
-  //   });
-  //   searchQuery();
-  // }
+  watch(
+    () => props.data,
+    () => reload()
+  );
 
   /**
    * 新增事件
    */
   function handleAdd() {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.add();
+    openModal(true, {
+      isUpdate: false,
+      showFooter: true,
+    });
   }
-  
   /**
    * 编辑事件
    */
   function handleEdit(record: Recordable) {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: true,
+    });
   }
-   
   /**
    * 详情
    */
   function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
+    openModal(true, {
+      record,
+      isUpdate: true,
+      showFooter: false,
+    });
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
   /**
    * 操作栏
    */
@@ -166,11 +172,23 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'company:sys_tenant_company:edit'
+        auth: 'quickInfo:jxc_quickInfo:edit',
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+          placement: 'topLeft',
+        },
+        auth: 'quickInfo:jxc_quickInfo:delete',
       },
     ];
   }
-   
   /**
    * 下拉操作栏
    */
@@ -179,16 +197,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'company:sys_tenant_company:delete'
-      }
-    ]
+        auth: 'quickInfo:jxc_quickInfo:delete',
+      },
+    ];
   }
 
   /**
@@ -197,7 +216,6 @@
   function searchQuery() {
     reload();
   }
-  
   /**
    * 重置
    */
@@ -206,34 +224,6 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
-  }
-  
-
-
-
-  
-  let rangeField = ''
-  
-  /**
-   * 设置范围查询条件
-   */
-  async function setRangeQuery(){
-    let queryParamClone = cloneDeep(queryParam);
-    if (rangeField) {
-      let fieldsValue = rangeField.split(',');
-      fieldsValue.forEach(item => {
-        if (queryParamClone[item]) {
-          let range = queryParamClone[item];
-          queryParamClone[item+'_begin'] = range[0];
-          queryParamClone[item+'_end'] = range[1];
-          delete queryParamClone[item];
-        } else {
-          queryParamClone[item+'_begin'] = '';
-          queryParamClone[item+'_end'] = '';
-        }
-      })
-    }
-    return queryParamClone;
   }
 </script>
 
@@ -251,7 +241,7 @@
     .query-group-split-cust{
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
     .ant-form-item:not(.ant-form-item-with-help){
       margin-bottom: 16px;

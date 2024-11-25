@@ -14,7 +14,7 @@
           <a-row>
 						<a-col :span="12">
 							<a-form-item label="打印份数" v-bind="validateInfos.num" id="PrintSettingForm-num" name="num">
-								<j-dict-select-tag v-model:value="formData.num" dictCode="" placeholder="请选择打印份数" />
+								<j-dict-select-tag v-model:value="formData.num" dictCode="" :options="numOptions" placeholder="请选择打印份数" />
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -144,20 +144,25 @@
   const validatorRules = reactive({
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
-
+  const numOptions = ref([
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 5, label: '5' },
+    { value: 10, label: '10' },
+  ]);
+  // 给开单类型设置默认值
+  if (formData.num == undefined && numOptions.value.length > 0) {
+    formData.num = numOptions.value[0].value;
+  }
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */
