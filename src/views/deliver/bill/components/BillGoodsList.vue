@@ -210,7 +210,6 @@
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach((item) => {
-      debugger;
       item.goodsId = item.id;
       item.goodsName = item.name;
       item.goodsCode = item.code;

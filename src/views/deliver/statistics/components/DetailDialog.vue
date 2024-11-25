@@ -174,7 +174,6 @@
 
   // 加载系统开单设置
   getMyBillSetting().then((res) => {
-    debugger;
     showWeightCol.value = !!res.showWeightCol;
     showAreaCol.value = !!res.showAreaCol;
     showVolumeCol.value = !!res.showVolumeCol;

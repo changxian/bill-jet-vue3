@@ -253,7 +253,6 @@
   });
   function init() {
     fieldsList({ category: 1, match: '0' }).then((res) => {
-      debugger;
       formData.dynamicCustFields = res['4'];
       formData.dynamicBillFields = res['6'];
     });
@@ -497,7 +496,6 @@
   const defaultCompany = userStore.getDefaultCompany;
   console.log(defaultCompany);
   if (defaultCompany) {
-    debugger;
     if (formData.companyId == '') {
       formData.companyId = defaultCompany.id;
       formData.companyName = defaultCompany.compName;

@@ -208,7 +208,6 @@
 
   // 计算商品面积和体积
   function computeAreaVolume() {
-    debugger;
     // 计算面积
     if (billSetting.autoComputeArea) {
       formData.area = (formData.length * formData.width).toFixed(billSetting.decimalPlaces);
