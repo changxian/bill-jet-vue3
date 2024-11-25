@@ -61,7 +61,9 @@
   import { useSelectBiz } from '/@/components/Form/src/jeecg/hooks/useSelectBiz';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { selectProps } from '/@/components/Form/src/jeecg/props/props';
-
+  import { addDynamicCols } from '/@/hooks/system/useListPage';
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore(); 
   export default defineComponent({
     name: 'CompanySelectModal',
     components: {
@@ -165,8 +167,9 @@
           },
         ],
       };
+      const dynamicCols= userStore.getDynamicCols['sys_tenant_company']  // 添加扩展列信息
       //定义表格列
-      const columns = [
+      const columns =addDynamicCols( [
         {
           title: '公司名',
           dataIndex: 'compName',
@@ -198,7 +201,7 @@
           dataIndex: 'webSite',
            width: 200,
         }
-      ];
+      ],dynamicCols);
       //已选择的table信息
       const selectedTable = {
         pagination: false,

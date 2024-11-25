@@ -45,7 +45,52 @@ interface IDoRequestOptions {
   // 是否自动清空选择，默认 true
   clearSelection?: boolean;
 }
+export  function addDynamicCols(oriColumns,dynamicCols){
+  let dynamicColumns=[];
+  if(!dynamicCols){
+    dynamicCols=[];
+  }
+  if(!oriColumns){
+    oriColumns=[];
+  }
+  function find(arr: any, dataIndex: any) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]['key'] == dataIndex) {
+        return arr[i]['value'];
+      }
+    }
+    return null;
+  }
+  if (dynamicCols && 0<dynamicCols.length && 0 < dynamicCols.length &&  oriColumns) {
+    for (let i = 0; i < dynamicCols.length; i++) {
+      const dynamicCol = dynamicCols[i];
+      const fieldName = dynamicCol.fieldName;
+      if (!dynamicCol.fieldTitle || null != find(oriColumns, fieldName)) {
+        continue;
+      }
+      const col = {
+        title: dynamicCol.fieldTitle,
+        align: 'center',
+        key: fieldName,
+        value: fieldName,
+        dataIndex: fieldName,
+        slots: { customRender: fieldName },
+        customRender: ({ text ,record}) => {
+          if(!record){
+            return "";
+          }
+          if(!record.dynamicField){
+            return "";
+          }
+          return record?.dynamicField[fieldName];
+        },
+      };
+      dynamicColumns.push(col);
+    }
+  }
+ return  [...oriColumns, ...dynamicColumns];
 
+}
 /**
  * listPage页面公共方法
  *
@@ -306,33 +351,34 @@ export function useListTable(tableProps: TableProps): [
 
     // 列添加列扩展
     const dynamicCols = tableProps.dynamicCols;
-    if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
-      for (let i = 0; i < dynamicCols.length; i++) {
-        const dynamicCol = dynamicCols[i];
-        const fieldName = dynamicCol.fieldName;
-        if (!dynamicCol.fieldTitle || null != find(tableProps.columns, fieldName)) {
-          continue;
-        }
-        const col = {
-          title: dynamicCol.fieldTitle,
-          align: 'center',
-          key: fieldName,
-          value: fieldName,
-          dataIndex: fieldName,
-          slots: { customRender: fieldName },
-          customRender: ({ text ,record}) => {
-            if(!record){
-              return "";
-            }
-            if(!record.dynamicField){
-              return "";
-            }
-            return record?.dynamicField[fieldName];
-          },
-        };
-        tableProps.columns.push(col);
-      }
-    }
+    tableProps.columns=addDynamicCols(tableProps.columns,dynamicCols);
+    // if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
+    //   for (let i = 0; i < dynamicCols.length; i++) {
+    //     const dynamicCol = dynamicCols[i];
+    //     const fieldName = dynamicCol.fieldName;
+    //     if (!dynamicCol.fieldTitle || null != find(tableProps.columns, fieldName)) {
+    //       continue;
+    //     }
+    //     const col = {
+    //       title: dynamicCol.fieldTitle,
+    //       align: 'center',
+    //       key: fieldName,
+    //       value: fieldName,
+    //       dataIndex: fieldName,
+    //       slots: { customRender: fieldName },
+    //       customRender: ({ text ,record}) => {
+    //         if(!record){
+    //           return "";
+    //         }
+    //         if(!record.dynamicField){
+    //           return "";
+    //         }
+    //         return record?.dynamicField[fieldName];
+    //       },
+    //     };
+    //     tableProps.columns.push(col);
+    //   }
+    // }
     //update-end---author:wangshuai---date:2024-04-28---for:【issues/6180】前端代码配置表变查询条件显示列不生效---
     // merge 方法可深度合并对象
     merge(defaultTableProps, tableProps);
