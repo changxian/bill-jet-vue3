@@ -11,7 +11,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:edit-outlined"> 修改</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
