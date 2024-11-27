@@ -8,43 +8,42 @@ const areaColTitle = ref('');
 const volumeColTitle = ref('');
 if(billSetting.dynaFieldsGroup['1']){
     billSetting.dynaFieldsGroup['1'].forEach((item) => {
-  // 重量小计
-  if (item.fieldName === 'weightSubtotal') {
-    weightColTitle.value = item.fieldTitle;
-  }
-  // 面积小计
-  if (item.fieldName === 'areaSubtotal') {
-    areaColTitle.value = item.fieldTitle;
-  }
-  // 体积小计
-  if (item.fieldName === 'volumeSubtotal') {
-    volumeColTitle.value = item.fieldTitle;
-  }
-});
+      // 重量小计
+      if (item.fieldName === 'weightSubtotal') {
+        weightColTitle.value = item.fieldTitle;
+      }
+      // 面积小计
+      if (item.fieldName === 'areaSubtotal') {
+        areaColTitle.value = item.fieldTitle;
+      }
+      // 体积小计
+      if (item.fieldName === 'volumeSubtotal') {
+        volumeColTitle.value = item.fieldTitle;
+      }
+    });
 }
-
 const numCountCol = {
   title: '数量统计',
   align: "center",
   dataIndex: 'countSubtotal'
 }
 const weightCol = {
-  title: '重量合计(' + weightColTitle.value + ')',
+  title: '重量合计'+(weightColTitle.value?('(' + weightColTitle.value + ')'):''),
   align: 'center',
   dataIndex: 'weightSubtotal',
-  ifShow: billSetting.showWeightCol,
+  ifShow: billSetting.showWeightCol || true,
 };
 const areaCol = {
-  title: '面积合计(' + areaColTitle.value + ')',
+  title: '面积合计'+(areaColTitle.value?('(' + areaColTitle.value + ')'):''),
   align: 'center',
   dataIndex: 'areaSubtotal',
-  ifShow: billSetting.showAreaCol,
+  ifShow: billSetting.showAreaCol || false,
 };
 const volumeCol = {
-  title: '体积合计(' + volumeColTitle.value + ')',
+  title: '体积合计'+(volumeColTitle.value?('(' + volumeColTitle.value + ')'):''),
   align: 'center',
   dataIndex: 'volumeSubtotal',
-  ifShow: billSetting.showVolumeCol,
+  ifShow: billSetting.showVolumeCol || false,
 };
 const amountCol = {
   title: '金额统计',

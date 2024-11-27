@@ -78,13 +78,13 @@
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}">总计
         <span class="total_span">数量：{{ countSubtotal }}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{
             weightSubtotal
           }}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{
             areaSubtotal
           }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{
             volumeSubtotal
           }}</span>
         <span class="total_span">金额：{{ amountSubtotal }}</span>
@@ -151,6 +151,7 @@ const columnObj = {
 
 function getColumns() {
   columns.value =columnObj[queryParam.queryType];
+  debugger
   return  columns.value;
 }
 // 加载系统开单设置
@@ -191,7 +192,7 @@ const toggleSearchStatus = ref<boolean>(false);
 //注册table数据
 const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
   tableProps: {
-    title: '进货开单',
+    title: '进货统计',
     api: list,
     // columns: typeCountColumns,
     canResize: false,

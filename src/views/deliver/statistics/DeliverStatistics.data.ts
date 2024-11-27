@@ -38,19 +38,19 @@ const weightCol = {
   title: '重量合计(' + weightColTitle.value + ')',
   align: 'center',
   dataIndex: 'weightSubtotal',
-  ifShow: billSetting.showWeightCol,
+  ifShow: billSetting.showWeightCol || false,
 };
 const areaCol = {
   title: '面积合计(' + areaColTitle.value + ')',
   align: 'center',
   dataIndex: 'areaSubtotal',
-  ifShow: billSetting.showAreaCol,
+  ifShow: billSetting.showAreaCol || false,
 };
 const volumeCol = {
   title: '体积合计(' + volumeColTitle.value + ')',
   align: 'center',
   dataIndex: 'volumeSubtotal',
-  ifShow: billSetting.showVolumeCol,
+  ifShow: billSetting.showVolumeCol || false,
 };
 const costAmountCol = {
   title: '成本合计',

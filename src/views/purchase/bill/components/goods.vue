@@ -123,7 +123,7 @@ const columns: BasicColumn[] = [
     editable: false,
     edit: true,
     editComponent: 'InputNumber',
-    ifShow: billSetting.showWeightCol
+    ifShow: billSetting.showWeightCol || false
   },{
     title: '面积',
     align: 'center',
@@ -131,7 +131,7 @@ const columns: BasicColumn[] = [
     editable: false,
     edit: true,
     editComponent: 'InputNumber',
-    ifShow: billSetting.showAreaCol
+    ifShow: billSetting.showAreaCol || false
   }, {
     title: '体积',
     align: 'center',
@@ -139,7 +139,7 @@ const columns: BasicColumn[] = [
     editable: false,
     edit: true,
     editComponent: 'InputNumber',
-    ifShow: billSetting.showVolumeCol
+    ifShow: billSetting.showVolumeCol || false
   },
   {
     title: '进货价',

@@ -279,7 +279,6 @@
   function updateWeightParams() {
     formData.value.showWeightCol = !!formData.value.showWeightCol;
     formData.value.showTotalWeight = formData.value.showWeightCol;
-    console.log('显示重量列:', formData.value.showWeightCol, formData.value.showTotalWeight);
   }
   // 设置面积参数
   function updateAreaParams() {
@@ -287,7 +286,6 @@
     formData.value.showTotalArea = formData.value.showAreaCol;
     formData.value.showLengthWidthCol = formData.value.showAreaCol;
     formData.value.autoComputeArea = formData.value.showAreaCol;
-    console.log('显示面积列:', formData.value.showAreaCol, formData.value.showTotalArea, formData.value.showLengthWidthCol, formData.value.autoComputeArea);
   }
   // 设置体积参数
   function updateVolumeParams() {
@@ -295,7 +293,6 @@
     formData.value.showTotalVolume = formData.value.showVolumeCol;
     formData.value.showLengthWidthHeightCol = formData.value.showVolumeCol;
     formData.value.autoComputeVolume = formData.value.showVolumeCol;
-    console.log('显示体积列', formData.value.showVolumeCol, formData.value.showTotalVolume, formData.value.showLengthWidthHeightCol, formData.value.autoComputeVolume);
   }
   /**
    * 新增

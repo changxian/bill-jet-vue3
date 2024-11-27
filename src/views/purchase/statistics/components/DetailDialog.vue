@@ -67,9 +67,9 @@
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">
           <p :class="{'p_san': hasPan}" >总计
             <span class="total_span">数量：{{ countTotal }}</span>
-            <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
-            <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
-            <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
+            <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+            <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+            <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
             <span class="total_span">金额：{{ amountTotal }}</span>
           </p>
         </div>
