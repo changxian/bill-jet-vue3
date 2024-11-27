@@ -6,6 +6,7 @@
     <a-form-item>
       <UserSelectModal
         :rowKey="rowKey"
+        isRadioSelection
         @register="regModal"
         @getSelectResult="setValue"
         v-bind="getBindValue"
@@ -53,7 +54,7 @@
       excludeUserIdList:{
         type: Array,
         default: () => [],
-      }
+      },
       //update-end---author:wangshuai ---date:20230703  for：【QQYUN-5685】5、离职人员可以选自己------------
     },
     emits: ['options-change', 'change', 'update:value'],
@@ -148,12 +149,12 @@
       /**
        * 设置下拉框的值
        */
-      function setValue(options, values) {
+      function setValue(options, values, rowSelection) {
         selectOptions.value = options;
         //emitData.value = values.join(",");
         // state.value = values;
         selectValues.value = values;
-        send(values);
+        send(values, rowSelection);
       }
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       // update-begin--author:liaozhiyang---date:20240517---for：【QQYUN-9366】用户选择组件取消和关闭会把选择数据带入
@@ -168,10 +169,10 @@
         tempSave = cloneDeep(values);
         send(tempSave);
       };
-      const send = (values) => {
+      const send = (values, rowSelection=[]) => {
         let result = typeof props.value == "string" ? values.join(',') : values;
         emit('update:value', result);
-        emit('change', result);
+        emit('change', result, rowSelection);
       };
       // update-end--author:liaozhiyang---date:20240517---for：【QQYUN-9366】用户选择组件取消和关闭会把选择数据带入
       return {

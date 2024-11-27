@@ -351,7 +351,7 @@ export function useListTable(tableProps: TableProps): [
 
     // 列添加列扩展
     const dynamicCols = tableProps.dynamicCols;
-    if (dynamicCols && 0<dynamicCols.length && 0 < dynamicCols.length &&  oriColumns) {
+    if (dynamicCols && 0<dynamicCols.length && 0 < dynamicCols.length ) { //&&  oriColumns
       tableProps.columns=addDynamicCols(tableProps.columns,dynamicCols);
     }
     // if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {

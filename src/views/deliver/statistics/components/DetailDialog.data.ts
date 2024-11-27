@@ -6,20 +6,22 @@ const billSetting = userStore.getBillSetting;
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
-billSetting.dynaFieldsGroup['1'].forEach((item) => {
-  // 重量小计
-  if (item.fieldName === 'weightSubtotal') {
-    weightColTitle.value = item.fieldTitle;
-  }
-  // 面积小计
-  if (item.fieldName === 'areaSubtotal') {
-    areaColTitle.value = item.fieldTitle;
-  }
-  // 体积小计
-  if (item.fieldName === 'volumeSubtotal') {
-    volumeColTitle.value = item.fieldTitle;
-  }
-});
+if (billSetting.dynaFieldsGroup['1']) {
+  billSetting.dynaFieldsGroup['1'].forEach((item) => {
+    // 重量小计
+    if (item.fieldName === 'weightSubtotal') {
+      weightColTitle.value = item.fieldTitle;
+    }
+    // 面积小计
+    if (item.fieldName === 'areaSubtotal') {
+      areaColTitle.value = item.fieldTitle;
+    }
+    // 体积小计
+    if (item.fieldName === 'volumeSubtotal') {
+      volumeColTitle.value = item.fieldTitle;
+    }
+  });
+}
 
 export const custCol = {
   title: '客户',

@@ -266,7 +266,7 @@
       formData.companyName = selectRows[0].compName;
     }
   }
-  // 选择业务员信息【返回的val数据是username，不是ID值】
+  // 选择业务员信息
   function changeUser(val, selectRows) {
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
@@ -278,7 +278,6 @@
   const customerId = ref<string>('');
   // 选择开单客户
   function changeCustomer(val, selectRows) {
-    debugger;
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       formData.custId = selectRows[0].id;
@@ -373,6 +372,10 @@
     }
     if (!formData.companyId) {
       createMessage.warning('请选择公司');
+      return false;
+    }
+    if (!formData.billDate) {
+      createMessage.warning('请选择开单日期');
       return false;
     }
     const goods = goodsRef.value.getData().details;

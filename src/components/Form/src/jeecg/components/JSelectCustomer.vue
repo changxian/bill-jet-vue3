@@ -1,6 +1,6 @@
 <!--公司选择组件-->
 <template>
-  <div class="JselectUser">
+  <div class="JselectCustomer">
     <JSelectBiz @change="handleSelectChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
     <a-form-item>
       <CustomerSelectModal
@@ -9,7 +9,7 @@
         @register="regModal"
         @getSelectResult="setValue"
         v-bind="getBindValue"
-        :excludeUserIdList="excludeUserIdList"
+        :excludeUserIdList="excludeCustomerIdList"
         @close="handleClose"
       />
     </a-form-item>
@@ -48,7 +48,7 @@
         default: () => {},
       },
       //排除用户id的集合
-      excludeUserIdList:{
+      excludeCustomerIdList:{
         type: Array,
         default: () => [],
       },
@@ -101,13 +101,13 @@
       //   }
       // });
 
-      const excludeUserIdList = ref<any>([]);
+      const excludeCustomerIdList = ref<any>([]);
       
       /**
        * 需要监听一下excludeUserIdList，否则modal获取不到
        */
-      watch(()=>props.excludeUserIdList,(data)=>{
-        excludeUserIdList.value = data;
+      watch(()=>props.excludeCustomerIdList,(data)=>{
+        excludeCustomerIdList.value = data;
       },{ immediate: true });
       
       /**
@@ -175,7 +175,7 @@
         regModal,
         setValue,
         handleOpen,
-        excludeUserIdList,
+        excludeCustomerIdList,
         handleClose,
         handleSelectChange,
       };
@@ -184,7 +184,7 @@
 </script>
 <style lang="less" scoped>
   // update-begin--author:liaozhiyang---date:20240515---for：【QQYUN-9260】必填模式下会影响到弹窗内antd组件的样式
-  .JselectUser {
+  .JselectCustomer {
     > .ant-form-item {
       display: none;
     }
