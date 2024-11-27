@@ -175,21 +175,23 @@
     if (res.decimalPlaces === 0 || res.decimalPlaces) {
       decimalPlaces.value = res.decimalPlaces;
     }
-    // 循环数据
-    res.dynaFieldsGroup['1'].forEach((item) => {
-      // 重量小计
-      if (item.fieldName === 'weightSubtotal') {
-        weightColTitle.value = item.fieldTitle;
-      }
-      // 面积小计
-      if (item.fieldName === 'areaSubtotal') {
-        areaColTitle.value = item.fieldTitle;
-      }
-      // 体积小计
-      if (item.fieldName === 'volumeSubtotal') {
-        volumeColTitle.value = item.fieldTitle;
-      }
-    });
+    if(res.dynaFieldsGroup['1']){
+        // 循环数据
+        res.dynaFieldsGroup['1'].forEach((item) => {
+          // 重量小计
+          if (item.fieldName === 'weightSubtotal') {
+            weightColTitle.value = item.fieldTitle;
+          }
+          // 面积小计
+          if (item.fieldName === 'areaSubtotal') {
+            areaColTitle.value = item.fieldTitle;
+          }
+          // 体积小计
+          if (item.fieldName === 'volumeSubtotal') {
+            volumeColTitle.value = item.fieldTitle;
+          }
+        });
+    }
   });
   /**
    * 查询
