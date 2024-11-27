@@ -6,7 +6,8 @@ const billSetting = userStore.getBillSetting;
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
-billSetting.dynaFieldsGroup['1'].forEach((item) => {
+if(billSetting.dynaFieldsGroup['1']){
+    billSetting.dynaFieldsGroup['1'].forEach((item) => {
   // 重量小计
   if (item.fieldName === 'weightSubtotal') {
     weightColTitle.value = item.fieldTitle;
@@ -20,6 +21,8 @@ billSetting.dynaFieldsGroup['1'].forEach((item) => {
     volumeColTitle.value = item.fieldTitle;
   }
 });
+}
+
 const numCountCol = {
   title: '数量统计',
   align: "center",
