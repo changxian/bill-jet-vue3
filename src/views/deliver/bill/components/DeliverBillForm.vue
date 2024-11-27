@@ -130,15 +130,15 @@
               </a-form-item>
             </a-col>-->
           </a-row>
-          <a-row v-if="formData.dynamicBillFields && 0 < formData.dynamicBillFields.length" :gutter="10">
-            <a-col v-for="(item, index) in formData.dynamicBillFields" :key="item.id" :span="span">
+          <a-row v-if="formData.dynamicFields && 0 < formData.dynamicFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicFields" :key="item.id" :span="span">
               <a-form-item
                 v-if="item.fieldTitle"
                 :label="item.fieldTitle"
                 :id="'GoodsForm-' + item.fieldName"
-                :name="'dynamicBillFields.' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
               >
-                <a-input v-model:value="formData.dynamicBillFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -219,7 +219,7 @@
     delFlag: undefined,
     version: undefined,
     dynamicCustFields: undefined,
-    dynamicBillFields: undefined,
+    dynamicFields: undefined,
     createName: userStore.getUserInfo.realname,
     operatorId: userStore.getUserInfo.id,
     operatorName: userStore.getUserInfo.realname,
@@ -254,7 +254,7 @@
   function init() {
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicCustFields = res['4'];
-      formData.dynamicBillFields = res['6'];
+      formData.dynamicFields = res['6'];
     });
   }
   init();
@@ -278,6 +278,7 @@
   const customerId = ref<string>('');
   // 选择开单客户
   function changeCustomer(val, selectRows) {
+    debugger;
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       formData.custId = selectRows[0].id;
@@ -285,6 +286,7 @@
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
+      formData.dynamicCustFields = selectRows[0].dynamicFields;
       customerId.value = selectRows[0].id;
       console.log(' customerId val', customerId.value);
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
@@ -383,7 +385,6 @@
   // 重置表单
   function resetForm() {
     formData.id = '';
-    formData.type = undefined;
     formData.billNo = '';
     formData.billDate = '';
     formData.companyName = '';
@@ -405,12 +406,13 @@
     formData.careNo = '';
     formData.contractCode = '';
     formData.remark = '';
+    formData.userId = '';
     formData.userName = '';
     formData.createName = userStore.getUserInfo.realname;
     formData.operatorId = userStore.getUserInfo.id;
     formData.operatorName = userStore.getUserInfo.realname;
     formData.dynamicCustFields = undefined;
-    formData.dynamicBillFields = undefined;
+    formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
   }
   // 保存按钮点击事件

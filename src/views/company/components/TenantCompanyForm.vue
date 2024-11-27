@@ -70,7 +70,7 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
   import { defHttp } from '/@/utils/http/axios';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import JCheckbox from "/@/components/Form/src/jeecg/components/JCheckbox.vue";
+  import JCheckbox from '/@/components/Form/src/jeecg/components/JCheckbox.vue';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../TenantCompany.api';
   import { Form } from 'ant-design-vue';
@@ -131,9 +131,9 @@
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
         if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
