@@ -13,7 +13,6 @@
       :centered="true"
       destroyOnClose
       @visible-change="visibleChange"
-      
     >
       <a-row>
         <a-col :span="showSelected ? 18 : 24">
@@ -212,6 +211,7 @@
           {
             title: '用户姓名',
             dataIndex: 'realname',
+            align: 'center',
             width: 40,
           },
           {
@@ -227,9 +227,9 @@
        * 确定选择
        */
       function handleOk() {
-        getSelectResult((options, values) => {
+        getSelectResult((options, values, selectRows) => {
           //回传选项和已选择的值
-          emit('getSelectResult', options, values);
+          emit('getSelectResult', options, values, selectRows);
           //关闭弹窗
           closeModal();
         });

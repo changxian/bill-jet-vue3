@@ -66,8 +66,8 @@
               <a-form-item label="类型" name="type">
                 <a-select v-model:value="queryParam.type" allow-clear>
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="1">进货还款</a-select-option>
-                  <a-select-option value="2">退货还款</a-select-option>
+                  <a-select-option value="1">进货开单</a-select-option>
+                  <a-select-option value="2">退货开单</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>

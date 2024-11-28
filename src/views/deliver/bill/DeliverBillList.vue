@@ -4,6 +4,95 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <FastDate v-model:modelValue="fastDateParam" />
+          <a-col :lg="4">
+            <a-form-item label="状态" name="status">
+              <a-select v-model:value="queryParam.status" allow-clear>
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="1">未打印</a-select-option>
+                <a-select-option value="2">已打印</a-select-option>
+                <a-select-option value="3">签回</a-select-option>
+                <a-select-option value="4">过账</a-select-option>
+                <a-select-option value="5">审核</a-select-option>
+                <a-select-option value="6">已开票</a-select-option>
+                <a-select-option value="9">作废</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :lg="4">
+              <a-form-item label="欠款" name="hasDebt">
+                <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
+                  <a-radio value="">所有</a-radio>
+                  <a-radio value="1">是</a-radio>
+                  <a-radio value="0">否</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="4">
+              <a-form-item label="开票" name="invoiceStatus">
+                <a-select v-model:value="queryParam.invoiceStatus" allow-clear>
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="1">未开</a-select-option>
+                  <a-select-option value="2">不开</a-select-option>
+                  <a-select-option value="3">已开</a-select-option>
+                  <a-select-option value="4">无信息</a-select-option>
+                  <a-select-option value="9">作废</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="5">
+              <a-form-item label="单类型" name="type">
+                <a-select v-model:value="queryParam.type" allow-clear>
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option value="3">送货开单</a-select-option>
+                  <a-select-option value="2">退货开单</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="公司" name="companyId">
+                <j-select-company v-model:value="queryParam.companyId" class="query-group-cust" @change="changeCompany" allow-clear />
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="客户" name="custId">
+                <j-select-customer v-model:value="queryParam.custId" class="query-group-cust" @change="changeCustomer" allow-clear />
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item label="业务员" v-bind="queryParam.realname" name="realname">
+                <j-select-user v-model:value="queryParam.realname" @change="changeUser" allow-clear />
+              </a-form-item>
+            </a-col>
+            <a-col :lg="5">
+              <a-form-item name="billNo" label="单号">
+                <JInput v-model:value="queryParam.billNo" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="5">
+              <a-form-item name="custContact" label="联系人">
+                <JInput v-model:value="queryParam.custContact" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="5">
+              <a-form-item name="operatorName" label="制单员">
+                <JInput v-model:value="queryParam.operatorName" class="query-group-cust" allow-clear></JInput>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>
+              </a-col>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -84,6 +173,11 @@
   import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   import { useRoute } from 'vue-router';
+  import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
+  import { JInput } from "@/components/Form";
+  import FastDate from "@/components/FastDate.vue";
+  import JSelectCustomer from "@/components/Form/src/jeecg/components/JSelectCustomer.vue";
+  import JSelectUser from "@/components/Form/src/jeecg/components/JSelectUser.vue";
   const route = useRoute();
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   if (route.query) {
@@ -150,7 +244,7 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
-        return Object.assign(params, queryParam);
+        return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
@@ -351,6 +445,32 @@
         auth: 'deliver.bill:jxc_deliver_bill:delete',
       },
     ];
+  }
+  // 选择开单公司信息
+  function changeCompany(val, selectRows) {
+    console.log(' changeCompany val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      queryParam.companyId = selectRows[0].id;
+      queryParam.companyName = selectRows[0].compName;
+    }
+  }
+  // 选择客户
+  function changeCustomer(val, selectRows) {
+    debugger;
+    console.log(' changeCustomer val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      queryParam.custId = selectRows[0].id;
+      queryParam.custName = selectRows[0].orgName;
+    }
+  }
+  // 选择业务员信息【返回的val数据是username，不是ID值】
+  function changeUser(val, selectRows) {
+    debugger;
+    console.log(' changeUser val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      queryParam.userId = selectRows[0].id;
+      queryParam.realname = selectRows[0].realname;
+    }
   }
 
   /**

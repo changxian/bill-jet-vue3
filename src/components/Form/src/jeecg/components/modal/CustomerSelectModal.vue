@@ -39,7 +39,7 @@
 <script lang="ts">
 import {defineComponent, unref, ref, watch} from 'vue';
 import {BasicModal, useModalInner} from '/@/components/Modal';
-import {getUserList, getCustomerList} from '/@/api/common/api';
+import {getCustomerList} from '/@/api/common/api';
 import {createAsyncComponent} from '/@/utils/factory/createAsyncComponent';
 import {useSelectBiz} from '/@/components/Form/src/jeecg/hooks/useSelectBiz';
 import {useAttrs} from '/@/hooks/core/useAttrs';
@@ -66,7 +66,7 @@ export default defineComponent({
       default: '选择客户',
     },
     //排除用户id的集合
-    excludeUserIdList: {
+    excludeCustomerIdList: {
       type: Array,
       default: [],
     },
@@ -220,8 +220,8 @@ export default defineComponent({
       rowKey: 'id',
       columns: [
         {
-          title: '用户姓名',
-          dataIndex: 'realname',
+          title: '客户名',
+          dataIndex: 'orgName',
           width: 40,
         },
         {
@@ -251,7 +251,7 @@ export default defineComponent({
      * 用户返回结果逻辑查询
      */
     function afterFetch(record) {
-      let excludeList = props.excludeUserIdList;
+      let excludeList = props.excludeCustomerIdList;
       if (!excludeList) {
         return record;
       }
@@ -292,7 +292,6 @@ export default defineComponent({
       indexColumnProps,
       visibleChange,
       getBindValue,
-      getUserList,
       getCustomerList,
       formConfig,
       columns,
