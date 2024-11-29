@@ -151,7 +151,6 @@ const columnObj = {
 
 function getColumns() {
   columns.value =columnObj[queryParam.queryType];
-  debugger
   return  columns.value;
 }
 // 加载系统开单设置

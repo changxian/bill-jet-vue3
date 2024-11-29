@@ -456,8 +456,6 @@
   }
   // 选择客户
   function changeCustomer(val, selectRows) {
-    debugger;
-    console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       queryParam.custId = selectRows[0].id;
       queryParam.custName = selectRows[0].orgName;
@@ -465,8 +463,6 @@
   }
   // 选择业务员信息【返回的val数据是username，不是ID值】
   function changeUser(val, selectRows) {
-    debugger;
-    console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       queryParam.userId = selectRows[0].id;
       queryParam.realname = selectRows[0].realname;
