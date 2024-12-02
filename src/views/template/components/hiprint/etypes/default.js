@@ -35,6 +35,7 @@ const fields = [
   { text: '药品名称', field: 'name10' },
   { text: '產品名稱', field: 'name11' },
   { text: '配件/工时项目', field: 'name12' },
+  { text: '材料名称', field: 'name13' },
 
   { text: '名称简写', field: 'shortName' },
 
@@ -82,6 +83,7 @@ const fields = [
   { text: '零售价', field: 'price3' },
   { text: '單價', field: 'price4' },
   { text: 'Price', field: 'price5' },
+  { text: '建议零售价', field: 'price6' },
 
   { text: '金额', field: 'amount' },
   { text: '金额（元）', field: 'amount2' },
