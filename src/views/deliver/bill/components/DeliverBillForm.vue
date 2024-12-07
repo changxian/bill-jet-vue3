@@ -21,7 +21,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="单号" v-bind="validateInfos.billNo" id="DeliverBillForm-billNo" name="billNo">
-                <a-input v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
+                <a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -165,7 +165,7 @@
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { billDetail } from '@/views/deliver/bill/DeliverBill.api';
+  import { defaultCom, queryNewNo, billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList } from '@/views/setting/system/index.api';
@@ -256,6 +256,16 @@
       formData.dynamicCustFields = res['4'];
       formData.dynamicFields = res['6'];
     });
+    queryNewNo({ category: 3 }).then((res) => {
+      formData.billNo = res.newNo;
+    });
+    defaultCom().then((res) => {
+      debugger;
+      if (formData.companyId == '') {
+        formData.companyId = res.id;
+        formData.companyName = res.compName;
+      }
+    });
   }
   init();
   // 选择开单公司信息
@@ -334,6 +344,7 @@
     nextTick(() => {
       resetFields();
       const tmpData = {};
+      debugger;
       Object.keys(formData).forEach((key) => {
         if (record.hasOwnProperty(key)) {
           tmpData[key] = record[key];
@@ -498,14 +509,14 @@
    * 初始化默认公司数据
    */
   // 默认开单公司
-  const defaultCompany = userStore.getDefaultCompany;
-  console.log(defaultCompany);
-  if (defaultCompany) {
-    if (formData.companyId == '') {
-      formData.companyId = defaultCompany.id;
-      formData.companyName = defaultCompany.compName;
-    }
-  }
+  // const defaultCompany = userStore.getDefaultCompany;
+  // console.log(defaultCompany);
+  // if (defaultCompany) {
+  //   if (formData.companyId == '') {
+  //     formData.companyId = defaultCompany.id;
+  //     formData.companyName = defaultCompany.compName;
+  //   }
+  // }
 
   defineExpose({
     add,

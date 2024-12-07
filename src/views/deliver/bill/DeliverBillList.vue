@@ -173,11 +173,11 @@
   import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   import { useRoute } from 'vue-router';
-  import JSelectCompany from "@/components/Form/src/jeecg/components/JSelectCompany.vue";
-  import { JInput } from "@/components/Form";
-  import FastDate from "@/components/FastDate.vue";
-  import JSelectCustomer from "@/components/Form/src/jeecg/components/JSelectCustomer.vue";
-  import JSelectUser from "@/components/Form/src/jeecg/components/JSelectUser.vue";
+  import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import { JInput } from '@/components/Form';
+  import FastDate from '@/components/FastDate.vue';
+  import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
+  import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
   const route = useRoute();
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   if (route.query) {
@@ -307,20 +307,22 @@
       decimalPlaces.value = res.decimalPlaces;
     }
     // 循环数据
-    res.dynaFieldsGroup['1'].forEach(item => {
-      // 重量小计
-      if (item.fieldName === 'weightSubtotal') {
-        weightColTitle.value = item.fieldTitle;
-      }
-      // 面积小计
-      if (item.fieldName === 'areaSubtotal') {
-        areaColTitle.value = item.fieldTitle;
-      }
-      // 体积小计
-      if (item.fieldName === 'volumeSubtotal') {
-        volumeColTitle.value = item.fieldTitle;
-      }
-    });
+    if (res.dynaFieldsGroup['1']) {
+      res.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle;
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle;
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle;
+        }
+      });
+    }
   });
   // 增加合计行
   function summaryFunc(resultItems) {
@@ -475,7 +477,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -485,7 +487,6 @@
     //刷新数据
     reload();
   }
-  
 
   /**
    * form点击事件(以逗号分割)

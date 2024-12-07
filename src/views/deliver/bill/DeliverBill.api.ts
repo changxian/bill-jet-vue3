@@ -16,6 +16,8 @@ enum Api {
   editInvoiceStatus = '/deliver/bill/deliverBill/editInvoiceStatus',
   editInfo = '/deliver/bill/deliverBill/editInfo',
   queryById = '/deliver/bill/deliverBill/queryById',
+  defaultCompany = '/company/tenantCompany/default',
+  queryNewNo = '/bill/no/newNo',
 }
 
 /**
@@ -62,6 +64,17 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * @param params
  */
 export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params });
+
+/**
+ * 默认机构
+ */
+export const defaultCom = () => defHttp.get({ url: Api.defaultCompany });
+
+/**
+ * 送货开单查询新单号接口
+ * @param params
+ */
+export const queryNewNo = (params) => defHttp.get({ url: Api.queryNewNo, params });
 
 /**
  * 删除单个

@@ -80,115 +80,114 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-import {ref, defineExpose, reactive, defineEmits} from 'vue'
-import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-import {BasicTable, useTable} from '/@/components/Table';
-import {useListPage} from '/@/hooks/system/useListPage';
-import {columns, userCol, careNoCol} from './DetailDialog.data';
-import { detailsExportXls} from '../PurchaseStatistics.api'
-import {JInput} from "@/components/Form";
-import FastDate from '/@/components/FastDate.vue';
-import { getMyBillSetting } from '@/views/setting/system/index.api';
-import {detailsList} from "@/views/purchase/statistics/PurchaseStatistics.api";
+  import {ref, defineExpose, reactive, defineEmits} from 'vue'
+  import JModal from '/@/components/Modal/src/JModal/JModal.vue';
+  import {BasicTable, useTable} from '/@/components/Table';
+  import {useListPage} from '/@/hooks/system/useListPage';
+  import {columns, userCol, careNoCol} from './DetailDialog.data';
+  import { detailsExportXls} from '../PurchaseStatistics.api'
+  import {JInput} from "@/components/Form";
+  import FastDate from '/@/components/FastDate.vue';
+  import { getMyBillSetting } from '@/views/setting/system/index.api';
+  import {detailsList} from "@/views/purchase/statistics/PurchaseStatistics.api";
 
-// 总计：数量
-const countTotal = ref(0);
-// 总计：重量
-const weightTotal = ref(0);
-// 总计：面积
-const areaTotal = ref(0);
-// 总计：体积
-const volumeTotal = ref(0);
-// 总计：金额
-const amountTotal = ref(0);
-// 总计：成本
-const costAmountTotal = ref(0);
-// 总计：利润
-const profitAmountTotal = ref(0);
-// 小数位数
-const decimalPlaces = ref(2);
-// 显示重量列【合计 和 列表皆显示，0不显示，1显示】
-const showWeightCol = ref(false);
-const weightColTitle = ref('');
-// 显示面积列【合计 和 列表皆显示】
-const showAreaCol = ref(false);
-const areaColTitle = ref('');
-// 显示体积列【合计 和 列表皆显示】
-const showVolumeCol = ref(false);
-const volumeColTitle = ref('');
+  // 总计：数量
+  const countTotal = ref(0);
+  // 总计：重量
+  const weightTotal = ref(0);
+  // 总计：面积
+  const areaTotal = ref(0);
+  // 总计：体积
+  const volumeTotal = ref(0);
+  // 总计：金额
+  const amountTotal = ref(0);
+  // 总计：成本
+  const costAmountTotal = ref(0);
+  // 总计：利润
+  const profitAmountTotal = ref(0);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
-const hasPan = ref(true);
-const queryParam = reactive<any>({});
-const fastDateParam = reactive<any>({timeType:'',startDate: '', endDate: ''});
-const formRef = ref()
+  const hasPan = ref(true);
+  const queryParam = reactive<any>({});
+  const fastDateParam = reactive<any>({timeType:'',startDate: '', endDate: ''});
+  const formRef = ref()
 
-const titleObj = {
-  goodsCountColumns: '进货统计明细-商品',
-  typeCountColumns: '进货统计明细-类别',
-  supplierCountColumns: '进货统计明细-供应商',
-  operatorCountColumns: '进货统计明细-用户',
-  careNoCountColumns: '进货统计明细-车号',
-}
-const title = ref('')
-const columnList = ref(columns)
-const toggleSearchStatus = ref<boolean>(false);
-//注册table数据
-const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
-  tableProps: {
-    title: '进货开单',
-    api: detailsList,
-    canResize: false,
-    useSearchForm: false,
-    showActionColumn: false,
-    showIndexColumn: true,
-    clickToRowSelect: true,
-    actionColumn: {
-      width: 120,
-      fixed: 'right',
-    },
-    beforeFetch: async (params) => {
-      return Object.assign(params, queryParam, fastDateParam);
-    },
-    // summaryFunc: summaryFunc,
-    afterFetch: async (resultItems) => {
-      hasPan.value = resultItems.length > 0;
-      countTotal.value = resultItems[0].countTotal;
-      weightTotal.value = resultItems[0].weightTotal;
-      areaTotal.value = resultItems[0].areaTotal;
-      volumeTotal.value = resultItems[0].volumeTotal;
-      amountTotal.value = resultItems[0].amountTotal;
-    },
-    rowSelection: {type: 'radio'},
-  },
-  exportConfig: {
-    name: "进货统计明细",
-    url: detailsExportXls,
-    params: queryParam,
-  },
-
-});
-const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
-const labelCol = reactive({
-  xs: 24,
-  sm: 4,
-  xl: 6,
-  xxl: 4
-});
-const wrapperCol = reactive({
-  xs: 24,
-  sm: 20,
-});
-
-// 加载系统开单设置
-getMyBillSetting().then((res) => {
-
-  showWeightCol.value = !!res.showWeightCol;
-  showAreaCol.value = !!res.showAreaCol;
-  showVolumeCol.value = !!res.showVolumeCol;
-  if (res.decimalPlaces === 0 || res.decimalPlaces) {
-    decimalPlaces.value = res.decimalPlaces;
+  const titleObj = {
+    goodsCountColumns: '进货统计明细-商品',
+    typeCountColumns: '进货统计明细-类别',
+    supplierCountColumns: '进货统计明细-供应商',
+    operatorCountColumns: '进货统计明细-用户',
+    careNoCountColumns: '进货统计明细-车号',
   }
-  if(res.dynaFieldsGroup['1']){
+  const title = ref('')
+  const columnList = ref(columns)
+  const toggleSearchStatus = ref<boolean>(false);
+  //注册table数据
+  const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+    tableProps: {
+      title: '进货开单',
+      api: detailsList,
+      canResize: false,
+      useSearchForm: false,
+      showActionColumn: false,
+      showIndexColumn: true,
+      clickToRowSelect: true,
+      actionColumn: {
+        width: 120,
+        fixed: 'right',
+      },
+      beforeFetch: async (params) => {
+        return Object.assign(params, queryParam, fastDateParam);
+      },
+      // summaryFunc: summaryFunc,
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        countTotal.value = resultItems[0].countTotal;
+        weightTotal.value = resultItems[0].weightTotal;
+        areaTotal.value = resultItems[0].areaTotal;
+        volumeTotal.value = resultItems[0].volumeTotal;
+        amountTotal.value = resultItems[0].amountTotal;
+      },
+      rowSelection: {type: 'radio'},
+    },
+    exportConfig: {
+      name: "进货统计明细",
+      url: detailsExportXls,
+      params: queryParam,
+    },
+
+  });
+  const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const labelCol = reactive({
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4
+  });
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
+
+  // 加载系统开单设置
+  getMyBillSetting().then((res) => {
+    showWeightCol.value = !!res.showWeightCol;
+    showAreaCol.value = !!res.showAreaCol;
+    showVolumeCol.value = !!res.showVolumeCol;
+    if (res.decimalPlaces === 0 || res.decimalPlaces) {
+      decimalPlaces.value = res.decimalPlaces;
+    }
+    if (res.dynaFieldsGroup['1']) {
       // 循环数据
       res.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
@@ -204,79 +203,78 @@ getMyBillSetting().then((res) => {
           volumeColTitle.value = item.fieldTitle;
         }
       });
+    }
+  });
+  /**
+   * 查询
+   */
+  function searchQuery() {
+    reload();
   }
-});
-/**
- * 查询
- */
-function searchQuery() {
-  reload();
-}
 
-/**
- * 重置
- */
-function searchReset() {
-  formRef.value.resetFields();
-  fastDateParam.startDate = ''
-  fastDateParam.endDate = ''
-  selectedRowKeys.value = [];
-  //刷新数据
-  reload();
-}
+  /**
+   * 重置
+   */
+  function searchReset() {
+    formRef.value.resetFields();
+    fastDateParam.startDate = ''
+    fastDateParam.endDate = ''
+    selectedRowKeys.value = [];
+    //刷新数据
+    reload();
+  }
 
-function handleEdit() {
-}
+  function handleEdit() {
+  }
 
-const visible = ref(false)
+  const visible = ref(false);
 
-function show(_queryParam, _fastDateParam, _record) {
-
-  Object.keys(_queryParam).forEach(key => {
+  function show(_queryParam, _fastDateParam, _record) {
+    Object.keys(_queryParam).forEach(key => {
       queryParam[key] = _queryParam[key];
-  });
-  Object.keys(_fastDateParam).forEach(key => {
-    fastDateParam[key] = _fastDateParam[key];
-  });
+    });
+    Object.keys(_fastDateParam).forEach(key => {
+      fastDateParam[key] = _fastDateParam[key];
+    });
 
-  let queryType = queryParam.queryType
-  title.value = titleObj[queryType] || '统计明细'
-  if (queryType === 'operatorCountColumns') {
-    const tmp = [...columnList.value]
-    tmp.splice(3, 1, userCol)
-    columnList.value = tmp
-  } else if (queryType === 'careNoCountColumns') {
-    const tmp = [...columnList.value]
-    tmp.splice(3, 1, careNoCol)
-    columnList.value = tmp
-  } else {
-    columnList.value = columns
+    let queryType = queryParam.queryType;
+    title.value = titleObj[queryType] || '统计明细';
+    if (queryType === 'operatorCountColumns') {
+      const tmp = [...columnList.value];
+      tmp.splice(3, 1, userCol);
+      columnList.value = tmp;
+    } else if (queryType === 'careNoCountColumns') {
+      const tmp = [...columnList.value];
+      tmp.splice(3, 1, careNoCol);
+      columnList.value = tmp;
+    } else {
+      columnList.value = columns;
+    }
+    visible.value = true;
   }
-  visible.value = true
-}
 
-function handleCancel() {
-  visible.value = false
-}
+  function handleCancel() {
+    visible.value = false;
+  }
 
-defineExpose({
-  show
-})
+  defineExpose({
+    show,
+  });
 
 </script>
 
 
 <style lang="less" scoped>
-.table-page-search-submitButtons {
-  display: block;
-  margin-bottom: 24px;
-  white-space: nowrap;
-}
-.total_span {
-  margin: 0 5px;
-}
-.p_san {
-  position: absolute;
-  top: -50px;
-}
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
+  }
 </style>

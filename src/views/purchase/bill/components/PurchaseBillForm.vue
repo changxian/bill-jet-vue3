@@ -159,317 +159,318 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from '/@/hooks/web/useMessage';
-import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
-import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
-import goods from './goods.vue';
-import { getValueType } from '/@/utils';
-import { saveOrUpdate, billDetail } from '../PurchaseBill.api';
-import { statusList } from '../PurchaseBill.data';
-import { Form } from 'ant-design-vue';
-import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-import type { Rule } from 'ant-design-vue/es/form';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
+  import goods from './goods.vue';
+  import { getValueType } from '/@/utils';
+  import { saveOrUpdate, billDetail } from '../PurchaseBill.api';
+  import { statusList } from '../PurchaseBill.data';
+  import { Form } from 'ant-design-vue';
+  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import type { Rule } from 'ant-design-vue/es/form';
+  import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
 
-const span = 8;
-// 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
-const statusOptions = ref(statusList);
-const typeOptions = ref([
-  { value: 1, label: '进货开单' },
-  { value: 2, label: '退货开单' },
-]);
+  const span = 8;
+  // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
+  const statusOptions = ref(statusList);
+  const typeOptions = ref([
+    { value: 1, label: '进货开单' },
+    { value: 2, label: '退货开单' },
+  ]);
 
-const props = defineProps({
-  formDisabled: { type: Boolean, default: false },
-  formData: { type: Object, default: () => ({}) },
-  formBpm: { type: Boolean, default: true },
-  showBtn: { type: Boolean, default: false },
-});
-const formRef = ref();
-const useForm = Form.useForm;
-const emit = defineEmits(['register', 'ok']);
-const formData = reactive({
-  id: '',
-  billNo: '',
-  type: undefined,
-  billDate: '',
-  companyName: '',
-  companyId: '',
-  supplierId: '',
-  supplierName: '',
-  supplierPhone: '',
-  supplierAddress: '',
-  supplierContact: '',
-  count: 0,
-  weight: 0,
-  area: 0,
-  volume: 0,
-  amount: 0,
-  paymentAmount: 0,
-  discountAmount: 0,
-  debtAmount: 0,
-  hisDebtAmount: 0,
-  careNo: '',
-  contractCode: '',
-  status: '',
-  invoiceStatus: undefined,
-  userName: '',
-  remark: '',
-  version: undefined,
-  createName: '',
-});
+  const props = defineProps({
+    formDisabled: { type: Boolean, default: false },
+    formData: { type: Object, default: () => ({}) },
+    formBpm: { type: Boolean, default: true },
+    showBtn: { type: Boolean, default: false },
+  });
+  const formRef = ref();
+  const useForm = Form.useForm;
+  const emit = defineEmits(['register', 'ok']);
+  const formData = reactive({
+    id: '',
+    billNo: '',
+    type: undefined,
+    billDate: '',
+    companyName: '',
+    companyId: '',
+    supplierId: '',
+    supplierName: '',
+    supplierPhone: '',
+    supplierAddress: '',
+    supplierContact: '',
+    count: 0,
+    weight: 0,
+    area: 0,
+    volume: 0,
+    amount: 0,
+    paymentAmount: 0,
+    discountAmount: 0,
+    debtAmount: 0,
+    hisDebtAmount: 0,
+    careNo: '',
+    contractCode: '',
+    status: '',
+    invoiceStatus: undefined,
+    userName: '',
+    remark: '',
+    version: undefined,
+    createName: '',
+  });
 
-const rules: Record<string, Rule[]> = {
-  companyId: [{ required: true, message: '必填', trigger: 'blur' }],
-  supplierId: [{ required: true, message: '必填', trigger: 'blur' }],
-  //  remark:  [{ required: true, message: '必填', trigger: 'change' }],
-  // hisDebtAmount: [{ required: true, message: '必填', trigger: 'change' }],
-};
-const { createMessage } = useMessage();
-const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
-const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
-const confirmLoading = ref<boolean>(false);
-const goodsRef = ref(null);
-//表单验证
-const validatorRules = reactive({});
-const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
+  const rules: Record<string, Rule[]> = {
+    companyId: [{ required: true, message: '必填', trigger: 'blur' }],
+    supplierId: [{ required: true, message: '必填', trigger: 'blur' }],
+    //  remark:  [{ required: true, message: '必填', trigger: 'change' }],
+    // hisDebtAmount: [{ required: true, message: '必填', trigger: 'change' }],
+  };
+  const { createMessage } = useMessage();
+  const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
+  const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
+  const confirmLoading = ref<boolean>(false);
+  const goodsRef = ref(null);
+  //表单验证
+  const validatorRules = reactive({});
+  const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
-// 表单禁用
-const disabled = computed(() => {
-  if (props.formBpm === true) {
-    if (props.formData.disabled === false) {
-      return false;
-    } else {
-      return true;
+  // 表单禁用
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      return props.formData.disabled !== false;
+    }
+    return props.formDisabled;
+  });
+
+  function init() {
+    queryNewNo({ category: 1 }).then((res) => {
+      formData.billNo = res.newNo;
+    });
+  }
+  init();
+  function changeCompany(val, selectRows) {
+    console.log(' changeCompany val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      formData.companyName = selectRows[0].compName;
     }
   }
-  return props.formDisabled;
-});
-function changeCompany(val, selectRows) {
-  console.log(' changeCompany val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    formData.companyName = selectRows[0].compName;
+  function changeSupplier(val, selectRows) {
+    console.log(' changeSupplier val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      formData.supplierName = selectRows[0].orgName;
+      formData.supplierPhone = selectRows[0].phone;
+      formData.supplierContact = selectRows[0].contact;
+      formData.supplierAddress = selectRows[0].address;
+    }
   }
-}
-function changeSupplier(val, selectRows) {
-  console.log(' changeSupplier val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    formData.supplierName = selectRows[0].orgName;
-    formData.supplierPhone = selectRows[0].phone;
-    formData.supplierContact = selectRows[0].contact;
-    formData.supplierAddress = selectRows[0].address;
-  }
-}
-let amount = 0
-function changeGoods(goods) {
-  let num = 0
+  let amount = 0
+  function changeGoods(goods) {
+    let num = 0
     goods.forEach(item=>{
         num += item.costAmount;
     })
     amount = num
     calcDebtAmount()
-}
-
-function changeMoney(){
-  calcDebtAmount()
-}
-function calcDebtAmount(){
-  if(amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
-    formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount
   }
-}
-/**
- * 新增
- */
-function add() {
-  edit({});
-}
 
-/**
- * 编辑
- */
-function edit(record) {
-  nextTick(() => {
-    resetFields();
-    const tmpData = {};
-    Object.keys(formData).forEach((key) => {
-      if (record.hasOwnProperty(key)) {
-        tmpData[key] = record[key];
+  function changeMoney(){
+    calcDebtAmount()
+  }
+  function calcDebtAmount(){
+    if(amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
+      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount
+    }
+  }
+  /**
+   * 新增
+   */
+  function add() {
+    edit({});
+  }
+
+  /**
+   * 编辑
+   */
+  function edit(record) {
+    nextTick(() => {
+      resetFields();
+      const tmpData = {};
+      Object.keys(formData).forEach((key) => {
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
+        }
+      });
+      //赋值
+      Object.assign(formData, tmpData);
+      formData.status = record.status + ''
+      getGoods(formData.id)
+      if(record.hasCopy){
+        formData.status= ''
+        formData.invoiceStatus= undefined
+        formData.id = ''
+        formData.billNo = ''
+        formData.createBy = ''
+        formData.createTime = ''
+        formData.updateTime = ''
+        formData.updateBy = ''
       }
     });
-    //赋值
-    Object.assign(formData, tmpData);
-    formData.status = record.status + ''
-    getGoods(formData.id)
-    if(record.hasCopy){
-      formData.status= ''
-      formData.invoiceStatus= undefined
-      formData.id = ''
-      formData.billNo = ''
-      formData.createBy = ''
-      formData.createTime = ''
-      formData.updateTime = ''
-      formData.updateBy = ''
+  }
+
+  function getGoods(id){
+      billDetail({billId: id}).then(res=>{
+      // dataSourceDetail.value = [...res]
+      nextTick(()=>{
+        goodsRef.value.setValue([...res])
+      })
+    })
+  }
+
+  function validateForm(){
+    if(!formData.supplierId){
+      createMessage.warning('请选择供应商');
+      return false;
     }
+    if(!formData.companyId){
+      createMessage.warning('请选择公司');
+      return false;
+    }
+    const goods = goodsRef.value.getData().details
+    if(goods.length === 0){
+      createMessage.warning('请选择商品');
+      return false;
+    }
+    return true
+  }
+  function resetForm() {
+    formData.id = ''
+    formData.type = undefined
+    formData.billNo = ''
+    formData.billDate = ''
+    formData.companyName = ''
+    formData.companyId = ''
+    formData.supplierId = ''
+    formData.supplierName = ''
+    formData.supplierPhone = ''
+    formData.supplierAddress = ''
+    formData.supplierContact = ''
+    formData.count = 0
+    formData.weight = 0
+    formData.area = 0
+    formData.volume = 0
+    formData.amount = 0
+    formData.paymentAmount = 0
+    formData.discountAmount = 0
+    formData.debtAmount = 0
+    formData.hisDebtAmount = 0
+    formData.status = ''
+    formData.invoiceStatus = undefined
+    formData.careNo = ''
+    formData.contractCode = ''
+    formData.remark = ''
+    formData.createName = ''
+    formData.userName = ''
+    goodsRef.value.setValue([]);
+  }
+  function clickSave() {
+    // console.log('goodsRef:', goodsRef.value.getData());
+    if(!validateForm()){
+      return;
+    }
+    console.log('formData:', formData);
+    const params = {
+      ...formData,
+      ...goodsRef.value.getData(),
+    };
+    confirmLoading.value = true;
+    saveOrUpdate(params)
+      .then((res) => {
+        if (res.success) {
+          createMessage.success(res.message);
+          resetForm()
+          emit('ok');
+        } else {
+          createMessage.warning(res.message);
+        }
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+      });
+
+
+    // formRef.value
+    //   .validate()
+    //   .then((res) => {
+    //     console.log('res', res);
+    //   })
+    //   .catch((res) => {
+    //     console.log('catch res=====', res);
+    //   });
+  }
+  /**
+   * 提交数据
+   */
+  async function submitForm() {
+    try {
+      // 触发表单验证
+      await validate();
+    } catch ({ errorFields }) {
+      if (errorFields) {
+        const firstField = errorFields[0];
+        if (firstField) {
+          formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
+        }
+      }
+      return Promise.reject(errorFields);
+    }
+    confirmLoading.value = true;
+    const isUpdate = ref<boolean>(false);
+    //时间格式化
+    let model = formData;
+    if (model.id) {
+      isUpdate.value = true;
+    }
+    //循环数据
+    for (let data in model) {
+      //如果该数据是数组并且是字符串类型
+      if (model[data] instanceof Array) {
+        let valueType = getValueType(formRef.value.getProps, data);
+        //如果是字符串类型的需要变成以逗号分割的字符串
+        if (valueType === 'string') {
+          model[data] = model[data].join(',');
+        }
+      }
+    }
+    await saveOrUpdate(model, isUpdate.value)
+      .then((res) => {
+        if (res.success) {
+          createMessage.success(res.message);
+          emit('ok');
+        } else {
+          createMessage.warning(res.message);
+        }
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+      });
+  }
+
+  defineExpose({
+    add,
+    edit,
+    clickSave,
+    submitForm,
   });
-}
-
-function getGoods(id){
-    billDetail({billId: id}).then(res=>{
-    // dataSourceDetail.value = [...res]
-    nextTick(()=>{
-      goodsRef.value.setValue([...res])
-    })
-  })
-}
-
-function validateForm(){
-  if(!formData.supplierId){
-    createMessage.warning('请选择供应商');
-    return false;
-  }
-  if(!formData.companyId){
-    createMessage.warning('请选择公司');
-    return false;
-  }
-  const goods = goodsRef.value.getData().details
-  if(goods.length === 0){
-    createMessage.warning('请选择商品');
-    return false;
-  }
-  return true
-}
-function resetForm() {
-  formData.id = ''
-  formData.type = undefined
-  formData.billNo = ''
-  formData.billDate = ''
-  formData.companyName = ''
-  formData.companyId = ''
-  formData.supplierId = ''
-  formData.supplierName = ''
-  formData.supplierPhone = ''
-  formData.supplierAddress = ''
-  formData.supplierContact = ''
-  formData.count = 0
-  formData.weight = 0
-  formData.area = 0
-  formData.volume = 0
-  formData.amount = 0
-  formData.paymentAmount = 0
-  formData.discountAmount = 0
-  formData.debtAmount = 0
-  formData.hisDebtAmount = 0
-  formData.status = ''
-  formData.invoiceStatus = undefined
-  formData.careNo = ''
-  formData.contractCode = ''
-  formData.remark = ''
-  formData.createName = ''
-  formData.userName = ''
-  goodsRef.value.setValue([])
-}
-function  clickSave() {
-  // console.log('goodsRef:', goodsRef.value.getData());
-  if(!validateForm()){
-    return;
-  }
-  console.log('formData:', formData);
-  const params = {
-    ...formData,
-    ...goodsRef.value.getData()
-  }
-  console.log('params:', params)
-  confirmLoading.value = true;
-  saveOrUpdate(params)
-    .then((res) => {
-      if (res.success) {
-        createMessage.success(res.message);
-        resetForm()
-        emit('ok');
-      } else {
-        createMessage.warning(res.message);
-      }
-    })
-    .finally(() => {
-      confirmLoading.value = false;
-    });
-
-  
-  // formRef.value
-  //   .validate()
-  //   .then((res) => {
-  //     console.log('res', res);
-  //   })
-  //   .catch((res) => {
-  //     console.log('catch res=====', res);
-  //   });
-}
-/**
- * 提交数据
- */
-async function submitForm() {
-  try {
-    // 触发表单验证
-    await validate();
-  } catch ({ errorFields }) {
-    if (errorFields) {
-      const firstField = errorFields[0];
-      if (firstField) {
-        formRef.value.scrollToField(firstField.name, { behavior: 'smooth', block: 'center' });
-      }
-    }
-    return Promise.reject(errorFields);
-  }
-  confirmLoading.value = true;
-  const isUpdate = ref<boolean>(false);
-  //时间格式化
-  let model = formData;
-  if (model.id) {
-    isUpdate.value = true;
-  }
-  //循环数据
-  for (let data in model) {
-    //如果该数据是数组并且是字符串类型
-    if (model[data] instanceof Array) {
-      let valueType = getValueType(formRef.value.getProps, data);
-      //如果是字符串类型的需要变成以逗号分割的字符串
-      if (valueType === 'string') {
-        model[data] = model[data].join(',');
-      }
-    }
-  }
-  await saveOrUpdate(model, isUpdate.value)
-    .then((res) => {
-      if (res.success) {
-        createMessage.success(res.message);
-        emit('ok');
-      } else {
-        createMessage.warning(res.message);
-      }
-    })
-    .finally(() => {
-      confirmLoading.value = false;
-    });
-}
-
-defineExpose({
-  add,
-  edit,
-  clickSave,
-  submitForm,
-});
 </script>
 
 <style lang="less" scoped>
-.antd-modal-form {
-  padding: 14px;
-}
-.btns-wrap {
-  display: flex;
-  justify-content: end;
-}
+  .antd-modal-form {
+    padding: 14px;
+  }
+  .btns-wrap {
+    display: flex;
+    justify-content: end;
+  }
 </style>
