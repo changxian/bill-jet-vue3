@@ -38,7 +38,7 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="客户联系人"  id="DeliverBillForm-custContact" name="custContact">
+              <a-form-item label="客户联系人" id="DeliverBillForm-custContact" name="custContact">
                 <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -65,45 +65,38 @@
         <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
           导出</a-button
         >
-
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
     </BasicTable>
   </div>
 </template>
 
 <script lang="ts" name="deliver.checkbill-DeliverCheckBill" setup>
+  import { ref, defineExpose, reactive } from 'vue';
+  import { BasicTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns } from './DeliverCheckBill.data';
+  import FastDate from '/@/components/FastDate.vue';
+  import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCustomer.vue';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
 
- import {ref, defineExpose, reactive} from 'vue'
-    import { BasicTable } from '/@/components/Table';
-    import { useListPage } from '/@/hooks/system/useListPage';
-    import { columns} from './DeliverCheckBill.data';
-    import FastDate from '/@/components/FastDate.vue';
-    import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCustomer.vue';
-    import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
- import {getExportUrl, list} from "@/views/deliver/checkbill/DeliverCheckBill.api";
-
- const queryParam = reactive<any>({ companyId: '', companyName: ''});
- const fastDateParam = reactive<any>({startDate: '', endDate: ''});
- const formRef = ref()
- 
+  const queryParam = reactive<any>({ companyId: '', companyName: '' });
+  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const formRef = ref();
 
   function changeCompany(val, selectRows) {
-  console.log(' changeCompany val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    queryParam.companyName = selectRows[0].compName;
+    if (selectRows?.length > 0) {
+      queryParam.companyName = selectRows[0].compName;
+    }
   }
-}
-function changeCust(val, selectRows) {
-  console.log(' changeCust val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    queryParam.custId = selectRows[0].id;
-    queryParam.custName = selectRows[0].orgName;
-    queryParam.custPhone = selectRows[0].phone;
-    queryParam.custContact = selectRows[0].contact;
+  function changeCust(val, selectRows) {
+    if (selectRows?.length > 0) {
+      queryParam.custId = selectRows[0].id;
+      queryParam.custName = selectRows[0].orgName;
+      queryParam.custPhone = selectRows[0].phone;
+      queryParam.custContact = selectRows[0].contact;
+    }
   }
-}
 
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
@@ -123,57 +116,55 @@ function changeCust(val, selectRows) {
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
-      }
+      },
     },
     exportConfig: {
-      name: "送货对账单",
+      name: '送货对账单',
       url: getExportUrl,
       params: queryParam,
     },
-
   });
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:5,
-    xl:6,
-    xxl:5
+    xs: 24,
+    sm: 5,
+    xl: 6,
+    xxl: 5,
   });
-    const wrapperCol = reactive({
+  const wrapperCol = reactive({
     xs: 24,
     sm: 19,
   });
 
-  
   /**
    * 查询
    */
   function searchQuery() {
     reload();
   }
-  
-    /**
+
+  /**
    * 重置
    */
   function searchReset() {
     formRef.value.resetFields();
-    fastDateParam.startDate = ''
-    fastDateParam.endDate = ''
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
     selectedRowKeys.value = [];
     //刷新数据
     reload();
   }
- 
-    defineExpose({
-       
-    })
+
+  defineExpose({
+
+  })
 
 </script>
 
 <style lang="less" scoped>
-     .table-page-search-submitButtons {
-      display: block;
-      margin-bottom: 24px;
-      white-space: nowrap;
-    }
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
 </style>

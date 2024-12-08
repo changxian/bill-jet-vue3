@@ -31,7 +31,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-user v-model:value="formData.userId" @change="changeUser" allow-clear />
+                <j-select-user-id v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -99,22 +99,6 @@
                 <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear ></a-input>
               </a-form-item>
             </a-col>
-            <!-- <a-col :span="span">
-              <a-form-item
-                label="状态"
-                v-bind="validateInfos.status"
-                id="DeliverBillForm-status"
-                name="status"
-              >
-                <j-dict-select-tag
-                  v-model:value="formData.status"
-                  :options="statusOptions"
-                  dictCode=""
-                  placeholder="请选择状态"
-                  allow-clear
-                />
-              </a-form-item>
-            </a-col>-->
             <a-col :span="span">
               <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
                 <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear ></a-input>
@@ -156,7 +140,6 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../DeliverBill.api';
   import { Form } from 'ant-design-vue';
@@ -169,6 +152,7 @@
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList } from '@/views/setting/system/index.api';
+  import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
 
   const userStore = useUserStore();
   // 小数位数
@@ -197,6 +181,7 @@
     billDate: '',
     companyName: '',
     companyId: '',
+    custId: '',
     custName: '',
     custPhone: '',
     custContact: '',
@@ -257,7 +242,9 @@
       formData.dynamicFields = res['6'];
     });
     queryNewNo({ category: 3 }).then((res) => {
-      formData.billNo = res.newNo;
+      if (formData.billNo == '') {
+        formData.billNo = res.newNo;
+      }
     });
     defaultCom().then((res) => {
       debugger;
@@ -280,6 +267,7 @@
   function changeUser(val, selectRows) {
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      debugger;
       formData.userId = selectRows[0].id;
       formData.userName = selectRows[0].realname;
     }
@@ -334,6 +322,7 @@
    * 新增
    */
   function add() {
+    debugger;
     edit({});
   }
 
