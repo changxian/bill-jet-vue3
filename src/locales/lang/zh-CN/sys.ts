@@ -68,8 +68,8 @@ export default {
     forgetFormTitle: '重置密码',
 
     signInTitle: 'Bill',
-    signInDesc: '是中国最具影响力的 平台',
     policy: '我同意平台隐私政策',
+    signInDesc: '',
     scanSign: `扫码后，即可完成登录`,
     scanSuccess: `扫码成功，登录中`,
 
@@ -104,10 +104,10 @@ export default {
     subTitleText: '{0}秒后返回登录页面',
 
     //重置密码页面中文
-    authentication:'验证身份',
-    resetLoginPassword:'重置登录密码',
-    resetSuccess:'重置成功',
-    nextStep:'下一步',
-    goToLogin:'去登录'
+    authentication: '验证身份',
+    resetLoginPassword: '重置登录密码',
+    resetSuccess: '重置成功',
+    nextStep: '下一步',
+    goToLogin: '去登录',
   },
 };
