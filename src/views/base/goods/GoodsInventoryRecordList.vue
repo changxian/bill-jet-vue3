@@ -12,7 +12,7 @@
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item label="方式" name="mode1">
-                <a-select v-model:value="queryParam.mode1" @change="handleMode1Change" allow-clear placeholder="请选择" >
+                <a-select v-model:value="queryParam.mode1" @change="handleMode1Change" allow-clear placeholder="请选择">
                   <a-select-option value="">所有</a-select-option>
                   <a-select-option v-for="mode in stockOptions.mode1" :key="mode.code" :value="mode.code">
                     {{ mode.name }}
@@ -22,7 +22,7 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="类型" name="mode2">
-                <a-select v-model:value="queryParam.mode2" allow-clear placeholder="请选择" >
+                <a-select v-model:value="queryParam.mode2" allow-clear placeholder="请选择">
                   <a-select-option value="">所有</a-select-option>
                   <a-select-option v-for="mode in stockOptions.mode2" :key="mode.code" :value="mode.code">
                     {{ mode.name }}
@@ -108,6 +108,7 @@
   //表单赋值
   const [registerModal, { closeModal }] = useModalInner(async (data) => {
     queryParam.goodsName = data.goodsName;
+    searchQuery();
   });
 
   function handleMode1Change(value) {

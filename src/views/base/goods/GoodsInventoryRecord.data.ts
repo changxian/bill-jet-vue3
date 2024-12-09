@@ -39,11 +39,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'quantity',
   },
   {
-    title: '是否回滚',
-    align: 'center',
-    dataIndex: 'rollBack',
-  },
-  {
     title: '备注',
     align: 'center',
     dataIndex: 'remark',
