@@ -4,10 +4,17 @@ import { useMessage } from '/@/hooks/web/useMessage';
 const { createConfirm } = useMessage();
 
 enum Api {
+  tempList = '/bill/template/pre/list',
+
   treeList = '/bill/goods/queryGoodsTreeList',
   searchBy = '/bill/goods/category/searchBy',
   editCategory = '/bill/goods/editCategory',
 }
+
+/**
+ * 根据关键字搜索部门
+ */
+export const tempList = (params) => defHttp.get({ url: Api.tempList, params });
 
 /**
  * 获取部门树列表

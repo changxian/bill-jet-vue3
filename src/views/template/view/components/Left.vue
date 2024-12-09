@@ -21,11 +21,12 @@
 <script lang="ts" setup>
   import { nextTick, ref, watch } from 'vue';
   import { BasicTree } from '/@/components/Tree';
+  import { tempList } from '@/views/template/view/components/index.api';
 
   const emit = defineEmits(['select']);
 
   const props = defineProps({
-    data: { type: Object, default: () => ({}) },
+    id: { type: String, default: () => '' },
   });
 
   // eslint-disable-next-line vue/no-dupe-keys
@@ -44,17 +45,17 @@
   let treeReloading = ref<boolean>(false);
 
   watch(
-    () => props.data,
+    () => props.id,
     () => {
-      if (props.data) {
-        if (props.data['tempData'] && props.data['tempData']['id']) {
-          templateId.value = props.data['tempData']['id'];
-        }
-        if (props.data['list']) {
-          treeData.value = [];
-          treeData.value = props.data['list'];
-          autoExpandParentNode();
-        }
+      if (props.id) {
+        templateId.value = props.id;
+
+        // if (props.data['list']) {
+        //   treeData.value = [];
+        //   treeData.value = props.data['list'];
+        //   autoExpandParentNode();
+        // }
+        autoExpandParentNode(templateId.value);
       }
     },
     {
@@ -62,16 +63,31 @@
     }
   );
 
+  async function load() {
+    treeData.value = await tempList({});
+    return treeData.value;
+  }
+  load();
+
   // 自动展开父节点，只展开一级
-  function autoExpandParentNode() {
+  async function autoExpandParentNode(key: any) {
     let keys: Array<any> = [];
+    if (treeData.value.length == 0) {
+      await load();
+    }
     treeData.value.forEach((item, index) => {
       if (item.children && item.children.length > 0) {
         keys.push(item.key);
       }
-      if (index === 0) {
-        // 默认选中第一个
-        setSelectedKey(item.id, item);
+      if ('' == key) {
+        if (index === 0) {
+          // 默认选中第一个
+          setSelectedKey(item.id, item);
+        }
+      } else {
+        if (item.key === key) {
+          setSelectedKey(item.id, item);
+        }
       }
     });
     if (keys.length > 0) {

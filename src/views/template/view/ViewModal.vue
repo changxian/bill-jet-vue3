@@ -12,10 +12,6 @@
  -->
 
 <script lang="ts" setup>
-  import tempData from './temp-data';
-  import tempList from './temp-list';
-  import printData from './print-data';
-
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import Index from './components/index.vue';
@@ -26,19 +22,9 @@
   const isDetail = ref(false);
   const registerForm = ref();
 
-  // 获取默认模板、所有模板、打印数据
-  const viewData = computed(() => {
-    return {
-      tempData: tempData,
-      list: tempList,
-      data: printData,
-    };
-  });
-
-  let _d = {
-    ...viewData.value,
-  };
+  let _d = {};
   const formData = computed(() => {
+    debugger;
     if (unref(isUpdate)) {
       // 结合（两种表单）使用传数据，带来的弊端，后做的处理
       // 第一次编辑时 isUpdate 值为true
@@ -46,17 +32,13 @@
       // 修改为 false，才不影响其它数据编辑(在computed中修改isUpdate的值不触发重新计算)
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       isUpdate.value = false;
-      return {
-        ..._d,
-      };
     } else if (unref(isNew)) {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       isNew.value = false;
-      return {
-        ..._d,
-      };
     }
-    return { ...viewData.value };
+    return {
+      ..._d,
+    };
   });
 
   //表单赋值

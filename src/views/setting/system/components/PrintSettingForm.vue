@@ -146,11 +146,14 @@
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  // eslint-disable-next-line vue/no-dupe-keys
   const formData = reactive<Record<string, any>>({
     id: '',
     printer: '',
     num: undefined,
+    deliveryBillTempId: '',
     deliveryBillTemp: '',
+    deliveryReturnTempId: '',
     deliveryReturnTemp: '',
     accountTemp: '',
     repayReceiptTemp: '',
@@ -189,7 +192,8 @@
    */
   function selectTemplate() {
     openModal(true, {
-      record: formData,
+      // record: formData,
+      record: { id: formData.deliveryBillTempId },
       isUpdate: true,
       showFooter: true,
     });

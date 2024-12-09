@@ -1,8 +1,8 @@
 <template>
   <a-row :class="['p-4', `${prefixCls}--box`]" :gutter="10">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
-      <a-card :bordered="false" style="height: 100%">
-        <Left @select="onTreeSelect" :data="formData" />
+      <a-card :bordered="false" style="height: 100%; overflow: auto">
+        <Left @select="onTreeSelect" :id="formData.id" />
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
@@ -16,6 +16,9 @@
 <script lang="ts" setup name="system-depart-user">
   import { provide, reactive, watch } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import tempData from '../temp-data';
+  import tempList from '../temp-list';
+  import printData from '../print-data';
 
   import Left from './Left.vue';
   import View from './View.vue';
@@ -32,13 +35,12 @@
   const formData = reactive<Record<string, any>>({
     tempData: null,
     data: null,
+    id: null,
   });
   watch(
     () => props.formData,
     () => {
-      Object.keys(props.formData).forEach((key) => {
-        formData[key] = props.formData[key];
-      });
+      formData.id = props.formData.id;
     },
     {
       immediate: true,
