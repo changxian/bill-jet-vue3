@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white m-4 mr-0 overflow-hidden" style="height: 700px; overflow-y: scroll">
+  <div class="bg-white m-4 mr-0 overflow-hidden" style="height: 710px; overflow-y: scroll">
     <a-spin :spinning="loading">
       <BasicTree
         v-if="!treeReloading"
