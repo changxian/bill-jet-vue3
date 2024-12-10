@@ -1,19 +1,15 @@
 <template>
-  <div class="p-2">
+  <div class="p-2" style="overflow: hidden">
     <!--查询区域-->
-    <div>
-      <a-card style="width: 100%">
-        <p>控制区域</p>
-        <p>Card content</p>
-        <p>Card content</p>
-      </a-card>
-    </div>
+    <a-card style="width: 100%">
+      <p>控制区域</p>
+      <p>Card content</p>
+      <p>Card content</p>
+    </a-card>
     <!-- 预览 -->
-    <div style="width: 100%; padding-top: 5px;">
-      <a-card style="width: 100%">
-        <div id="preview_content_design" style="width: 100%"></div>
-      </a-card>
-    </div>
+    <a-card style="width: 100%; margin-top: 5px">
+      <div id="preview_content_design" style="width: 100%"></div>
+    </a-card>
   </div>
 </template>
 
