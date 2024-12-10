@@ -9,7 +9,7 @@
       </a-card>
     </div>
     <!-- 预览 -->
-    <div style="width: 100%">
+    <div style="width: 100%; padding-top: 5px;">
       <a-card style="width: 100%">
         <div id="preview_content_design" style="width: 100%"></div>
       </a-card>

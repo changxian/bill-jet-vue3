@@ -1,5 +1,5 @@
 <template>
-  <a-row :class="['p-4']" :gutter="10">
+  <a-row :class="['p-4']" :gutter="10" style="overflow:hidden;">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%; overflow: auto">
         <left :id="form.id" />
@@ -7,9 +7,7 @@
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
-      <a-card :bordered="false" style="height: 100%">
-        <preview ref="preView" />
-      </a-card>
+      <preview ref="preView" />
     </a-col>
   </a-row>
 </template>
@@ -60,21 +58,6 @@
           this.form.id = newVal.id;
         },
         immediate: true, // 立即执行
-      },
-    },
-    emits: ['ok'],
-    computed: {
-      curPaperType() {
-        let type = 'other';
-        let types = this.paperTypes;
-        for (const key in types) {
-          let item = types[key];
-          let { width, height } = this.curPaper;
-          if (item.width === width && item.height === height) {
-            type = key;
-          }
-        }
-        return type;
       },
     },
     mounted() {
@@ -137,7 +120,11 @@
   };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+  :where(.css-dev-only-do-not-override-1hajlzy).ant-card .ant-card-body {
+    padding: 2px;
+    border-radius: 0 0 4px 4px;
+  }
   @import 'index.less';
   .goods-tbl-wrap {
     .ant-row {

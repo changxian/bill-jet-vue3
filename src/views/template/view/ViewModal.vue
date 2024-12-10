@@ -63,7 +63,7 @@
     }
   });
   //设置标题
-  const title = computed(() => (!unref(isUpdate) ? '' : !unref(isDetail) ? '' : ''));
+  const title = computed(() => (!unref(isUpdate) ? '预览' : !unref(isDetail) ? '预览' : '预览'));
   //表单提交事件
   async function handleSubmit() {
     registerForm.value.submitForm();
