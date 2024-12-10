@@ -2,8 +2,7 @@
   <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(230 243 255);">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%; overflow: auto">
-        <left :id="form.id" />
-<!--        <Left @select="onTreeSelect" :id="formData.id" />-->
+        <left @select="onTreeSelect" :id="form.id" />
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
@@ -63,6 +62,9 @@
     mounted() {
       hiprint = vuePluginHiprint.hiprint;
       defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+      this.template = {
+        ...tempData,
+      };
       this.init();
       this.preView();
     },
@@ -74,10 +76,9 @@
         });
         // 还原配置
         hiprint.setConfig();
-
         let panels = {
           // ...this.formData,
-          ...tempData,
+          ...this.template,
         };
         this.template = hiprintTemplate = new hiprint.PrintTemplate({
           template: panels,
@@ -98,6 +99,14 @@
       preView() {
         // this.$refs.preView.show(hiprintTemplate, this.formData.data);
         this.$refs.preView.show(hiprintTemplate, printData);
+      },
+      onTreeSelect(o) {
+        console.info(o);
+        if (o['data']) {
+          this.template = JSON.parse(o['data']);
+          this.init();
+          this.preView();
+        }
       },
       print() {
         this.doOperationWhenClientConnected(() => {

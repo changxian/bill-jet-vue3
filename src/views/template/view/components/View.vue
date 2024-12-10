@@ -3,12 +3,10 @@
     <!--查询区域-->
     <a-card style="width: 100%">
       <p>控制区域</p>
-      <p>Card content</p>
-      <p>Card content</p>
     </a-card>
     <!-- 预览 -->
-    <a-card style="width: 100%; margin-top: 5px">
-      <div id="preview_content_design" style="width: 100%"></div>
+    <a-card style="width: 100%; margin-top: 5px ">
+      <div id="preview_content_design" style="overflow-y: scroll"></div>
     </a-card>
   </div>
 </template>
