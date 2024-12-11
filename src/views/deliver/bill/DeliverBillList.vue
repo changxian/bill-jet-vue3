@@ -100,14 +100,14 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:edit-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="copyAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
@@ -124,26 +124,24 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" />-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
+        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
-        <span class="total_span">数量：{{totalCount}}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{weightColTitle}})：{{totalWeight}}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{areaColTitle}})：{{totalArea}}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{volumeColTitle}})：{{totalVolume}}</span>
-        <span class="total_span">金额：{{totalAmount}}</span>
-        <span class="total_span">已付款：{{totalPaymentAmount}}</span>
-        <span class="total_span">优惠：{{totalDiscountAmount}}</span>
-        <span class="total_span">未付款：{{totalDebtAmount}}</span>
+        <span class="total_span">数量：{{ totalCount }}</span>
+        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ totalWeight }}</span>
+        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ totalArea }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ totalVolume }}</span>
+        <span class="total_span">金额：{{ totalAmount }}</span>
+        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
+        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
+        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
       </p>
     </div>
 
@@ -155,7 +153,7 @@
         <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
       </a-spin>
     </div>
-    <RepayDetailDialog ref="repayDetailDialogRef"/>
+    <RepayDetailDialog ref="repayDetailDialogRef" />
   </div>
 </template>
 
@@ -184,7 +182,7 @@
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;
   }
-  const { createMessage, createConfirm } = useMessage();
+  const { createMessage } = useMessage();
   const repayDetailDialogRef = ref();
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -376,7 +374,7 @@
   /**
    * 新增事件
    */
-  function handleAdd() {
+  function copyAdd() {
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
@@ -385,9 +383,27 @@
     registerModal.value.copyAdd(row);
   }
   /**
+   * 打印预览
+   */
+  function printPreview() {
+
+  }
+  /**
+   * 打印
+   */
+  function print() {
+
+  }
+  /**
    * 编辑事件
    */
   function handleEdit(record: Recordable) {
+    if (!record.id) {
+      if (selectedRowKeys.value.length === 0) {
+        return createMessage.warning('请先选择数据');
+      }
+      record = selectedRows.value[0];
+    }
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }

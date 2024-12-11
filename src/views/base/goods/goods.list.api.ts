@@ -4,6 +4,7 @@ enum Api {
   treeList = '/bill/goods/queryGoodsTreeList',
   searchBy = '/bill/goods/category/searchBy',
   editCategory = '/bill/goods/editCategory',
+  addStockRecord = '/system/goodsInventoryRecord/add',
 }
 
 /**
@@ -21,4 +22,11 @@ export const searchByKeywords = (params) => defHttp.get({ url: Api.searchBy, par
  */
 export const editCategory = (params) => {
   return defHttp.post({ url: Api.editCategory, params }, { isTransformResponse: false });
+};
+
+/**
+ * 修改商品的库存
+ */
+export const addStockRecord = (params) => {
+  return defHttp.post({ url: Api.addStockRecord, params }, { isTransformResponse: false });
 };

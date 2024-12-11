@@ -79,10 +79,9 @@
             </a-select-option>
           </a-select>
         </p>
-        <p style="margin: 18px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">数量：</span><a-input style="width: 400px" v-model:value="stock" allow-clear></a-input></p>
+        <p style="margin: 18px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">数量：</span><a-input style="width: 400px" v-model:value="quantity" allow-clear></a-input></p>
         <p style="margin: 18px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">备注：</span><a-textarea style="width: 400px" v-model:value="remark" allow-clear></a-textarea></p>
       </div>
-
     </div>
   </j-modal>
 </template>
@@ -91,7 +90,7 @@
   import { ref, defineExpose } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { allList } from '../category.api';
-  import { editCategory } from '../goods.list.api';
+  import { editCategory, addStockRecord } from '../goods.list.api';
   import { stockOptions } from '../goods.list.data';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -108,7 +107,7 @@
   const goodsName = ref('');
   const mode1 = ref('');
   const mode2 = ref('');
-  const stock = ref<number>(0);
+  const quantity = ref<number>(0);
   const remark = ref('');
 
   const titleObj = {
@@ -123,9 +122,9 @@
   function show(type, data){
     title.value = titleObj[type];
     modifyType.value = type;
-    if (type == 'updateStocks') {
-      disableSubmit.value = true;
-    }
+    // if (type == 'updateStocks') {
+    //   disableSubmit.value = true;
+    // }
     goodsName.value = data.name;
     row = data;
     visible.value = true;
@@ -142,15 +141,15 @@
     let res: any;
     // 修改商品类别
     if (modifyType.value === 'category') {
-      res = await editCategory({ 'id': row.id, 'categoryId': category.value });
+      res = await editCategory({ id: row.id, categoryId: category.value });
     } else if (modifyType.value === 'updateCost') {
       handleCancel();
     } else if (modifyType.value === 'updateStocks') {
-      const params = { productId: row.id, mode1: mode1.value, mode2: mode2.value, stock: stock.value, remark: remark.value };
-      console.log(params);
-    //   res = await editInfo(params)
+      const params = { productId: row.id, mode1: mode1.value, mode2: mode2.value, quantity: quantity.value, remark: remark.value };
+      res = await addStockRecord(params);
+      console.log(params, res);
     }
-    // createMessage.success(res.message);
+    createMessage.success(res.message);
     handleCancel();
     emit('refresh');
   }

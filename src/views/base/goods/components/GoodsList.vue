@@ -39,6 +39,7 @@
     <!-- 商品信息修改 -->
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <!-- 商品库存明细 -->
+    <GoodsInventoryRecordList @register="registerRecordModal" />
   </div>
 </template>
 
@@ -54,6 +55,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
   import ModifyModal from './ModifyModal.vue';
+  import GoodsInventoryRecordList from '../GoodsInventoryRecordList.vue';
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
@@ -62,6 +64,7 @@
   //注册model
   const [registerModal, { openModal }] = useModal();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
+  const [registerRecordModal, { openModal: recordModal }] = useModal();
 
   const props = defineProps({
     data: {
@@ -202,14 +205,12 @@
    * 库存明细[可以选择一个商品 或者 不选商品]
    */
   function handleStockDetail() {
-    if (unref(selectedRowKeys).length > 1) {
-      createMessage.warn('请选择一个商品');
-      return;
+    let goodsName = '';
+    if (unref(selectedRowKeys).length > 0) {
+      goodsName = selectedRows.value[0].name;
     }
-    openModal(true, {
-      row,
-      showFooter: true,
-      categoryId: categoryId.value,
+    recordModal(true, {
+      goodsName: unref(goodsName),
     });
   }
   /**

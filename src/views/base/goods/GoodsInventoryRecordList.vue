@@ -1,190 +1,154 @@
 <template>
-  <div>
-    <!--引用表格-->
-   <BasicTable @register="registerTable" :rowSelection="rowSelection">
-     <!--插槽:table标题-->
+  <BasicModal v-bind="$attrs" title="库存明细" @register="registerModal" width="1400px" :showCancelBtn="false" :showOkBtn="false">
+    <div class="jeecg-basic-table-form-container">
+      <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-row :gutter="24">
+          <FastDate v-model:modelValue="fastDateParam" />
+          <a-col :lg="6">
+            <a-form-item label="名称" name="goodsName">
+              <a-input v-model:value="queryParam.goodsName" placeholder="请输入商品名称" allow-clear></a-input>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :lg="6">
+              <a-form-item label="方式" name="mode1">
+                <a-select v-model:value="queryParam.mode1" @change="handleMode1Change" allow-clear placeholder="请选择">
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option v-for="mode in stockOptions.mode1" :key="mode.code" :value="mode.code">
+                    {{ mode.name }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
+              <a-form-item label="类型" name="mode2">
+                <a-select v-model:value="queryParam.mode2" allow-clear placeholder="请选择">
+                  <a-select-option value="">所有</a-select-option>
+                  <a-select-option v-for="mode in stockOptions.mode2" :key="mode.code" :value="mode.code">
+                    {{ mode.name }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                  {{ toggleSearchStatus ? '收起' : '展开' }}
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
+                </a>
+              </a-col>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+    <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-          <a-button type="primary" v-auth="'system:jxc_goods_inventory_record:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-          <a-button  type="primary" v-auth="'system:jxc_goods_inventory_record:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-          <j-upload-button type="primary" v-auth="'system:jxc_goods_inventory_record:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-          <a-dropdown v-if="selectedRowKeys.length > 0">
-              <template #overlay>
-                <a-menu>
-                  <a-menu-item key="1" @click="batchHandleDelete">
-                    <Icon icon="ant-design:delete-outlined"></Icon>
-                    删除
-                  </a-menu-item>
-                </a-menu>
-              </template>
-              <a-button v-auth="'system:jxc_goods_inventory_record:deleteBatch'">批量操作
-                <Icon icon="mdi:chevron-down"></Icon>
-              </a-button>
-        </a-dropdown>
-        <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
+        <a-button type="primary" v-auth="'system:jxc_goods_inventory_record:add'" @click="handleRollBack" preIcon="ant-design:plus-outlined"> 撤销</a-button>
       </template>
        <!--操作栏-->
-      <template #action="{ record }">
+<!--      <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
-      </template>
+      </template>-->
       <!--字段回显插槽-->
-      <template v-slot:bodyCell="{ column, record, index, text }">
-      </template>
+<!--      <template v-slot:bodyCell="{ column, record, index, text }">-->
+<!--      </template>-->
     </BasicTable>
-    <!-- 表单区域 -->
-    <GoodsInventoryRecordModal @register="registerModal" @success="handleSuccess"></GoodsInventoryRecordModal>
-  </div>
+  </BasicModal>
 </template>
 
 <script lang="ts" name="system-goodsInventoryRecord" setup>
-  import {ref, reactive, computed, unref} from 'vue';
-  import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {useModal} from '/@/components/Modal';
-  import { useListPage } from '/@/hooks/system/useListPage'
-  import GoodsInventoryRecordModal from './components/GoodsInventoryRecordModal.vue'
-  import {columns, searchFormSchema, superQuerySchema} from './GoodsInventoryRecord.data';
-  import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './GoodsInventoryRecord.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
-  import { useUserStore } from '/@/store/modules/user';
-  const queryParam = reactive<any>({});
-  const checkedKeys = ref<Array<string | number>>([]);
-  const userStore = useUserStore();
-  //注册model
-  const [registerModal, {openModal}] = useModal();
+  import { ref, reactive } from 'vue';
+  import { BasicTable } from '/@/components/Table';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns } from './GoodsInventoryRecord.data';
+  import { list, deleteOne, getExportUrl } from './GoodsInventoryRecord.api';
+  import FastDate from '@/components/FastDate.vue';
+  import { stockOptions } from './GoodsInventoryRecord.data';
+  const queryParam = reactive<any>({ goodsName: '' });
+  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const formRef = ref();
+  const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
-  const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
-      tableProps:{
-           title: 'jxc_goods_inventory_record',
-           api: list,
-           columns,
-           canResize:false,
-           formConfig: {
-              //labelWidth: 120,
-              schemas: searchFormSchema,
-              autoSubmitOnEnter:true,
-              showAdvancedButton:true,
-              fieldMapToNumber: [
-              ],
-              fieldMapToTime: [
-              ],
-            },
-           actionColumn: {
-               width: 120,
-               fixed:'right'
-            },
-            beforeFetch: (params) => {
-              return Object.assign(params, queryParam);
-            },
+  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
+    tableProps: {
+      title: 'jxc_goods_inventory_record',
+      api: list,
+      columns,
+      canResize: false,
+      showIndexColumn: true,
+      beforeFetch: (params) => {
+        return Object.assign(params, queryParam, fastDateParam);
       },
-       exportConfig: {
-            name:"jxc_goods_inventory_record",
-            url: getExportUrl,
-            params: queryParam,
-          },
-          importConfig: {
-            url: getImportUrl,
-            success: handleSuccess
-          },
-  })
+    },
+    exportConfig: {
+      name: '库存明细',
+      url: getExportUrl,
+      params: queryParam,
+    },
+  });
 
-  const [registerTable, {reload},{ rowSelection, selectedRowKeys }] = tableContext
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const labelCol = reactive({
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
+  });
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
+  // const goodsName = ref<string>('');
+  //表单赋值
+  const [registerModal, { closeModal }] = useModalInner(async (data) => {
+    queryParam.goodsName = data.goodsName;
+    searchQuery();
+  });
 
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
+  function handleMode1Change(value) {
+    stockOptions.mode2 = stockOptions.mode1Map[value] || [];
+  }
 
   /**
-   * 高级查询事件
+   * 撤销事件
    */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
+  async function handleRollBack(record) {
+    await deleteOne({id: record.id}, handleSuccess);
+  }
+
+  /**
+   * 查询
+   */
+  function searchQuery() {
     reload();
   }
-   /**
-    * 新增事件
-    */
-  function handleAdd() {
-     openModal(true, {
-       isUpdate: false,
-       showFooter: true,
-     });
-  }
-   /**
-    * 编辑事件
-    */
-  function handleEdit(record: Recordable) {
-     openModal(true, {
-       record,
-       isUpdate: true,
-       showFooter: true,
-     });
-   }
-   /**
-    * 详情
+
+  /**
+   * 重置
    */
-  function handleDetail(record: Recordable) {
-     openModal(true, {
-       record,
-       isUpdate: true,
-       showFooter: false,
-     });
-   }
-   /**
-    * 删除事件
-    */
-  async function handleDelete(record) {
-     await deleteOne({id: record.id}, handleSuccess);
-   }
-   /**
-    * 批量删除事件
-    */
-  async function batchHandleDelete() {
-     await batchDelete({ids: selectedRowKeys.value}, handleSuccess);
-   }
-   /**
-    * 成功回调
-    */
-  function handleSuccess() {
-      (selectedRowKeys.value = []) && reload();
-   }
-   /**
-      * 操作栏
-      */
-  function getTableAction(record){
-       return [
-         {
-           label: '编辑',
-           onClick: handleEdit.bind(null, record),
-           auth: 'system:jxc_goods_inventory_record:edit'
-         }
-       ]
-   }
-     /**
-        * 下拉操作栏
-        */
-  function getDropDownAction(record){
-       return [
-         {
-           label: '详情',
-           onClick: handleDetail.bind(null, record),
-         }, {
-           label: '删除',
-           popConfirm: {
-             title: '是否确认删除',
-             confirm: handleDelete.bind(null, record),
-             placement: 'topLeft',
-           },
-           auth: 'system:jxc_goods_inventory_record:delete'
-         }
-       ]
-   }
-
-
+  function searchReset() {
+    formRef.value.resetFields();
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
+    selectedRowKeys.value = [];
+    //刷新数据
+    reload();
+  }
 </script>
 
 <style lang="less" scoped>
   :deep(.ant-picker),:deep(.ant-input-number){
     width: 100%;
+  }
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
   }
 </style>
