@@ -238,8 +238,8 @@
   });
   function init() {
     fieldsList({ category: 1, match: '0' }).then((res) => {
-      formData.dynamicCustFields = res['4'];
-      formData.dynamicFields = res['6'];
+      formData.dynamicCustFields = res['4'].filter((item) => item.id != null);
+      formData.dynamicFields = res['6'].filter((item) => item.id != null);
     });
     queryNewNo({ category: 3 }).then((res) => {
       if (formData.billNo == '') {
