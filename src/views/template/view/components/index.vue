@@ -1,5 +1,5 @@
 <template>
-  <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: #b5b4b4; width: 1192px">
+  <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(236 236 236); width: 1192px">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
         <left @select="onTreeSelect" :id="form.id" />
