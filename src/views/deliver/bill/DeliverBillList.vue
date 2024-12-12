@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" />
+          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end" />
           <a-col :lg="4">
             <a-form-item label="状态" name="status">
               <a-select v-model:value="queryParam.status" allow-clear>
@@ -177,7 +177,7 @@
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
   const route = useRoute();
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({timeType:'thisMonth', billDate_begin: '', billDate_end: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;

@@ -28,17 +28,17 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="客户名称" id="DeliverBillForm-custId" name="custId">
+              <a-form-item label="客户名" id="DeliverBillForm-custId" name="custId">
                 <j-select-cust v-model:value="queryParam.custId" @change="changeCust" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="客户电话"  id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户电话" allow-clear></a-input>
+              <a-form-item label="手机" id="DeliverBillForm-custPhone" name="custPhone">
+                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户手机" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="客户联系人" id="DeliverBillForm-custContact" name="custContact">
+              <a-form-item label="联系人" id="DeliverBillForm-custContact" name="custContact">
                 <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -81,7 +81,7 @@
   import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
 
   function changeCompany(val, selectRows) {
@@ -93,7 +93,7 @@
     if (selectRows?.length > 0) {
       queryParam.custId = selectRows[0].id;
       queryParam.custName = selectRows[0].orgName;
-      queryParam.custPhone = selectRows[0].phone;
+      queryParam.custPhone = selectRows[0].cellPhone;
       queryParam.custContact = selectRows[0].contact;
     }
   }
