@@ -5,6 +5,7 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/deliver/bill/deliverBill/list',
+  listCount = '/deliver/bill/deliverBill/listCount',
   save = '/deliver/bill/deliverBill/add',
   edit = '/deliver/bill/deliverBill/edit',
   deleteOne = '/deliver/bill/deliverBill/delete',
@@ -58,6 +59,12 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 列表总计统计接口
+ * @param params
+ */
+export const listCount = (params) => defHttp.get({ url: Api.listCount, params });
 
 /**
  * 送货单详情接口
