@@ -1,11 +1,11 @@
 <template>
-  <div style="overflow: hidden; height: 780px">
+  <div style="overflow: hidden; height: 630px">
     <!--查询区域-->
     <a-card style="width: 100%; height: 80px">
       <p>控制区域</p>
     </a-card>
     <!-- 预览 -->
-    <a-card style="width: 100%; margin-top: 5px; height: 700px; overflow-y: scroll">
+    <a-card style="width: 100%; margin-top: 5px; height: 550px; overflow-y: scroll">
       <div id="preview_content_design"></div>
     </a-card>
   </div>
