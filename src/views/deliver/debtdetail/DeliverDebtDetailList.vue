@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end" />
+          <FastDate v-model:modelValue="fastDateParam" />
           <template v-if="toggleSearchStatus">
             <a-col :lg="5">
               <a-form-item name="type">
@@ -73,7 +73,7 @@
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './DeliverDebtDetail.data';
-  import { list, getExportUrl } from './DeliverDebtDetail.api';
+  import { list, listCount, getExportUrl } from './DeliverDebtDetail.api';
   import DeliverDebtDetailModal from './components/DeliverDebtDetailModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
@@ -81,7 +81,7 @@
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ timeType: 'month3', billDate_begin: '', billDate_end: '' });
+  const fastDateParam = reactive<any>({ timeType: 'month3', startDate: '', endDate: '' });
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
@@ -123,16 +123,7 @@
       },
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        totalAmount.value = 0;
-        totalPaymentAmount.value = 0;
-        totalDiscountAmount.value = 0;
-        totalDebtAmount.value = 0;
-        resultItems.forEach((item) => {
-          totalAmount.value += item.amount;
-          totalPaymentAmount.value += item.paymentAmount;
-          totalDiscountAmount.value += item.discountAmount;
-          totalDebtAmount.value += item.debtAmount;
-        });
+        listTotalCount();
       },
     },
     exportConfig: {
@@ -154,6 +145,21 @@
   });
 
   /**
+   * 列表合计
+   */
+  function listTotalCount() {
+    totalAmount.value = 0;
+    totalPaymentAmount.value = 0;
+    totalDiscountAmount.value = 0;
+    totalDebtAmount.value = 0;
+    listCount(Object.assign(queryParam, fastDateParam, { custId: custId.value })).then((res) => {
+      totalAmount.value = res.amount;
+      totalPaymentAmount.value = res.paymentAmount;
+      totalDiscountAmount.value = res.discountAmount;
+      totalDebtAmount.value = res.debtAmount;
+    });
+  }
+  /**
    * 成功回调
    */
   function handleSuccess() {
@@ -165,6 +171,7 @@
    */
   function searchQuery() {
     reload();
+    listTotalCount();
   }
 
   /**
@@ -177,6 +184,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
+    listTotalCount();
   }
 
   let rangeField = 'billDate,';

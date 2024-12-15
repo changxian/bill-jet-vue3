@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end" />
+          <FastDate v-model:modelValue="fastDateParam" />
           <a-col :lg="4">
             <a-form-item label="状态" name="status">
               <a-select v-model:value="queryParam.status" allow-clear>
@@ -162,7 +162,7 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
-  import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
+  import { list, listCount, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RepayDetailDialog from '@/views/deliver/debt/components/RepayDetailDialog.vue';
@@ -177,7 +177,7 @@
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
   const route = useRoute();
-  const fastDateParam = reactive<any>({timeType:'thisMonth', billDate_begin: '', billDate_end: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;
@@ -247,30 +247,7 @@
       summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        totalCount.value = 0;
-        totalWeight.value = 0;
-        totalArea.value = 0;
-        totalVolume.value = 0;
-        totalAmount.value = 0;
-        totalPaymentAmount.value = 0;
-        totalDiscountAmount.value = 0;
-        totalDebtAmount.value = 0;
-        totalHisDebtAmount.value = 0;
-        totalCostAmount.value = 0;
-        totalProfitAmount.value = 0;
-        resultItems.forEach((item) => {
-          totalCount.value += item.count;
-          totalWeight.value += item.weight;
-          totalArea.value += item.area;
-          totalVolume.value += item.volume;
-          totalAmount.value += item.amount;
-          totalPaymentAmount.value += item.paymentAmount;
-          totalDiscountAmount.value += item.discountAmount;
-          totalDebtAmount.value += item.debtAmount;
-          totalHisDebtAmount.value += item.hisDebtAmount;
-          totalCostAmount.value += item.costAmount;
-          totalProfitAmount.value += item.profitAmount;
-        });
+        listTotalCount();
       },
       rowSelection: { type: 'radio' },
     },
@@ -341,6 +318,36 @@
         profitAmount: totalProfitAmount.value,
       },
     ];
+  }
+
+  /**
+   * 列表合计
+   */
+  function listTotalCount() {
+    totalCount.value = 0;
+    totalWeight.value = 0;
+    totalArea.value = 0;
+    totalVolume.value = 0;
+    totalAmount.value = 0;
+    totalPaymentAmount.value = 0;
+    totalDiscountAmount.value = 0;
+    totalDebtAmount.value = 0;
+    totalHisDebtAmount.value = 0;
+    totalCostAmount.value = 0;
+    totalProfitAmount.value = 0;
+    listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
+      totalCount.value = res.count;
+      totalWeight.value = res.weight;
+      totalArea.value = res.area;
+      totalVolume.value = res.volume;
+      totalAmount.value = res.amount;
+      totalPaymentAmount.value = res.paymentAmount;
+      totalDiscountAmount.value = res.discountAmount;
+      totalDebtAmount.value = res.debtAmount;
+      totalHisDebtAmount.value = res.hisDebtAmount;
+      totalCostAmount.value = res.costAmount;
+      totalProfitAmount.value = res.profitAmount;
+    });
   }
   // 删除数据
   function handleDel() {
@@ -492,6 +499,7 @@
    */
   function searchQuery() {
     reload();
+    listTotalCount();
   }
 
   /**
@@ -502,6 +510,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
+    listTotalCount();
   }
 
   /**
