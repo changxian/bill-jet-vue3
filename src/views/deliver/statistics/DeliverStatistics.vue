@@ -3,7 +3,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam"   />
+          <FastDate v-model:modelValue="fastDateParam" />
           <a-col :lg="6">
             <a-form-item label="单类型" name="type">
               <a-select v-model:value="queryParam.type" allow-clear>

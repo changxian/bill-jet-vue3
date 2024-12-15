@@ -12,16 +12,16 @@
         <div class="jeecg-basic-table-form-container">
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
             <div class="query-wrap">
-              <a-select
+<!--              <a-select
                 ref="select"
                 v-model:value="queryType"
                 style="width:120px"
               >
-                <a-select-option value="custName">名称</a-select-option>
-                <a-select-option value="custPhone">手机</a-select-option>
-                <a-select-option value="custContact">联系人</a-select-option>
-              </a-select>
-              <a-input placeholder="请输入" v-model:value="queryTypeValue" allow-clear ></a-input>
+                <a-select-option value="customerName">名称</a-select-option>
+                <a-select-option value="customerPhone">手机</a-select-option>
+                <a-select-option value="customerContact">联系人</a-select-option>
+              </a-select>-->
+              <a-input placeholder="请输入手机/名称/联系人" v-model:value="queryTypeValue" allow-clear></a-input>
               <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
             </div>
           </a-form>
@@ -31,16 +31,22 @@
           <template v-slot:bodyCell="{ column, record, index, text }">
           </template>
         </BasicTable>
+        <!--<div style="position: relative; height: 20px; padding: 0 0 0 18px">
+          <p :class="{'p_san': hasPan}" >总计
+            <span class="total_span">送货欠：{{ debtTotalAmount }}</span>
+            <span class="total_span">退货欠：{{ backDebtTotalAmount }}</span>
+          </p>
+        </div>-->
         <!-- 表单区域 -->
         <DeliverDebtModal ref="registerModal" @success="handleSuccess"></DeliverDebtModal>
       </div>
       <div class="right-tbl">
-        <DeliverDebtDetailList ref="deliverDebtDetailListRef"/>
+        <DeliverDebtDetailList ref="deliverDebtDetailListRef" />
       </div>
     </div>
-    <DeptDialog ref="deptDialogRef"/>
-    <OneKeyDeptDialog ref="oneKeyDeptDialogRef"/>
-    <RepayDetailDialog ref="repayDetailDialogRef"/>
+    <DeptDialog ref="deptDialogRef" />
+    <OneKeyDeptDialog ref="oneKeyDeptDialogRef" />
+    <RepayDetailDialog ref="repayDetailDialogRef" />
   </div>
 </template>
 
@@ -58,7 +64,7 @@
   import DeliverDebtDetailList from '/@/views/deliver/debtdetail/DeliverDebtDetailList.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  const queryType = ref('custName');
+  // const queryType = ref('customerName');
   const queryTypeValue = ref('');
   const deliverDebtDetailListRef = ref('deliverDebtDetailListRef');
   const { createMessage } = useMessage();
@@ -70,6 +76,13 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
+
+  // 送货总欠款
+  const debtTotalAmount = ref(0);
+  // 退货总欠款
+  const backDebtTotalAmount = ref(0);
+  const hasPan = ref(true);
+
   //注册table数据
   const { prefixCls, tableContext, onExportXls } = useListPage({
     tableProps: {
@@ -89,9 +102,21 @@
       },
       beforeFetch: async (params) => {
         const queryVal = {
-          [queryType.value]: queryTypeValue.value,
+          // [queryType.value]: queryTypeValue.value,
+          queryType: queryTypeValue.value,
         };
         return Object.assign(params, queryVal);
+      },
+      summaryFunc: summaryFunc,
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        if (resultItems.length > 0) rowClick(resultItems[0]);
+        debtTotalAmount.value = 0;
+        backDebtTotalAmount.value = 0;
+        resultItems.forEach((item) => {
+          debtTotalAmount.value += item.deliverDebtAmount;
+          backDebtTotalAmount.value += item.returnDebtAmount;
+        });
       },
     },
     exportConfig: {
@@ -112,6 +137,17 @@
     sm: 20,
   });
 
+  // 增加合计行
+  function summaryFunc(resultItems) {
+    return [
+      {
+        _row: '合计',
+        _index: '合计',
+        deliverDebtAmount: debtTotalAmount.value,
+        returnDebtAmount: backDebtTotalAmount.value,
+      },
+    ];
+  }
   function rowClick(record) {
     console.log('record:');
     deliverDebtDetailListRef.value.searchByCustId(record.id);
@@ -165,7 +201,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -179,6 +215,11 @@
 </script>
 
 <style lang="less" scoped>
+  .ant-spin-container {
+    ul {
+      margin-top: 40px;
+    }
+  }
   .p-2 {
     background-color: #fff;
     button {
@@ -194,6 +235,13 @@
       flex: 1;
       overflow-x: auto;
     }
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -75px;
   }
   .jeecg-basic-table-form-container {
     padding: 0;

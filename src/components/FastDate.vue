@@ -1,7 +1,7 @@
 <template>
   <a-col :lg="6" :md="8" :sm="12">
     <a-form-item name="timeType" label="快速日期">
-      <a-select v-model:value="queryParam.timeType" style="width: 100%" placeholder="请选择" :options="options" @change="handleChange" allowClear></a-select>
+      <a-select v-model:value="queryParam.timeType" style="width: 90%; margin-left: 8%" placeholder="请选择" :options="options" @change="handleChange" allowClear></a-select>
     </a-form-item>
   </a-col>
   <a-col :lg="6">

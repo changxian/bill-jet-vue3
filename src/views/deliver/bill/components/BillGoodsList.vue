@@ -1,12 +1,12 @@
   <template>
   <div>
     <a-row>
-      <a-col :span="8" style="position:relative">
+      <a-col :span="8" style="position: relative">
         <a-form-item label="商品搜索" id="DeliverBillForm-companyId" name="goodsName">
           <div style="display: flex">
             <a-input v-model:value="goodsName" placeholder="条码/编号/名称/规格" />
             <a-button type="primary" style="margin-left: 10px" @click="showModal">选择</a-button>
-            <div v-if="goodsNameRepeat" style="color:red;position:absolute;left:104%;width:150px;top:6px"> 商品不可重复选择</div>
+            <div v-if="goodsNameRepeat" style="color: red; position: absolute; left: 104%; width: 150px; top: 6px"> 商品不可重复选择</div>
           </div>
         </a-form-item>
       </a-col>

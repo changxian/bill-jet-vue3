@@ -93,7 +93,7 @@ export const columns: BasicColumn[] = [
   {
     title: '制单员',
     align: 'center',
-    dataIndex: 'createName',
+    dataIndex: 'operatorName',
   },
   {
     title: '业务员',

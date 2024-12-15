@@ -4,13 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end"/>
-          <!--<a-col :lg="6">
-            <a-form-item name="billDate">
-              <template #label><span title="日期">日期</span></template>
-              <a-range-picker showTime value-format="YYYY-MM-DD HH:mm:ss" v-model:value="queryParam.billDate" class="query-group-cust"/>
-            </a-form-item>
-          </a-col>-->
+          <FastDate v-model:modelValue="fastDateParam" startDateKey="billDate_begin" endDateKey="billDate_end" />
           <template v-if="toggleSearchStatus">
             <a-col :lg="5">
               <a-form-item name="type">
@@ -25,27 +19,21 @@
             <a-col :lg="5">
               <a-form-item name="billNo">
                 <template #label><span title="单号">单号</span></template>
-                <a-input placeholder="请输入单号" v-model:value="queryParam.billNo" allow-clear ></a-input>
+                <a-input placeholder="请输入单号" v-model:value="queryParam.blNo" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="7">
               <a-form-item name="operatorName">
                 <template #label><span title="制单人">制单人</span></template>
-                <a-input placeholder="请输入制单人" v-model:value="queryParam.operatorName" allow-clear ></a-input>
+                <a-input placeholder="请输入制单人" v-model:value="queryParam.opName" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="7">
               <a-form-item name="userName">
                 <template #label><span title="业务员">业务员</span></template>
-                <a-input placeholder="请输入业务员" v-model:value="queryParam.userName" allow-clear ></a-input>
+                <a-input placeholder="请输入业务员" v-model:value="queryParam.uName" allow-clear></a-input>
               </a-form-item>
             </a-col>
-            <!--<a-col :lg="6">
-              <a-form-item name="remark">
-                <template #label><span title="备注">备注</span></template>
-                <a-input placeholder="请输入备注" v-model:value="queryParam.remark" allow-clear ></a-input>
-              </a-form-item>
-            </a-col>-->
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
@@ -67,6 +55,14 @@
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+      <p :class="{'p_san': hasPan}" >总计
+        <span class="total_span">金额：{{ totalAmount }}</span>
+        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
+        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
+        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
+      </p>
+    </div>
     <!-- 表单区域 -->
     <DeliverDebtDetailModal ref="registerModal" @success="handleSuccess"></DeliverDebtDetailModal>
   </div>
@@ -78,19 +74,28 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './DeliverDebtDetail.data';
   import { list, getExportUrl } from './DeliverDebtDetail.api';
-  import DeliverDebtDetailModal from './components/DeliverDebtDetailModal.vue'
+  import DeliverDebtDetailModal from './components/DeliverDebtDetailModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
   import FastDate from '@/components/FastDate.vue';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({timeType:'month3', billDate_begin: '', billDate_end: '' });
+  const fastDateParam = reactive<any>({ timeType: 'month3', billDate_begin: '', billDate_end: '' });
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
   const custId = ref('');
- 
+
+  // 总计：金额
+  const totalAmount = ref(0);
+  // 总计：已付款
+  const totalPaymentAmount = ref(0);
+  // 总计：优惠
+  const totalDiscountAmount = ref(0);
+  // 总计：未付款
+  const totalDebtAmount = ref(0);
+  const hasPan = ref(true);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
@@ -101,6 +106,7 @@
       useSearchForm: false,
       showActionColumn: false,
       clickToRowSelect: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       // rowSelection: {
       //   type: 'radio'
       // },
@@ -113,7 +119,20 @@
         selectedRows.value = [];
         //let rangerQuery = await setRangeQuery();
         //return Object.assign(params, rangerQuery, {custId: custId.value});
-        return Object.assign(params, fastDateParam, { custId: custId.value });
+        return Object.assign(params, queryParam, fastDateParam, { custId: custId.value });
+      },
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        totalAmount.value = 0;
+        totalPaymentAmount.value = 0;
+        totalDiscountAmount.value = 0;
+        totalDebtAmount.value = 0;
+        resultItems.forEach((item) => {
+          totalAmount.value += item.amount;
+          totalPaymentAmount.value += item.paymentAmount;
+          totalDiscountAmount.value += item.discountAmount;
+          totalDebtAmount.value += item.debtAmount;
+        });
       },
     },
     exportConfig: {
@@ -147,7 +166,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -161,7 +180,7 @@
   }
 
   let rangeField = 'billDate,';
-  
+
   /**
    * 设置范围查询条件
    */
@@ -222,5 +241,12 @@
     :deep(.ant-picker),:deep(.ant-input-number){
       width: 100%;
     }
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
   }
 </style>

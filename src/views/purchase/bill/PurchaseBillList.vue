@@ -96,8 +96,8 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:edit-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="copyAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
@@ -156,11 +156,10 @@
 
 <script lang="ts" name="purchase.bill-purchaseBill" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './PurchaseBill.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl, billDetail } from './PurchaseBill.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseBillModal from './components/PurchaseBillModal.vue';
   import ModifyModal from './components/ModifyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
@@ -176,7 +175,7 @@
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;
   }
-  const { createMessage, createConfirm } = useMessage();
+  const { createMessage } = useMessage();
   const repayDetailDialogRef = ref();
   const formRef = ref();
   const queryParam = reactive<any>({});
@@ -209,7 +208,7 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
       },
-      summaryFunc:summaryFunc,
+      summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value= resultItems.length>0;
         totalCount.value=0;
@@ -226,7 +225,6 @@
 
         });
       },
-
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
@@ -247,12 +245,12 @@
     xxl: 4,
   });
   function handleDel() {
-      if(selectedRowKeys.value.length === 0){
-        return createMessage.warning('请先选择数据');
-      }
-      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    if(selectedRowKeys.value.length === 0){
+      return createMessage.warning('请先选择数据');
+    }
+    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-  function summaryFunc(resultItems)  {
+  function summaryFunc(resultItems) {
     return [{
       _row:'合计',
       _index:'合计',
@@ -264,14 +262,14 @@
     }]
   }
   function handleModify(type) {
-      if(selectedRowKeys.value.length === 0){
-        return createMessage.warning('请先选择数据');
-      }
-      const row = selectedRows.value[0]
-      if(type === 'status' && row.status === 5){
-        return createMessage.warning('已经审核了，就不能修改了');
-      }
-      modifyModalRef.value.show(type, row)
+    if(selectedRowKeys.value.length === 0){
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0]
+    if(type === 'status' && row.status === 5){
+      return createMessage.warning('已经审核了，就不能修改了');
+    }
+    modifyModalRef.value.show(type, row)
   }
   const wrapperCol = reactive({
     xs: 24,
@@ -298,7 +296,7 @@
   /**
    * 新增事件
    */
-  function handleAdd() {
+  function copyAdd() {
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
@@ -306,15 +304,26 @@
     const row = selectedRows.value[0];
     registerModal.value.copyAdd(row);
   }
-  
+
+  /**
+   * 新增事件
+   */
+  function handleAdd() {
+  }
   /**
    * 编辑事件
    */
   function handleEdit(record: Recordable) {
+    if (!record.id) {
+      if (selectedRowKeys.value.length === 0) {
+        return createMessage.warning('请先选择数据');
+      }
+      record = selectedRows.value[0];
+    }
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 详情
    */
