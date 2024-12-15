@@ -55,7 +55,7 @@
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './DeliverDebt.data';
-  import { list, getExportUrl } from './DeliverDebt.api';
+  import { list, getExportUrl, listCount } from "./DeliverDebt.api";
   import DeliverDebtModal from './components/DeliverDebtModal.vue';
   import DeptDialog from './components/DeptDialog.vue';
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue';
@@ -64,7 +64,7 @@
   import DeliverDebtDetailList from '/@/views/deliver/debtdetail/DeliverDebtDetailList.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  // const queryType = ref('customerName');
+  // const queryType = ref('');
   const queryTypeValue = ref('');
   const deliverDebtDetailListRef = ref('deliverDebtDetailListRef');
   const { createMessage } = useMessage();
@@ -111,12 +111,7 @@
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
         if (resultItems.length > 0) rowClick(resultItems[0]);
-        debtTotalAmount.value = 0;
-        backDebtTotalAmount.value = 0;
-        resultItems.forEach((item) => {
-          debtTotalAmount.value += item.deliverDebtAmount;
-          backDebtTotalAmount.value += item.returnDebtAmount;
-        });
+        listTotalCount();
       },
     },
     exportConfig: {
@@ -152,6 +147,29 @@
     console.log('record:');
     deliverDebtDetailListRef.value.searchByCustId(record.id);
   }
+
+  /**
+   * 列表合计
+   */
+  function listTotalCount() {
+    debtTotalAmount.value = 0;
+    backDebtTotalAmount.value = 0;
+    listCount({ queryType: queryTypeValue.value }).then((res) => {
+      debtTotalAmount.value = res.deliverDebtAmount;
+      backDebtTotalAmount.value = res.returnDebtAmount;
+    });
+  }
+  /**
+   * 删除事件
+   */
+  // function listCount() {
+  //   await listCount({ 'queryType': queryTypeValue.value }).then((res) => {
+  //     debtTotalAmount.value = res.;
+  //     backDebtTotalAmount.value = 0;
+  //     debtTotalAmount.value += item.deliverDebtAmount;
+  //     backDebtTotalAmount.value += item.returnDebtAmount;
+  //   });
+  // }
 
   function debtHandle() {
     if (selectedRows.value.length === 0) {
@@ -200,6 +218,7 @@
    */
   function searchQuery() {
     reload();
+    listTotalCount();
   }
 
   /**
@@ -210,6 +229,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
+    listTotalCount();
   }
 
 </script>
