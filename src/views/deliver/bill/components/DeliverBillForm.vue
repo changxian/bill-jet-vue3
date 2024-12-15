@@ -238,8 +238,8 @@
   });
   function init() {
     fieldsList({ category: 1, match: '0' }).then((res) => {
-      formData.dynamicCustFields = res['4'];
-      formData.dynamicFields = res['6'];
+      formData.dynamicCustFields = res['4'].filter((item) => item.id != null);
+      formData.dynamicFields = res['6'].filter((item) => item.id != null);
     });
     queryNewNo({ category: 3 }).then((res) => {
       if (formData.billNo == '') {
@@ -247,7 +247,6 @@
       }
     });
     defaultCom().then((res) => {
-      debugger;
       if (formData.companyId == '') {
         formData.companyId = res.id;
         formData.companyName = res.compName;
@@ -322,7 +321,6 @@
    * 新增
    */
   function add() {
-    debugger;
     edit({});
   }
 
@@ -333,7 +331,6 @@
     nextTick(() => {
       resetFields();
       const tmpData = {};
-      debugger;
       Object.keys(formData).forEach((key) => {
         if (record.hasOwnProperty(key)) {
           tmpData[key] = record[key];
@@ -417,6 +414,7 @@
     formData.dynamicCustFields = undefined;
     formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
+    init();
   }
   // 保存按钮点击事件
   function clickSave() {

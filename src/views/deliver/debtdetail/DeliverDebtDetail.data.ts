@@ -3,14 +3,14 @@ import { BasicColumn } from '/@/components/Table';
 //列表数据
 export const columns: BasicColumn[] = [
   {
-    title: '单号',
-    align: 'center',
-    dataIndex: 'billNo',
-  },
-  {
     title: '日期',
     align: 'center',
     dataIndex: 'billDate',
+  },
+  {
+    title: '单号',
+    align: 'center',
+    dataIndex: 'billNo',
   },
   {
     title: '欠款类型',
@@ -38,6 +38,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'debtAmount',
   },
   {
+    title: '制单员',
+    align: 'center',
+    dataIndex: 'operatorName',
+  },
+  {
     title: '送货车号',
     align: 'center',
     dataIndex: 'careNo',
@@ -53,18 +58,8 @@ export const columns: BasicColumn[] = [
     dataIndex: 'userName',
   },
   {
-    title: '制单人',
-    align: 'center',
-    dataIndex: 'operatorName',
-  },
-  {
     title: '备注',
     align: 'center',
     dataIndex: 'remark',
-  },
-  {
-    title: '版本',
-    align: 'center',
-    dataIndex: 'version',
   },
 ];
