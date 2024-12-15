@@ -119,7 +119,7 @@
       </template>
     </JFormContainer>
 
-    <!-- 选择窗口 -->
+    <!-- 选择模板窗口 -->
     <ViewModal @register="registerModal" @success="handleSuccess" />
   </a-spin>
 </template>
