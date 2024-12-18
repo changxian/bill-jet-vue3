@@ -8,8 +8,8 @@
               <a-form-item label="单类型" name="type">
                 <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="1">进货还款</a-select-option>
-                  <a-select-option value="2">退货还款</a-select-option>
+                  <a-select-option value="1">进货开单</a-select-option>
+                  <a-select-option value="2">退货开单</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -29,18 +29,18 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商名称" id="PurchaseBillForm-supplierId" name="supplierId">
+              <a-form-item label="供应商名" id="PurchaseBillForm-supplierId" name="supplierId">
                 <j-select-supplier v-model:value="queryParam.supplierId" @change="changeSupplier" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商电话"  id="PurchaseBillForm-supplierPhone" name="supplierPhone">
-                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入供应商电话" allow-clear></a-input>
+              <a-form-item label="联系人" id="PurchaseBillForm-supplierContact" name="supplierContact">
+                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :lg="6">
-              <a-form-item label="供应商联系人"  id="PurchaseBillForm-supplierContact" name="supplierContact">
-                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入供应商联系人" allow-clear></a-input>
+              <a-form-item label="手机" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
+                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入手机" allow-clear></a-input>
               </a-form-item>
             </a-col>
           </template>
