@@ -90,7 +90,7 @@
   // const columns: BasicColumn[] =
   // 注册table数据
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { tableContext, onExportXls, onImportXls } = useListPage(reactive({
+  const { tableContext, onExportXls, onImportXls } = useListPage( reactive({
     tableProps: {
       title: '商品信息',
       api: list,

@@ -286,15 +286,15 @@
       res.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
-          weightColTitle.value = item.fieldTitle;
+          weightColTitle.value = item.fieldTitle || '';
         }
         // 面积小计
         if (item.fieldName === 'areaSubtotal') {
-          areaColTitle.value = item.fieldTitle;
+          areaColTitle.value = item.fieldTitle || '';
         }
         // 体积小计
         if (item.fieldName === 'volumeSubtotal') {
-          volumeColTitle.value = item.fieldTitle;
+          volumeColTitle.value = item.fieldTitle || '';
         }
       });
     }
@@ -524,6 +524,9 @@
     }
   }
 
+  /**
+   * 送货单详情列表
+   */
   const dataSourceDetail: any = ref([]);
   const { tableContext: tableContextDetail } = useListPage({
     designScope: 'basic-table-demo',
@@ -531,6 +534,8 @@
       title: '商品详情',
       columns: detailColumns,
       showIndexColumn: true,
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
     },
@@ -540,7 +545,7 @@
    * BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
    * selectedRows选中的行信息、selectedRowKeys 选中的行rowkey
    */
-  const [registerTableDetail, ] = tableContextDetail;
+  const [registerTableDetail] = tableContextDetail;
   const currentRowId = ref('');
   const detailLoading = ref(false);
   function rowClick(record) {

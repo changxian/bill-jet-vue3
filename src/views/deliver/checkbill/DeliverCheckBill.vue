@@ -8,7 +8,7 @@
               <a-form-item label="单类型" name="type">
                 <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="1">送货还款</a-select-option>
+                  <a-select-option value="3">送货还款</a-select-option>
                   <a-select-option value="2">退货还款</a-select-option>
                 </a-select>
               </a-form-item>
@@ -17,6 +17,7 @@
             <a-col :lg="6">
               <a-form-item label="欠款单" name="hasDebt">
                   <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
+                    <a-radio value="">所有</a-radio>
                   <a-radio value="1">是</a-radio>
                   <a-radio value="2">否</a-radio>
                 </a-radio-group>
@@ -62,11 +63,25 @@
     <BasicTable @register="registerTable" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">
           导出</a-button
         >
       </template>
     </BasicTable>
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+      <p :class="{'p_san': hasPan}" >总计
+        <span class="total_span">数量：{{ totalCount }}</span>
+        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ totalWeight }}</span>
+        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ totalArea }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ totalVolume }}</span>
+        <span class="total_span">金额：{{ totalAmount }}</span>
+        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
+        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
+        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -78,11 +93,43 @@
   import FastDate from '/@/components/FastDate.vue';
   import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
+  import { getExportUrl, list, listCount } from '@/views/deliver/checkbill/DeliverCheckBill.api';
+  import { useUserStore } from '@/store/modules/user';
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
+
+  const userStore = useUserStore();
+  // 总计：数量
+  const totalCount = ref(0);
+  // 总计：重量
+  const totalWeight = ref(0);
+  // 总计：面积
+  const totalArea = ref(0);
+  // 总计：体积
+  const totalVolume = ref(0);
+  // 总计：金额
+  const totalAmount = ref(0);
+  // 总计：已付款
+  const totalPaymentAmount = ref(0);
+  // 总计：优惠
+  const totalDiscountAmount = ref(0);
+  // 总计：未付款
+  const totalDebtAmount = ref(0);
+  const hasPan = ref(true);
+
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
   function changeCompany(val, selectRows) {
     if (selectRows?.length > 0) {
@@ -104,18 +151,23 @@
     tableProps: {
       title: '送货对账单',
       api: list,
-      canResize:false,
+      canResize: false,
       columns,
       useSearchForm: false,
-      showActionColumn:false,
+      showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
+      },
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        listTotalCount();
       },
     },
     exportConfig: {
@@ -137,10 +189,46 @@
   });
 
   /**
+   * 列表合计
+   */
+  function listTotalCount() {
+    totalCount.value = 0;
+    totalWeight.value = 0;
+    totalArea.value = 0;
+    totalVolume.value = 0;
+    totalAmount.value = 0;
+    totalPaymentAmount.value = 0;
+    totalDiscountAmount.value = 0;
+    totalDebtAmount.value = 0;
+    listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
+      totalCount.value = res.count;
+      totalWeight.value = res.weight;
+      totalArea.value = res.area;
+      totalVolume.value = res.volume;
+      totalAmount.value = res.amount;
+      totalPaymentAmount.value = res.paymentAmount;
+      totalDiscountAmount.value = res.discountAmount;
+      totalDebtAmount.value = res.debtAmount;
+    });
+  }
+  /**
+   * 打印预览
+   */
+  function printPreview() {
+
+  }
+  /**
+   * 打印
+   */
+  function print() {
+
+  }
+  /**
    * 查询
    */
   function searchQuery() {
     reload();
+    listTotalCount();
   }
 
   /**
@@ -153,6 +241,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
+    listTotalCount();
   }
 
   defineExpose({
@@ -166,5 +255,12 @@
     display: block;
     margin-bottom: 24px;
     white-space: nowrap;
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
   }
 </style>

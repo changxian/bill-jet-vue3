@@ -79,180 +79,179 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-import {ref, defineExpose, reactive, defineEmits} from 'vue'
-import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-import {BasicTable} from '/@/components/Table';
-import {useListPage} from '/@/hooks/system/useListPage';
-import {totalColumns} from './DetailDialog.data';
-import { totalExportXls} from '../PurchaseStatistics.api'
-import {JInput} from "@/components/Form";
-import FastDate from '/@/components/FastDate.vue';
-import { getMyBillSetting } from '@/views/setting/system/index.api';
-import {totalList} from "@/views/purchase/statistics/PurchaseStatistics.api";
-// 总计：数量
-const countTotal = ref(0);
-// 总计：重量
-const weightTotal = ref(0);
-// 总计：面积
-const areaTotal = ref(0);
-// 总计：体积
-const volumeTotal = ref(0);
-// 总计：金额
-const amountTotal = ref(0);
-// 总计：成本
-const costAmountTotal = ref(0);
-// 总计：利润
-const profitAmountTotal = ref(0);
-// 小数位数
-const decimalPlaces = ref(2);
-// 显示重量列【合计 和 列表皆显示，0不显示，1显示】
-const showWeightCol = ref(false);
-const weightColTitle = ref('');
-// 显示面积列【合计 和 列表皆显示】
-const showAreaCol = ref(false);
-const areaColTitle = ref('');
-// 显示体积列【合计 和 列表皆显示】
-const showVolumeCol = ref(false);
-const volumeColTitle = ref('');
+  import {ref, defineExpose, reactive, defineEmits} from 'vue'
+  import JModal from '/@/components/Modal/src/JModal/JModal.vue';
+  import {BasicTable} from '/@/components/Table';
+  import {useListPage} from '/@/hooks/system/useListPage';
+  import {totalColumns} from './DetailDialog.data';
+  import { totalExportXls} from '../PurchaseStatistics.api'
+  import {JInput} from "@/components/Form";
+  import FastDate from '/@/components/FastDate.vue';
+  import { getMyBillSetting } from '@/views/setting/system/index.api';
+  import {totalList} from "@/views/purchase/statistics/PurchaseStatistics.api";
+  // 总计：数量
+  const countTotal = ref(0);
+  // 总计：重量
+  const weightTotal = ref(0);
+  // 总计：面积
+  const areaTotal = ref(0);
+  // 总计：体积
+  const volumeTotal = ref(0);
+  // 总计：金额
+  const amountTotal = ref(0);
+  // 总计：成本
+  const costAmountTotal = ref(0);
+  // 总计：利润
+  const profitAmountTotal = ref(0);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
-const hasPan = ref(true);
-const queryParam = reactive<any>({});
-const fastDateParam = reactive<any>({startDate: '', endDate: ''});
-const formRef = ref()
+  const hasPan = ref(true);
+  const queryParam = reactive<any>({});
+  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+  const formRef = ref()
 
-const title = ref('进货统计明细-汇总')
-const columnList = ref(totalColumns)
-const toggleSearchStatus = ref<boolean>(false);
-//注册table数据
-const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
-  tableProps: {
-    title: '进货开单',
-    api: totalList,
-    canResize: false,
-    useSearchForm: false,
-    showActionColumn: false,
-    showIndexColumn: true,
-    clickToRowSelect: true,
-    actionColumn: {
-      width: 120,
-      fixed: 'right',
+  const title = ref('进货统计明细-汇总')
+  const columnList = ref(totalColumns)
+  const toggleSearchStatus = ref<boolean>(false);
+  //注册table数据
+  const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+    tableProps: {
+      title: '进货开单',
+      api: totalList,
+      canResize: false,
+      useSearchForm: false,
+      showActionColumn: false,
+      showIndexColumn: true,
+      clickToRowSelect: true,
+      actionColumn: {
+        width: 120,
+        fixed: 'right',
+      },
+      beforeFetch: async (params) => {
+        return Object.assign(params, queryParam, fastDateParam);
+      },
+      // summaryFunc: summaryFunc,
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        countTotal.value = resultItems[0].countTotal;
+        weightTotal.value = resultItems[0].weightTotal;
+        areaTotal.value = resultItems[0].areaTotal;
+        volumeTotal.value = resultItems[0].volumeTotal;
+        amountTotal.value = resultItems[0].amountTotal;
+      },
+      rowSelection: {type: 'radio'},
     },
-    beforeFetch: async (params) => {
-      return Object.assign(params, queryParam, fastDateParam);
+    exportConfig: {
+      name: "进货统计合计",
+      url: totalExportXls,
+      params: queryParam,
     },
-    // summaryFunc: summaryFunc,
-    afterFetch: async (resultItems) => {
-      hasPan.value = resultItems.length > 0;
-      countTotal.value = resultItems[0].countTotal;
-      weightTotal.value = resultItems[0].weightTotal;
-      areaTotal.value = resultItems[0].areaTotal;
-      volumeTotal.value = resultItems[0].volumeTotal;
-      amountTotal.value = resultItems[0].amountTotal;
-    },
-    rowSelection: {type: 'radio'},
-  },
-  exportConfig: {
-    name: "进货统计合计",
-    url: totalExportXls,
-    params: queryParam,
-  },
 
-});
-const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
-const labelCol = reactive({
-  xs: 24,
-  sm: 4,
-  xl: 6,
-  xxl: 4
-});
-const wrapperCol = reactive({
-  xs: 24,
-  sm: 20,
-});
+  });
+  const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const labelCol = reactive({
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4
+  });
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
 
-// 加载系统开单设置
-getMyBillSetting().then((res) => {
-  showWeightCol.value = !!res.showWeightCol;
-  showAreaCol.value = !!res.showAreaCol;
-  showVolumeCol.value = !!res.showVolumeCol;
-  if (res.decimalPlaces === 0 || res.decimalPlaces) {
-    decimalPlaces.value = res.decimalPlaces;
-  }
-  if(res.dynaFieldsGroup['1']){
+  // 加载系统开单设置
+  getMyBillSetting().then((res) => {
+    showWeightCol.value = !!res.showWeightCol;
+    showAreaCol.value = !!res.showAreaCol;
+    showVolumeCol.value = !!res.showVolumeCol;
+    if (res.decimalPlaces === 0 || res.decimalPlaces) {
+      decimalPlaces.value = res.decimalPlaces;
+    }
+    if(res.dynaFieldsGroup['1']){
       // 循环数据
       res.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
-          weightColTitle.value = item.fieldTitle;
+          weightColTitle.value = item.fieldTitle || '';
         }
         // 面积小计
         if (item.fieldName === 'areaSubtotal') {
-          areaColTitle.value = item.fieldTitle;
+          areaColTitle.value = item.fieldTitle || '';
         }
         // 体积小计
         if (item.fieldName === 'volumeSubtotal') {
-          volumeColTitle.value = item.fieldTitle;
+          volumeColTitle.value = item.fieldTitle || '';
         }
       });
+    }
+  });
+  /**
+   * 查询
+   */
+  function searchQuery() {
+    reload();
   }
-});
-/**
- * 查询
- */
-function searchQuery() {
-  reload();
-}
 
-/**
- * 重置
- */
-function searchReset() {
-  formRef.value.resetFields();
-  fastDateParam.startDate = ''
-  fastDateParam.endDate = ''
-  selectedRowKeys.value = [];
-  //刷新数据
-  reload();
-}
+  /**
+   * 重置
+   */
+  function searchReset() {
+    formRef.value.resetFields();
+    fastDateParam.startDate = ''
+    fastDateParam.endDate = ''
+    selectedRowKeys.value = [];
+    //刷新数据
+    reload();
+  }
 
-function handleEdit() {
-}
+  function handleEdit() {
+  }
 
-const visible = ref(false)
+  const visible = ref(false)
 
-function show(_queryParam, _fastDateParam, _record) {
+  function show(_queryParam, _fastDateParam, _record) {
+    Object.keys(_queryParam).forEach(key => {
+      queryParam[key] = _queryParam[key];
+    });
+    Object.keys(_fastDateParam).forEach(key => {
+      fastDateParam[key] = _fastDateParam[key];
+    });
+    visible.value = true
+  }
 
-  Object.keys(_queryParam).forEach(key => {
-    queryParam[key] = _queryParam[key];
-  });
-  Object.keys(_fastDateParam).forEach(key => {
-    fastDateParam[key] = _fastDateParam[key];
-  });
-  visible.value = true
-}
+  function handleCancel() {
+    visible.value = false
+  }
 
-function handleCancel() {
-  visible.value = false
-}
-
-defineExpose({
-  show
-})
+  defineExpose({
+    show
+  })
 
 </script>
 
 
 <style lang="less" scoped>
-.table-page-search-submitButtons {
-  display: block;
-  margin-bottom: 24px;
-  white-space: nowrap;
-}
-.total_span {
-  margin: 0 5px;
-}
-.p_san {
-  position: absolute;
-  top: -50px;
-}
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
+  }
 </style>

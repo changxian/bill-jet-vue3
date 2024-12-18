@@ -63,7 +63,9 @@
     <BasicTable @register="registerTable" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">
           导出</a-button
         >
 
@@ -75,36 +77,34 @@
 </template>
 
 <script lang="ts" name="purchase.checkbill-PurchaseCheckBill" setup>
+  import { ref, defineExpose, reactive} from 'vue'
+  import { BasicTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns } from './PurchaseCheckBill.data';
+  import FastDate from '/@/components/FastDate.vue';
+  import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import { getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
 
- import {ref, defineExpose, reactive} from 'vue'
-    import { BasicTable } from '/@/components/Table';
-    import { useListPage } from '/@/hooks/system/useListPage';
-    import { columns} from './PurchaseCheckBill.data';
-    import FastDate from '/@/components/FastDate.vue';
-    import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
-    import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
- import {getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
-
- const queryParam = reactive<any>({ companyId: '', companyName: ''});
- const fastDateParam = reactive<any>({startDate: '', endDate: ''});
- const formRef = ref()
- 
+  const queryParam = reactive<any>({ companyId: '', companyName: ''});
+  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+  const formRef = ref();
 
   function changeCompany(val, selectRows) {
-  console.log(' changeCompany val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    queryParam.companyName = selectRows[0].compName;
+    console.log(' changeCompany val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      queryParam.companyName = selectRows[0].compName;
+    }
   }
-}
-function changeSupplier(val, selectRows) {
-  console.log(' changeSupplier val', val, 'selectRows:', selectRows);
-  if (selectRows?.length > 0) {
-    queryParam.supplierId = selectRows[0].id;
-    queryParam.supplierName = selectRows[0].orgName;
-    queryParam.supplierPhone = selectRows[0].phone;
-    queryParam.supplierContact = selectRows[0].contact;
+  function changeSupplier(val, selectRows) {
+    console.log(' changeSupplier val', val, 'selectRows:', selectRows);
+    if (selectRows?.length > 0) {
+      queryParam.supplierId = selectRows[0].id;
+      queryParam.supplierName = selectRows[0].orgName;
+      queryParam.supplierPhone = selectRows[0].phone;
+      queryParam.supplierContact = selectRows[0].contact;
+    }
   }
-}
 
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
@@ -135,17 +135,28 @@ function changeSupplier(val, selectRows) {
   });
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:5,
-    xl:6,
-    xxl:5
+    xs: 24,
+    sm: 5,
+    xl: 6,
+    xxl: 5,
   });
     const wrapperCol = reactive({
     xs: 24,
     sm: 19,
   });
 
-  
+  /**
+   * 打印预览
+   */
+  function printPreview() {
+
+  }
+  /**
+   * 打印
+   */
+  function print() {
+
+  }
   /**
    * 查询
    */
@@ -153,18 +164,18 @@ function changeSupplier(val, selectRows) {
     reload();
   }
   
-    /**
+  /**
    * 重置
    */
   function searchReset() {
     formRef.value.resetFields();
-    fastDateParam.startDate = ''
-    fastDateParam.endDate = ''
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
     selectedRowKeys.value = [];
     //刷新数据
     reload();
   }
- 
+
     defineExpose({
        
     })

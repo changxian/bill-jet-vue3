@@ -192,15 +192,15 @@
       res.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
-          weightColTitle.value = item.fieldTitle;
+          weightColTitle.value = item.fieldTitle || '';
         }
         // 面积小计
         if (item.fieldName === 'areaSubtotal') {
-          areaColTitle.value = item.fieldTitle;
+          areaColTitle.value = item.fieldTitle || '';
         }
         // 体积小计
         if (item.fieldName === 'volumeSubtotal') {
-          volumeColTitle.value = item.fieldTitle;
+          volumeColTitle.value = item.fieldTitle || '';
         }
       });
     }

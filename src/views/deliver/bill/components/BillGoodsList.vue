@@ -53,7 +53,29 @@
 
   const emit = defineEmits(['change-goods']);
   const { createMessage, createConfirm } = useMessage();
+  const userStore = useUserStore();
+  const dataSource: any = ref([]);
 
+  const billSetting = userStore.getBillSetting;
+  const weightColTitle = ref('');
+  const areaColTitle = ref('');
+  const volumeColTitle = ref('');
+  if (billSetting.dynaFieldsGroup['1']) {
+    billSetting.dynaFieldsGroup['1'].forEach((item) => {
+      // 重量小计
+      if (item.fieldName === 'weightSubtotal') {
+        weightColTitle.value = item.fieldTitle || '';
+      }
+      // 面积小计
+      if (item.fieldName === 'areaSubtotal') {
+        areaColTitle.value = item.fieldTitle || '';
+      }
+      // 体积小计
+      if (item.fieldName === 'volumeSubtotal') {
+        volumeColTitle.value = item.fieldTitle || '';
+      }
+    });
+  }
   const goodsId = ref('');
   const goodsName = ref('');
 
@@ -102,6 +124,14 @@
       editComponent: 'Input',
     },
     {
+      title: '单价',
+      align: 'center',
+      dataIndex: 'price',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+    },
+    {
       title: '数量',
       align: 'center',
       dataIndex: 'count',
@@ -110,12 +140,85 @@
       editComponent: 'InputNumber',
     },
     {
-      title: '单价',
+      title: '重量',
       align: 'center',
-      dataIndex: 'price',
+      dataIndex: 'weight',
       editable: false,
       edit: true,
       editComponent: 'InputNumber',
+      ifShow: billSetting.showWeightCol || false,
+    },
+    {
+      title: '重量小计(' + weightColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'weightSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showWeightCol || false,
+    },
+    {
+      title: '长',
+      align: 'center',
+      dataIndex: 'length',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '宽',
+      align: 'center',
+      dataIndex: 'width',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '高',
+      align: 'center',
+      dataIndex: 'height',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '面积',
+      align: 'center',
+      dataIndex: 'area',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showAreaCol || false,
+    },
+    {
+      title: '面积小计(' + areaColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'areaSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showAreaCol || false,
+    },
+    {
+      title: '体积',
+      align: 'center',
+      dataIndex: 'volume',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showVolumeCol || false,
+    },
+    {
+      title: '体积小计(' + volumeColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'volumeSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showVolumeCol || false,
     },
     {
       title: '成本金额',
@@ -140,8 +243,7 @@
       editComponent: 'Input',
     },
   ];
-  const userStore = useUserStore();
-  const dataSource: any = ref([]);
+
   // 列表页面公共参数、方法
   let delIds: any = [];
   const { tableContext } = useListPage({
@@ -149,6 +251,7 @@
     tableProps: {
       title: '商品详情',
       columns: columns,
+      cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
