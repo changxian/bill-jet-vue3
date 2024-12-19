@@ -11,7 +11,7 @@
               <FastDate v-model:modelValue="fastDateParam"/>
               <a-col :lg="6">
                 <a-form-item name="goodsName" label="商品名称">
-                  <JInput v-model:value="queryParam.goodsName" class="query-group-cust"></JInput>
+                  <AInput v-model:value="queryParam.goodsName" class="query-group-cust"></AInput>
                 </a-form-item>
               </a-col>
               <template v-if="toggleSearchStatus">
@@ -152,11 +152,19 @@
       // summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        countTotal.value = resultItems[0].countTotal;
-        weightTotal.value = resultItems[0].weightTotal;
-        areaTotal.value = resultItems[0].areaTotal;
-        volumeTotal.value = resultItems[0].volumeTotal;
-        amountTotal.value = resultItems[0].amountTotal;
+        countTotal.value = 0;
+        weightTotal.value = 0;
+        areaTotal.value = 0;
+        volumeTotal.value = 0;
+        amountTotal.value = 0;
+        if(hasPan.value){
+          countTotal.value = resultItems[0].countTotal;
+          weightTotal.value = resultItems[0].weightTotal;
+          areaTotal.value = resultItems[0].areaTotal;
+          volumeTotal.value = resultItems[0].volumeTotal;
+          amountTotal.value = resultItems[0].amountTotal;
+        }
+
       },
       rowSelection: {type: 'radio'},
     },

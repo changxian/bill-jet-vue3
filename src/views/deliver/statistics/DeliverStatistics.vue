@@ -223,46 +223,31 @@
   });
 
   const detailDialogRef = ref();
+  const queryTypeColumnObj = {
+    'goodsCountColumns':'goodsId',
+    'typeCountColumns':'categoryId',
+    'custCountColumns':'custId',
+    'userNameCountColumns':'userId',
+    'operatorCountColumns':'operatorId',
+    'careNoCountColumns':'careNo',
+  }
+  function setParam(record){
+    Object.keys(queryTypeColumnObj).forEach(key => {
+      if(key===queryParam.queryType){
+        queryParam[queryTypeColumnObj[key]]=record.id;
+      }else{
+        queryParam[queryTypeColumnObj[key]]='';
+      }
+    });
+  }
   function lookDetail(record) {
-
-    if (queryParam.queryType === 'goodsCountColumns') {
-      queryParam.goodsId = record.id;
-    }
-    if (queryParam.queryType === 'typeCountColumns') {
-      queryParam.categoryId = record.id;
-    }
-    if (queryParam.queryType === 'custCountColumns') {
-      queryParam.custId = record.id;
-    }
-    if (queryParam.queryType === 'userNameCountColumns') {
-      queryParam.userId = record.id;
-    }
-    if (queryParam.queryType === 'operatorCountColumns') {
-      queryParam.operatorId = record.id;
-    }
-    if (queryParam.queryType === 'careNoCountColumns') {
-      queryParam.careNo = record.id;
-    }
+    setParam(record);
     detailDialogRef.value.show(queryParam, fastDateParam, record);
   }
   // 合计列表
   const totalDialogRef = ref();
   function lookTotal(record) {
-    if (queryParam.queryType === 'typeCountColumns') {
-      queryParam.categoryId = record.id;
-    }
-    if (queryParam.queryType === 'custCountColumns') {
-      queryParam.custId = record.id;
-    }
-    if (queryParam.queryType === 'userNameCountColumns') {
-      queryParam.userId = record.id;
-    }
-    if (queryParam.queryType === 'operatorCountColumns') {
-      queryParam.operatorId = record.id;
-    }
-    if (queryParam.queryType === 'careNoCountColumns') {
-      queryParam.careNo = record.id;
-    }
+    setParam(record);
     totalDialogRef.value.show(queryParam, fastDateParam, record);
   }
   /**

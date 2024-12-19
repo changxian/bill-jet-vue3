@@ -114,6 +114,7 @@ import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompa
 import DetailDialog from './components/DetailDialog.vue'
 import TotalDialog from './components/TotalDialog.vue'
 import { getMyBillSetting } from '@/views/setting/system/index.api';
+import {forIn} from "lodash-es";
 const hasPan = ref(true);
 // 总计：数量
 const countSubtotal = ref(0);
@@ -208,11 +209,19 @@ const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
     },
     afterFetch: async (resultItems) => {
       hasPan.value = resultItems.length > 0;
-      countSubtotal.value = resultItems[0].countTotal;
-      weightSubtotal.value = resultItems[0].weightTotal;
-      areaSubtotal.value = resultItems[0].areaTotal;
-      volumeSubtotal.value = resultItems[0].volumeTotal;
-      amountSubtotal.value = resultItems[0].amountTotal;
+      countSubtotal.value = 0;
+      weightSubtotal.value = 0;
+      areaSubtotal.value = 0;
+      volumeSubtotal.value = 0;
+      amountSubtotal.value = 0;
+      if(hasPan.value ){
+        countSubtotal.value = resultItems[0].countTotal;
+        weightSubtotal.value = resultItems[0].weightTotal;
+        areaSubtotal.value = resultItems[0].areaTotal;
+        volumeSubtotal.value = resultItems[0].volumeTotal;
+        amountSubtotal.value = resultItems[0].amountTotal;
+      }
+
     },
     rowSelection: {type: 'radio'},
   },
@@ -254,23 +263,21 @@ function lookTotal(record) {
   totalDialogRef.value.show(queryParam, fastDateParam, record);
 
 }
+const queryTypeColumnObj = {
+  'goodsCountColumns':'goodsId',
+  'typeCountColumns':'categoryId',
+  'supplierCountColumns':'supplierId',
+  'operatorCountColumns':'operatorId',
+  'careNoCountColumns':'careNo',
+}
 function setParam(record){
-  if (queryParam.queryType === 'goodsCountColumns') {
-    queryParam.goodsId = record.goodsId;
-  }
-  if (queryParam.queryType === 'typeCountColumns') {
-    queryParam.categoryId = record.categoryId;
-  }
-  if (queryParam.queryType === 'supplierCountColumns') {
-    queryParam.supplierId = record.supplierId;
-  }
-
-  if (queryParam.queryType === 'operatorCountColumns') {
-    queryParam.operatorId = record.operatorId;
-  }
-  if (queryParam.queryType === 'careNoCountColumns') {
-    queryParam.careNo = record.careNo;
-  }
+  Object.keys(queryTypeColumnObj).forEach(key => {
+    if(key===queryParam.queryType){
+      queryParam[queryTypeColumnObj[key]]=record.id;
+    }else{
+      queryParam[queryTypeColumnObj[key]]='';
+    }
+  });
 }
 /**
  * 查询

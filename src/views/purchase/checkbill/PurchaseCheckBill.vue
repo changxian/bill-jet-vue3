@@ -73,6 +73,16 @@
         <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
     </BasicTable>
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+      <p :class="{'p_san': hasPan}">总计
+        <span class="total_span">数量：{{ billCountTotal }}</span>
+        <span class="total_span">本单金额：{{ amountTotal }}</span>
+<!--        <span class="total_span">已付款金额：{{ paymentAmountTotal }}</span>-->
+<!--        <span class="total_span">优惠金额：{{ discountAmountTotal }}</span>-->
+<!--        <span class="total_span">未付款金额：{{ debtAmountTotal }}</span>-->
+<!--        <span class="total_span">往期欠款金额：{{ hisDebtAmountTotal }}</span>-->
+      </p>
+    </div>
   </div>
 </template>
 
@@ -85,6 +95,23 @@
   import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
+
+  const hasPan = ref(true);
+
+  const billCountTotal = ref(0);
+
+  const amountTotal = ref(0);
+
+  const paymentAmountTotal = ref(0);
+
+  const discountAmountTotal = ref(0);
+
+  const debtAmountTotal = ref(0);
+
+  const hisDebtAmountTotal = ref(0);
+
+
+
 
   const queryParam = reactive<any>({ companyId: '', companyName: ''});
   const fastDateParam = reactive<any>({timeType: 'thisMonth',startDate: '', endDate: ''});
@@ -124,7 +151,26 @@
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
-      }
+      },
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        billCountTotal.value =0;
+        amountTotal.value = 0;
+        paymentAmountTotal.value =0;
+        discountAmountTotal.value = 0;
+        debtAmountTotal.value = 0;
+        hisDebtAmountTotal.value = 0;
+        if(hasPan.value){
+          billCountTotal.value = resultItems[0].billCountTotal;
+          amountTotal.value = resultItems[0].amountTotal;
+          paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
+          discountAmountTotal.value = resultItems[0].discountAmountTotal;
+          debtAmountTotal.value = resultItems[0].debtAmountTotal;
+          hisDebtAmountTotal.value = resultItems[0].hisDebtAmountTotal;
+        }
+
+      },
+
     },
     exportConfig: {
       name: "进货对账单",
@@ -188,4 +234,10 @@
       margin-bottom: 24px;
       white-space: nowrap;
     }
+
+     .total_span{margin: 0 5px}
+     .p_san{
+       position: absolute;
+       top: -50px;
+     }
 </style>

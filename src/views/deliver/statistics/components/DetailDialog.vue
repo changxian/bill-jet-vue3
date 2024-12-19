@@ -144,13 +144,23 @@
       // summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        countTotal.value = resultItems[0].countTotal;
-        weightTotal.value = resultItems[0].weightTotal;
-        areaTotal.value = resultItems[0].areaTotal;
-        volumeTotal.value = resultItems[0].volumeTotal;
-        amountTotal.value = resultItems[0].amountTotal;
-        costAmountTotal.value = resultItems[0].costAmountTotal;
-        profitAmountTotal.value = resultItems[0].profitAmountTotal;
+        countTotal.value = 0;
+        weightTotal.value =0;
+        areaTotal.value = 0;
+        volumeTotal.value = 0;
+        amountTotal.value = 0;
+        costAmountTotal.value =0;
+        profitAmountTotal.value = 0;
+        if(hasPan.value){
+          countTotal.value = resultItems[0].countTotal;
+          weightTotal.value = resultItems[0].weightTotal;
+          areaTotal.value = resultItems[0].areaTotal;
+          volumeTotal.value = resultItems[0].volumeTotal;
+          amountTotal.value = resultItems[0].amountTotal;
+          costAmountTotal.value = resultItems[0].costAmountTotal;
+          profitAmountTotal.value = resultItems[0].profitAmountTotal;
+        }
+
       },
       rowSelection: { type: 'radio' },
     },
