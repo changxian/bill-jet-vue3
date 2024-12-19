@@ -58,10 +58,7 @@ const transform: AxiosTransform = {
         //信息成功提示
         createMessage.success(message);
       }
-
-      const isArrayResult = Array.isArray(result);
-      return  isArrayResult ? result : {...result,extraInfo};
-
+      return   result instanceof Object?{...result,extraInfo}:result;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作

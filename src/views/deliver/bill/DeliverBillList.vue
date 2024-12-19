@@ -245,9 +245,9 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems) => {
+      afterFetch: async (resultItems,extraInfo) => {
         hasPan.value = resultItems.length > 0;
-        listTotalCount();
+        listTotalCount(extraInfo);
       },
       rowSelection: { type: 'radio' },
     },
@@ -323,31 +323,18 @@
   /**
    * 列表合计
    */
-  function listTotalCount() {
-    totalCount.value = 0;
-    totalWeight.value = 0;
-    totalArea.value = 0;
-    totalVolume.value = 0;
-    totalAmount.value = 0;
-    totalPaymentAmount.value = 0;
-    totalDiscountAmount.value = 0;
-    totalDebtAmount.value = 0;
-    totalHisDebtAmount.value = 0;
-    totalCostAmount.value = 0;
-    totalProfitAmount.value = 0;
-    listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
-      totalCount.value = res.count;
-      totalWeight.value = res.weight;
-      totalArea.value = res.area;
-      totalVolume.value = res.volume;
-      totalAmount.value = res.amount;
-      totalPaymentAmount.value = res.paymentAmount;
-      totalDiscountAmount.value = res.discountAmount;
-      totalDebtAmount.value = res.debtAmount;
-      totalHisDebtAmount.value = res.hisDebtAmount;
-      totalCostAmount.value = res.costAmount;
-      totalProfitAmount.value = res.profitAmount;
-    });
+  function listTotalCount(extraInfo) {
+    totalCount.value = extraInfo.count || 0;
+    totalWeight.value = extraInfo.weight || 0;
+    totalArea.value = extraInfo.area || 0;
+    totalVolume.value = extraInfo.volume || 0;
+    totalAmount.value = extraInfo.amount || 0;
+    totalPaymentAmount.value = extraInfo.paymentAmount || 0;
+    totalDiscountAmount.value =extraInfo.discountAmount || 0;
+    totalDebtAmount.value = extraInfo.debtAmount || 0;
+    totalHisDebtAmount.value = extraInfo.hisDebtAmount || 0;
+    totalCostAmount.value = extraInfo.costAmount || 0;
+    totalProfitAmount.value =extraInfo.profitAmount || 0;
   }
   // 删除数据
   function handleDel() {

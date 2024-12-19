@@ -170,7 +170,7 @@
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { useRoute } from 'vue-router';
   const route = useRoute();
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;

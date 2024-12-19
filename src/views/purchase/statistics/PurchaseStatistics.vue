@@ -139,7 +139,7 @@ const showVolumeCol = ref(false);
 const volumeColTitle = ref('');
 
 const queryParam = reactive<any>({queryType: 'goodsCountColumns', companyId: '', companyName: ''});
-const fastDateParam = reactive<any>({timeType: "month3", startDate: '', endDate: ''});
+const fastDateParam = reactive<any>({timeType: 'thisMonth', startDate: '', endDate: ''});
 const formRef = ref()
 const columnObj = {
   goodsCountColumns,
@@ -256,20 +256,20 @@ function lookTotal(record) {
 }
 function setParam(record){
   if (queryParam.queryType === 'goodsCountColumns') {
-    queryParam.goodsId = record.id;
+    queryParam.goodsId = record.goodsId;
   }
   if (queryParam.queryType === 'typeCountColumns') {
-    queryParam.categoryId = record.id;
+    queryParam.categoryId = record.categoryId;
   }
   if (queryParam.queryType === 'supplierCountColumns') {
-    queryParam.supplierId = record.id;
+    queryParam.supplierId = record.supplierId;
   }
 
   if (queryParam.queryType === 'operatorCountColumns') {
-    queryParam.operatorId = record.id;
+    queryParam.operatorId = record.operatorId;
   }
   if (queryParam.queryType === 'careNoCountColumns') {
-    queryParam.careNo = record.id;
+    queryParam.careNo = record.careNo;
   }
 }
 /**
