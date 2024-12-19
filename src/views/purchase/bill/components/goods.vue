@@ -18,7 +18,7 @@
       @ok="handleOk"
     >
        <div style="width:98%">
-            <goodsSelectList @get-select="getSelect"  @db-ok="handleOk" :billType="billType" :key="refreshKey"></goodsSelectList>
+            <goodsSelectList  @get-select="getSelect"  @db-ok="handleOk"    :billType="billType" :key="refreshKey"></goodsSelectList>
         </div>
         </BasicModal>
     </a-row>

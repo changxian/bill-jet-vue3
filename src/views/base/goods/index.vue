@@ -7,7 +7,7 @@
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
       <a-card :bordered="false" style="height: 100%">
-        <GoodsList :data="departData" :billType="billType" :customerId="customerId" @db-ok="emits('db-ok')" @get-select="getSelect" />
+        <GoodsList :data="departData"   :billType="billType" :customerId="customerId" @db-ok="emits('db-ok')" @get-select="getSelect" />
       </a-card>
     </a-col>
   </a-row>

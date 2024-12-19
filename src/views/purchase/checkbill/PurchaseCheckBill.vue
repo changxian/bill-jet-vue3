@@ -3,7 +3,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam" />
+          <FastDate v-model:modelValue="fastDateParam"   />
             <a-col :lg="6">
               <a-form-item label="单类型" name="type">
                 <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
@@ -87,7 +87,7 @@
   import { getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
 
   const queryParam = reactive<any>({ companyId: '', companyName: ''});
-  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
+  const fastDateParam = reactive<any>({timeType: 'thisMonth',startDate: '', endDate: ''});
   const formRef = ref();
 
   function changeCompany(val, selectRows) {

@@ -73,17 +73,19 @@
       defaultValue: () => {},
     },
     billType: { type: String, default: '' },
+    searchGoodsName:{ type: String, default: '' },
     customerId: { type: String, default: '' },
   });
   // 开单类型【送货开单：deliver】
   const billType = computed(() => props?.billType);
+  const searchGoodsName = computed(() => props?.searchGoodsName);
   // 开单时选择的客户
   const customerId = computed(() => props?.customerId);
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
-
+  queryParam.name="111";
   const columns = getGoodsColumns(billType.value);
 
   //列表数据

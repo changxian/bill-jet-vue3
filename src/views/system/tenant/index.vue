@@ -17,7 +17,7 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <a-button
+        <a-button v-if="false"
           preIcon="ant-design:user-add-outlined"
           type="primary"
           @click="handleInvitation"
@@ -33,7 +33,7 @@
           :disabled="selectedRowKeys.length != 1"
           >套餐</a-button
         >
-        <a-button type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
+        <a-button v-if="false" type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />

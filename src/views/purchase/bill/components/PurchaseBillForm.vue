@@ -106,22 +106,22 @@
                 <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
-            <a-col :span="span">
-              <a-form-item
-                label="状态"
-                v-bind="validateInfos.status"
-                id="PurchaseBillForm-status"
-                name="status"
-              >
-                <j-dict-select-tag
-                  v-model:value="formData.status"
-                  :options="statusOptions"
-                  dictCode=""
-                  placeholder="请选择状态"
-                  allow-clear
-                />
-              </a-form-item>
-            </a-col>
+<!--            <a-col :span="span">-->
+<!--              <a-form-item-->
+<!--                label="状态"-->
+<!--                v-bind="validateInfos.status"-->
+<!--                id="PurchaseBillForm-status"-->
+<!--                name="status"-->
+<!--              >-->
+<!--                <j-dict-select-tag-->
+<!--                  v-model:value="formData.status"-->
+<!--                  :options="statusOptions"-->
+<!--                  dictCode=""-->
+<!--                  placeholder="请选择状态"-->
+<!--                  allow-clear-->
+<!--                />-->
+<!--              </a-form-item>-->
+<!--            </a-col>-->
             <!-- <a-col :span="span">
 							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.invoiceStatus" id="PurchaseBillForm-invoiceStatus" name="invoiceStatus">
 								<j-dict-select-tag v-model:value="formData.invoiceStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
@@ -193,7 +193,7 @@
   const formData = reactive({
     id: '',
     billNo: '',
-    type: undefined,
+    type: 1,
     billDate: '',
     companyName: '',
     companyId: '',
@@ -213,11 +213,11 @@
     hisDebtAmount: 0,
     careNo: '',
     contractCode: '',
-    status: '',
-    invoiceStatus: undefined,
+    status: 1,
+    invoiceStatus: 1,
     userName: '',
     remark: '',
-    version: undefined,
+    version: 0,
     createName: '',
   });
 

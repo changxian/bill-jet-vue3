@@ -2,7 +2,7 @@
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="800px" :showCancelBtn="false" :showOkBtn="false">
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px" v-if="showPackAddAndEdit">新增 </a-button>
+        <a-button  preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px" v-if="showPackAddAndEdit">新增 </a-button>
         <a-button
           v-if="selectedRowKeys.length > 0"
           preIcon="ant-design:delete-outlined"
@@ -36,6 +36,8 @@ import {computed, reactive, ref, unref} from 'vue';
   const [registerPackUser, { openModal: packUserOpenModal }] = useModal();
   const tenantId = ref<number>(0);
   const tenantName = ref<string>(0);
+//是否显示新增和编辑套餐
+const showPackAddAndEdit = ref<boolean>(false);
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
     designScope: 'tenant-template',
@@ -60,13 +62,15 @@ import {computed, reactive, ref, unref} from 'vue';
       beforeFetch: (params) => {
         return Object.assign(params, { tenantId: unref(tenantId) ,tenantName: unref(tenantName)});
       },
+      afterFetch: async (resultItems) => {
+        showPackAddAndEdit.value = resultItems.length<=0 ;
+      },
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   // Emits声明
   const emit = defineEmits(['register', 'success']);
-  //是否显示新增和编辑套餐
-  const showPackAddAndEdit = ref<boolean>(false);
+
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     tenantId.value = data.tenantId;
