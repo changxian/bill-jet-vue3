@@ -95,7 +95,9 @@
   import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
+  import {useUserStore} from "@/store/modules/user";
 
+  const userStore = useUserStore();
   const hasPan = ref(true);
 
   const billCountTotal = ref(0);
@@ -145,6 +147,7 @@
       showActionColumn:false,
       clickToRowSelect: true,
       showIndexColumn: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
