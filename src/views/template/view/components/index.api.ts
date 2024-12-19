@@ -100,3 +100,51 @@ export const saveOrUpdate = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
+
+function roil2(o: any, n) {
+  if (n > 2) {
+    // 防止死循环
+    return;
+  }
+  // 空白，所有打印数据的值全赋值为''
+  for (const a in o) {
+    if (typeof o[a] == 'string' || typeof o[a] == 'number') {
+      o[a] = '';
+    } else if (o[a] instanceof Array) {
+      for (let i = 0; i < o[a].length; i++) {
+        roil2(o[a][i], n + 1);
+      }
+    }
+  }
+}
+
+function roil3(o: any, n) {
+  // 无单价、金额
+}
+
+function roil4(o: any, n) {
+  // 无单价、数量、金额
+}
+
+export const printLimit = (n: any, o: any) => {
+  debugger;
+  if (!n) {
+    n = '0';
+  }
+  switch (n) {
+    case '2': {
+      roil2(o, 1);
+      break;
+    }
+    case '3': {
+      roil3(o, 2);
+      break;
+    }
+    case '4': {
+      roil4(o, 3);
+      break;
+    }
+    default: {
+    }
+  }
+};

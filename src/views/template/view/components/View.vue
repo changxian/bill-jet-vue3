@@ -1,8 +1,16 @@
 <template>
   <div style="overflow: hidden; height: 630px">
     <!--查询区域-->
-    <a-card style="width: 100%; height: 80px">
-      <p>控制区域(等完善）。。。</p>
+    <a-card style="width: 100%; height: 140px">
+      <span>打印限制:</span>
+      <a-select v-model:value="value" label-in-value style="width: 160px" :options="options" @change="handleChange" allow-clear> </a-select>
+      <a-button type="primary" style="margin-left: 10px;">打印</a-button>
+      <a-button type="primary" style="margin-left: 10px;">设置为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;">设置为退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;">导入模板</a-button>
+      <br/>
+      <a-button type="primary" style="margin-left: 10px; margin-top: 10px">设置</a-button>
     </a-card>
     <!-- 预览 -->
     <a-card style="width: 100%; margin-top: 5px; height: 550px; overflow-y: scroll">
@@ -12,23 +20,61 @@
 </template>
 
 <script>
+
+  import { printLimit } from './index.api'
+
   export default {
     name: 'PrintPreview',
     props: {},
     data() {
-      return {};
+      return {
+        hiprintTemplate: null,
+        printData: null,
+        limitData: null,
+        value: '',
+        options: [
+          {
+            value: '1',
+            label: '正常',
+          },
+          {
+            value: '2',
+            label: '空白',
+          },
+          {
+            value: '3',
+            label: '无单价、金额',
+          },
+          {
+            value: '4',
+            label: '无单价、数量、金额',
+          },
+        ],
+      };
     },
     computed: {},
     watch: {},
-    created() {},
+    created() {
+      this.value = this.options[0];
+    },
     mounted() {},
     methods: {
+      handleChange(value) {
+        console.log(value);
+        this.limitData = JSON.parse(JSON.stringify(this.printData));
+        printLimit(value.value, this.limitData);
+        this.show(this.hiprintTemplate, this.limitData, false);
+      },
       hideModal() {
         this.visible = false;
       },
-      show(hiprintTemplate, printData) {
+      show(hiprintTemplate, printData, bool = true) {
+        if (bool) {
+          this.printData = printData;
+          this.hiprintTemplate = hiprintTemplate;
+        }
+
         setTimeout(() => {
-          debugger;
           const html = hiprintTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
         }, 500);

@@ -24,7 +24,6 @@
 
   let _d = {};
   const formData = computed(() => {
-    debugger;
     if (unref(isUpdate)) {
       // 结合（两种表单）使用传数据，带来的弊端，后做的处理
       // 第一次编辑时 isUpdate 值为true

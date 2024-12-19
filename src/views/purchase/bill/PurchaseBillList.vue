@@ -102,10 +102,11 @@
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
-        <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+          导出</a-button>
         <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
@@ -141,7 +142,7 @@
     </div>
 
     <!-- 表单区域 -->
-    <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
+    <PurchaseBillModal ref="registerModal2" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <div class="tbl-wrap">
        <a-spin :spinning="detailLoading">
@@ -150,7 +151,10 @@
        </a-spin>
     </div>
 
-    <RepayDetailDialog ref="repayDetailDialogRef"/>
+    <RepayDetailDialog ref="repayDetailDialogRef" />
+
+    <!-- 选择模板窗口 -->
+    <ViewModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
@@ -169,6 +173,11 @@
   import FastDate from '@/components/FastDate.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { useRoute } from 'vue-router';
+
+  import { useModal } from '/@/components/Modal';
+  import ViewModal from '@/views/template/view/ViewModal.vue';
+  const [registerModal, { openModal }] = useModal();
+
   const route = useRoute();
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   if (route.query) {
@@ -180,7 +189,7 @@
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const registerModal = ref();
+  const registerModal2 = ref();
   const modifyModalRef = ref();
   const totalCount = ref(0);
   const totalAmount = ref(0);
@@ -300,15 +309,32 @@
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    registerModal.value.disableSubmit = false;
+    registerModal2.value.disableSubmit = false;
     const row = selectedRows.value[0];
-    registerModal.value.copyAdd(row);
+    registerModal2.value.copyAdd(row);
   }
 
   /**
-   * 新增事件
+   * 打印预览
    */
-  function handleAdd() {
+  function printPreview() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选中一条数据');
+    }
+
+    openModal(true, {
+      // record: formData,
+      record: { id: selectedRowKeys.value[0] },
+      isUpdate: true,
+      showFooter: true,
+    });
+  }
+
+  /**
+   * 打印
+   */
+  function print() {
+    printPreview()
   }
   /**
    * 编辑事件
@@ -320,39 +346,39 @@
       }
       record = selectedRows.value[0];
     }
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = false;
+    registerModal2.value.edit(record);
   }
 
   /**
    * 详情
    */
   function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = true;
+    registerModal2.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
+
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
+
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
+
   /**
    * 操作栏
    */
@@ -365,7 +391,7 @@
       },
     ];
   }
-   
+
   /**
    * 下拉操作栏
    */
@@ -392,7 +418,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -402,7 +428,7 @@
     //刷新数据
     reload();
   }
-  
+
 
   /**
    * form点击事件(以逗号分割)
