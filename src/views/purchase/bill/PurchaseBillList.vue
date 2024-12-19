@@ -209,21 +209,21 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems) => {
+      afterFetch: async (resultItems,extraInfo) => {
         hasPan.value= resultItems.length>0;
-        totalCount.value=0;
-        totalAmount.value=0;
-        totalPaymentAmount.value=0;
-        totalDiscountAmount.value=0;
-        totalDebtAmount.value=0;
-        resultItems.forEach((item)=>{
-          totalCount.value+=item.count;
-          totalAmount.value+=item.amount;
-          totalPaymentAmount.value+=item.paymentAmount;
-          totalDiscountAmount.value+=item.discountAmount;
-          totalDebtAmount.value+=item.debtAmount;
-
-        });
+        totalCount.value=extraInfo.count || 0;
+        totalAmount.value=extraInfo.amount || 0;
+        totalPaymentAmount.value=extraInfo.paymentAmount || 0;
+        totalDiscountAmount.value=extraInfo.discountAmount || 0;
+        totalDebtAmount.value=extraInfo.debtAmount || 0;
+        // resultItems.forEach((item)=>{
+        //   totalCount.value+=item.count;
+        //   totalAmount.value+=item.amount;
+        //   totalPaymentAmount.value+=item.paymentAmount;
+        //   totalDiscountAmount.value+=item.discountAmount;
+        //   totalDebtAmount.value+=item.debtAmount;
+        //
+        // });
       },
       rowSelection: { type: 'radio' },
     },

@@ -16,6 +16,7 @@ export default {
       listField: 'records',
       // 接口返回表格总数的字段
       totalField: 'total',
+      extraInfoField: 'extraInfo',
     },
     // 可选的分页选项
     pageSizeOptions: ['10', '50', '80', '100'],
