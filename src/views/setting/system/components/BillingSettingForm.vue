@@ -41,17 +41,17 @@
           <a-row>
             <a-col :span="4">
               <a-form-item v-bind="validateInfos.autoCustPrice" id="BillingSettingForm-autoCustPrice" name="autoCustPrice">
-                <a-checkbox type="checkbox" value="1" v-model:checked="formData.autoCustPrice"> 自动记录客户价</a-checkbox>
+                <a-checkbox type="checkbox" value="1" v-model:checked="formData.autoCustPrice" @change="updateBillingEditPrice"> 自动记录客户价</a-checkbox>
               </a-form-item>
             </a-col>
             <a-col :span="4">
               <a-form-item v-bind="validateInfos.singleCustPrice" id="BillingSettingForm-singleCustPrice" name="singleCustPrice">
-                <a-checkbox type="checkbox" value="1" v-model:checked="formData.singleCustPrice"> 启用一客一价</a-checkbox>
+                <a-checkbox type="checkbox" value="1" v-model:checked="formData.singleCustPrice" @change="updateBillingEditPrice"> 启用一客一价</a-checkbox>
               </a-form-item>
             </a-col>
             <a-col :span="5">
               <a-form-item v-bind="validateInfos.billingEditPrice" id="BillingSettingForm-billingEditPrice" name="billingEditPrice">
-                <a-checkbox type="checkbox" v-model:checked="formData.billingEditPrice"> 开单保存更新售价</a-checkbox>
+                <a-checkbox type="checkbox" v-model:checked="formData.billingEditPrice" @change="updateCustPrice"> 开单保存更新售价</a-checkbox>
               </a-form-item>
             </a-col>
             <a-col :span="11">
@@ -275,6 +275,22 @@
     }
   }
 
+  // 设置客户价-一客一价
+  function updateBillingEditPrice() {
+    if (formData.value.autoCustPrice) {
+      formData.value.billingEditPrice = !formData.value.autoCustPrice;
+    }
+    if (formData.value.singleCustPrice) {
+      formData.value.billingEditPrice = !formData.value.singleCustPrice;
+    }
+  }
+  // 设置开单保存更新售价
+  function updateCustPrice() {
+    if (formData.value.billingEditPrice) {
+      formData.value.autoCustPrice = !formData.value.billingEditPrice;
+      formData.value.singleCustPrice = !formData.value.billingEditPrice;
+    }
+  }
   // 设置重量参数
   function updateWeightParams() {
     formData.value.showWeightCol = !!formData.value.showWeightCol;

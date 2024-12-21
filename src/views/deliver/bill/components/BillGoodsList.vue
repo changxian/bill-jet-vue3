@@ -23,20 +23,20 @@
         </BasicModal>
     </a-row>
     <div class="tbl-wrap">
-         <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
+      <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
         <template #tableTitle>
-             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
-             <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴</a-button> -->
+          <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
+          <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴</a-button> -->
         </template>
-        </BasicTable>
-        <div class="count-wrap">
-            <span class="name">总计</span>  
-            <span class="name">数量:</span>  <span class="num">{{countNum}}</span>
-            <span class="name">金额:</span>  <span class="num">￥{{countMoney}} 元</span>
-        </div>
+      </BasicTable>
+      <div class="count-wrap">
+        <span class="name">总计</span>
+        <span class="name">数量:</span><span class="num">{{ countNum }}</span>
+        <span class="name">金额:</span><span class="num">￥{{ countMoney }} 元</span>
+      </div>
     </div>
   </div>
 </template>
@@ -48,7 +48,6 @@
   import { BasicColumn, BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
   import { useUserStore } from '/@/store/modules/user';
 
   const emit = defineEmits(['change-goods']);
@@ -75,6 +74,37 @@
         volumeColTitle.value = item.fieldTitle || '';
       }
     });
+  }
+  // 传递给商品选择页面的参数
+  const billType = 'deliver';
+  // 校验商品是否可重复添加
+  const goodsNameRepeat = ref(false);
+  // 修改金额单价变动
+  const editAmountEditPrice = ref(false);
+  // 进货价计算方式
+  const buyPriceComputeMethod = ref(false);
+  // 金额计算方式
+  const amountComputeMethod = ref('');
+  // 只允许选择商品开单
+  const onlyChooseGoods = ref(false);
+  // 自动记录客户价
+  const autoCustPrice = ref(false);
+  // 启用一客一价
+  const singleCustPrice = ref(false);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 加载系统开单设置
+  if (billSetting) {
+    goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
+    editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
+    onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
+    autoCustPrice.value = !!billSetting.autoCustPrice;
+    singleCustPrice.value = !!billSetting.singleCustPrice;
+    buyPriceComputeMethod.value = billSetting.buyPriceComputeMethod;
+    amountComputeMethod.value = billSetting.amountComputeMethod;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
   }
   const goodsId = ref('');
   const goodsName = ref('');
@@ -276,37 +306,6 @@
   const customerId = computed(() => {
     if (props.customerId != '') {
       return props.customerId;
-    }
-  });
-  // 传递给商品选择页面的参数
-  const billType = 'deliver';
-  // 校验商品是否可重复添加
-  const goodsNameRepeat = ref(false);
-  // 修改金额单价变动
-  const editAmountEditPrice = ref(false);
-  // 进货价计算方式
-  const buyPriceComputeMethod = ref(false);
-  // 金额计算方式
-  const amountComputeMethod = ref('');
-  // 只允许选择商品开单
-  const onlyChooseGoods = ref(false);
-  // 自动记录客户价
-  const autoCustPrice = ref(false);
-  // 启用一客一价
-  const singleCustPrice = ref(false);
-  // 小数位数
-  const decimalPlaces = ref(2);
-  // 加载系统开单设置
-  getMyBillSetting().then(res=>{
-    goodsNameRepeat.value = !!res.goodsNameRepeat;
-    editAmountEditPrice.value = !!res.editAmountEditPrice;
-    onlyChooseGoods.value = !!res.onlyChooseGoods;
-    autoCustPrice.value = !!res.autoCustPrice;
-    singleCustPrice.value = !!res.singleCustPrice;
-    buyPriceComputeMethod.value = res.buyPriceComputeMethod;
-    amountComputeMethod.value = res.amountComputeMethod;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
     }
   });
 

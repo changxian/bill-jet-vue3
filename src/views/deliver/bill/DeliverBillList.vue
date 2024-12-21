@@ -162,13 +162,12 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
-  import { list, listCount, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
+  import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RepayDetailDialog from '@/views/deliver/debt/components/RepayDetailDialog.vue';
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   import { useRoute } from 'vue-router';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
@@ -176,6 +175,7 @@
   import FastDate from '@/components/FastDate.vue';
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
+
   const route = useRoute();
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
@@ -190,6 +190,7 @@
   const registerModal = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
   // 总计：数量
   const totalCount = ref(0);
   // 总计：重量
@@ -245,7 +246,7 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems,extraInfo) => {
+      afterFetch: async (resultItems, extraInfo) => {
         hasPan.value = resultItems.length > 0;
         listTotalCount(extraInfo);
       },
@@ -274,16 +275,16 @@
   });
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
     // 循环数据
-    if (res.dynaFieldsGroup['1']) {
-      res.dynaFieldsGroup['1'].forEach((item) => {
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
           weightColTitle.value = item.fieldTitle || '';
@@ -298,7 +299,7 @@
         }
       });
     }
-  });
+  }
   // 增加合计行
   function summaryFunc(resultItems) {
     return [
@@ -539,6 +540,7 @@
     detailLoading.value = true;
     currentRowId.value = record.id;
     billDetail({billId: record.id}).then(res=>{
+      debugger;
       dataSourceDetail.value = [...res];
     }).finally(()=>{
       detailLoading.value = false

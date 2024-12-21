@@ -110,7 +110,7 @@ export const columns: BasicColumn[] = [
     title: '重量',
     align: 'center',
     dataIndex: 'weight',
-    ifShow: billSetting.showWeightCol  || false,
+    ifShow: billSetting.showWeightCol || false,
   },
   {
     title: '重量小计(' + weightColTitle.value + ')',

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk" >
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk">
       <!--插槽:table标题-->
       <template v-if="billType != 'deliver'" #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
@@ -85,7 +85,7 @@
   const categoryId = computed(() => props.data?.id);
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
   const emits = defineEmits(['get-select', 'db-ok']);
-  queryParam.name="111";
+  queryParam.name = '';
   const columns = getGoodsColumns(billType.value);
 
   //列表数据

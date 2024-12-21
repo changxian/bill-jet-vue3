@@ -19,7 +19,7 @@ export default {
       extraInfoField: 'extraInfo',
     },
     // 可选的分页选项
-    pageSizeOptions: ['10', '50', '80', '100'],
+    pageSizeOptions: ['10', '20', '50', '100'],
     // 表格默认尺寸
     defaultSize: 'middle',
     //默认每页显示多少条

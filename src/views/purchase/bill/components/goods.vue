@@ -45,132 +45,131 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineEmits } from 'vue';
-import goodsSelectList from '@/views/base/goods/index.vue';
-import { BasicModal, useModal } from '/@/components/Modal';
-import {  BasicColumn, BasicTable } from '/@/components/Table';
-import { useListPage } from '/@/hooks/system/useListPage';
-import { useMessage } from '/@/hooks/web/useMessage';
-import {getMyBillSetting} from '@/views/setting/system/index.api'
-import {useUserStore} from '/@/store/modules/user';
+  import { ref, computed, defineEmits } from 'vue';
+  import goodsSelectList from '@/views/base/goods/index.vue';
+  import { BasicModal, useModal } from '/@/components/Modal';
+  import { BasicColumn, BasicTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
 
-const userStore = useUserStore();
-const emit = defineEmits(['change-goods'])
- const { createMessage, createConfirm } = useMessage();
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
+  const emit = defineEmits(['change-goods']);
+  const { createMessage, createConfirm } = useMessage();
 
-const billType = 'purchase';
-const goodsId = ref('');
-const goodsName = ref('');
+  const billType = 'purchase';
+  const goodsId = ref('');
+  const goodsName = ref('');
 
-const refreshKey:any = ref(new Date().getTime())
-const [register, { closeModal, openModal }] = useModal();
-const showModal = () => {
-  openModal()
-  refreshKey.value = ref(new Date().getTime())
-};
+  const refreshKey:any = ref(new Date().getTime())
+  const [register, { closeModal, openModal }] = useModal();
+  const showModal = () => {
+    openModal();
+    refreshKey.value = ref(new Date().getTime());
+  };
 
-let selectedGoods:any = []
-function getSelect(rows, ids) {
-    selectedGoods = [...rows]
-}
-
-const billSetting = userStore.getBillSetting;
-const columns: BasicColumn[] = [
-     {
-    title: '商品编号(条码)',
-    align: 'center',
-    dataIndex: 'goodsCode',
-        editable: false,
-    edit: true,
-    editComponent: 'Input',
-  },
-  {
-    title: '商品名称',
-    align: 'center',
-    dataIndex: 'goodsName',
-            editable: false,
-    edit: true,
-    editComponent: 'Input',
-  },
-  {
-    title: '规格型号',
-    align: 'center',
-    dataIndex: 'goodsType',
-            editable: false,
-    edit: true,
-    editComponent: 'Input',
-  },
-  {
-    title: '单位',
-    align: 'center',
-    dataIndex: 'goodsUnit',
-            editable: false,
-    edit: true,
-    editComponent: 'Input',
-  },
-  {
-    title: '数量',
-    align: 'center',
-    dataIndex: 'count',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-  },
-  {
-    title: '重量',
-    align: 'center',
-    dataIndex: 'weight',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-    ifShow: billSetting.showWeightCol || false
-  },{
-    title: '面积',
-    align: 'center',
-    dataIndex: 'area',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-    ifShow: billSetting.showAreaCol || false
-  }, {
-    title: '体积',
-    align: 'center',
-    dataIndex: 'volume',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-    ifShow: billSetting.showVolumeCol || false
-  },
-  {
-    title: '进货价',
-    align: 'center',
-    dataIndex: 'cost',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-  },
-  {
-    title: '金额',
-    align: 'center',
-    dataIndex: 'costAmount',
-    editable: false,
-    edit: true,
-    editComponent: 'InputNumber',
-  },
-  {
-    title: '备注',
-    align: 'center',
-    dataIndex: 'remark',
-    editable: false,
-    edit: true,
-    editComponent: 'Input',
+  let selectedGoods:any = [];
+  function getSelect(rows, ids) {
+    selectedGoods = [...rows];
   }
+
+  const columns: BasicColumn[] = [
+    {
+      title: '商品编号(条码)',
+      align: 'center',
+      dataIndex: 'goodsCode',
+      editable: false,
+      edit: true,
+      editComponent: 'Input',
+    },
+    {
+      title: '商品名称',
+      align: 'center',
+      dataIndex: 'goodsName',
+      editable: false,
+      edit: true,
+      editComponent: 'Input',
+    },
+    {
+      title: '规格型号',
+      align: 'center',
+      dataIndex: 'goodsType',
+      editable: false,
+      edit: true,
+      editComponent: 'Input',
+    },
+    {
+      title: '单位',
+      align: 'center',
+      dataIndex: 'goodsUnit',
+      editable: false,
+      edit: true,
+      editComponent: 'Input',
+    },
+    {
+      title: '数量',
+      align: 'center',
+      dataIndex: 'count',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+    },
+    {
+      title: '重量',
+      align: 'center',
+      dataIndex: 'weight',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showWeightCol || false
+    },{
+      title: '面积',
+      align: 'center',
+      dataIndex: 'area',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showAreaCol || false
+    },
+    {
+      title: '体积',
+      align: 'center',
+      dataIndex: 'volume',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showVolumeCol || false
+    },
+    {
+      title: '进货价',
+      align: 'center',
+      dataIndex: 'cost',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+    },
+    {
+      title: '金额',
+      align: 'center',
+      dataIndex: 'costAmount',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+    },
+    {
+      title: '备注',
+      align: 'center',
+      dataIndex: 'remark',
+      editable: false,
+      edit: true,
+      editComponent: 'Input',
+    },
   ];
 
-
-  const dataSource:any = ref([])
+  const dataSource:any = ref([]);
   // 列表页面公共参数、方法
-  let delIds:any = []
+  let delIds:any = [];
   const { tableContext } = useListPage({
     designScope: 'basic-table-demo',
     tableProps: {
@@ -179,201 +178,191 @@ const columns: BasicColumn[] = [
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
-    //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选 
-      rowSelection: { type: 'checkbox',
+      //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选
+      rowSelection: {type: 'checkbox',
       onChange: function(ids, rows) {
-          console.log('get-select', rows, ids)
+          console.log('get-select', rows, ids);
           delIds = ids;
-        }
-       }, 
+        },
+      },
     },
   });
 
-
-/**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
-selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
+  /**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
+  selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
   const [registerTable, { reload }, {rowSelection}] = tableContext;
- 
- // 校验商品是否可重复添加
- const goodsNameRepeat = ref(false);
- const editAmountEditPrice = ref(false)
- const  onlyChooseGoods = ref(false)
- const decimalPlaces = ref(2)
 
- getMyBillSetting().then(res=>{
-  goodsNameRepeat.value = !! res.goodsNameRepeat
-  editAmountEditPrice.value = !! res.editAmountEditPrice
-  onlyChooseGoods.value = !! res.onlyChooseGoods
-  if(res.decimalPlaces === 0 || res.decimalPlaces){
-    decimalPlaces.value = res.decimalPlaces
+  // 校验商品是否可重复添加
+  const goodsNameRepeat = ref(false);
+  const editAmountEditPrice = ref(false);
+  const onlyChooseGoods = ref(false);
+  const decimalPlaces = ref(2);
+  if (billSetting) {
+    goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
+    editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
+    onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
   }
- })
-
-
-const handleOk = (e: MouseEvent) => {
-  selectedGoods.forEach(item=>{
-    item.goodsId = item.id;
-    item.goodsName = item.name;
-    item.goodsCode = item.code;
-    item.goodsType = item.type;
-    item.goodsUnit = item.unit;
-    item.count = 0;
-    item.weight = 0;
-    item.area = 0;
-    item.volume = 0;
-    item.costAmount = 0;
-
-  })
-  if(goodsNameRepeat.value){
-     selectedGoods = removedExistGoods(selectedGoods)
+  const handleOk = (e: MouseEvent) => {
+    selectedGoods.forEach(item=>{
+      item.goodsId = item.id;
+      item.goodsName = item.name;
+      item.goodsCode = item.code;
+      item.goodsType = item.type;
+      item.goodsUnit = item.unit;
+      item.count = 0;
+      item.weight = 0;
+      item.area = 0;
+      item.volume = 0;
+      item.costAmount = 0;
+    });
+    if (goodsNameRepeat.value) {
+      selectedGoods = removedExistGoods(selectedGoods);
+    }
+    if (dataSource.value.length){
+      dataSource.value = [...dataSource.value, ...selectedGoods];
+    } else {
+      dataSource.value = [...selectedGoods];
+    }
+    emit('change-goods', [...dataSource.value]);
+    closeModal();
+  };
+  // 去掉已重发的商品
+  function removedExistGoods(goods){
+    const ids = dataSource.value.map(item=>item.id);
+    const tmp = goods.filter(item => ids.indexOf(item.id) === -1);
+    return tmp;
   }
-  if(dataSource.value.length){
-    dataSource.value = [...dataSource.value, ...selectedGoods]
-  }else{
-    dataSource.value = [...selectedGoods]
-  }
-  emit('change-goods', [...dataSource.value])
-  
-  closeModal()
-};
-// 去掉已重发的商品
-function removedExistGoods(goods){
-  const ids = dataSource.value.map(item=>item.id)
-  const tmp = goods.filter(item => ids.indexOf(item.id) === -1)
-  return tmp
-}
 
-const countNum = computed(()=>{
-    let  num = 0
+  const countNum = computed(()=>{
+    let num = 0;
     dataSource.value.forEach(item=>{
-        num += item.count;
-    })
-    return num
-})
-const weightNum = computed(()=>{
-  let  weight = 0
-  dataSource.value.forEach(item=>{
-    weight += item.weight;
-  })
-  return weight
-})
+      num += item.count;
+    });
+    return num;
+  });
+  const weightNum = computed(()=>{
+    let weight = 0;
+    dataSource.value.forEach(item=>{
+      weight += item.weight;
+    });
+    return weight;
+  });
 
-const areaNum = computed(()=>{
-  let  area = 0
-  dataSource.value.forEach(item=>{
-    area += item.area;
-  })
-  return area
-})
-const volumeNum = computed(()=>{
-  let  volume = 0
-  dataSource.value.forEach(item=>{
-    volume += item.volume;
-  })
-  return volume
-})
+  const areaNum = computed(()=>{
+    let area = 0;
+    dataSource.value.forEach(item=>{
+      area += item.area;
+    });
+    return area;
+  });
+  const volumeNum = computed(()=>{
+    let volume = 0;
+    dataSource.value.forEach(item=>{
+      volume += item.volume;
+    });
+    return volume;
+  });
 
-
-const countMoney = computed(()=>{
-    let  costAmount = 0
+  const countMoney = computed(()=>{
+    let costAmount = 0;
     dataSource.value.forEach(item=>{
       costAmount += item.costAmount;
-    })
-    return costAmount
-})
-
-function addRow(){
-    const row = {
-        id: new Date().getTime(),
-        goodsCode: '',
-        goodsId: '',
-        goodsName: '',
-        goodsType: '',
-        goodsUnit: '',
-        count: 0,
-        weight: 0,
-        area: 0,
-        volume:0,
-        cost: 0,
-        costAmount: 0,
-        remark: '',
-    }
-    dataSource.value.push(row)
-}
-
-function delRow(){
-    if(delIds.length === 0){
-        return createMessage.warning('请选择要删除的数据')
-    }
-    
-    createConfirm({
-          title: '删除',
-          content: `确定要删除吗？`,
-          iconType: 'warning',
-          onOk: () => {
-            const tmp = dataSource.value.filter(item => !(delIds.indexOf(item.id) > -1))
-            dataSource.value = [...tmp]
-            delIds = []
-          }
     });
+    return costAmount;
+  });
 
-}
-  function beforeEditSubmit({ record, index, key, value }) {
-
-     if(key === 'cost'){
-        record.costAmount = value * record.count;
-        emit('change-goods', [...dataSource.value])
-     }else if(key === 'count'){
-         record.costAmount = value * record.cost;
-        emit('change-goods', [...dataSource.value])
-     }else if(editAmountEditPrice.value && key === 'costAmount'){
-        record.cost = ((value*100 / record.count)/100).toFixed(decimalPlaces.value)
-        emit('change-goods', [...dataSource.value])
-     }
+  function addRow() {
+    const row = {
+      id: new Date().getTime(),
+      goodsCode: '',
+      goodsId: '',
+      goodsName: '',
+      goodsType: '',
+      goodsUnit: '',
+      count: 0,
+      weight: 0,
+      area: 0,
+      volume:0,
+      cost: 0,
+      costAmount: 0,
+      remark: '',
+    };
+    dataSource.value.push(row);
   }
-function test(){
-    console.log('dataSource.value:', dataSource.value)
-}
 
-function setValue(goods) {
-    dataSource.value = [...goods]
-}
-function getData(){
-    return {
-        details: dataSource.value,
-        count: countNum.value,
-        weight: weightNum.value,
-        area: areaNum.value,
-        volume: volumeNum.value,
-        amount: countMoney.value
+  function delRow(){
+    if (delIds.length === 0) {
+      return createMessage.warning('请选择要删除的数据');
     }
-}
 
-defineExpose({
+    createConfirm({
+      title: '删除',
+      content: `确定要删除吗？`,
+      iconType: 'warning',
+      onOk: () => {
+        const tmp = dataSource.value.filter(item => !(delIds.indexOf(item.id) > -1))
+        dataSource.value = [...tmp];
+        delIds = [];
+      },
+    });
+  }
+  function beforeEditSubmit({ record, index, key, value }) {
+    if (key === 'cost'){
+      record.costAmount = value * record.count;
+      emit('change-goods', [...dataSource.value]);
+    } else if (key === 'count') {
+      record.costAmount = value * record.cost;
+      emit('change-goods', [...dataSource.value]);
+    } else if (editAmountEditPrice.value && key === 'costAmount') {
+      record.cost = ((value*100 / record.count)/100).toFixed(decimalPlaces.value)
+      emit('change-goods', [...dataSource.value]);
+    }
+  }
+  function test(){
+    console.log('dataSource.value:', dataSource.value);
+  }
+
+  function setValue(goods) {
+    dataSource.value = [...goods];
+  }
+  function getData(){
+    return {
+      details: dataSource.value,
+      count: countNum.value,
+      weight: weightNum.value,
+      area: areaNum.value,
+      volume: volumeNum.value,
+      amount: countMoney.value,
+    };
+  }
+
+  defineExpose({
     getData,
     setValue,
     billType,
-});
+  });
 </script>
 
 <style lang="less" scoped>
-.tbl-wrap {
+  .tbl-wrap {
     :deep(.ant-row) {
-        width:100% !important
+      width: 100% !important;
     }
     :deep(.ant-col) {
-        max-width:100% !important
+      max-width: 100% !important;
     }
-}
-.count-wrap {
+  }
+  .count-wrap {
     padding-bottom: 20px;
 
     .name {
-        margin: 0 0 0 30px;
+      margin: 0 0 0 30px;
     }
     .num {
-        margin-left: 4px;
+      margin-left: 4px;
     }
-
-}
+  }
 </style>

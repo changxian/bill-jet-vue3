@@ -286,6 +286,7 @@
       customerId.value = selectRows[0].id;
       console.log(' customerId val', customerId.value);
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
+
     }
   }
   // 计算金额

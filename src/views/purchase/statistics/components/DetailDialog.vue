@@ -80,16 +80,18 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-  import {ref, defineExpose, reactive, defineEmits} from 'vue'
+  import { ref, defineExpose, reactive, defineEmits } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-  import {BasicTable, useTable} from '/@/components/Table';
-  import {useListPage} from '/@/hooks/system/useListPage';
-  import {columns, userCol, careNoCol} from './DetailDialog.data';
-  import { detailsExportXls} from '../PurchaseStatistics.api'
-  import {JInput} from "@/components/Form";
+  import { BasicTable, useTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { columns, userCol, careNoCol } from './DetailDialog.data';
+  import { detailsExportXls } from '../PurchaseStatistics.api';
+  import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
-  import {detailsList} from "@/views/purchase/statistics/PurchaseStatistics.api";
+  import { detailsList } from '@/views/purchase/statistics/PurchaseStatistics.api';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
 
   // 总计：数量
   const countTotal = ref(0);
@@ -120,7 +122,7 @@
   const hasPan = ref(true);
   const queryParam = reactive<any>({});
   const fastDateParam = reactive<any>({timeType:'',startDate: '', endDate: ''});
-  const formRef = ref()
+  const formRef = ref();
 
   const titleObj = {
     goodsCountColumns: '进货统计明细-商品',
@@ -128,12 +130,12 @@
     supplierCountColumns: '进货统计明细-供应商',
     operatorCountColumns: '进货统计明细-用户',
     careNoCountColumns: '进货统计明细-车号',
-  }
-  const title = ref('')
-  const columnList = ref(columns)
+  };
+  const title = ref('');
+  const columnList = ref(columns);
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
-  const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+  const { prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
     tableProps: {
       title: '进货开单',
       api: detailsList,
@@ -157,30 +159,28 @@
         areaTotal.value = 0;
         volumeTotal.value = 0;
         amountTotal.value = 0;
-        if(hasPan.value){
+        if (hasPan.value) {
           countTotal.value = resultItems[0].countTotal;
           weightTotal.value = resultItems[0].weightTotal;
           areaTotal.value = resultItems[0].areaTotal;
           volumeTotal.value = resultItems[0].volumeTotal;
           amountTotal.value = resultItems[0].amountTotal;
         }
-
       },
       rowSelection: {type: 'radio'},
     },
     exportConfig: {
-      name: "进货统计明细",
+      name: '进货统计明细',
       url: detailsExportXls,
       params: queryParam,
     },
-
   });
   const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
     xl: 6,
-    xxl: 4
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
@@ -188,16 +188,16 @@
   });
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if (res.dynaFieldsGroup['1']) {
+    if (billSetting.dynaFieldsGroup['1']) {
       // 循环数据
-      res.dynaFieldsGroup['1'].forEach((item) => {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
           weightColTitle.value = item.fieldTitle || '';
@@ -212,7 +212,7 @@
         }
       });
     }
-  });
+  }
   /**
    * 查询
    */

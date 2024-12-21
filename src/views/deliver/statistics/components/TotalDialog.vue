@@ -84,7 +84,9 @@
   import { totalList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
 
   // 总计：数量
   const countTotal = ref(0);
@@ -140,13 +142,13 @@
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
         countTotal.value = 0;
-        weightTotal.value =0;
+        weightTotal.value = 0;
         areaTotal.value = 0;
         volumeTotal.value = 0;
-        amountTotal.value =0;
-        costAmountTotal.value =0;
+        amountTotal.value = 0;
+        costAmountTotal.value = 0;
         profitAmountTotal.value = 0;
-        if(hasPan.value){
+        if (hasPan.value) {
           countTotal.value = resultItems[0].countTotal;
           weightTotal.value = resultItems[0].weightTotal;
           areaTotal.value = resultItems[0].areaTotal;
@@ -155,7 +157,6 @@
           costAmountTotal.value = resultItems[0].costAmountTotal;
           profitAmountTotal.value = resultItems[0].profitAmountTotal;
         }
-
       },
       rowSelection: { type: 'radio' },
     },
@@ -178,31 +179,31 @@
   });
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if(res.dynaFieldsGroup['1']){
-        // 循环数据
-        res.dynaFieldsGroup['1'].forEach((item) => {
-          // 重量小计
-          if (item.fieldName === 'weightSubtotal') {
-            weightColTitle.value = item.fieldTitle || '';
-          }
-          // 面积小计
-          if (item.fieldName === 'areaSubtotal') {
-            areaColTitle.value = item.fieldTitle || '';
-          }
-          // 体积小计
-          if (item.fieldName === 'volumeSubtotal') {
-            volumeColTitle.value = item.fieldTitle || '';
-          }
-        });
+    if(billSetting.dynaFieldsGroup['1']){
+      // 循环数据
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
     }
-  });
+  }
   /**
    * 查询
    */

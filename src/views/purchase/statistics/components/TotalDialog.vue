@@ -79,16 +79,18 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-  import {ref, defineExpose, reactive, defineEmits} from 'vue'
+  import { ref, defineExpose, reactive, defineEmits } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-  import {BasicTable} from '/@/components/Table';
-  import {useListPage} from '/@/hooks/system/useListPage';
-  import {totalColumns} from './DetailDialog.data';
-  import { totalExportXls} from '../PurchaseStatistics.api'
-  import {JInput} from "@/components/Form";
+  import { BasicTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { totalColumns } from './DetailDialog.data';
+  import { totalExportXls } from '../PurchaseStatistics.api';
+  import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
-  import {totalList} from "@/views/purchase/statistics/PurchaseStatistics.api";
+  import { totalList } from '@/views/purchase/statistics/PurchaseStatistics.api';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
   // 总计：数量
   const countTotal = ref(0);
   // 总计：重量
@@ -117,14 +119,14 @@
 
   const hasPan = ref(true);
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({startDate: '', endDate: ''});
-  const formRef = ref()
+  const fastDateParam = reactive<any>({ startDate: '', endDate: ''});
+  const formRef = ref();
 
-  const title = ref('进货统计明细-汇总')
-  const columnList = ref(totalColumns)
+  const title = ref('进货统计明细-汇总');
+  const columnList = ref(totalColumns);
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
-  const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '进货开单',
       api: totalList,
@@ -148,7 +150,7 @@
         areaTotal.value = 0;
         volumeTotal.value = 0;
         amountTotal.value = 0;
-        if(hasPan.value) {
+        if (hasPan.value) {
           countTotal.value = resultItems[0].countTotal;
           weightTotal.value = resultItems[0].weightTotal;
           areaTotal.value = resultItems[0].areaTotal;
@@ -156,21 +158,20 @@
           amountTotal.value = resultItems[0].amountTotal;
         }
       },
-      rowSelection: {type: 'radio'},
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: "进货统计合计",
+      name: '进货统计合计',
       url: totalExportXls,
       params: queryParam,
     },
-
   });
   const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
     xl: 6,
-    xxl: 4
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
@@ -178,16 +179,16 @@
   });
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if(res.dynaFieldsGroup['1']){
+    if(billSetting.dynaFieldsGroup['1']){
       // 循环数据
-      res.dynaFieldsGroup['1'].forEach((item) => {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
           weightColTitle.value = item.fieldTitle || '';
@@ -202,7 +203,7 @@
         }
       });
     }
-  });
+  }
   /**
    * 查询
    */

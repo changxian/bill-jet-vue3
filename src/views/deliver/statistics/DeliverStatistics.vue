@@ -89,7 +89,9 @@
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import DetailDialog from './components/DetailDialog.vue';
   import TotalDialog from './components/TotalDialog.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
   const hasPan = ref(true);
   // 总计：数量
   const countSubtotal = ref(0);
@@ -116,7 +118,6 @@
   // 显示体积列【合计 和 列表皆显示】
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
-
 
   const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '', custId: '', goodsId: '', categoryId: '', operatorId: '', userId: '', careNo: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
@@ -195,17 +196,16 @@
   }
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if (res.dynaFieldsGroup['1']) {
+    if (billSetting.dynaFieldsGroup['1']) {
       // 循环数据
-      res.dynaFieldsGroup['1'].forEach((item) => {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
           weightColTitle.value = item.fieldTitle || '';
@@ -220,7 +220,7 @@
         }
       });
     }
-  });
+  }
 
   const detailDialogRef = ref();
   const queryTypeColumnObj = {
@@ -230,13 +230,13 @@
     'userNameCountColumns':'userId',
     'operatorCountColumns':'operatorId',
     'careNoCountColumns':'careNo',
-  }
+  };
   function setParam(record){
     Object.keys(queryTypeColumnObj).forEach(key => {
-      if(key===queryParam.queryType){
-        queryParam[queryTypeColumnObj[key]]=record.id;
-      }else{
-        queryParam[queryTypeColumnObj[key]]='';
+      if (key === queryParam.queryType) {
+        queryParam[queryTypeColumnObj[key]] = record.id;
+      } else {
+        queryParam[queryTypeColumnObj[key]] = '';
       }
     });
   }

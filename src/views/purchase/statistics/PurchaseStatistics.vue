@@ -96,73 +96,73 @@
 </template>
 
 <script lang="ts" name="purchase.statistics-PurchaseStatistics" setup>
+  import { ref, defineExpose, reactive } from 'vue'
+  import { BasicTable, useTable } from '/@/components/Table';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import {
+    goodsCountColumns,
+    typeCountColumns,
+    supplierCountColumns,
+    operatorCountColumns,
+    careNoCountColumns
+  } from './PurchaseStatistics.data';
+  import { list, getExportUrl } from './PurchaseStatistics.api';
+  import { JInput } from '@/components/Form';
+  import FastDate from '/@/components/FastDate.vue';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import DetailDialog from './components/DetailDialog.vue';
+  import TotalDialog from './components/TotalDialog.vue';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
+  const hasPan = ref(true);
+  // 总计：数量
+  const countSubtotal = ref(0);
+  // 总计：重量
+  const weightSubtotal = ref(0);
+  // 总计：面积
+  const areaSubtotal = ref(0);
+  // 总计：体积
+  const volumeSubtotal = ref(0);
+  // 总计：金额
+  const amountSubtotal = ref(0);
 
-import {ref, defineExpose, reactive} from 'vue'
-import {BasicTable, useTable} from '/@/components/Table';
-import {useListPage} from '/@/hooks/system/useListPage';
-import {
-  goodsCountColumns,
-  typeCountColumns,
-  supplierCountColumns,
-  operatorCountColumns,
-  careNoCountColumns
-} from './PurchaseStatistics.data';
-import {list, getExportUrl} from './PurchaseStatistics.api'
-import {JInput} from "@/components/Form";
-import FastDate from '/@/components/FastDate.vue';
-import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-import DetailDialog from './components/DetailDialog.vue'
-import TotalDialog from './components/TotalDialog.vue'
-import { getMyBillSetting } from '@/views/setting/system/index.api';
-import {forIn} from "lodash-es";
-const hasPan = ref(true);
-// 总计：数量
-const countSubtotal = ref(0);
-// 总计：重量
-const weightSubtotal = ref(0);
-// 总计：面积
-const areaSubtotal = ref(0);
-// 总计：体积
-const volumeSubtotal = ref(0);
-// 总计：金额
-const amountSubtotal = ref(0);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
-// 小数位数
-const decimalPlaces = ref(2);
-// 显示重量列【合计 和 列表皆显示，0不显示，1显示】
-const showWeightCol = ref(false);
-const weightColTitle = ref('');
-// 显示面积列【合计 和 列表皆显示】
-const showAreaCol = ref(false);
-const areaColTitle = ref('');
-// 显示体积列【合计 和 列表皆显示】
-const showVolumeCol = ref(false);
-const volumeColTitle = ref('');
+  const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
+  const formRef = ref();
+  const columnObj = {
+    goodsCountColumns,
+    typeCountColumns,
+    supplierCountColumns,
+    operatorCountColumns,
+    careNoCountColumns,
+  };
 
-const queryParam = reactive<any>({queryType: 'goodsCountColumns', companyId: '', companyName: ''});
-const fastDateParam = reactive<any>({timeType: 'thisMonth', startDate: '', endDate: ''});
-const formRef = ref()
-const columnObj = {
-  goodsCountColumns,
-  typeCountColumns,
-  supplierCountColumns,
-  operatorCountColumns,
-  careNoCountColumns
-}
-
-function getColumns() {
-  columns.value =columnObj[queryParam.queryType];
-  return  columns.value;
-}
-// 加载系统开单设置
-getMyBillSetting().then((res) => {
-  showWeightCol.value = !!res.showWeightCol;
-  showAreaCol.value = !!res.showAreaCol;
-  showVolumeCol.value = !!res.showVolumeCol;
-  if (res.decimalPlaces === 0 || res.decimalPlaces) {
-    decimalPlaces.value = res.decimalPlaces;
+  function getColumns() {
+    columns.value = columnObj[queryParam.queryType];
+    return columns.value;
   }
-  if(res.dynaFieldsGroup['1']){
+  // 加载系统开单设置
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.dynaFieldsGroup['1']){
       // 循环数据
       res.dynaFieldsGroup['1'].forEach(item => {
         // 重量小计
@@ -178,143 +178,140 @@ getMyBillSetting().then((res) => {
           volumeColTitle.value = item.fieldTitle || '';
         }
       });
-  }
-});
-function changeCompany(val, selectRows) {
-  console.log(' changeCompany val', val, 'selectRows:', selectRows);
-  // if (selectRows?.length > 0) {
-  //   queryParam.companyName = selectRows[0].compName;
-  // }
-}
-
-const columns = ref(goodsCountColumns)
-const toggleSearchStatus = ref<boolean>(false);
-//注册table数据
-const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
-  tableProps: {
-    title: '进货统计',
-    api: list,
-    // columns: typeCountColumns,
-    canResize: false,
-    useSearchForm: false,
-    showActionColumn: false,
-    clickToRowSelect: true,
-    showIndexColumn: true,
-    actionColumn: {
-      width: 120,
-      fixed: 'right',
-    },
-    beforeFetch: async (params) => {
-      return Object.assign(params, queryParam, fastDateParam);
-    },
-    afterFetch: async (resultItems) => {
-      hasPan.value = resultItems.length > 0;
-      countSubtotal.value = 0;
-      weightSubtotal.value = 0;
-      areaSubtotal.value = 0;
-      volumeSubtotal.value = 0;
-      amountSubtotal.value = 0;
-      if(hasPan.value ){
-        countSubtotal.value = resultItems[0].countTotal;
-        weightSubtotal.value = resultItems[0].weightTotal;
-        areaSubtotal.value = resultItems[0].areaTotal;
-        volumeSubtotal.value = resultItems[0].volumeTotal;
-        amountSubtotal.value = resultItems[0].amountTotal;
-      }
-
-    },
-    rowSelection: {type: 'radio'},
-  },
-  exportConfig: {
-    name: "进货统计",
-    url: getExportUrl,
-    params: queryParam,
-  },
-
-});
-const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
-const labelCol = reactive({
-  xs: 24,
-  sm: 4,
-  xl: 6,
-  xxl: 4
-});
-const wrapperCol = reactive({
-  xs: 24,
-  sm: 20,
-});
-
-function changeType() {
-  getColumns()
-  reload()
-}
-
-const detailDialogRef = ref()
-
-function lookDetail(record) {
-  setParam(record)
-  detailDialogRef.value.show(queryParam, fastDateParam, record);
-}
-
-const totalDialogRef = ref()
-
-function lookTotal(record) {
-  setParam(record)
-  totalDialogRef.value.show(queryParam, fastDateParam, record);
-
-}
-const queryTypeColumnObj = {
-  'goodsCountColumns':'goodsId',
-  'typeCountColumns':'categoryId',
-  'supplierCountColumns':'supplierId',
-  'operatorCountColumns':'operatorId',
-  'careNoCountColumns':'careNo',
-}
-function setParam(record){
-  Object.keys(queryTypeColumnObj).forEach(key => {
-    if(key===queryParam.queryType){
-      queryParam[queryTypeColumnObj[key]]=record.id;
-    }else{
-      queryParam[queryTypeColumnObj[key]]='';
     }
+  }
+  function changeCompany(val, selectRows) {
+    console.log(' changeCompany val', val, 'selectRows:', selectRows);
+    // if (selectRows?.length > 0) {
+    //   queryParam.companyName = selectRows[0].compName;
+    // }
+  }
+
+  const columns = ref(goodsCountColumns)
+  const toggleSearchStatus = ref<boolean>(false);
+  //注册table数据
+  const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+    tableProps: {
+      title: '进货统计',
+      api: list,
+      // columns: typeCountColumns,
+      canResize: false,
+      useSearchForm: false,
+      showActionColumn: false,
+      clickToRowSelect: true,
+      showIndexColumn: true,
+      actionColumn: {
+        width: 120,
+        fixed: 'right',
+      },
+      beforeFetch: async (params) => {
+        return Object.assign(params, queryParam, fastDateParam);
+      },
+      afterFetch: async (resultItems) => {
+        hasPan.value = resultItems.length > 0;
+        countSubtotal.value = 0;
+        weightSubtotal.value = 0;
+        areaSubtotal.value = 0;
+        volumeSubtotal.value = 0;
+        amountSubtotal.value = 0;
+        if (hasPan.value ){
+          countSubtotal.value = resultItems[0].countTotal;
+          weightSubtotal.value = resultItems[0].weightTotal;
+          areaSubtotal.value = resultItems[0].areaTotal;
+          volumeSubtotal.value = resultItems[0].volumeTotal;
+          amountSubtotal.value = resultItems[0].amountTotal;
+        }
+      },
+      rowSelection: {type: 'radio'},
+    },
+    exportConfig: {
+      name: '进货统计',
+      url: getExportUrl,
+      params: queryParam,
+    },
   });
-}
-/**
- * 查询
- */
-function searchQuery() {
-  reload();
-}
+  const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const labelCol = reactive({
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
+  });
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
 
-/**
- * 重置
- */
-function searchReset() {
-  formRef.value.resetFields();
-  fastDateParam.startDate = ''
-  fastDateParam.endDate = ''
-  selectedRowKeys.value = [];
-  //刷新数据
-  reload();
-}
+  function changeType() {
+    getColumns();
+    reload();
+  }
 
-defineExpose({})
+  const detailDialogRef = ref();
+
+  function lookDetail(record) {
+    setParam(record);
+    detailDialogRef.value.show(queryParam, fastDateParam, record);
+  }
+
+  const totalDialogRef = ref();
+
+  function lookTotal(record) {
+    setParam(record);
+    totalDialogRef.value.show(queryParam, fastDateParam, record);
+  }
+  const queryTypeColumnObj = {
+    'goodsCountColumns':'goodsId',
+    'typeCountColumns':'categoryId',
+    'supplierCountColumns':'supplierId',
+    'operatorCountColumns':'operatorId',
+    'careNoCountColumns':'careNo',
+  };
+  function setParam(record) {
+    Object.keys(queryTypeColumnObj).forEach(key => {
+      if (key === queryParam.queryType){
+        queryParam[queryTypeColumnObj[key]] = record.id;
+      } else {
+        queryParam[queryTypeColumnObj[key]] = '';
+      }
+    });
+  }
+  /**
+   * 查询
+   */
+  function searchQuery() {
+    reload();
+  }
+
+  /**
+   * 重置
+   */
+  function searchReset() {
+    formRef.value.resetFields();
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
+    selectedRowKeys.value = [];
+    //刷新数据
+    reload();
+  }
+
+  defineExpose({});
 
 </script>
 
 <style lang="less" scoped>
-.table-page-search-submitButtons {
-  display: block;
-  margin-bottom: 24px;
-  white-space: nowrap;
-}
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
 
-.total_span {
-  margin: 0 5px
-}
+  .total_span {
+    margin: 0 5px
+  }
 
-.p_san {
-  position: absolute;
-  top: -50px;
-}
+  .p_san {
+    position: absolute;
+    top: -50px;
+  }
 </style>
