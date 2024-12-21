@@ -97,8 +97,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
-                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
+              <a-form-item label="未付款金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
+                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -171,7 +171,7 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
+  import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
 
   const span = 8;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
@@ -265,22 +265,22 @@
       formData.supplierAddress = selectRows[0].address;
     }
   }
-  let amount = 0
+  let amount = 0;
   function changeGoods(goods) {
-    let num = 0
+    let num = 0;
     goods.forEach(item=>{
-        num += item.costAmount;
-    })
-    amount = num
-    calcDebtAmount()
+      num += item.costAmount;
+    });
+    amount = num;
+    calcDebtAmount();
   }
 
-  function changeMoney(){
-    calcDebtAmount()
+  function changeMoney() {
+    calcDebtAmount();
   }
   function calcDebtAmount(){
-    if(amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
-      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount
+    if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
+      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount;
     }
   }
   /**
@@ -304,79 +304,79 @@
       });
       //赋值
       Object.assign(formData, tmpData);
-      formData.status = record.status + ''
-      getGoods(formData.id)
-      if(record.hasCopy){
-        formData.status= ''
-        formData.invoiceStatus= undefined
-        formData.id = ''
-        formData.billNo = ''
-        formData.createBy = ''
-        formData.createTime = ''
-        formData.updateTime = ''
-        formData.updateBy = ''
+      formData.status = record.status + '';
+      getGoods(formData.id);
+      if (record.hasCopy) {
+        formData.status = '';
+        formData.invoiceStatus= undefined;
+        formData.id = '';
+        formData.billNo = '';
+        formData.createBy = '';
+        formData.createTime = '';
+        formData.updateTime = '';
+        formData.updateBy = '';
       }
     });
   }
 
   function getGoods(id){
-      billDetail({billId: id}).then(res=>{
+    billDetail({billId: id}).then(res=>{
       // dataSourceDetail.value = [...res]
       nextTick(()=>{
-        goodsRef.value.setValue([...res])
-      })
-    })
+        goodsRef.value.setValue([...res]);
+      });
+    });
   }
 
   function validateForm(){
-    if(!formData.supplierId){
+    if (!formData.supplierId){
       createMessage.warning('请选择供应商');
       return false;
     }
-    if(!formData.companyId){
+    if (!formData.companyId){
       createMessage.warning('请选择公司');
       return false;
     }
-    const goods = goodsRef.value.getData().details
-    if(goods.length === 0){
+    const goods = goodsRef.value.getData().details;
+    if (goods.length === 0){
       createMessage.warning('请选择商品');
       return false;
     }
-    return true
+    return true;
   }
   function resetForm() {
-    formData.id = ''
-    formData.type = undefined
-    formData.billNo = ''
-    formData.billDate = ''
-    formData.companyName = ''
-    formData.companyId = ''
-    formData.supplierId = ''
-    formData.supplierName = ''
-    formData.supplierPhone = ''
-    formData.supplierAddress = ''
-    formData.supplierContact = ''
-    formData.count = 0
-    formData.weight = 0
-    formData.area = 0
-    formData.volume = 0
-    formData.amount = 0
-    formData.paymentAmount = 0
-    formData.discountAmount = 0
-    formData.debtAmount = 0
-    formData.hisDebtAmount = 0
-    formData.status = ''
-    formData.invoiceStatus = undefined
-    formData.careNo = ''
-    formData.contractCode = ''
-    formData.remark = ''
-    formData.createName = ''
-    formData.userName = ''
+    formData.id = '';
+    formData.type = undefined;
+    formData.billNo = '';
+    formData.billDate = '';
+    formData.companyName = '';
+    formData.companyId = '';
+    formData.supplierId = '';
+    formData.supplierName = '';
+    formData.supplierPhone = '';
+    formData.supplierAddress = '';
+    formData.supplierContact = '';
+    formData.count = 0;
+    formData.weight = 0;
+    formData.area = 0;
+    formData.volume = 0;
+    formData.amount = 0;
+    formData.paymentAmount = 0;
+    formData.discountAmount = 0;
+    formData.debtAmount = 0;
+    formData.hisDebtAmount = 0;
+    formData.status = '';
+    formData.invoiceStatus = undefined;
+    formData.careNo = '';
+    formData.contractCode = '';
+    formData.remark = '';
+    formData.createName = '';
+    formData.userName = '';
     goodsRef.value.setValue([]);
   }
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
-    if(!validateForm()){
+    if (!validateForm()){
       return;
     }
     console.log('formData:', formData);
@@ -389,7 +389,7 @@
       .then((res) => {
         if (res.success) {
           createMessage.success(res.message);
-          resetForm()
+          resetForm();
           emit('ok');
         } else {
           createMessage.warning(res.message);
