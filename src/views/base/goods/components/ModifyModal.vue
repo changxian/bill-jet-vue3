@@ -26,11 +26,11 @@
         <p style="margin: 40px 0 10px 10px">
           <span style="text-align: center; display: inline-block; width: 50%">
             <a-popconfirm
-              title="确认将选定商品的成本价更新到所有已开单据?"
+              title="确认将选定商品的成本价更新到已开送货单据吗？"
               :visible="visible"
               ok-text="确认"
               cancel-text="取消"
-              @confirm="handleCheckedStock"
+              @confirm="handleUpdateCheckedBillCost"
               @cancel="handleCancel"
             >
               <a-button type="primary" v-auth="'bill:jxc_goods:add'" preIcon="ant-design:edit-outlined"> 选定更新 </a-button>
@@ -38,11 +38,11 @@
           </span>
           <span>
             <a-popconfirm
-              title="确认将所有商品的成本价更新到所有已开单据?"
+              title="确认将所有商品的成本价更新到已开送货单据吗？"
               :visible="visible"
               ok-text="确认"
               cancel-text="取消"
-              @confirm="handleAllStock"
+              @confirm="handleUpdateAllBillCost"
               @cancel="handleCancel"
             >
               <a-button type="primary" v-auth="'bill:jxc_goods:add'" preIcon="ant-design:edit-outlined"> 所有更新 </a-button>
@@ -90,7 +90,7 @@
   import { ref, defineExpose } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { allList } from '../category.api';
-  import { editCategory, addStockRecord } from '../goods.list.api';
+  import { editCategory, addStockRecord, updateBillCostByGoodsId, updateAllBillCost } from '../goods.list.api';
   import { stockOptions } from '../goods.list.data';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -119,14 +119,17 @@
   let row = {
     id: '',
   };
-  function show(type, data){
+  function show(type, data) {
+    debugger;
     title.value = titleObj[type];
     modifyType.value = type;
     // if (type == 'updateStocks') {
     //   disableSubmit.value = true;
     // }
-    goodsName.value = data.name;
-    row = data;
+    if (data) {
+      goodsName.value = data.name;
+      row = data;
+    }
     visible.value = true;
   }
 
@@ -155,17 +158,25 @@
   }
 
   /**
-   * 更新选中商品所有已开单的成本价
+   * 更新选中商品所有已开送货单的成本价
    */
-  async function handleCheckedStock() {
-
+  async function handleUpdateCheckedBillCost() {
+    if (row.id) {
+      updateBillCostByGoodsId({ goodsId: row.id }).then(res => {
+        createMessage.success('更新成功！');
+      });
+    } else {
+      createMessage.success('请先选定需要更新的商品');
+    }
   }
 
   /**
-   * 更新所有商品所有已开单的成本价
+   * 更新所有商品所有已开送货单的成本价
    */
-  async function handleAllStock() {
-
+  async function handleUpdateAllBillCost() {
+    debugger;
+    await updateAllBillCost();
+    createMessage.success('更新成功！');
   }
 
   /**

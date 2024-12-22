@@ -7,7 +7,7 @@
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleModify('category')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 改类别</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateCost')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 更新成本</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateCost')" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:edit-outlined"> 更新成本</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateStocks')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 变动库存</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
@@ -37,7 +37,7 @@
     <!-- 客户价表单 -->
     <CustPriceList @register="registerCustPriceModal" />
     <!-- 商品信息修改 -->
-    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess" />
     <!-- 商品库存明细 -->
     <GoodsInventoryRecordList @register="registerRecordModal" />
   </div>
@@ -196,11 +196,10 @@
    * 编辑类别
    */
   function handleModify(type) {
-    if (unref(selectedRowKeys).length != 1) {
-      createMessage.warn('请选择一个商品');
-      return;
+    let row: Recordable = {};
+    if (unref(selectedRowKeys).length > 0) {
+      row = selectedRows.value[0];
     }
-    const row = selectedRows.value[0];
     modifyModalRef.value.show(type, row);
   }
   /**
