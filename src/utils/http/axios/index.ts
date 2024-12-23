@@ -166,6 +166,7 @@ const transform: AxiosTransform = {
     // update-begin--author:liaozhiyang---date:20240509---for：【issues/1220】登录时，vue3版本不加载字典数据设置无效
     //--update-begin--author:liusq---date:20220325---for: 增加vue3标记
     config.headers[ConfigEnum.VERSION] = 'v3';
+    config.headers[ConfigEnum.CLIENT_TYPE] = '1';
     //--update-end--author:liusq---date:20220325---for:增加vue3标记
     // update-end--author:liaozhiyang---date:20240509---for：【issues/1220】登录时，vue3版本不加载字典数据设置无效
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
