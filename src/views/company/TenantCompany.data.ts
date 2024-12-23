@@ -16,6 +16,18 @@ export const columns: BasicColumn[] = [
     dataIndex: 'shortName',
   },
   {
+    title: '开户行',
+    align: 'center',
+    dataIndex: 'bankBelong',
+  },
+  {
+    title: '开户行账号',
+    align: 'center',
+    dataIndex: 'bankAccount',
+  },
+
+
+  {
     title: '默认公司',
     align: 'center',
     dataIndex: 'isDefault_dictText',

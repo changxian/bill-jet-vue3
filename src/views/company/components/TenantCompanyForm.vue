@@ -14,6 +14,16 @@
 								<a-input v-model:value="formData.shortName" placeholder="请输入简称"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+            <a-col :span="24">
+              <a-form-item label="开户行" v-bind="validateInfos.bankBelong" id="TenantCompanyForm-bankBelong" name="bankBelong">
+                <a-input v-model:value="formData.bankBelong" placeholder="请输入开户行"  allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-item label="开户行账号" v-bind="validateInfos.bankAccount" id="TenantCompanyForm-bankAccount" name="bankAccount">
+                <a-input v-model:value="formData.bankAccount" placeholder="请输入开户行账号"  allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
 						<a-col :span="24">
 							<a-form-item label="英文名称" v-bind="validateInfos.enName" id="TenantCompanyForm-enName" name="enName">
 								<a-input v-model:value="formData.enName" placeholder="请输入英文名称"  allow-clear ></a-input>
@@ -87,6 +97,8 @@
     id: '',
     compName: '',
     shortName: '',
+    bankBelong:'',
+    bankAccount:'',
     enName: '',
     address: '',
     webSite: '',
