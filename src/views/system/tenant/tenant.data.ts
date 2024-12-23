@@ -475,4 +475,18 @@ export const tenantUserSchema: FormSchema[] = [
   // },
   { field: 'relTenantIds', label: '企业', component: 'Input',show:false },
   { field: 'selectedroles', label: '角色', component: 'Input',show:false },
+  { field: '', label: '登录客户端', component: 'Checkbox',show:false },
+{
+    field: 'loginClient',
+    component: 'JCheckbox',
+    label: '登录客户端', 
+    defaultValue: '1,2',
+    componentProps: {
+      options: [
+        { label: 'PC', value: '1' },
+        { label: '小程序', value: '2' },
+      ],
+    } 
+  },
+
 ];
