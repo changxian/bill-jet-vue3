@@ -357,7 +357,6 @@
     if (model.id) {
       isUpdate.value = true;
     }
-    debugger;
     await saveOrUpdateBilling(model, isUpdate.value)
       .then((res) => {
         if (res.success) {
