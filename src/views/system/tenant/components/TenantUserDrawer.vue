@@ -42,16 +42,18 @@
         showFooter.value = data?.showFooter ?? true;
         setDrawerProps({ showFooter: showFooter.value });
         if (unref(isUpdate)) {
-          const userDepart = await getUserDepartList({ userId: data.record.id });
-          let departData: any = '';
-          if (userDepart && userDepart.length > 0) {
-            departData = userDepart.map((item) => item.value);
-          }
+          // const userDepart = await getUserDepartList({ userId: data.record.id });
+          // let departData: any = '';
+          // if (userDepart && userDepart.length > 0) {
+          //   departData = userDepart.map((item) => item.value);
+          // }
           let formData = {
             ...data.record,
-            selecteddeparts: departData,
+            // selecteddeparts: departData,
             selectedroles: data.record.selectedroles,
           };
+
+          debugger
           status.value = data.status;
           await setFieldsValue(formData);
         }
