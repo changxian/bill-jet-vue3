@@ -55,7 +55,7 @@
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './DeliverDebt.data';
-  import { list, getExportUrl, listCount } from "./DeliverDebt.api";
+  import { list, getExportUrl, listCount } from './DeliverDebt.api';
   import DeliverDebtModal from './components/DeliverDebtModal.vue';
   import DeptDialog from './components/DeptDialog.vue';
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue';

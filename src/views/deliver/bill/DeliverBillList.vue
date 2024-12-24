@@ -487,7 +487,7 @@
    */
   function searchQuery() {
     reload();
-    listTotalCount();
+    // listTotalCount();
   }
 
   /**
@@ -498,7 +498,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
-    listTotalCount();
+    // listTotalCount();
   }
 
   /**

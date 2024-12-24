@@ -174,7 +174,6 @@
    * 更新所有商品所有已开送货单的成本价
    */
   async function handleUpdateAllBillCost() {
-    debugger;
     await updateAllBillCost();
     createMessage.success('更新成功！');
   }

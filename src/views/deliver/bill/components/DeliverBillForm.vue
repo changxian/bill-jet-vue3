@@ -428,6 +428,7 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    debugger;
     console.log('params:', params);
     confirmLoading.value = true;
     saveOrUpdate(params)
