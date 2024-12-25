@@ -140,10 +140,12 @@
       title: '进货开单',
       api: detailsList,
       canResize: false,
+      cols: userStore.getCols, // 添加列备注信息
       useSearchForm: false,
       showActionColumn: false,
       showIndexColumn: true,
       clickToRowSelect: true,
+
       actionColumn: {
         width: 120,
         fixed: 'right',
