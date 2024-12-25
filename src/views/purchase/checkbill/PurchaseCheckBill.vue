@@ -209,6 +209,33 @@
     },
 
   });
+  const billSetting = userStore.getBillSetting;
+  // 加载系统开单设置
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    // 循环数据
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
+  }
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
