@@ -2,14 +2,7 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
-        <a-form
-          ref="formRef"
-          class="antd-modal-form"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          name="PurchaseBillForm"
-          style="background: #ffffff"
-        >
+        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="PurchaseBillForm" style="background: #ffffff">
           <a-row>
             <a-col :span="span">
               <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="PurchaseBillForm-companyId" name="companyId">
@@ -43,14 +36,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="开单日期" v-bind="validateInfos.billDate" id="PurchaseBillForm-billDate" name="billDate">
-                <a-date-picker
-                  placeholder="请选择开单日期"
-                  v-model:value="formData.billDate"
-                  showTime
-                  value-format="YYYY-MM-DD HH:mm:ss"
-                  style="width: 100%"
-                  allow-clear
-                />
+                <a-date-picker placeholder="请选择开单日期" v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -64,28 +50,25 @@
               </a-form-item>
             </a-col>
           </a-row>
+          <a-row v-if="formData.dynamicSupFields && 0 < formData.dynamicSupFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicSupFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicSupFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicSupFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
+          </a-row>
           <goods ref="goodsRef" @change-goods="changeGoods"></goods>
           <a-row>
-            <!-- <a-col :span="span">
-							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
-								<a-input v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col> -->
             <a-col :span="span">
               <a-form-item label="开单类型" v-bind="validateInfos.type" id="PurchaseBillForm-type" name="type">
                 <j-dict-select-tag v-model:value="formData.type" dictCode="" :options="typeOptions" placeholder="请选择开单类型" allow-clear />
               </a-form-item>
             </a-col>
-            <!-- <a-col :span="span">
-							<a-form-item label="数量（本单商品数量）" v-bind="validateInfos.count" id="PurchaseBillForm-count" name="count">
-								<a-input-number v-model:value="formData.count" placeholder="请输入数量（本单商品数量）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="PurchaseBillForm-amount" name="amount">
-								<a-input-number v-model:value="formData.amount" placeholder="请输入本单金额" style="width: 100%" />
-							</a-form-item>
-						</a-col> -->
             <a-col :span="span">
               <a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
                 <a-input-number @change="changeMoney" v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
@@ -106,47 +89,23 @@
                 <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
-<!--            <a-col :span="span">-->
-<!--              <a-form-item-->
-<!--                label="状态"-->
-<!--                v-bind="validateInfos.status"-->
-<!--                id="PurchaseBillForm-status"-->
-<!--                name="status"-->
-<!--              >-->
-<!--                <j-dict-select-tag-->
-<!--                  v-model:value="formData.status"-->
-<!--                  :options="statusOptions"-->
-<!--                  dictCode=""-->
-<!--                  placeholder="请选择状态"-->
-<!--                  allow-clear-->
-<!--                />-->
-<!--              </a-form-item>-->
-<!--            </a-col>-->
-            <!-- <a-col :span="span">
-							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.invoiceStatus" id="PurchaseBillForm-invoiceStatus" name="invoiceStatus">
-								<j-dict-select-tag v-model:value="formData.invoiceStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="业务员" v-bind="validateInfos.userName" id="PurchaseBillForm-userName" name="userName">
-						<j-select-user v-model:value="formData.userName"      allow-clear />
-							</a-form-item>
-						</a-col> -->
             <a-col :span="8">
               <a-form-item label="备注" id="PurchaseBillForm-remark" name="remark" >
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
               </a-form-item>
             </a-col>
-            <!-- <a-col :span="span">
-							<a-form-item label="版本" v-bind="validateInfos.version" id="PurchaseBillForm-version" name="version">
-								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="制单人" v-bind="validateInfos.createName" id="PurchaseBillForm-createName" name="createName">
-								<a-input v-model:value="formData.createName" placeholder="请输入制单人"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col> -->
+          </a-row>
+          <a-row v-if="formData.dynamicFields && 0 < formData.dynamicFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
           </a-row>
           <a-row class="btns-wrap" v-if="showBtn">
             <a-button type="primary" @click="clickSave">保存</a-button>
@@ -172,6 +131,8 @@
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import type { Rule } from 'ant-design-vue/es/form';
   import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
+  import { fieldsList } from '@/views/setting/system/index.api';
+  import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
 
   const span = 8;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
@@ -219,6 +180,8 @@
     remark: '',
     version: 0,
     createName: '',
+    dynamicSupFields: undefined,
+    dynamicFields: undefined,
   });
 
   const rules: Record<string, Rule[]> = {
@@ -245,6 +208,10 @@
   });
 
   function init() {
+    fieldsList({ category: 1, match: '0' }).then((res) => {
+      formData.dynamicSupFields = res['5'].filter((item) => item.id != null);
+      formData.dynamicFields = res['6'].filter((item) => item.id != null);
+    });
     queryNewNo({ category: 1 }).then((res) => {
       formData.billNo = res.newNo;
     });
@@ -263,6 +230,12 @@
       formData.supplierPhone = selectRows[0].phone;
       formData.supplierContact = selectRows[0].contact;
       formData.supplierAddress = selectRows[0].address;
+      formData.dynamicSupFields = selectRows[0].dynamicFields;
+      // 获取供应商往期欠款金额
+      byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
+        debugger;
+        formData.hisDebtAmount = res.purchaseDebtAmount;
+      });
     }
   }
   let amount = 0;
@@ -328,17 +301,17 @@
     });
   }
 
-  function validateForm(){
-    if (!formData.supplierId){
+  function validateForm() {
+    if (!formData.supplierId) {
       createMessage.warning('请选择供应商');
       return false;
     }
-    if (!formData.companyId){
+    if (!formData.companyId) {
       createMessage.warning('请选择公司');
       return false;
     }
     const goods = goodsRef.value.getData().details;
-    if (goods.length === 0){
+    if (goods.length === 0) {
       createMessage.warning('请选择商品');
       return false;
     }
@@ -372,11 +345,13 @@
     formData.remark = '';
     formData.createName = '';
     formData.userName = '';
+    formData.dynamicSupFields = undefined;
+    formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
   }
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
-    if (!validateForm()){
+    if (!validateForm()) {
       return;
     }
     console.log('formData:', formData);
@@ -398,16 +373,6 @@
       .finally(() => {
         confirmLoading.value = false;
       });
-
-
-    // formRef.value
-    //   .validate()
-    //   .then((res) => {
-    //     console.log('res', res);
-    //   })
-    //   .catch((res) => {
-    //     console.log('catch res=====', res);
-    //   });
   }
   /**
    * 提交数据

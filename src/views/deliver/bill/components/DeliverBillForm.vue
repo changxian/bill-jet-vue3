@@ -153,6 +153,8 @@
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList } from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
+  import { byDeliverId } from "@/views/deliver/debt/DeliverDebt.api";
+  import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
 
   const userStore = useUserStore();
   // 小数位数
@@ -285,6 +287,11 @@
       formData.dynamicCustFields = selectRows[0].dynamicFields;
       customerId.value = selectRows[0].id;
       console.log(' customerId val', customerId.value);
+      // 获取客户往期欠款金额
+      byDeliverId({ custId: selectRows[0].id }).then((res) => {
+        debugger;
+        formData.hisDebtAmount = res.deliverDebtAmount;
+      });
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
 
     }
@@ -428,8 +435,6 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
-    debugger;
-    console.log('params:', params);
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {
@@ -493,19 +498,6 @@
         confirmLoading.value = false;
       });
   }
-
-  /**
-   * 初始化默认公司数据
-   */
-  // 默认开单公司
-  // const defaultCompany = userStore.getDefaultCompany;
-  // console.log(defaultCompany);
-  // if (defaultCompany) {
-  //   if (formData.companyId == '') {
-  //     formData.companyId = defaultCompany.id;
-  //     formData.companyName = defaultCompany.compName;
-  //   }
-  // }
 
   defineExpose({
     add,

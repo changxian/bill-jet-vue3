@@ -2,6 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   list = '/deliver/debt/deliverDebt/list',
+  byDeliverId = '/deliver/debt/deliverDebt/byDeliverId',
   listCount = '/deliver/debt/deliverDebt/listCount',
   save = '/deliver/debt/deliverDebt/add',
   edit = '/deliver/debt/deliverDebt/edit',
@@ -25,6 +26,13 @@ export const getExportUrl = Api.exportXls;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 根据客户id获取欠款接口
+ * @param params
+ */
+export const byDeliverId = (params) => defHttp.get({ url: Api.byDeliverId, params });
+
 /**
  * 获取总计数据
  * @param params
