@@ -177,9 +177,9 @@
       },
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        totalWeight.value = 0;
-        totalArea.value = 0;
-        totalVolume.value = 0;
+        weightTotal.value = 0;
+        areaTotal.value = 0;
+        volumeTotal.value = 0;
         billCountTotal.value =0;
         amountTotal.value = 0;
         paymentAmountTotal.value =0;

@@ -73,9 +73,9 @@
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
         <span class="total_span">数量：{{ totalCount }}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ totalWeight }}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ totalArea }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ totalVolume }}</span>
+        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
         <span class="total_span">金额：{{ totalAmount }}</span>
         <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
         <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
@@ -104,11 +104,11 @@
   // 总计：数量
   const totalCount = ref(0);
   // 总计：重量
-  const totalWeight = ref(0);
+  const weightTotal = ref(0);
   // 总计：面积
-  const totalArea = ref(0);
+  const areaTotal = ref(0);
   // 总计：体积
-  const totalVolume = ref(0);
+  const volumeTotal = ref(0);
   // 总计：金额
   const totalAmount = ref(0);
   // 总计：已付款
@@ -193,18 +193,18 @@
    */
   function listTotalCount() {
     totalCount.value = 0;
-    totalWeight.value = 0;
-    totalArea.value = 0;
-    totalVolume.value = 0;
+    weightTotal.value = 0;
+    areaTotal.value = 0;
+    volumeTotal.value = 0;
     totalAmount.value = 0;
     totalPaymentAmount.value = 0;
     totalDiscountAmount.value = 0;
     totalDebtAmount.value = 0;
     listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
       totalCount.value = res.count;
-      totalWeight.value = res.weight;
-      totalArea.value = res.area;
-      totalVolume.value = res.volume;
+      weightTotal.value = res.weight;
+      areaTotal.value = res.area;
+      volumeTotal.value = res.volume;
       totalAmount.value = res.amount;
       totalPaymentAmount.value = res.paymentAmount;
       totalDiscountAmount.value = res.discountAmount;
