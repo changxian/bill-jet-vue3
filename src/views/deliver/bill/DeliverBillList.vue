@@ -190,7 +190,6 @@
   const registerModal = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
-  const billSetting = userStore.getBillSetting;
   // 总计：数量
   const totalCount = ref(0);
   // 总计：重量
@@ -274,6 +273,7 @@
     sm: 20,
   });
 
+  const billSetting = userStore.getBillSetting;
   // 加载系统开单设置
   if (billSetting) {
     showWeightCol.value = !!billSetting.showWeightCol;

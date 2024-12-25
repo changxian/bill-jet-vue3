@@ -137,6 +137,10 @@
         <span class="total_span">已付款：{{totalPaymentAmount}}</span>
         <span class="total_span">优惠：{{totalDiscountAmount}}</span>
         <span class="total_span">未付款：{{totalDebtAmount}}</span>
+
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
       </p>
     </div>
 
@@ -187,8 +191,27 @@
   const totalPaymentAmount = ref(0);
   const totalDiscountAmount = ref(0);
   const totalDebtAmount = ref(0);
-
+  // 总计：重量
+  const weightTotal = ref(0);
+  // 总计：面积
+  const areaTotal = ref(0);
+  // 总计：体积
+  const volumeTotal = ref(0);
   const hasPan = ref(true);
+
+
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
+
   const userStore = useUserStore();
 
   //注册table数据
@@ -216,6 +239,9 @@
         totalPaymentAmount.value=extraInfo.paymentAmount || 0;
         totalDiscountAmount.value=extraInfo.discountAmount || 0;
         totalDebtAmount.value=extraInfo.debtAmount || 0;
+        weightTotal.value = extraInfo.weight || 0;
+        areaTotal.value = extraInfo.area || 0;
+        volumeTotal.value = extraInfo.volume || 0;
         // resultItems.forEach((item)=>{
         //   totalCount.value+=item.count;
         //   totalAmount.value+=item.amount;
@@ -249,6 +275,33 @@
       return createMessage.warning('请先选择数据');
     }
     batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+  }
+  const billSetting = userStore.getBillSetting;
+  // 加载系统开单设置
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    // 循环数据
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
   }
   function summaryFunc(resultItems) {
     return [{
