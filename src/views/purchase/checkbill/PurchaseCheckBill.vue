@@ -77,6 +77,9 @@
       <p :class="{'p_san': hasPan}">总计
         <span class="total_span">数量：{{ billCountTotal }}</span>
         <span class="total_span">本单金额：{{ amountTotal }}</span>
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
 <!--        <span class="total_span">已付款金额：{{ paymentAmountTotal }}</span>-->
 <!--        <span class="total_span">优惠金额：{{ discountAmountTotal }}</span>-->
 <!--        <span class="total_span">未付款金额：{{ debtAmountTotal }}</span>-->
@@ -112,7 +115,24 @@
 
   const hisDebtAmountTotal = ref(0);
 
+  // 总计：重量
+  const weightTotal = ref(0);
+  // 总计：面积
+  const areaTotal = ref(0);
+  // 总计：体积
+  const volumeTotal = ref(0);
 
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
 
   const queryParam = reactive<any>({ companyId: '', companyName: ''});
@@ -157,6 +177,9 @@
       },
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
+        totalWeight.value = 0;
+        totalArea.value = 0;
+        totalVolume.value = 0;
         billCountTotal.value =0;
         amountTotal.value = 0;
         paymentAmountTotal.value =0;
@@ -164,6 +187,10 @@
         debtAmountTotal.value = 0;
         hisDebtAmountTotal.value = 0;
         if(hasPan.value){
+          weightTotal.value = resultItems[0].weightTotal;
+          areaTotal.value = resultItems[0].areaTotal;
+          volumeTotal.value = resultItems[0].volumeTotal;
+
           billCountTotal.value = resultItems[0].billCountTotal;
           amountTotal.value = resultItems[0].amountTotal;
           paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
