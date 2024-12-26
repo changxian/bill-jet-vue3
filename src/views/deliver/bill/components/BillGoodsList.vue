@@ -10,17 +10,17 @@
           </div>
         </a-form-item>
       </a-col>
-        <BasicModal
-          v-bind="$attrs"
-          @register="register"
-          title="商品搜索"
-          :width="'1400px'"
-          @ok="handleOk"
-        >
-          <div style="width:98%">
-            <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
-          </div>
-        </BasicModal>
+      <BasicModal
+        v-bind="$attrs"
+        @register="register"
+        title="商品搜索"
+        :width="'1400px'"
+        @ok="handleOk"
+      >
+        <div style="width: 98%">
+          <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
+        </div>
+      </BasicModal>
     </a-row>
     <div class="tbl-wrap">
       <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">

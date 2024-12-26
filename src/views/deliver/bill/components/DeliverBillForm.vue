@@ -153,8 +153,7 @@
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList } from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
-  import { byDeliverId } from "@/views/deliver/debt/DeliverDebt.api";
-  import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
+  import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -268,7 +267,6 @@
   function changeUser(val, selectRows) {
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      debugger;
       formData.userId = selectRows[0].id;
       formData.userName = selectRows[0].realname;
     }

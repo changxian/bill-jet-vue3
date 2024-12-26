@@ -21,7 +21,7 @@
             </a-col>
             <a-col :span="span">
 							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
-								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
+								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
             <a-col :span="span">
@@ -183,6 +183,10 @@
     dynamicSupFields: undefined,
     dynamicFields: undefined,
   });
+  // 给开单类型设置默认值
+  if (typeOptions.value.length > 0) {
+    formData.type = typeOptions.value[0].value;
+  }
 
   const rules: Record<string, Rule[]> = {
     companyId: [{ required: true, message: '必填', trigger: 'blur' }],

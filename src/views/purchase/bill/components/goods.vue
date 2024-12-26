@@ -17,10 +17,9 @@
       :width="'1400px'"
       @ok="handleOk"
     >
-       <div style="width:98%">
-            <goodsSelectList  @get-select="getSelect"  @db-ok="handleOk"    :billType="billType" :key="refreshKey"></goodsSelectList>
-        </div>
-        </BasicModal>
+      <div style="width:98%">
+        <goodsSelectList @get-select="getSelect" @db-ok="handleOk" :goodsName="goodsName" :billType="billType" :key="refreshKey"></goodsSelectList>
+      </div></BasicModal>
     </a-row>
     <div class="tbl-wrap">
          <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
@@ -343,6 +342,7 @@
     getData,
     setValue,
     billType,
+    goodsName,
   });
 </script>
 
