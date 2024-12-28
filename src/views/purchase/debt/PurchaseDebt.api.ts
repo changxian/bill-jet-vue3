@@ -6,6 +6,7 @@ const { createConfirm } = useMessage();
 enum Api {
   list = '/purchase/debt/purchaseDebt/list',
   byPurchaseId = '/purchase/debt/purchaseDebt/byPurchaseId',
+  listCount = '/purchase/debt/purchaseDebt/listCount',
   save = '/purchase/debt/purchaseDebt/add',
   edit = '/purchase/debt/purchaseDebt/edit',
   deleteOne = '/purchase/debt/purchaseDebt/delete',
@@ -42,6 +43,12 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * @param params
  */
 export const byPurchaseId = (params) => defHttp.get({ url: Api.byPurchaseId, params });
+
+/**
+ * 获取总计数据
+ * @param params
+ */
+export const listCount = (params) => defHttp.get({ url: Api.listCount, params });
 
 // 供应商还款
 export const purchaseRepayList = (params) => defHttp.get({ url: Api.purchaseRepayList, params });

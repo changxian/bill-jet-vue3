@@ -187,7 +187,10 @@
     custPhone: '',
     custContact: '',
     custAddress: '',
-    count: undefined,
+    count: 0,
+    weight: 0,
+    area: 0,
+    volume: 0,
     amount: 0,
     paymentAmount: 0,
     discountAmount: 0,
@@ -277,19 +280,21 @@
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      customerId.value = selectRows[0].id;
+      console.log(' customerId val', customerId.value);
+      debugger;
+      // 获取客户往期欠款金额
+      if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
+        byDeliverId({ custId: selectRows[0].id }).then((res) => {
+          formData.hisDebtAmount = res.deliverDebtAmount;
+        });
+      }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
       formData.dynamicCustFields = selectRows[0].dynamicFields;
-      customerId.value = selectRows[0].id;
-      console.log(' customerId val', customerId.value);
-      // 获取客户往期欠款金额
-      byDeliverId({ custId: selectRows[0].id }).then((res) => {
-        debugger;
-        formData.hisDebtAmount = res.deliverDebtAmount;
-      });
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
 
     }
@@ -303,7 +308,7 @@
     let cost = 0.0;
     // 利润金额
     let profit = 0.0;
-    goods.forEach(item => {
+    goods.forEach((item) => {
       num = parseFloat(num) + parseFloat(item.amount);
       cost = parseFloat(cost) + parseFloat(item.costAmount);
     });
@@ -400,13 +405,16 @@
     formData.custPhone = '';
     formData.custAddress = '';
     formData.custContact = '';
-    formData.count = undefined;
-    formData.amount = undefined;
-    formData.costAmount = undefined;
+    formData.count = 0;
+    formData.weight = 0;
+    formData.area = 0;
+    formData.volume = 0;
+    formData.amount = 0;
+    formData.costAmount = 0;
     formData.paymentAmount = 0;
     formData.discountAmount = 0;
     formData.debtAmount = 0;
-    formData.hisDebtAmount = undefined;
+    formData.hisDebtAmount = 0;
     formData.status = '';
     formData.invoiceStatus = undefined;
     formData.careNo = '';
@@ -433,6 +441,7 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

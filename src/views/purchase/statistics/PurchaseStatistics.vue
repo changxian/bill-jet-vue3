@@ -164,7 +164,7 @@
     }
     if (billSetting.dynaFieldsGroup['1']){
       // 循环数据
-      res.dynaFieldsGroup['1'].forEach(item => {
+      billSetting.dynaFieldsGroup['1'].forEach(item => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
           weightColTitle.value = item.fieldTitle || '';

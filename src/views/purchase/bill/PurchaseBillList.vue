@@ -37,7 +37,6 @@
                   <a-select-option value="5">审核</a-select-option>
                   <a-select-option value="6">已开票</a-select-option>
                   <a-select-option value="9">作废</a-select-option>
-
                 </a-select>
               </a-form-item>
             </a-col>
@@ -120,27 +119,27 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
-    <div style="position: relative;height: 20px;padding: 0 0 0 18px">
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
-        <span class="total_span">数量：{{totalCount}}</span>
-        <span class="total_span">金额：{{totalAmount}}</span>
-        <span class="total_span">已付款：{{totalPaymentAmount}}</span>
-        <span class="total_span">优惠：{{totalDiscountAmount}}</span>
-        <span class="total_span">未付款：{{totalDebtAmount}}</span>
-
+        <span class="total_span">数量：{{ totalCount }}</span>
         <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
         <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
         <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
+        <span class="total_span">金额：{{ totalAmount }}</span>
+        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
+        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
+        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
       </p>
     </div>
 
@@ -148,13 +147,11 @@
     <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <div class="tbl-wrap">
-       <a-spin :spinning="detailLoading">
-         <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
-        </BasicTable>
-       </a-spin>
+      <a-spin :spinning="detailLoading">
+        <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
+      </a-spin>
     </div>
-
-    <RepayDetailDialog ref="repayDetailDialogRef"/>
+    <RepayDetailDialog ref="repayDetailDialogRef" />
   </div>
 </template>
 
@@ -174,7 +171,7 @@
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { useRoute } from 'vue-router';
   const route = useRoute();
-  const fastDateParam = reactive<any>({timeType: 'thisMonth', startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;
@@ -186,19 +183,24 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const modifyModalRef = ref();
+  const userStore = useUserStore();
+  // 总计：数量
   const totalCount = ref(0);
-  const totalAmount = ref(0);
-  const totalPaymentAmount = ref(0);
-  const totalDiscountAmount = ref(0);
-  const totalDebtAmount = ref(0);
   // 总计：重量
   const weightTotal = ref(0);
   // 总计：面积
   const areaTotal = ref(0);
   // 总计：体积
   const volumeTotal = ref(0);
+  // 总计：金额
+  const totalAmount = ref(0);
+  // 总计：已付款
+  const totalPaymentAmount = ref(0);
+  // 总计：优惠
+  const totalDiscountAmount = ref(0);
+  // 总计：未付款
+  const totalDebtAmount = ref(0);
   const hasPan = ref(true);
-
 
   // 小数位数
   const decimalPlaces = ref(2);
@@ -211,8 +213,6 @@
   // 显示体积列【合计 和 列表皆显示】
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
-
-  const userStore = useUserStore();
 
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -232,24 +232,9 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems,extraInfo) => {
-        hasPan.value= resultItems.length>0;
-        totalCount.value=extraInfo.count || 0;
-        totalAmount.value=extraInfo.amount || 0;
-        totalPaymentAmount.value=extraInfo.paymentAmount || 0;
-        totalDiscountAmount.value=extraInfo.discountAmount || 0;
-        totalDebtAmount.value=extraInfo.debtAmount || 0;
-        weightTotal.value = extraInfo.weight || 0;
-        areaTotal.value = extraInfo.area || 0;
-        volumeTotal.value = extraInfo.volume || 0;
-        // resultItems.forEach((item)=>{
-        //   totalCount.value+=item.count;
-        //   totalAmount.value+=item.amount;
-        //   totalPaymentAmount.value+=item.paymentAmount;
-        //   totalDiscountAmount.value+=item.discountAmount;
-        //   totalDebtAmount.value+=item.debtAmount;
-        //
-        // });
+      afterFetch: async (resultItems, extraInfo) => {
+        hasPan.value = resultItems.length > 0;
+        listTotalCount(extraInfo);
       },
       rowSelection: { type: 'radio' },
     },
@@ -260,10 +245,10 @@
     },
 	  importConfig: {
 	    url: getImportUrl,
-	    success: handleSuccess
+	    success: handleSuccess,
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  const [ registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -271,13 +256,13 @@
     xxl: 4,
   });
   function handleDel() {
-    if(selectedRowKeys.value.length === 0){
+    if (selectedRowKeys.value.length === 0){
       return createMessage.warning('请先选择数据');
     }
     batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
+  // 系统开单设置
   const billSetting = userStore.getBillSetting;
-  // 加载系统开单设置
   if (billSetting) {
     showWeightCol.value = !!billSetting.showWeightCol;
     showAreaCol.value = !!billSetting.showAreaCol;
@@ -303,42 +288,52 @@
       });
     }
   }
+  // 增加合计行
   function summaryFunc(resultItems) {
-    return [{
-      _row:'合计',
-      _index:'合计',
-      count:totalCount.value,
-      amount:totalAmount.value,
-      paymentAmount:totalPaymentAmount.value,
-      discountAmount:totalDiscountAmount.value,
-      debtAmount:totalDebtAmount.value,
-    }]
+    return [
+      {
+        _row: '合计',
+        _index: '合计',
+        count: totalCount.value,
+        weight: weightTotal.value,
+        area: areaTotal.value,
+        volume: volumeTotal.value,
+        amount: totalAmount.value,
+        paymentAmount: totalPaymentAmount.value,
+        discountAmount: totalDiscountAmount.value,
+        debtAmount: totalDebtAmount.value,
+      },
+    ];
   }
   function handleModify(type) {
-    if(selectedRowKeys.value.length === 0){
+    if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    const row = selectedRows.value[0]
-    if(type === 'status' && row.status === 5){
+    const row = selectedRows.value[0];
+    if (type === 'status' && row.status === 5) {
       return createMessage.warning('已经审核了，就不能修改了');
     }
-    modifyModalRef.value.show(type, row)
+    modifyModalRef.value.show(type, row);
   }
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
 
-
   /**
-   * 高级查询事件
+   * 列表合计
    */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
+  function listTotalCount(extraInfo) {
+    totalCount.value = extraInfo.count || 0;
+    weightTotal.value = extraInfo.weight || 0;
+    areaTotal.value = extraInfo.area || 0;
+    volumeTotal.value = extraInfo.volume || 0;
+    totalAmount.value = extraInfo.amount || 0;
+    totalPaymentAmount.value = extraInfo.paymentAmount || 0;
+    totalDiscountAmount.value = extraInfo.discountAmount || 0;
+    totalDebtAmount.value = extraInfo.debtAmount || 0;
   }
+
   function debtDetailHandle() {
     if (selectedRows.value.length === 0) {
       repayDetailDialogRef.value.show();
@@ -384,28 +379,28 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
+
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
+
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
+
   /**
    * 操作栏
    */
@@ -418,7 +413,7 @@
       },
     ];
   }
-   
+
   /**
    * 下拉操作栏
    */
@@ -445,7 +440,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -455,7 +450,6 @@
     //刷新数据
     reload();
   }
-  
 
   /**
    * form点击事件(以逗号分割)
@@ -468,32 +462,50 @@
     }
   }
 
-const dataSourceDetail:any = ref([])
-    const { tableContext: tableContextDetail } = useListPage({
+  const dataSourceDetail: any = ref([]);
+  const { tableContext: tableContextDetail } = useListPage({
     designScope: 'basic-table-demo',
     tableProps: {
       title: '商品详情',
       columns: detailColumns,
+      showIndexColumn: true,
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
-      pagination: false
+      pagination: false,
     },
   });
 
-
-/**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
-selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
-  const [registerTableDetail, ] = tableContextDetail;
-  const currentRowId = ref('')
-  const detailLoading = ref(false)
-function rowClick(record){
-  detailLoading.value = true
-  currentRowId.value = record.id
-  billDetail({billId: record.id}).then(res=>{
-    dataSourceDetail.value = [...res]
-  }).finally(()=>{
-    detailLoading.value = false
-  })
-}
+  /**
+   * BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
+   * selectedRows选中的行信息、selectedRowKeys 选中的行rowkey
+   */
+  const [registerTableDetail] = tableContextDetail;
+  const currentRowId = ref('');
+  const detailLoading = ref(false);
+  function rowClick(record) {
+    detailLoading.value = true;
+    currentRowId.value = record.id;
+    billDetail({billId: record.id}).then(res => {
+        res.forEach((item) => {
+          // 重量小计
+          if (item.weight != undefined) {
+            item.weightSubtotal = item.count * item.weight;
+          }
+          // 面积小计
+          if (item.area != undefined) {
+            item.areaSubtotal = item.count * item.area;
+          }
+          // 体积小计
+          if (item.volume != undefined) {
+            item.volumeSubtotal = item.count * item.volume;
+          }
+        });
+        dataSourceDetail.value = [...res];
+    }).finally(() => {
+        detailLoading.value = false;
+    });
+  }
 
 </script>
 

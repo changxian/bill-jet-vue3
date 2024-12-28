@@ -1,19 +1,38 @@
-import {BasicColumn} from '/@/components/Table';
-import {FormSchema} from '/@/components/Table';
-import { rules} from '/@/utils/helper/validator';
-import { render } from '/@/utils/common/renderUtils';
-import { getWeekMonthQuarterYear } from '/@/utils';
+import { BasicColumn } from '/@/components/Table';
+import { useUserStore } from '@/store/modules/user';
+import { ref } from 'vue';
+const userStore = useUserStore();
+const billSetting = userStore.getBillSetting;
+const weightColTitle = ref('');
+const areaColTitle = ref('');
+const volumeColTitle = ref('');
+if (billSetting.dynaFieldsGroup['1']) {
+  billSetting.dynaFieldsGroup['1'].forEach((item) => {
+    // 重量小计
+    if (item.fieldName === 'weightSubtotal') {
+      weightColTitle.value = item.fieldTitle || '';
+    }
+    // 面积小计
+    if (item.fieldName === 'areaSubtotal') {
+      areaColTitle.value = item.fieldTitle || '';
+    }
+    // 体积小计
+    if (item.fieldName === 'volumeSubtotal') {
+      volumeColTitle.value = item.fieldTitle || '';
+    }
+  });
+}
 
 // 状态  1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
 export const statusList = [
-    { value: '1', label: '未打印' },
-    { value: '2', label: '已打印' },
-    { value: '3', label: '签回' },
-    { value: '4', label: '过账' },
-    { value: '5', label: '审核' },
-    { value: '6', label: '已开票' },
-    { value: '9', label: '作废' },
-]
+  { value: '1', label: '未打印' },
+  { value: '2', label: '已打印' },
+  { value: '3', label: '签回' },
+  { value: '4', label: '过账' },
+  { value: '5', label: '审核' },
+  { value: '6', label: '已开票' },
+  { value: '9', label: '作废' },
+];
 // 开票状态（1未开、2不开、3已开、4无信息、9其他）
 export const billStatusList = [
   { value: '1', label: '未开' },
@@ -21,182 +40,228 @@ export const billStatusList = [
   { value: '3', label: '已开' },
   { value: '4', label: '无信息' },
   { value: '9', label: '其他' },
-]
+];
 //列表数据
 export const columns: BasicColumn[] = [
   {
     title: '单号',
     align: 'center',
-    dataIndex: 'billNo'
+    dataIndex: 'billNo',
   },
   {
     title: '开单类型',
     align: 'center',
-    dataIndex: 'type_dictText'
+    dataIndex: 'type_dictText',
+    slots: { customRender: 'type_dictText' },
   },
   {
     title: '开单日期',
     align: 'center',
-    dataIndex: 'billDate'
+    dataIndex: 'billDate',
   },
   {
     title: '公司名称',
     align: 'center',
-    dataIndex: 'companyName'
+    dataIndex: 'companyName',
   },
   {
     title: '供应商名称',
     align: 'center',
-    dataIndex: 'supplierName'
+    dataIndex: 'supplierName',
   },
   {
     title: '供应商电话',
     align: 'center',
-    dataIndex: 'supplierPhone'
+    dataIndex: 'supplierPhone',
   },
   {
     title: '供应商联系人',
     align: 'center',
-    dataIndex: 'supplierContact'
+    dataIndex: 'supplierContact',
   },
   {
     title: '供应商地址',
     align: 'center',
-    dataIndex: 'supplierAddress'
+    dataIndex: 'supplierAddress',
   },
   {
     title: '数量',
     align: 'center',
-    dataIndex: 'count', 
+    dataIndex: 'count',
   },
   {
     title: '本单金额',
     align: 'center',
-    dataIndex: 'amount', 
+    dataIndex: 'amount',
   },
   {
     title: '已付款金额',
     align: 'center',
-    dataIndex: 'paymentAmount', 
+    dataIndex: 'paymentAmount',
   },
   {
     title: '优惠金额',
     align: 'center',
-    dataIndex: 'discountAmount', 
+    dataIndex: 'discountAmount',
   },
   {
-    title: '未付款（欠款）金额',
+    title: '欠款金额',
     align: 'center',
-    dataIndex: 'debtAmount', 
+    dataIndex: 'debtAmount',
+  },
+  {
+    title: '重量合计(' + weightColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'weight',
+    ifShow: billSetting.showWeightCol || false,
+  },
+  {
+    title: '面积合计(' + areaColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'area',
+    ifShow: billSetting.showAreaCol || false,
+  },
+  {
+    title: '体积合计(' + volumeColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'volume',
+    ifShow: billSetting.showVolumeCol || false,
   },
   {
     title: '往期欠款金额',
     align: 'center',
-    dataIndex: 'hisDebtAmount', 
+    dataIndex: 'hisDebtAmount',
   },
   {
     title: '送货车号',
     align: 'center',
-    dataIndex: 'careNo'
+    dataIndex: 'careNo',
   },
   {
     title: '合同号',
     align: 'center',
-    dataIndex: 'contractCode'
+    dataIndex: 'contractCode',
   },
   {
     title: '状态',
     align: 'center',
-    dataIndex: 'status_dictText'
+    dataIndex: 'status_dictText',
   },
   {
     title: '开票状态',
     align: 'center',
-    dataIndex: 'billStatus_dictText'
+    dataIndex: 'billStatus_dictText',
   },
   {
     title: '业务员',
     align: 'center',
-    dataIndex: 'userName'
+    dataIndex: 'userName',
   },
   {
     title: '备注',
     align: 'center',
-    dataIndex: 'remark'
+    dataIndex: 'remark',
   },
   {
     title: '制单人',
     align: 'center',
-    dataIndex: 'createName'
+    dataIndex: 'createName',
   },
 ];
 
 export const detailColumns: BasicColumn[] = [
   {
- title: '商品编号(条码)',
- align: 'center',
- dataIndex: 'goodsCode',
-},
-{
- title: '商品名称',
- align: 'center',
- dataIndex: 'goodsName',
-},
-{
- title: '规格型号',
- align: 'center',
- dataIndex: 'goodsType',
-},
-{
- title: '单位',
- align: 'center',
- dataIndex: 'goodsUnit',
-},
-{
- title: '数量',
- align: 'center',
- dataIndex: 'count',
-},
-{
- title: '进货价',
- align: 'center',
- dataIndex: 'cost',
-},
-{
- title: '金额',
- align: 'center',
- dataIndex: 'costAmount',
-},
-{
- title: '备注',
- align: 'center',
- dataIndex: 'remark',
-}
+    title: '编号(条码)',
+    align: 'center',
+    dataIndex: 'goodsCode',
+  },
+  {
+    title: '名称',
+    align: 'center',
+    dataIndex: 'goodsName',
+  },
+  {
+    title: '规格',
+    align: 'center',
+    dataIndex: 'goodsType',
+  },
+  {
+    title: '单位',
+    align: 'center',
+    dataIndex: 'goodsUnit',
+  },
+  {
+    title: '数量',
+    align: 'center',
+    dataIndex: 'count',
+  },
+  {
+    title: '进货价',
+    align: 'center',
+    dataIndex: 'cost',
+  },
+  {
+    title: '重量',
+    align: 'center',
+    dataIndex: 'weight',
+    ifShow: billSetting.showWeightCol || false,
+  },
+  {
+    title: '重量小计(' + weightColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'weightSubtotal',
+    ifShow: billSetting.showWeightCol || false,
+  },
+  {
+    title: '长',
+    align: 'center',
+    dataIndex: 'length',
+    ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+  },
+  {
+    title: '宽',
+    align: 'center',
+    dataIndex: 'width',
+    ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+  },
+  {
+    title: '高',
+    align: 'center',
+    dataIndex: 'height',
+    ifShow: billSetting.showLengthWidthHeightCol || false,
+  },
+  {
+    title: '面积',
+    align: 'center',
+    dataIndex: 'area',
+    ifShow: billSetting.showAreaCol || false,
+  },
+  {
+    title: '面积小计(' + areaColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'areaSubtotal',
+    ifShow: billSetting.showAreaCol || false,
+  },
+  {
+    title: '体积',
+    align: 'center',
+    dataIndex: 'volume',
+    ifShow: billSetting.showVolumeCol || false,
+  },
+  {
+    title: '体积小计(' + volumeColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'volumeSubtotal',
+    ifShow: billSetting.showVolumeCol || false,
+  },
+  {
+    title: '金额',
+    align: 'center',
+    dataIndex: 'costAmount',
+  },
+  {
+    title: '备注',
+    align: 'center',
+    dataIndex: 'remark',
+  },
 ];
-// 高级查询数据
-/*
-export const superQuerySchema = {
-  billNo: {title: '单号',order: 0,view: 'text', type: 'string',},
-  type: {title: '开单类型（1：进货开单，2：退货开单）',order: 1,view: 'number', type: 'number',dictCode: '',},
-  billDate: {title: '开单日期',order: 2,view: 'datetime', type: 'string',},
-  companyName: {title: '公司名称(记录开票时的公司名称）',order: 3,view: 'sel_user', type: 'string',},
-  supplierName: {title: '供应商名称',order: 4,view: 'sel_user', type: 'string',},
-  supplierPhone: {title: '供应商电话',order: 5,view: 'text', type: 'string',},
-  supplierContact: {title: '供应商联系人',order: 6,view: 'text', type: 'string',},
-  supplierAddress: {title: '供应商地址',order: 7,view: 'text', type: 'string',},
-  count: {title: '数量（本单商品数量）',order: 8,view: 'number', type: 'number',},
-  amount: {title: '本单金额',order: 9,view: 'number', type: 'number',},
-  paymentAmount: {title: '已付款金额',order: 10,view: 'number', type: 'number',},
-  discountAmount: {title: '优惠金额',order: 11,view: 'number', type: 'number',},
-  debtAmount: {title: '未付款（欠款）金额',order: 12,view: 'number', type: 'number',},
-  hisDebtAmount: {title: '往期欠款金额',order: 13,view: 'number', type: 'number',},
-  careNo: {title: '送货车号',order: 14,view: 'text', type: 'string',},
-  contractCode: {title: '合同号',order: 15,view: 'text', type: 'string',},
-  status: {title: '状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）',order: 16,view: 'number', type: 'number',dictCode: '',},
-  invoiceStatus: {title: '开票状态（1未开、2不开、3已开、4无信息、9其他）',order: 17,view: 'number', type: 'number',dictCode: '',},
-  userName: {title: '业务员',order: 18,view: 'sel_user', type: 'string',},
-  remark: {title: '备注',order: 19,view: 'text', type: 'string',},
-  version: {title: '版本',order: 21,view: 'number', type: 'number',},
-  createName: {title: '制单人',order: 22,view: 'text', type: 'string',},
-};
-*/

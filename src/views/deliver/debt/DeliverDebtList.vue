@@ -12,15 +12,6 @@
         <div class="jeecg-basic-table-form-container">
           <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
             <div class="query-wrap">
-<!--              <a-select
-                ref="select"
-                v-model:value="queryType"
-                style="width:120px"
-              >
-                <a-select-option value="customerName">名称</a-select-option>
-                <a-select-option value="customerPhone">手机</a-select-option>
-                <a-select-option value="customerContact">联系人</a-select-option>
-              </a-select>-->
               <a-input placeholder="请输入手机/名称/联系人" v-model:value="queryTypeValue" allow-clear></a-input>
               <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
             </div>
@@ -31,12 +22,6 @@
           <template v-slot:bodyCell="{ column, record, index, text }">
           </template>
         </BasicTable>
-        <!--<div style="position: relative; height: 20px; padding: 0 0 0 18px">
-          <p :class="{'p_san': hasPan}" >总计
-            <span class="total_span">送货欠：{{ debtTotalAmount }}</span>
-            <span class="total_span">退货欠：{{ backDebtTotalAmount }}</span>
-          </p>
-        </div>-->
         <!-- 表单区域 -->
         <DeliverDebtModal ref="registerModal" @success="handleSuccess"></DeliverDebtModal>
       </div>
@@ -60,11 +45,9 @@
   import DeptDialog from './components/DeptDialog.vue';
   import OneKeyDeptDialog from './components/OneKeyDeptDialog.vue';
   import RepayDetailDialog from './components/RepayDetailDialog.vue';
-  import { useUserStore } from '/@/store/modules/user';
   import DeliverDebtDetailList from '/@/views/deliver/debtdetail/DeliverDebtDetailList.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  // const queryType = ref('');
   const queryTypeValue = ref('');
   const deliverDebtDetailListRef = ref('deliverDebtDetailListRef');
   const { createMessage } = useMessage();
@@ -73,9 +56,7 @@
   const repayDetailDialogRef = ref();
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
-  const userStore = useUserStore();
 
   // 送货总欠款
   const debtTotalAmount = ref(0);
@@ -93,6 +74,7 @@
       useSearchForm: false,
       showActionColumn: false,
       clickToRowSelect: true,
+      clearSelectOnPageChange: true,
       rowSelection: {
         type: 'radio',
       },
@@ -109,6 +91,7 @@
       },
       summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
+        debugger;
         hasPan.value = resultItems.length > 0;
         if (resultItems.length > 0) rowClick(resultItems[0]);
         listTotalCount();
@@ -120,7 +103,7 @@
       params: queryParam,
     },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys,selectedRows }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -159,18 +142,6 @@
       backDebtTotalAmount.value = res.returnDebtAmount;
     });
   }
-  /**
-   * 删除事件
-   */
-  // function listCount() {
-  //   await listCount({ 'queryType': queryTypeValue.value }).then((res) => {
-  //     debtTotalAmount.value = res.;
-  //     backDebtTotalAmount.value = 0;
-  //     debtTotalAmount.value += item.deliverDebtAmount;
-  //     backDebtTotalAmount.value += item.returnDebtAmount;
-  //   });
-  // }
-
   function debtHandle() {
     if (selectedRows.value.length === 0) {
       return createMessage.warning('请选择一位欠款客户');
@@ -211,6 +182,7 @@
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
+    listTotalCount();
   }
 
   /**
@@ -220,18 +192,6 @@
     reload();
     listTotalCount();
   }
-
-  /**
-   * 重置
-   */
-  function searchReset() {
-    formRef.value.resetFields();
-    selectedRowKeys.value = [];
-    //刷新数据
-    reload();
-    listTotalCount();
-  }
-
 </script>
 
 <style lang="less" scoped>
@@ -249,7 +209,7 @@
   .deliver-debt-List {
     display: flex;
     .left-tbl {
-      width: 550px;
+      width: 500px;
     }
     .right-tbl {
       flex: 1;
@@ -270,24 +230,12 @@
       padding-top: 10px;
       padding-bottom: 15px;
     }
-    .table-page-search-submitButtons {
-      display: block;
-      margin-bottom: 24px;
-      white-space: nowrap;
-    }
-    .query-group-cust {
-      min-width: 100px !important;
-    }
-    .query-group-split-cust {
-      width: 30px;
-      display: inline-block;
-      text-align: center;
-    }
     .ant-form-item:not(.ant-form-item-with-help) {
       margin-bottom: 16px;
       height: 32px;
     }
-    :deep(.ant-picker),:deep(.ant-input-number) {
+    :deep(.ant-picker),
+    :deep(.ant-input-number) {
       width: 100%;
     }
   }

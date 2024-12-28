@@ -36,6 +36,9 @@
         <span class="name">总计</span>
         <span class="name">数量:</span><span class="num">{{ countNum }}</span>
         <span class="name">金额:</span><span class="num">￥{{ countMoney }} 元</span>
+        <span class="name" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightNum }}</span>
+        <span class="name" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaNum }}</span>
+        <span class="name" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeNum }}</span>
       </div>
     </div>
   </div>
@@ -55,25 +58,37 @@
   const userStore = useUserStore();
   const dataSource: any = ref([]);
 
-  const billSetting = userStore.getBillSetting;
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
   const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
   const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
-  if (billSetting.dynaFieldsGroup['1']) {
-    billSetting.dynaFieldsGroup['1'].forEach((item) => {
-      // 重量小计
-      if (item.fieldName === 'weightSubtotal') {
-        weightColTitle.value = item.fieldTitle || '';
-      }
-      // 面积小计
-      if (item.fieldName === 'areaSubtotal') {
-        areaColTitle.value = item.fieldTitle || '';
-      }
-      // 体积小计
-      if (item.fieldName === 'volumeSubtotal') {
-        volumeColTitle.value = item.fieldTitle || '';
-      }
-    });
+  // 系统开单设置
+  const billSetting = userStore.getBillSetting;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
   }
   // 传递给商品选择页面的参数
   const billType = 'deliver';
@@ -122,7 +137,7 @@
 
   const columns: BasicColumn[] = [
     {
-      title: '商品编号(条码)',
+      title: '编号(条码)',
       align: 'center',
       dataIndex: 'goodsCode',
       editable: false,
@@ -317,12 +332,24 @@
       item.goodsCode = item.code;
       item.goodsType = item.type;
       item.goodsUnit = item.unit;
+      // 重量小计
+      if (item.weight != undefined) {
+        item.weightSubtotal = item.weight;
+      }
+      // 面积小计
+      if (item.area != undefined) {
+        item.areaSubtotal = item.area;
+      }
+      // 体积小计
+      if (item.volume != undefined) {
+        item.volumeSubtotal = item.volume;
+      }
       if (singleCustPrice.value && item.custPrice) {
         item.price = item.custPrice;
       }
       item.amount = item.price;
       item.costAmount = item.cost;
-      item.dynamicFields = item.dynamicFields;
+      // item.dynamicFields = item.dynamicFields;
       item.count = 1;
     });
     if (goodsNameRepeat.value) {
@@ -343,20 +370,44 @@
     return tmp;
   }
   // 总计数量
-  const countNum = computed(()=>{
+  const countNum = computed(() => {
     let num = 0;
-    dataSource.value.forEach(item=>{
+    dataSource.value.forEach((item) => {
       num += item.count;
     });
     return num;
   });
   // 总计金额
-  const countMoney = computed(()=>{
+  const countMoney = computed(() => {
     let num = 0.0;
-    dataSource.value.forEach(item=>{
+    dataSource.value.forEach((item) => {
       num = parseFloat(num) + parseFloat(item.amount); // 售价 或 客户价
     });
     return num.toFixed(decimalPlaces.value);
+  });
+  // 总计重量
+  const weightNum = computed(() => {
+    let weight = 0.0;
+    dataSource.value.forEach((item) => {
+      weight = parseFloat(weight) + parseFloat(item.weightSubtotal);
+    });
+    return weight.toFixed(decimalPlaces.value);
+  });
+  // 总计面积
+  const areaNum = computed(() => {
+    let area = 0.0;
+    dataSource.value.forEach((item) => {
+      area = parseFloat(area) + parseFloat(item.areaSubtotal);
+    });
+    return area.toFixed(decimalPlaces.value);
+  });
+  // 总计体积
+  const volumeNum = computed(() => {
+    let volume = 0.0;
+    dataSource.value.forEach((item) => {
+      volume = parseFloat(volume) + parseFloat(item.volumeSubtotal);
+    });
+    return volume.toFixed(decimalPlaces.value);
   });
 
   // 增加一行空商品数据
@@ -423,6 +474,10 @@
       emit('change-goods', [...dataSource.value]);
     } else if (key === 'count') {
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
+      // 修改小计
+      record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);
+      record.areaSubtotal = (value * record.area).toFixed(decimalPlaces.value);
+      record.volumeSubtotal = (value * record.volume).toFixed(decimalPlaces.value);
       if (amountComputeMethod.value === 'num_price') {
         record.amount = (value * record.price).toFixed(decimalPlaces.value);
       } else if (amountComputeMethod.value === 'weight_num_price') {
@@ -450,6 +505,9 @@
     return {
       details: dataSource.value,
       count: countNum.value,
+      weight: weightNum.value,
+      area: areaNum.value,
+      volume: volumeNum.value,
       amount: countMoney.value,
     };
   }

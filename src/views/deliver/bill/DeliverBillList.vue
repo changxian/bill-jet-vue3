@@ -129,15 +129,18 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{'p_san': hasPan}" >总计
+      <p :class="{ 'p_san': hasPan }" >总计
         <span class="total_span">数量：{{ totalCount }}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
         <span class="total_span">金额：{{ totalAmount }}</span>
         <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
         <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
@@ -272,9 +275,8 @@
     xs: 24,
     sm: 20,
   });
-
+  // 系统开单设置
   const billSetting = userStore.getBillSetting;
-  // 加载系统开单设置
   if (billSetting) {
     showWeightCol.value = !!billSetting.showWeightCol;
     showAreaCol.value = !!billSetting.showAreaCol;
@@ -539,11 +541,24 @@
   function rowClick(record) {
     detailLoading.value = true;
     currentRowId.value = record.id;
-    billDetail({billId: record.id}).then(res=>{
-      debugger;
-      dataSourceDetail.value = [...res];
-    }).finally(()=>{
-      detailLoading.value = false
+    billDetail({billId: record.id}).then(res => {
+        res.forEach((item) => {
+          // 重量小计
+          if (item.weight != undefined) {
+            item.weightSubtotal = item.count * item.weight;
+          }
+          // 面积小计
+          if (item.area != undefined) {
+            item.areaSubtotal = item.count * item.area;
+          }
+          // 体积小计
+          if (item.volume != undefined) {
+            item.volumeSubtotal = item.count * item.volume;
+          }
+        });
+        dataSourceDetail.value = [...res];
+    }).finally(() => {
+        detailLoading.value = false;
     });
   }
 </script>

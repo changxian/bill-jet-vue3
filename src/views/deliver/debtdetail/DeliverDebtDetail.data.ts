@@ -16,6 +16,7 @@ export const columns: BasicColumn[] = [
     title: '欠款类型',
     align: 'center',
     dataIndex: 'type_dictText',
+    slots: { customRender: 'type_dictText' },
   },
   {
     title: '本单金额',

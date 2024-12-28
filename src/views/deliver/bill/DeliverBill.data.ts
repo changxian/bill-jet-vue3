@@ -62,6 +62,7 @@ export const columns: BasicColumn[] = [
     title: '单类型',
     align: 'center',
     dataIndex: 'type_dictText',
+    slots: { customRender: 'type_dictText' },
   },
   {
     title: '单号',
@@ -92,6 +93,24 @@ export const columns: BasicColumn[] = [
     title: '欠款金额',
     align: 'center',
     dataIndex: 'debtAmount',
+  },
+  {
+    title: '重量合计(' + weightColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'weight',
+    ifShow: billSetting.showWeightCol || false,
+  },
+  {
+    title: '面积合计(' + areaColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'area',
+    ifShow: billSetting.showAreaCol || false,
+  },
+  {
+    title: '体积合计(' + volumeColTitle.value + ')',
+    align: 'center',
+    dataIndex: 'volume',
+    ifShow: billSetting.showVolumeCol || false,
   },
   {
     title: '送货车号',
@@ -162,7 +181,7 @@ export const columns: BasicColumn[] = [
 // 开单页面商品列表数据
 export const detailColumns: BasicColumn[] = [
   {
-    title: '商品编号(条码)',
+    title: '编号(条码)',
     align: 'center',
     dataIndex: 'goodsCode',
   },
@@ -202,7 +221,6 @@ export const detailColumns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'weightSubtotal',
     ifShow: billSetting.showWeightCol || false,
-
   },
   {
     title: '长',

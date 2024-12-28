@@ -118,22 +118,26 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
-  import goods from './goods.vue';
-  import { getValueType } from '/@/utils';
-  import { saveOrUpdate, billDetail } from '../PurchaseBill.api';
-  import { statusList } from '../PurchaseBill.data';
-  import { Form } from 'ant-design-vue';
-  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-  import type { Rule } from 'ant-design-vue/es/form';
-  import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
-  import { fieldsList } from '@/views/setting/system/index.api';
-  import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
+import { computed, defineExpose, defineProps, nextTick, reactive, ref } from "vue";
+import { useMessage } from "/@/hooks/web/useMessage";
+import JDictSelectTag from "/@/components/Form/src/jeecg/components/JDictSelectTag.vue";
+import JSelectCompany from "/@/components/Form/src/jeecg/components/JSelectCompany.vue";
+import JSelectSupplier from "/@/components/Form/src/jeecg/components/JSelectSupplier.vue";
+import goods from "./goods.vue";
+import { getValueType } from "/@/utils";
+import { billDetail, saveOrUpdate } from "../PurchaseBill.api";
+import { statusList } from "../PurchaseBill.data";
+import { Form } from "ant-design-vue";
+import JFormContainer from "/@/components/Form/src/container/JFormContainer.vue";
+import type { Rule } from "ant-design-vue/es/form";
+import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
+import { fieldsList } from "@/views/setting/system/index.api";
+import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
+import { useUserStore } from "@/store/modules/user";
 
+const userStore = useUserStore();
+  // 小数位数
+  const decimalPlaces = userStore.getBillSetting.decimalPlaces;
   const span = 8;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
@@ -170,7 +174,7 @@
     amount: 0,
     paymentAmount: 0,
     discountAmount: 0,
-    debtAmount: 0,
+    debtAmount: 0.0,
     hisDebtAmount: 0,
     careNo: '',
     contractCode: '',
@@ -230,23 +234,26 @@
   function changeSupplier(val, selectRows) {
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      // 获取供应商往期欠款金额
+      if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
+        byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
+          debugger;
+          formData.hisDebtAmount = res.purchaseDebtAmount;
+        });
+      }
+      formData.supplierId = selectRows[0].id;
       formData.supplierName = selectRows[0].orgName;
       formData.supplierPhone = selectRows[0].phone;
       formData.supplierContact = selectRows[0].contact;
       formData.supplierAddress = selectRows[0].address;
       formData.dynamicSupFields = selectRows[0].dynamicFields;
-      // 获取供应商往期欠款金额
-      byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
-        debugger;
-        formData.hisDebtAmount = res.purchaseDebtAmount;
-      });
     }
   }
   let amount = 0;
   function changeGoods(goods) {
-    let num = 0;
-    goods.forEach(item=>{
-      num += item.costAmount;
+    let num = 0.0;
+    goods.forEach((item) => {
+      num = parseFloat(num) + parseFloat(item.costAmount);
     });
     amount = num;
     calcDebtAmount();
@@ -255,7 +262,7 @@
   function changeMoney() {
     calcDebtAmount();
   }
-  function calcDebtAmount(){
+  function calcDebtAmount() {
     if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
       formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount;
     }
@@ -299,7 +306,7 @@
   function getGoods(id){
     billDetail({billId: id}).then(res=>{
       // dataSourceDetail.value = [...res]
-      nextTick(()=>{
+      nextTick(() => {
         goodsRef.value.setValue([...res]);
       });
     });
@@ -340,7 +347,7 @@
     formData.amount = 0;
     formData.paymentAmount = 0;
     formData.discountAmount = 0;
-    formData.debtAmount = 0;
+    formData.debtAmount = 0.0;
     formData.hisDebtAmount = 0;
     formData.status = '';
     formData.invoiceStatus = undefined;
@@ -363,6 +370,7 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {
