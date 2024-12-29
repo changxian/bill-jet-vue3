@@ -63,27 +63,24 @@
     <BasicTable @register="registerTable" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">
-          导出</a-button
-        >
-
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined">打印</a-button>
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">导出</a-button>
+      </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{'p_san': hasPan}">总计
+      <p :class="{ 'p_san': hasPan }">总计
         <span class="total_span">数量：{{ billCountTotal }}</span>
-        <span class="total_span">本单金额：{{ amountTotal }}</span>
         <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
         <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
         <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
-<!--        <span class="total_span">已付款金额：{{ paymentAmountTotal }}</span>-->
-<!--        <span class="total_span">优惠金额：{{ discountAmountTotal }}</span>-->
-<!--        <span class="total_span">未付款金额：{{ debtAmountTotal }}</span>-->
-<!--        <span class="total_span">往期欠款金额：{{ hisDebtAmountTotal }}</span>-->
+        <span class="total_span">金额：{{ amountTotal }}</span>
+        <span class="total_span">已付款：{{ paymentAmountTotal }}</span>
+        <span class="total_span">优惠：{{ discountAmountTotal }}</span>
+        <span class="total_span">未付款：{{ debtAmountTotal }}</span>
       </p>
     </div>
   </div>
@@ -134,9 +131,8 @@
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
 
-
   const queryParam = reactive<any>({ companyId: '', companyName: ''});
-  const fastDateParam = reactive<any>({timeType: 'thisMonth',startDate: '', endDate: ''});
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
 
   function changeCompany(val, selectRows) {
@@ -161,10 +157,10 @@
     tableProps: {
       title: '进货对账单',
       api: list,
-      canResize:false,
+      canResize: false,
       columns,
       useSearchForm: false,
-      showActionColumn:false,
+      showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
       dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息

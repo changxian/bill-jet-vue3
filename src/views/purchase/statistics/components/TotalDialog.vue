@@ -1,6 +1,6 @@
 <template>
   <j-modal :title="title" width="80%" :maxHeight="750" :visible="visible" @cancel="handleCancel">
-    <div style="padding:20px 30px">
+    <div style="padding: 20px 30px">
       <div class="p-2">
         <!--查询区域-->
         <div class="jeecg-basic-table-form-container">
@@ -35,18 +35,16 @@
                 </a-col>
               </template>
               <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
-              <a-col :lg="6">
-                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset"
-                          style="margin-left: 8px">重置</a-button>
-                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon
-                    :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'"/>
-                </a>
-              </a-col>
-            </span>
+                <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+                  <a-col :lg="6">
+                    <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                    <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+                    <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                      {{ toggleSearchStatus ? '收起' : '展开' }}
+                      <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'"/>
+                    </a>
+                  </a-col>
+                </span>
               </a-col>
             </a-row>
           </a-form>
@@ -55,12 +53,7 @@
         <BasicTable @register="registerTable" :rowSelection="rowSelection" :columns="columnList">
           <!--插槽:table标题-->
           <template #tableTitle>
-            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'"
-                      preIcon="ant-design:export-outlined" @click="onExportXls"> 导出
-            </a-button>
-
-            <!-- 高级查询 -->
-            <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
+            <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
           </template>
         </BasicTable>
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">
@@ -79,7 +72,7 @@
   </j-modal>
 </template>
 <script lang="ts" setup>
-  import { ref, defineExpose, reactive, defineEmits } from 'vue';
+  import { ref, defineExpose, reactive } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -101,10 +94,6 @@
   const volumeTotal = ref(0);
   // 总计：金额
   const amountTotal = ref(0);
-  // 总计：成本
-  const costAmountTotal = ref(0);
-  // 总计：利润
-  const profitAmountTotal = ref(0);
   // 小数位数
   const decimalPlaces = ref(2);
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
