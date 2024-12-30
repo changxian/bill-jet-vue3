@@ -144,26 +144,26 @@ export const formSchema: FormSchema[] = [
       rows: 4,
     }
   },
-   {
-    field: 'beginDate',
-    label: '开始时间',
-    component: 'DatePicker',
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      getPopupContainer: getAutoScrollContainer,
-    },
-  },
-  {
-    field: 'endDate',
-    label: '结束时间',
-    component: 'DatePicker',
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      getPopupContainer: getAutoScrollContainer,
-    },
-  },
+  //  {
+  //   field: 'beginDate',
+  //   label: '开始时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
+  // {
+  //   field: 'endDate',
+  //   label: '结束时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
   {
     field: 'houseNumber',
     label: '门牌号',
