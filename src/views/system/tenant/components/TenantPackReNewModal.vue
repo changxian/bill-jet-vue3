@@ -21,6 +21,9 @@
         showActionButtonGroup: false,
         baseColProps: {span: 24}
     });
+
+
+    const formData = ref({})
     //表单赋值
     const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
         //重置表单
@@ -29,6 +32,7 @@
         isUpdate.value = !!data?.isUpdate;
         isDetail.value = !!data?.showFooter;
         if (unref(isUpdate)) {
+          formData.value=data.record;
             //表单赋值
             await setFieldsValue({
                 ...data.record,
@@ -45,7 +49,7 @@
             let values = await validate();
             setModalProps({confirmLoading: true});
             //提交表单
-            await saveOrUpdate(values, isUpdate.value);
+            await saveOrUpdate( Object.assign(formData.value, values));
             //关闭弹窗
             closeModal();
             //刷新列表

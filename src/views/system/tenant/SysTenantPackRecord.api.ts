@@ -1,13 +1,7 @@
 import {defHttp} from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
-
-const { createConfirm } = useMessage();
-
 enum Api {
   list = '/system/sysTenantPackRecord/list',
-  save='/system/sysTenantPackRecord/add',
-  edit='/system/sysTenantPackRecord/edit',
-
+  reNew='/system/sysTenantPackRecord/reNew',
   exportXls = '/system/sysTenantPackRecord/exportXls',
 }
 /**
@@ -30,7 +24,7 @@ export const list = (params) =>
  * 保存或者更新
  * @param params
  */
-export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
+export const saveOrUpdate = (params) => {
+  let url =  Api.reNew;
   return defHttp.post({url: url, params});
 }
