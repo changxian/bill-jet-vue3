@@ -1,8 +1,7 @@
 import {BasicColumn} from '/@/components/Table';
 import {FormSchema} from '/@/components/Table';
-import { rules} from '/@/utils/helper/validator';
-import { render } from '/@/utils/common/renderUtils';
-import { getWeekMonthQuarterYear } from '/@/utils';
+
+import {getAutoScrollContainer} from '/@/utils/common/compUtils';
 //列表数据
 export const columns: BasicColumn[] = [
    {
@@ -56,36 +55,34 @@ export const columns: BasicColumn[] = [
 //表单数据
 export const formSchema: FormSchema[] = [
   {
-    label: '套餐Id',
-    field: 'packId',
-    component: 'Input',
-  },
-  {
     label: '套餐编码',
     field: 'packCode',
     component: 'Input',
+    dynamicDisabled:true
   },
   {
     label: '套餐名',
     field: 'packName',
     component: 'Input',
+  dynamicDisabled:true
   },
-  {
-    label: '套餐类型(送货单版/进销存版)',
-    field: 'packType',
-    component: 'InputNumber',
-  },
+  // {
+  //   label: '套餐类型(送货单版/进销存版)',
+  //   field: 'packType',
+  //   component: 'InputNumber',dynamicDisabled:true
+  // },
   {
     label: '购买数量',
     field: 'packNum',
     component: 'InputNumber',
   },
   {
-    label: '购买单位(1 月 2年)',
+    label: '购买单位',
     field: 'packUnit',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"",
+        options:[{value:"1",label:"月"},{value:"2",label:"年"}]
      },
   },
   {
@@ -98,40 +95,42 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '开始时间',
-    field: 'beginDate',
-    component: 'DatePicker',
-    componentProps: {
-       showTime: true,
-       valueFormat: 'YYYY-MM-DD HH:mm:ss'
-     },
-  },
-  {
-    label: '结束时间',
-    field: 'endDate',
-    component: 'DatePicker',
-    componentProps: {
-       showTime: true,
-       valueFormat: 'YYYY-MM-DD HH:mm:ss'
-     },
-  },
-  {
     label: '备注',
     field: 'remark',
     component: 'Input',
   },
-  {
-    label: '版本号',
-    field: 'version',
-    component: 'InputNumber',
-  },
-	// TODO 主键隐藏字段，目前写死为ID
-	{
-	  label: '',
-	  field: 'id',
-	  component: 'Input',
-	  show: false
-	},
+  // {
+  //   field: 'beginDate',
+  //   label: '开始时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
+  // {
+  //   field: 'endDate',
+  //   label: '结束时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
+
+  //  {
+  //   label: '版本号',
+  //   field: 'version',
+  //   component: 'InputNumber',
+  // },
+	// {
+	//   label: '',
+	//   field: 'id',
+	//   component: 'Input',
+	//   show: false
+	// },
 ];
 
 

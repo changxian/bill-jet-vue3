@@ -22,7 +22,8 @@
     <PackPermissionDrawer @register="packPermissionDrawer"/>
     <!--续费-->
     <TenantPackReNewModel @register="registerRenewModal"/>
-
+    <!--  套餐记录 -->
+    <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" />
   </div>
 </template>
 <script lang="ts" name="tenant-default-pack" setup>
@@ -40,10 +41,12 @@ import {Modal} from "ant-design-vue";
 import {useDrawer} from '/@/components/Drawer';
 import PackPermissionDrawer from '../components/PackPermissionDrawer.vue';
 import TenantPackReNewModel from '../components/TenantPackReNewModal.vue';
+import SysTenantPackRecordListModal
+  from "@/views/system/tenant/pack/SysTenantPackRecordListModal.vue";
 
 const [packPermissionDrawer, {openDrawer: openPackPermissionDrawer}] = useDrawer();
 
-
+const [registerSysTenantPackRecordListModal, { openModal: sysTenantPackRecordListModal }] = useModal();
 const [registerRenewModal, {openModal: renewModal}] = useModal();
 
 const {createMessage} = useMessage();
@@ -133,7 +136,7 @@ async function buyRecord(record) {
   sysTenantPackRecordListModal(true, {
     isUpdate: true,
     record: record,
-    tenantId: unref(tenantId),
+    tenantId: unref(record.tenantId),
     tenantName: unref(record.tenantIdName),
     showFooter: true
   });
@@ -144,12 +147,20 @@ async function buyRecord(record) {
 function handlePerssion(record) {
   openPackPermissionDrawer(true, {packId: record.id});
 }
-
-/**
- * 套餐授权弹窗
- */
 function renew(record) {
-  renewModal(true, {packId: record.id, isUpdate: false});
+  const data = {
+    packId: record.id,
+    packCode: record.packCode,
+    packName: record.packName,
+    packType: record.packType,
+    packNum: 1,
+    packUnit: "2",
+    tenantId:record.tenantId
+  }
+  renewModal(true, {
+    record: data, packId: record.id, isUpdate: true,
+    showFooter: true
+  });
 }
 
 /**

@@ -56,18 +56,8 @@ export const columns: BasicColumn[] = [
     title: '创建者(拥有者)',
     width: 150
   },
-  {
-    title: '开始时间',
-    dataIndex: 'beginDate',
-    sorter: true,
-    width: 180,
-  },
-  {
-    title: '结束时间',
-    dataIndex: 'endDate',
-    sorter: true,
-    width: 180,
-  },
+
+
   {
     title: '状态',
     dataIndex: 'status_dictText',
@@ -154,7 +144,7 @@ export const formSchema: FormSchema[] = [
       rows: 4,
     }
   },
-  {
+   {
     field: 'beginDate',
     label: '开始时间',
     component: 'DatePicker',
@@ -265,14 +255,16 @@ export const packColumns: BasicColumn[] = [
     width: 100,
   },
   {
-    dataIndex: 'beginDate',
     title: '开始时间',
-    width: 100,
+    dataIndex: 'beginDate',
+    sorter: true,
+    width: 180,
   },
   {
-    dataIndex: 'endDate',
     title: '结束时间',
-    width: 100,
+    dataIndex: 'endDate',
+    sorter: true,
+    width: 180,
   },
   {
     title: '状态',

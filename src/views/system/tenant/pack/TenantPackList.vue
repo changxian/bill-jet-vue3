@@ -6,14 +6,14 @@
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd"
                   style="margin-right: 5px" v-if="showPackAddAndEdit">新增
         </a-button>
-<!--        <a-button
-          v-if="selectedRowKeys.length > 0"
-          preIcon="ant-design:delete-outlined"
-          type="primary"
-          @click="handlePackBatch"
-          style="margin-right: 5px"
-        >批量删除
-        </a-button>-->
+        <!--        <a-button
+                  v-if="selectedRowKeys.length > 0"
+                  preIcon="ant-design:delete-outlined"
+                  type="primary"
+                  @click="handlePackBatch"
+                  style="margin-right: 5px"
+                >批量删除
+                </a-button>-->
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" :dropDownActions="getDropDownAction(record)"/>
@@ -22,30 +22,31 @@
   </BasicModal>
   <TenantPackMenuModal @register="registerPackMenu" @success="success"/>
   <TenantPackUserModal @register="registerPackUser" @success="success"/>
-  <!--  套餐  -->
-  <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" />
+  <!--  套餐记录 -->
+  <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal"/>
   <!--续费-->
   <TenantPackReNewModel @register="registerRenewModal"/>
 </template>
 <script lang="ts" setup name="tenant-pack-modal">
 import {computed, reactive, ref, unref} from 'vue';
 import {BasicModal, useModal, useModalInner} from '/@/components/Modal';
-import {packColumns,  packFormSchema} from '../tenant.data';
-import { packList, deleteTenantPack} from '../tenant.api';
+import {packColumns, packFormSchema} from '../tenant.data';
+import {packList, deleteTenantPack} from '../tenant.api';
 import {useListPage} from '/@/hooks/system/useListPage';
 import {BasicTable, TableAction} from '/@/components/Table';
 import TenantPackMenuModal from './TenantPackMenuModal.vue';
 import {Modal} from "ant-design-vue";
 import TenantPackUserModal from './TenantPackUserModal.vue';
 import {useMessage} from "/@/hooks/web/useMessage";
-import   SysTenantPackRecordListModal  from './SysTenantPackRecordListModal.vue';
+import SysTenantPackRecordListModal from './SysTenantPackRecordListModal.vue';
 import TenantPackReNewModel from "@/views/system/tenant/components/TenantPackReNewModal.vue";
+
 const [registerPackMenu, {openModal}] = useModal();
 const [registerPackUser, {openModal: packUserOpenModal}] = useModal();
 const tenantId = ref<number>(0);
 const tenantName = ref<string>(0);
 
-const [registerSysTenantPackRecordListModal, { openModal: sysTenantPackRecordListModal }] = useModal();
+const [registerSysTenantPackRecordListModal, {openModal: sysTenantPackRecordListModal}] = useModal();
 const [registerRenewModal, {openModal: renewModal}] = useModal();
 //是否显示新增和编辑套餐
 const showPackAddAndEdit = ref<boolean>(false);
@@ -141,7 +142,19 @@ async function buyRecord(record) {
 }
 
 function renew(record) {
-  renewModal(true, {packId: record.id, isUpdate: false});
+  const data = {
+    packId: record.id,
+    packCode: record.packCode,
+    packName: record.packName,
+    packType: record.packType,
+    packNum: 1,
+    packUnit: "2",
+    tenantId:record.tenantId
+  }
+  renewModal(true, {
+    record: data, packId: record.id, isUpdate: true,
+    showFooter: true
+  });
 }
 
 /**
