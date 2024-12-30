@@ -53,7 +53,6 @@
             selectedroles: data.record.selectedroles,
           };
 
-          debugger
           status.value = data.status;
           await setFieldsValue(formData);
         }

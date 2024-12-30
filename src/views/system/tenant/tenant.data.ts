@@ -265,6 +265,16 @@ export const packColumns: BasicColumn[] = [
     width: 100,
   },
   {
+    dataIndex: 'beginDate',
+    title: '开始时间',
+    width: 100,
+  },
+  {
+    dataIndex: 'endDate',
+    title: '结束时间',
+    width: 100,
+  },
+  {
     title: '状态',
     dataIndex: 'status',
     width: 100,
@@ -294,61 +304,90 @@ export const packFormSchema: FormSchema[] = [
 ];
 
 //套餐表单
-export const packMenuFormSchema: FormSchema[] = [
-  {
-    field: 'sysPackId',
-    label: '选择系统套餐',
-    component: 'ApiSelect',
-    componentProps: {
-      api: getAllSysPackList,
-      labelField: 'packName',
-      valueField: 'id',
-    },
-  },
-  /**
-   {
-   field: 'packName',
-   label: '套餐名称',
-   component: 'Input',
-   },
-   {
-   field: 'permissionIds',
-   label: '菜单列表',
-   component: 'JTreeSelect',
-   componentProps: {
-   dict: 'sys_permission,name,id',
-   pidField: 'parent_id',
-   multiple: true,
-   treeCheckAble:true,
-   treeCheckStrictly: true,
-   getPopupContainer: () => document.body,
-   },
-   },
-   **/
-  {
-    field: 'remarks',
-    label: '描述',
-    component: 'InputTextArea',
-  },
-  {
-    field: 'status',
-    label: '开启状态',
-    component: 'Switch',
-    componentProps: {
-      checkedValue: '1',
-      checkedChildren: '开启',
-      unCheckedValue: '0',
-      unCheckedChildren: '关闭',
-    },
-    defaultValue: '1',
-  },
-  {
-    field: 'id',
-    label: '开启状态',
-    component: 'Input',
-    show: false
-  },
-];
+export function packMenuFormData(isUpdate) {
+  const packMenuFormSchema: FormSchema[] =
+    [
+      {
+        field: 'sysPackId',
+        label: '选择系统套餐',
+        dynamicDisabled:isUpdate,
+        component: 'ApiSelect',
+        componentProps: {
+          api: getAllSysPackList,
+          labelField: 'packName',
+          valueField: 'id',
+        },
+      },
+      {
+        field: 'beginDate',
+        label: '开始时间',
+        dynamicDisabled:isUpdate,
+        component: 'DatePicker',
+        componentProps: {
+          showTime: true,
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+          getPopupContainer: getAutoScrollContainer,
+        },
+      },
+      {
+        field: 'endDate',
+        label: '结束时间',
+        dynamicDisabled:isUpdate,
+        component: 'DatePicker',
+        componentProps: {
+          showTime: true,
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+          getPopupContainer: getAutoScrollContainer,
+        },
+      },
+      /**
+       {
+       field: 'packName',
+       label: '套餐名称',
+       component: 'Input',
+       },
+       {
+       field: 'permissionIds',
+       label: '菜单列表',
+       component: 'JTreeSelect',
+       componentProps: {
+       dict: 'sys_permission,name,id',
+       pidField: 'parent_id',
+       multiple: true,
+       treeCheckAble:true,
+       treeCheckStrictly: true,
+       getPopupContainer: () => document.body,
+       },
+       },
+       **/
+      {
+        field: 'remarks',
+        label: '描述',
+        dynamicDisabled:isUpdate,
+        component: 'InputTextArea',
+      },
+      {
+        field: 'status',
+        label: '开启状态',
+        component: 'Switch',
+        componentProps: {
+          checkedValue: '1',
+          checkedChildren: '开启',
+          unCheckedValue: '0',
+          unCheckedChildren: '关闭',
+        },
+        defaultValue: '1',
+      },
+      {
+        field: 'id',
+        label: '开启状态',
+        component: 'Input',
+        show: false
+      },
+    ];
+  console.log(packMenuFormSchema,"======packMenuFormSchema======")
+  return packMenuFormSchema;
+}
 
 //回收站列表
 export const recycleColumns: BasicColumn[] = [
@@ -460,17 +499,17 @@ export const tenantUserSchema: FormSchema[] = [
       return !!values.id;
     },
   },
-  {
-    field: 'selecteddeparts',
-    label: '部门',
-    component: 'JSelectDept',
-    componentProps: {checkStrictly: true}
-  },
-  {
-    field: 'post',
-    label: '职位',
-    component: 'JSelectPosition',
-  },
+  // {
+  //   field: 'selecteddeparts',
+  //   label: '部门',
+  //   component: 'JSelectDept',
+  //   componentProps: {checkStrictly: true}
+  // },
+  // {
+  //   field: 'post',
+  //   label: '职位',
+  //   component: 'JSelectPosition',
+  // },
   // {
   //   field: 'workNo',
   //   label: '工号',

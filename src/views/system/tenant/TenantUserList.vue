@@ -124,6 +124,10 @@
    * 用户授权弹窗
    */
   function handlePerssion(record) {
+    if(record.id==userStore.getLoginInfo.userInfo.id){
+      createMessage.warning('不能给自己权限!');
+      return;
+    }
     openUserPermissionDrawer(true, { userId: record.id });
   }
   /**
