@@ -27,15 +27,10 @@ const [registerModal, {openModal}] = useModal();
 //注册table数据
 const {prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
   tableProps: {
-    title: '套餐菜单关系表',
+    title: '套餐',
     api: list,
     columns,
     canResize: false,
-
-    actionColumn: {
-      width: 120,
-      fixed: 'right'
-    },
     beforeFetch: (params) => {
       return Object.assign(params, queryParam);
     },
