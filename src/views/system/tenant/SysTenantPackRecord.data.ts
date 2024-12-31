@@ -15,9 +15,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'packName'
    },
    {
-    title: '套餐类型(送货单版/进销存版)',
+    title: '套餐类型',
     align:"center",
-    dataIndex: 'packType'
+    dataIndex: 'packTypeName'
    },
    {
     title: '购买数量',
@@ -25,9 +25,9 @@ export const columns: BasicColumn[] = [
     dataIndex: 'packNum'
    },
    {
-    title: '购买单位(1 月 2年)',
+    title: '购买单位',
     align:"center",
-    dataIndex: 'packUnit_dictText'
+    dataIndex: 'packUnitName'
    },
    {
     title: '购买时间',
