@@ -160,7 +160,15 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './PurchaseBill.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl, billDetail } from './PurchaseBill.api';
+  import {
+    list,
+    deleteOne,
+    batchDelete,
+    getImportUrl,
+    getExportUrl,
+    billDetail,
+    getExportUrl
+  } from './PurchaseBill.api';
   import PurchaseBillModal from './components/PurchaseBillModal.vue';
   import ModifyModal from './components/ModifyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
