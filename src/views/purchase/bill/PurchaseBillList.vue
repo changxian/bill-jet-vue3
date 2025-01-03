@@ -166,8 +166,7 @@
     batchDelete,
     getImportUrl,
     getExportUrl,
-    billDetail,
-    getExportUrl
+    billDetail
   } from './PurchaseBill.api';
   import PurchaseBillModal from './components/PurchaseBillModal.vue';
   import ModifyModal from './components/ModifyModal.vue';
