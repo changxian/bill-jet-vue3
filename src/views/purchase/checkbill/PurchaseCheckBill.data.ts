@@ -69,7 +69,7 @@ export const columns: BasicColumn[] = [
   {
     title: '数量',
     align: 'center',
-    dataIndex: 'billCount',
+    dataIndex: 'count',
   },
   {
     title: '进货价',
@@ -133,7 +133,7 @@ export const columns: BasicColumn[] = [
   {
     title: '金额',
     align: 'center',
-    dataIndex: 'amount',
+    dataIndex: 'costAmount',
   },
   {
     title: '合同号',
@@ -143,7 +143,7 @@ export const columns: BasicColumn[] = [
   {
     title: '制单员',
     align: 'center',
-    dataIndex: 'userName',
+    dataIndex: 'operatorName',
   },
   {
     title: '备注',

@@ -73,7 +73,7 @@
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{ 'p_san': hasPan }">总计
-        <span class="total_span">数量：{{ billCountTotal }}</span>
+        <span class="total_span">数量：{{ countTotal }}</span>
         <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
         <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
         <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
@@ -87,20 +87,20 @@
 </template>
 
 <script lang="ts" name="purchase.checkbill-PurchaseCheckBill" setup>
-  import { ref, defineExpose, reactive} from 'vue'
+  import { ref, defineExpose, reactive } from 'vue';
   import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './PurchaseCheckBill.data';
   import FastDate from '/@/components/FastDate.vue';
   import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import { getExportUrl, list} from "@/views/purchase/checkbill/PurchaseCheckBill.api";
-  import {useUserStore} from "@/store/modules/user";
+  import { getExportUrl, list } from '@/views/purchase/checkbill/PurchaseCheckBill.api';
+  import { useUserStore } from '@/store/modules/user';
 
   const userStore = useUserStore();
   const hasPan = ref(true);
 
-  const billCountTotal = ref(0);
+  const countTotal = ref(0);
 
   const amountTotal = ref(0);
 
@@ -176,34 +176,30 @@
         weightTotal.value = 0;
         areaTotal.value = 0;
         volumeTotal.value = 0;
-        billCountTotal.value =0;
+        countTotal.value = 0;
         amountTotal.value = 0;
-        paymentAmountTotal.value =0;
+        paymentAmountTotal.value = 0;
         discountAmountTotal.value = 0;
         debtAmountTotal.value = 0;
         hisDebtAmountTotal.value = 0;
-        if(hasPan.value){
+        if (hasPan.value) {
           weightTotal.value = resultItems[0].weightTotal;
           areaTotal.value = resultItems[0].areaTotal;
           volumeTotal.value = resultItems[0].volumeTotal;
-
-          billCountTotal.value = resultItems[0].billCountTotal;
-          amountTotal.value = resultItems[0].amountTotal;
+          countTotal.value = resultItems[0].countTotal;
+          amountTotal.value = resultItems[0].costAmountTotal;
           paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
           discountAmountTotal.value = resultItems[0].discountAmountTotal;
           debtAmountTotal.value = resultItems[0].debtAmountTotal;
           hisDebtAmountTotal.value = resultItems[0].hisDebtAmountTotal;
         }
-
       },
-
     },
     exportConfig: {
-      name: "进货对账单",
+      name: '进货对账单',
       url: getExportUrl,
       params: queryParam,
     },
-
   });
   const billSetting = userStore.getBillSetting;
   // 加载系统开单设置
@@ -239,7 +235,7 @@
     xl: 6,
     xxl: 5,
   });
-    const wrapperCol = reactive({
+  const wrapperCol = reactive({
     xs: 24,
     sm: 19,
   });

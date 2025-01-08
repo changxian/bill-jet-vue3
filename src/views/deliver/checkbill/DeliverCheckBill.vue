@@ -4,26 +4,26 @@
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
           <FastDate v-model:modelValue="fastDateParam" />
-            <a-col :lg="6">
-              <a-form-item label="单类型" name="type">
-                <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
-                  <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="3">送货开单</a-select-option>
-                  <a-select-option value="2">退货开单</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
+          <a-col :lg="6">
+            <a-form-item label="单类型" name="type">
+              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="3">送货开单</a-select-option>
+                <a-select-option value="2">退货开单</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item label="欠款单" name="hasDebt">
-                  <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
-                    <a-radio value="">所有</a-radio>
+                <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
+                  <a-radio value="">所有</a-radio>
                   <a-radio value="1">是</a-radio>
                   <a-radio value="2">否</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>
-              <a-col :lg="6">
+            <a-col :lg="6">
               <a-form-item label="公司" name="companyId">
                 <j-select-company v-model:value="queryParam.companyId" @change="changeCompany" allow-clear />
               </a-form-item>
@@ -69,17 +69,20 @@
           导出</a-button
         >
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
+      </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
         <span class="total_span">数量：{{ totalCount }}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ weightTotal }}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ areaTotal }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ volumeTotal }}</span>
-        <span class="total_span">金额：{{ totalAmount }}</span>
-        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
-        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
-        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
+        <span class="total_span">金额：{{ amountTotal }}</span>
+        <span class="total_span">已付款：{{ paymentAmountTotal }}</span>
+        <span class="total_span">优惠：{{ discountAmountTotal }}</span>
+        <span class="total_span">未付款：{{ debtAmountTotal }}</span>
       </p>
     </div>
   </div>
@@ -93,7 +96,7 @@
   import FastDate from '/@/components/FastDate.vue';
   import JSelectCust from '/@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import { getExportUrl, list, listCount } from '@/views/deliver/checkbill/DeliverCheckBill.api';
+  import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
   import { useUserStore } from '@/store/modules/user';
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
@@ -110,13 +113,15 @@
   // 总计：体积
   const volumeTotal = ref(0);
   // 总计：金额
-  const totalAmount = ref(0);
+  const amountTotal = ref(0);
   // 总计：已付款
-  const totalPaymentAmount = ref(0);
+  const paymentAmountTotal = ref(0);
   // 总计：优惠
-  const totalDiscountAmount = ref(0);
+  const discountAmountTotal = ref(0);
   // 总计：未付款
-  const totalDebtAmount = ref(0);
+  const debtAmountTotal = ref(0);
+  // 总计：历史欠付款
+  const hisDebtAmountTotal = ref(0);
   const hasPan = ref(true);
 
   // 小数位数
@@ -167,7 +172,25 @@
       },
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        listTotalCount();
+        totalCount.value = 0;
+        weightTotal.value = 0;
+        areaTotal.value = 0;
+        volumeTotal.value = 0;
+        amountTotal.value = 0;
+        paymentAmountTotal.value = 0;
+        discountAmountTotal.value = 0;
+        debtAmountTotal.value = 0;
+        if (hasPan.value) {
+          totalCount.value = resultItems[0].count;
+          weightTotal.value = resultItems[0].weight;
+          areaTotal.value = resultItems[0].area;
+          volumeTotal.value = resultItems[0].volume;
+          amountTotal.value = resultItems[0].amountTotal;
+          paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
+          discountAmountTotal.value = resultItems[0].discountAmountTotal;
+          debtAmountTotal.value = resultItems[0].debtAmountTotal;
+          hisDebtAmountTotal.value = resultItems[0].hisDebtAmountTotal;
+        }
       },
     },
     exportConfig: {
@@ -176,6 +199,33 @@
       params: queryParam,
     },
   });
+  const billSetting = userStore.getBillSetting;
+  // 加载系统开单设置
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    // 循环数据
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
+  }
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
@@ -188,29 +238,6 @@
     sm: 19,
   });
 
-  /**
-   * 列表合计
-   */
-  function listTotalCount() {
-    totalCount.value = 0;
-    weightTotal.value = 0;
-    areaTotal.value = 0;
-    volumeTotal.value = 0;
-    totalAmount.value = 0;
-    totalPaymentAmount.value = 0;
-    totalDiscountAmount.value = 0;
-    totalDebtAmount.value = 0;
-    listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
-      totalCount.value = res.count;
-      weightTotal.value = res.weight;
-      areaTotal.value = res.area;
-      volumeTotal.value = res.volume;
-      totalAmount.value = res.amount;
-      totalPaymentAmount.value = res.paymentAmount;
-      totalDiscountAmount.value = res.discountAmount;
-      totalDebtAmount.value = res.debtAmount;
-    });
-  }
   /**
    * 打印预览
    */
@@ -228,7 +255,6 @@
    */
   function searchQuery() {
     reload();
-    listTotalCount();
   }
 
   /**
@@ -241,7 +267,6 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
-    listTotalCount();
   }
 
   defineExpose({
