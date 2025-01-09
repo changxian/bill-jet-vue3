@@ -65,6 +65,7 @@ export const columns: BasicColumn[] = [
     title: '单类型',
     align: 'center',
     dataIndex: 'type_dictText',
+    slots: { customRender: 'type_dictText' },
   },
   {
     title: '客户',

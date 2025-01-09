@@ -53,7 +53,10 @@
         <BasicTable @register="registerTable" :rowSelection="rowSelection" :columns="columnList">
           <!--插槽:table标题-->
           <template #tableTitle>
-            <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+            <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
+          </template>
+          <template #type_dictText="{ record }">
+            <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
           </template>
         </BasicTable>
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">

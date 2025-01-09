@@ -58,14 +58,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'"
-                  preIcon="ant-design:export-outlined" @click="onExportXls">
-          导出
-        </a-button
-        >
-
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
       </template>
       <!-- 明细 -->
       <template #detail="{ record }">

@@ -333,11 +333,11 @@
     volumeTotal.value = extraInfo.volume || 0;
     totalAmount.value = extraInfo.amount || 0;
     totalPaymentAmount.value = extraInfo.paymentAmount || 0;
-    totalDiscountAmount.value =extraInfo.discountAmount || 0;
+    totalDiscountAmount.value = extraInfo.discountAmount || 0;
     totalDebtAmount.value = extraInfo.debtAmount || 0;
     totalHisDebtAmount.value = extraInfo.hisDebtAmount || 0;
     totalCostAmount.value = extraInfo.costAmount || 0;
-    totalProfitAmount.value =extraInfo.profitAmount || 0;
+    totalProfitAmount.value = extraInfo.profitAmount || 0;
   }
   // 删除数据
   function handleDel() {
