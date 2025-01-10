@@ -55,7 +55,7 @@
               <a-form-item
                 v-if="item.fieldTitle"
                 :label="item.fieldTitle"
-                :id="'GoodsForm-' + item.fieldName"
+                :id="'dynamicSupFields-' + item.fieldName"
                 :name="'dynamicSupFields.' + item.fieldName"
               >
                 <a-input v-model:value="formData.dynamicSupFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
@@ -131,7 +131,7 @@ import { Form } from "ant-design-vue";
 import JFormContainer from "/@/components/Form/src/container/JFormContainer.vue";
 import type { Rule } from "ant-design-vue/es/form";
 import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
-import { fieldsList } from "@/views/setting/system/index.api";
+import {fieldsList, getDynamicFieldsAndValue} from "@/views/setting/system/index.api";
 import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
 import { useUserStore } from "@/store/modules/user";
 
@@ -203,6 +203,7 @@ const userStore = useUserStore();
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   const goodsRef = ref(null);
+  const hasInit = ref(false);
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
@@ -216,6 +217,10 @@ const userStore = useUserStore();
   });
 
   function init() {
+    if(hasInit.value){
+      return;
+    }
+    hasInit.value=true;
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicSupFields = res['5'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
@@ -271,6 +276,7 @@ const userStore = useUserStore();
    * 新增
    */
   function add() {
+    init();
     edit({});
   }
 
@@ -279,6 +285,7 @@ const userStore = useUserStore();
    */
   function edit(record) {
     nextTick(() => {
+
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
@@ -300,6 +307,11 @@ const userStore = useUserStore();
         formData.updateTime = '';
         formData.updateBy = '';
       }
+      hasInit.value=true;
+      getDynamicFieldsAndValue({category:5 ,id:tmpData.supplierId}).then(res=>{
+        formData.dynamicSupFields=res;
+      });
+
     });
   }
 

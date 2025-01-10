@@ -60,7 +60,7 @@
               <a-form-item
                 v-if="item.fieldTitle"
                 :label="item.fieldTitle"
-                :id="'GoodsForm-' + item.fieldName"
+                :id="'dynamicCustFields-' + item.fieldName"
                 :name="'dynamicCustFields.' + item.fieldName"
               >
                 <a-input v-model:value="formData.dynamicCustFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
@@ -151,7 +151,7 @@
   import { defaultCom, queryNewNo, billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { fieldsList } from '@/views/setting/system/index.api';
+  import {fieldsList, getDynamicFieldsAndValue} from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
 
@@ -224,7 +224,7 @@
     //  remark:  [{ required: true, message: '必填', trigger: 'change' }],
     // hisDebtAmount: [{ required: true, message: '必填', trigger: 'change' }],
   };
-
+  const hasInit = ref(false);
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
@@ -241,6 +241,10 @@
     return props.formDisabled;
   });
   function init() {
+    if(hasInit.value){
+      return;
+    }
+    hasInit.value=true;
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicCustFields = res['4'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
@@ -361,6 +365,10 @@
         formData.updateTime = '';
         formData.updateBy = '';
       }
+      hasInit.value=true;
+      getDynamicFieldsAndValue({category:4 ,id:tmpData.custId}).then(res=>{
+        formData.dynamicCustFields=res;
+      });
     });
   }
   // 根据id获取商品数据信息
