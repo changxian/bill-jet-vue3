@@ -83,16 +83,10 @@
 </template>
 
 <script lang="ts" name="purchase.statistics-PurchaseStatistics" setup>
-  import { ref, defineExpose, reactive } from 'vue'
+  import { ref, defineExpose, reactive } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import {
-    goodsCountColumns,
-    typeCountColumns,
-    supplierCountColumns,
-    operatorCountColumns,
-    careNoCountColumns
-  } from './PurchaseStatistics.data';
+  import { goodsCountColumns, typeCountColumns, supplierCountColumns, operatorCountColumns, careNoCountColumns } from './PurchaseStatistics.data';
   import { list, getExportUrl } from './PurchaseStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
@@ -129,13 +123,7 @@
   const queryParam = reactive<any>({ queryType: 'goodsCountColumns', companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
-  const columnObj = {
-    goodsCountColumns,
-    typeCountColumns,
-    supplierCountColumns,
-    operatorCountColumns,
-    careNoCountColumns,
-  };
+  const columnObj = { goodsCountColumns, typeCountColumns, supplierCountColumns, operatorCountColumns, careNoCountColumns };
 
   function getColumns() {
     columns.value = columnObj[queryParam.queryType];
@@ -256,7 +244,7 @@
   };
   function setParam(record) {
     Object.keys(queryTypeColumnObj).forEach(key => {
-      if (key === queryParam.queryType){
+      if (key === queryParam.queryType) {
         queryParam[queryTypeColumnObj[key]] = record.id;
       } else {
         queryParam[queryTypeColumnObj[key]] = '';
@@ -294,7 +282,7 @@
   }
 
   .total_span {
-    margin: 0 5px
+    margin: 0 5px;
   }
 
   .p_san {

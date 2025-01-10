@@ -1,34 +1,34 @@
-import {BasicColumn} from '/@/components/Table';
-import {useUserStore} from "@/store/modules/user";
-import {ref} from "vue";
+import { BasicColumn } from '/@/components/Table';
+import { useUserStore } from '@/store/modules/user';
+import { ref } from 'vue';
 const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
-if(billSetting.dynaFieldsGroup['1']){
-    billSetting.dynaFieldsGroup['1'].forEach((item) => {
-      // 重量小计
-      if (item.fieldName === 'weightSubtotal') {
-        weightColTitle.value = item.fieldTitle;
-      }
-      // 面积小计
-      if (item.fieldName === 'areaSubtotal') {
-        areaColTitle.value = item.fieldTitle;
-      }
-      // 体积小计
-      if (item.fieldName === 'volumeSubtotal') {
-        volumeColTitle.value = item.fieldTitle;
-      }
-    });
+if (billSetting.dynaFieldsGroup['1']) {
+  billSetting.dynaFieldsGroup['1'].forEach((item) => {
+    // 重量小计
+    if (item.fieldName === 'weightSubtotal') {
+      weightColTitle.value = item.fieldTitle;
+    }
+    // 面积小计
+    if (item.fieldName === 'areaSubtotal') {
+      areaColTitle.value = item.fieldTitle;
+    }
+    // 体积小计
+    if (item.fieldName === 'volumeSubtotal') {
+      volumeColTitle.value = item.fieldTitle;
+    }
+  });
 }
 const numCountCol = {
   title: '数量统计',
-  align: "center",
-  dataIndex: 'countSubtotal'
-}
+  align: 'center',
+  dataIndex: 'countSubtotal',
+};
 const weightCol = {
-  title: '重量合计'+(weightColTitle.value?('(' + weightColTitle.value + ')'):''),
+  title: '重量合计' + (weightColTitle.value?('(' + weightColTitle.value + ')'):''),
   align: 'center',
   dataIndex: 'weightSubtotal',
   ifShow: billSetting.showWeightCol || true,
@@ -47,21 +47,21 @@ const volumeCol = {
 };
 const amountCol = {
   title: '金额统计',
-  align: "center",
-  dataIndex: 'amountSubtotal'
-}
+  align: 'center',
+  dataIndex: 'amountSubtotal',
+};
 const detailCol = {
   title: '明细',
-  align: "center",
+  align: 'center',
   dataIndex: 'detail',
-  slots: {customRender: 'detail'},
-}
+  slots: { customRender: 'detail' },
+};
 const countTotalCol = {
   title: '合计',
-  align: "center",
-  slots: {customRender: 'count'},
-  dataIndex: 'countTotal'
-}
+  align: 'center',
+  slots: { customRender: 'count' },
+  dataIndex: 'countTotal',
+};
 // 按商品统计
 export const goodsCountColumns: BasicColumn[] = [
   {
@@ -107,7 +107,7 @@ export const typeCountColumns: BasicColumn[] = [
   volumeCol,
   amountCol,
   detailCol,
-  countTotalCol
+  countTotalCol,
 ];
 
 // 按供应商
@@ -123,7 +123,7 @@ export const supplierCountColumns: BasicColumn[] = [
   volumeCol,
   amountCol,
   detailCol,
-  countTotalCol
+  countTotalCol,
 ];
 
 // 按用户
@@ -139,7 +139,7 @@ export const operatorCountColumns: BasicColumn[] = [
   volumeCol,
   amountCol,
   detailCol,
-  countTotalCol
+  countTotalCol,
 ];
 // 按车号
 export const careNoCountColumns: BasicColumn[] = [
@@ -154,6 +154,5 @@ export const careNoCountColumns: BasicColumn[] = [
   volumeCol,
   amountCol,
   detailCol,
-  countTotalCol
+  countTotalCol,
 ];
-  
