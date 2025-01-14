@@ -118,24 +118,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineExpose, defineProps, nextTick, reactive, ref } from "vue";
-import { useMessage } from "/@/hooks/web/useMessage";
-import JDictSelectTag from "/@/components/Form/src/jeecg/components/JDictSelectTag.vue";
-import JSelectCompany from "/@/components/Form/src/jeecg/components/JSelectCompany.vue";
-import JSelectSupplier from "/@/components/Form/src/jeecg/components/JSelectSupplier.vue";
-import goods from "./goods.vue";
-import { getValueType } from "/@/utils";
-import { billDetail, saveOrUpdate } from "../PurchaseBill.api";
-import { statusList } from "../PurchaseBill.data";
-import { Form } from "ant-design-vue";
-import JFormContainer from "/@/components/Form/src/container/JFormContainer.vue";
-import type { Rule } from "ant-design-vue/es/form";
-import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
-import {fieldsList, getDynamicFieldsAndValue} from "@/views/setting/system/index.api";
-import { byPurchaseId } from "@/views/purchase/debt/PurchaseDebt.api";
-import { useUserStore } from "@/store/modules/user";
+  import { computed, defineExpose, defineProps, nextTick, reactive, ref } from 'vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
+  import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
+  import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
+  import goods from './goods.vue';
+  import { getValueType } from '/@/utils';
+  import { billDetail, saveOrUpdate } from '../PurchaseBill.api';
+  import { statusList } from '../PurchaseBill.data';
+  import { Form } from 'ant-design-vue';
+  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import type { Rule } from 'ant-design-vue/es/form';
+  import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
+  import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
+  import { byPurchaseId } from '@/views/purchase/debt/PurchaseDebt.api';
+  import { useUserStore } from '@/store/modules/user';
 
-const userStore = useUserStore();
+  const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
   const span = 8;
@@ -217,10 +217,10 @@ const userStore = useUserStore();
   });
 
   function init() {
-    if(hasInit.value){
+    if (hasInit.value) {
       return;
     }
-    hasInit.value=true;
+    hasInit.value = true;
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicSupFields = res['5'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
@@ -254,13 +254,26 @@ const userStore = useUserStore();
       formData.dynamicSupFields = selectRows[0].dynamicFields;
     }
   }
-  let amount = 0;
+  let amount: number = 0.0;
   function changeGoods(goods) {
     let num = 0.0;
     goods.forEach((item) => {
+      // 计算重量、面积、体积小计
+      item.weightSubtotal = 0;
+      if (item.weight) {
+        item.weightSubtotal = (item.weight * item.count).toFixed(decimalPlaces);
+      }
+      item.areaSubtotal = 0;
+      if (item.area) {
+        item.areaSubtotal = (item.area * item.count).toFixed(decimalPlaces);
+      }
+      item.volumeSubtotal = 0;
+      if (item.volume) {
+        item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
+      }
       num = parseFloat(num) + parseFloat(item.costAmount);
     });
-    amount = num;
+    amount = (num + '').toFixed(decimalPlaces);
     calcDebtAmount();
   }
 
@@ -285,7 +298,6 @@ const userStore = useUserStore();
    */
   function edit(record) {
     nextTick(() => {
-
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
@@ -307,20 +319,20 @@ const userStore = useUserStore();
         formData.updateTime = '';
         formData.updateBy = '';
       }
-      hasInit.value=true;
-      getDynamicFieldsAndValue({category:5 ,id:tmpData.supplierId}).then(res=>{
-        formData.dynamicSupFields=res;
+      hasInit.value = true;
+      getDynamicFieldsAndValue({ category: 5, id: tmpData.supplierId }).then((res) => {
+        formData.dynamicSupFields = res;
       });
-
     });
   }
 
-  function getGoods(id){
-    billDetail({billId: id}).then(res=>{
+  function getGoods(id) {
+    billDetail({ billId: id }).then((res) => {
       // dataSourceDetail.value = [...res]
       nextTick(() => {
         goodsRef.value.setValue([...res]);
       });
+      changeGoods(res);
     });
   }
 

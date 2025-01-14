@@ -313,10 +313,23 @@
     // 利润金额
     let profit = 0.0;
     goods.forEach((item) => {
+      // 计算重量、面积、体积小计
+      item.weightSubtotal = 0;
+      if (item.weight) {
+        item.weightSubtotal = (item.weight * item.count).toFixed(decimalPlaces);
+      }
+      item.areaSubtotal = 0;
+      if (item.area) {
+        item.areaSubtotal = (item.area * item.count).toFixed(decimalPlaces);
+      }
+      item.volumeSubtotal = 0;
+      if (item.volume) {
+        item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
+      }
       num = parseFloat(num) + parseFloat(item.amount);
       cost = parseFloat(cost) + parseFloat(item.costAmount);
     });
-    amount = num;
+    amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
     profit = parseFloat(amount) - parseFloat(cost);
     formData.profitAmount = profit.toFixed(decimalPlaces);
@@ -366,18 +379,19 @@
         formData.updateBy = '';
       }
       hasInit.value=true;
-      getDynamicFieldsAndValue({category:4 ,id:tmpData.custId}).then(res=>{
-        formData.dynamicCustFields=res;
+      getDynamicFieldsAndValue({ category:4 ,id:tmpData.custId }).then(res=>{
+        formData.dynamicCustFields = res;
       });
     });
   }
   // 根据id获取商品数据信息
   function getGoods(id) {
-    billDetail({ billId: id }).then(res=>{
+    billDetail({ billId: id }).then((res) => {
       // dataSourceDetail.value = [...res]
-      nextTick(()=>{
+      nextTick(() => {
         goodsRef.value.setValue([...res]);
       });
+      changeGoods(res);
     });
   }
   // 表单验证

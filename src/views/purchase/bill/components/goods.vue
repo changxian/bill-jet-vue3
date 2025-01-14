@@ -276,7 +276,7 @@
 
   /**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
   selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
-  const [registerTable, { reload }, {rowSelection}] = tableContext;
+  const [registerTable, { reload }, { rowSelection }] = tableContext;
 
   // 校验商品是否可重复添加
   const goodsNameRepeat = ref(false);

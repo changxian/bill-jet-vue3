@@ -72,7 +72,7 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="公司" name="companyId">
-                <j-select-company v-model:value="queryParam.companyId"   allow-clear />
+                <j-select-company v-model:value="queryParam.companyId" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -95,16 +95,16 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="copyAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
-        <a-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="copyAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button v-if="false"  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
@@ -156,7 +156,7 @@
 </template>
 
 <script lang="ts" name="purchase.bill-purchaseBill" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './PurchaseBill.data';
@@ -221,9 +221,10 @@
       api: list,
       columns,
       canResize: false,
-      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       useSearchForm: false,
       clickToRowSelect: true,
+      showIndexColumn: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -255,12 +256,10 @@
     xl: 6,
     xxl: 4,
   });
-  function handleDel() {
-    if (selectedRowKeys.value.length === 0){
-      return createMessage.warning('请先选择数据');
-    }
-    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
-  }
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
   // 系统开单设置
   const billSetting = userStore.getBillSetting;
   if (billSetting) {
@@ -315,11 +314,6 @@
     }
     modifyModalRef.value.show(type, row);
   }
-  const wrapperCol = reactive({
-    xs: 24,
-    sm: 20,
-  });
-
   /**
    * 列表合计
    */
@@ -334,6 +328,17 @@
     totalDebtAmount.value = extraInfo.debtAmount || 0;
   }
 
+  function handleDel() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    if (row.status === 5 || row.status === 9) {
+      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
+  }
   function debtDetailHandle() {
     if (selectedRows.value.length === 0) {
       repayDetailDialogRef.value.show();
@@ -367,6 +372,7 @@
         return createMessage.warning('请先选择数据');
       }
       record = selectedRows.value[0];
+      debugger;
     }
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
@@ -384,6 +390,11 @@
    * 删除事件
    */
   async function handleDelete(record) {
+    if (record.status === 5 || record.status === 9) {
+      batchDelete({ ids: record.id }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
     await deleteOne({ id: record.id }, handleSuccess);
   }
 
@@ -391,6 +402,12 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
+    // 是否有不能删除的数据
+    let cannotDel = unref(selectedRows).filter((item) => item.status < 5);
+    if (unref(cannotDel).length > 0) {
+      createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+      return;
+    }
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
 
@@ -422,16 +439,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'purchase.bill:jxc_purchase_bill:delete'
-      }
-    ]
+        auth: 'purchase.bill:jxc_purchase_bill:delete',
+      },
+    ];
   }
 
   /**
@@ -486,19 +504,19 @@
   function rowClick(record) {
     detailLoading.value = true;
     currentRowId.value = record.id;
-    billDetail({billId: record.id}).then(res => {
+    billDetail({ billId: record.id }).then(res => {
         res.forEach((item) => {
           // 重量小计
           if (item.weight != undefined) {
-            item.weightSubtotal = item.count * item.weight;
+            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
           }
           // 面积小计
           if (item.area != undefined) {
-            item.areaSubtotal = item.count * item.area;
+            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
           }
           // 体积小计
           if (item.volume != undefined) {
-            item.volumeSubtotal = item.count * item.volume;
+            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
           }
         });
         dataSourceDetail.value = [...res];

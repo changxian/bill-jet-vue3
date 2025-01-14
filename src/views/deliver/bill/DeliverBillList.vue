@@ -161,7 +161,7 @@
 </template>
 
 <script lang="ts" name="deliver.bill-deliverBill" setup>
-  import { ref, reactive } from 'vue';
+import { ref, reactive, unref } from "vue";
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
@@ -339,12 +339,17 @@
     totalCostAmount.value = extraInfo.costAmount || 0;
     totalProfitAmount.value = extraInfo.profitAmount || 0;
   }
-  // 删除数据
+  // 删除数据[状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）为5和9才能删除]
   function handleDel() {
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    const row = selectedRows.value[0];
+    if (row.status === 5 || row.status === 9) {
+      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
   }
   // 修改状态、开票、信息
   function handleModify(type) {
@@ -415,12 +420,24 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteOne({ id: record.id }, handleSuccess);
+    // console.log('00000000000000000000000000000000000', record);
+    if (record.status === 5 || record.status === 9) {
+      batchDelete({ ids: record.id }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
+    // await deleteOne({ id: record.id }, handleSuccess);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
+    // 是否有不能删除的数据
+    let cannotDel = unref(selectedRows).filter((item) => item.status < 5);
+    if (unref(cannotDel).length > 0) {
+      createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+      return;
+    }
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   /**
@@ -541,19 +558,19 @@
   function rowClick(record) {
     detailLoading.value = true;
     currentRowId.value = record.id;
-    billDetail({billId: record.id}).then(res => {
+    billDetail({ billId: record.id }).then(res => {
         res.forEach((item) => {
           // 重量小计
           if (item.weight != undefined) {
-            item.weightSubtotal = item.count * item.weight;
+            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
           }
           // 面积小计
           if (item.area != undefined) {
-            item.areaSubtotal = item.count * item.area;
+            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
           }
           // 体积小计
           if (item.volume != undefined) {
-            item.volumeSubtotal = item.count * item.volume;
+            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
           }
         });
         dataSourceDetail.value = [...res];

@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, nextTick, defineExpose, onMounted, onUpdated} from 'vue';
-  import PurchaseBillForm from './components/PurchaseBillForm.vue'
+  import { ref, nextTick, defineExpose, onMounted, onUpdated } from 'vue';
+  import PurchaseBillForm from './components/PurchaseBillForm.vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-  
+
   const title = ref<string>('');
   const width = ref<number>(800);
   const visible = ref<boolean>(false);
@@ -17,10 +17,10 @@ import {ref, nextTick, defineExpose, onMounted, onUpdated} from 'vue';
   const registerForm = ref();
   const emit = defineEmits(['register', 'success']);
 
-onMounted(() => {
-  console.log('组件已挂载',99999999999);
-  visible.value=true;
-});
+  onMounted(() => {
+    console.log('组件已挂载',99999999999);
+    visible.value = true;
+  });
 
   /**
    * 新增
