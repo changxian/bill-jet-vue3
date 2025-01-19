@@ -108,7 +108,7 @@
 
   const hasPan = ref(true);
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ startDate: '', endDate: ''});
+  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   const formRef = ref();
 
   const title = ref('进货统计明细-汇总');
@@ -155,7 +155,7 @@
       params: queryParam,
     },
   });
-  const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -205,36 +205,33 @@
    */
   function searchReset() {
     formRef.value.resetFields();
-    fastDateParam.startDate = ''
-    fastDateParam.endDate = ''
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
     selectedRowKeys.value = [];
     //刷新数据
     reload();
   }
 
-  function handleEdit() {
-  }
-
-  const visible = ref(false)
+  const visible = ref(false);
 
   function show(_queryParam, _fastDateParam, _record) {
-    Object.keys(_queryParam).forEach(key => {
+    Object.keys(_queryParam).forEach((key) => {
       queryParam[key] = _queryParam[key];
     });
-    Object.keys(_fastDateParam).forEach(key => {
+    Object.keys(_fastDateParam).forEach((key) => {
       fastDateParam[key] = _fastDateParam[key];
     });
-    visible.value = true
+    visible.value = true;
+    reload();
   }
 
   function handleCancel() {
-    visible.value = false
+    visible.value = false;
   }
 
   defineExpose({
-    show
-  })
-
+    show,
+  });
 </script>
 
 

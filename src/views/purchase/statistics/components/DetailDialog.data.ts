@@ -45,7 +45,7 @@ export const columns: BasicColumn[] = [
   {
     title: '日期',
     align: 'center',
-    dataIndex: 'repayDate',
+    dataIndex: 'billDate',
   },
   {
     title: '单号',

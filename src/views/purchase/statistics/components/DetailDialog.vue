@@ -114,7 +114,7 @@
 
   const hasPan = ref(true);
   const queryParam = reactive<any>({});
-  const fastDateParam = reactive<any>({ timeType:'', startDate: '', endDate: ''});
+  const fastDateParam = reactive<any>({ timeType: '', startDate: '', endDate: '' });
   const formRef = ref();
 
   const titleObj = {
@@ -128,7 +128,7 @@
   const columnList = ref(columns);
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
-  const { prefixCls, tableContext, onExportXls, onImportXls} = useListPage({
+  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '进货开单',
       api: detailsList,
@@ -161,7 +161,7 @@
           amountTotal.value = resultItems[0].amountTotal;
         }
       },
-      rowSelection: {type: 'radio'},
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
       name: '进货统计明细',
@@ -169,7 +169,7 @@
       params: queryParam,
     },
   });
-  const [registerTable, {reload}, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const [registerTable, { reload }, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -219,23 +219,20 @@
    */
   function searchReset() {
     formRef.value.resetFields();
-    fastDateParam.startDate = ''
-    fastDateParam.endDate = ''
+    fastDateParam.startDate = '';
+    fastDateParam.endDate = '';
     selectedRowKeys.value = [];
     //刷新数据
     reload();
   }
 
-  function handleEdit() {
-  }
-
   const visible = ref(false);
 
   function show(_queryParam, _fastDateParam, _record) {
-    Object.keys(_queryParam).forEach(key => {
+    Object.keys(_queryParam).forEach((key) => {
       queryParam[key] = _queryParam[key];
     });
-    Object.keys(_fastDateParam).forEach(key => {
+    Object.keys(_fastDateParam).forEach((key) => {
       fastDateParam[key] = _fastDateParam[key];
     });
 
@@ -253,6 +250,7 @@
       columnList.value = columns;
     }
     visible.value = true;
+    reload();
   }
 
   function handleCancel() {
@@ -262,7 +260,6 @@
   defineExpose({
     show,
   });
-
 </script>
 
 

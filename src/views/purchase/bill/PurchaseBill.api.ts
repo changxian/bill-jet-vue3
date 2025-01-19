@@ -1,12 +1,12 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
 enum Api {
   list = '/purchase/bill/purchaseBill/list',
-  save='/purchase/bill/purchaseBill/saveOrUpdate',
-  edit='/purchase/bill/purchaseBill/saveOrUpdate',
+  save = '/purchase/bill/purchaseBill/saveOrUpdate',
+  edit = '/purchase/bill/purchaseBill/saveOrUpdate',
   deleteOne = '/purchase/bill/purchaseBill/delete',
   deleteBatch = '/purchase/bill/purchaseBill/deleteBatch',
   importExcel = '/purchase/bill/purchaseBill/importExcel',
@@ -19,14 +19,14 @@ enum Api {
 }
 
 export const editStatus = (params) => {
-  return defHttp.post({ url:  Api.editStatus, params }, { isTransformResponse: false });
-}
+  return defHttp.post({ url: Api.editStatus, params }, { isTransformResponse: false });
+};
 export const editInvoiceStatus = (params) => {
-  return defHttp.post({ url:  Api.editInvoiceStatus, params }, { isTransformResponse: false });
-}
+  return defHttp.post({ url: Api.editInvoiceStatus, params }, { isTransformResponse: false });
+};
 export const editInfo = (params) => {
-  return defHttp.post({ url:  Api.editInfo, params }, { isTransformResponse: false });
-}
+  return defHttp.post({ url: Api.editInfo, params }, { isTransformResponse: false });
+};
 
 /**
  * 导出api
@@ -53,10 +53,10 @@ export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params 
  * @param handleSuccess
  */
 export const deleteOne = (params,handleSuccess) => {
-  return defHttp.delete({url: Api.deleteOne, params}, {joinParamsToUrl: true}).then(() => {
+  return defHttp.delete({ url: Api.deleteOne, params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
-}
+};
 
 /**
  * 批量删除
@@ -71,12 +71,12 @@ export const batchDelete = (params, handleSuccess) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.delete({url: Api.deleteBatch, data: params}, {joinParamsToUrl: true}).then(() => {
+      return defHttp.delete({ url: Api.deleteBatch, data: params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
-    }
+    },
   });
-}
+};
 
 /**
  * 保存或者更新
@@ -84,5 +84,5 @@ export const batchDelete = (params, handleSuccess) => {
  * @param isUpdate
  */
 export const saveOrUpdate = (params) => {
-  return defHttp.post({ url:  Api.save, params }, { isTransformResponse: false });
-}
+  return defHttp.post({ url: Api.save, params }, { isTransformResponse: false });
+};

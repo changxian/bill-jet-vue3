@@ -32,7 +32,7 @@
                   <a-select-option value="">所有</a-select-option>
                   <a-select-option value="1">未打印</a-select-option>
                   <a-select-option value="2">已打印</a-select-option>
-                  <a-select-option value="3">签回</a-select-option>
+                  <a-select-option value="3">签收</a-select-option>
                   <a-select-option value="4">过账</a-select-option>
                   <a-select-option value="5">审核</a-select-option>
                   <a-select-option value="6">已开票</a-select-option>
@@ -126,6 +126,13 @@
       </template>
       <template #type_dictText="{ record }">
         <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
+      <template #status_dictText="{ record }">
+        <span v-if="3 == record.status">签收</span>
+        <span v-else-if="4 == record.status" style="color: green">{{ record.status_dictText }}</span>
+        <span v-else-if="5 == record.status" style="color: blue">{{ record.status_dictText }}</span>
+        <span v-else-if="9 == record.status" style="color: red">{{ record.status_dictText }}</span>
+        <span v-else>{{ record.status_dictText }}</span>
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
@@ -373,6 +380,10 @@
       }
       record = selectedRows.value[0];
       debugger;
+      // 4过账，5审核
+      if (record.status === 4 || record.status === 5) {
+        return createMessage.warning('状态为过账或审核的单据不能修改');
+      }
     }
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);

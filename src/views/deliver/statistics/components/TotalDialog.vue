@@ -186,7 +186,7 @@
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if(billSetting.dynaFieldsGroup['1']){
+    if (billSetting.dynaFieldsGroup['1']) {
       // 循环数据
       billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计

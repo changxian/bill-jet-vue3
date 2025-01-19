@@ -195,22 +195,22 @@
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if(billSetting.dynaFieldsGroup['1']){
-        // 循环数据
+    if (billSetting.dynaFieldsGroup['1']) {
+      // 循环数据
       billSetting.dynaFieldsGroup['1'].forEach((item) => {
-          // 重量小计
-          if (item.fieldName === 'weightSubtotal') {
-            weightColTitle.value = item.fieldTitle || '';
-          }
-          // 面积小计
-          if (item.fieldName === 'areaSubtotal') {
-            areaColTitle.value = item.fieldTitle || '';
-          }
-          // 体积小计
-          if (item.fieldName === 'volumeSubtotal') {
-            volumeColTitle.value = item.fieldTitle || '';
-          }
-        });
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
     }
   }
   // 增加合计行
@@ -236,7 +236,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */

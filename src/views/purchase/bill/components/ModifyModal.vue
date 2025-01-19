@@ -8,8 +8,8 @@
         <p>2.过账代表账结清。</p>
         <p>3.审核代表已经审核了，就不能修改了，只能删除。</p>
         <p>4.作废单据不参与统计、对账、还款。</p>
-        <p style="margin:40px 0 20px 10px">单号： {{billNo}}</p>
-        <p style="margin:0 0 0 10px">状态：<j-dict-select-tag
+        <p style="margin: 40px 0 20px 10px">单号： {{ billNo }}</p>
+        <p style="margin: 0 0 0 10px">状态：<j-dict-select-tag
                   style="width:300px"
                   v-model:value="status"
                   :options="statusOptions"
@@ -21,8 +21,8 @@
 
         <!-- 改开票 -->
        <div v-if="modifyType === 'invoiceStatus'">
-        <p style="margin:40px 0 20px 10px">单号： {{billNo}}</p>
-        <p style="margin:0 0 0 10px">状态：<j-dict-select-tag
+        <p style="margin: 40px 0 20px 10px">单号： {{ billNo }}</p>
+        <p style="margin: 0 0 0 10px">状态：<j-dict-select-tag
                   style="width:300px"
                   v-model:value="invoiceStatus"
                   :options="billStatusOptions"
@@ -30,16 +30,14 @@
                   placeholder="请选择状态"
                   allow-clear
                 /> </p>
-        </div>
-        <!-- 改信息 -->
-        <div v-if="modifyType === 'info'">
-          <p style="margin:40px 0 10px 10px"><span style="text-align:right;display:inline-block;width:80px">单号：</span> {{billNo}}</p>
-          <p style="margin:0 0 10px 10px">  <span style="text-align:right;display:inline-block;width:80px">送货车号：</span> <a-input  style="width:400px" v-model:value="careNo" placeholder="请输入送货车号" allow-clear></a-input></p>
-          <p style="margin:0 0 10px 10px"> <span style="text-align:right;display:inline-block;width:80px">合同号：</span><a-input  style="width:400px" v-model:value="contractCode" placeholder="请输入合同号" allow-clear></a-input></p>
-          <p style="margin:0 0 10px 10px"> <span style="text-align:right;display:inline-block;width:80px">备注：</span><a-textarea  style="width:400px" v-model:value="remark" placeholder="请输入备注" allow-clear></a-textarea></p>
-           
-        </div>
-
+      </div>
+      <!-- 改信息 -->
+      <div v-if="modifyType === 'info'">
+        <p style="margin: 40px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 80px">单号：</span> {{ billNo }}</p>
+        <p style="margin: 0 0 10px 10px"><span style="text-align:right;display:inline-block;width:80px">送货车号：</span> <a-input  style="width:400px" v-model:value="careNo" placeholder="请输入送货车号" allow-clear></a-input></p>
+        <p style="margin: 0 0 10px 10px"><span style="text-align:right;display:inline-block;width:80px">合同号：</span><a-input  style="width:400px" v-model:value="contractCode" placeholder="请输入合同号" allow-clear></a-input></p>
+        <p style="margin: 0 0 10px 10px"><span style="text-align:right;display:inline-block;width:80px">备注：</span><a-textarea  style="width:400px" v-model:value="remark" placeholder="请输入备注" allow-clear></a-textarea></p>
+      </div>
     </div>
   </j-modal>
 </template>
@@ -61,62 +59,61 @@
   const registerForm = ref();
   const emit = defineEmits(['refresh']);
 
-const status = ref('')
-const billNo = ref('')
-const invoiceStatus = ref('')
-const statusOptions = ref(statusList);
-const billStatusOptions = ref(billStatusList)
+  const status = ref('');
+  const billNo = ref('');
+  const invoiceStatus = ref('');
+  const statusOptions = ref(statusList);
+  const billStatusOptions = ref(billStatusList);
 
-const contractCode = ref('')
-const careNo = ref('')
-const remark = ref('')
+  const contractCode = ref('');
+  const careNo = ref('');
+  const remark = ref('');
 
   const titleObj = {
     status: '改状态',
     invoiceStatus: '改开票',
-    info: '改信息'
-  }
-  const modifyType = ref('')
+    info: '改信息',
+  };
+  const modifyType = ref('');
   let row = {
-    id: ''
-  }
-  function show(type, data){
-     title.value = titleObj[type]
-     modifyType.value = type
-     billNo.value = data.billNo
-     status.value = data.status + ''
-     invoiceStatus.value = data.invoiceStatus + ''
-     careNo.value = data.careNo
-     contractCode.value = data.contractCode
-     remark.value = data.remark
-     row = data
-     visible.value = true;
+    id: '',
+  };
+  function show(type, data) {
+    title.value = titleObj[type];
+    modifyType.value = type;
+    billNo.value = data.billNo;
+    status.value = data.status + '';
+    invoiceStatus.value = data.invoiceStatus + '';
+    careNo.value = data.careNo;
+    contractCode.value = data.contractCode;
+    remark.value = data.remark;
+    row = data;
+    visible.value = true;
   }
 
   /**
    * 确定按钮点击事件
    */
   async function handleOk() {
-    let res:any
-    if(modifyType.value === 'status'){
-      res = await editStatus({id: row.id, status: status.value})
-    }else if(modifyType.value === 'invoiceStatus'){
-      res = await editInvoiceStatus({id: row.id, invoiceStatus: invoiceStatus.value})
-    }else if(modifyType.value === 'info'){
-      const params = {id: row.id,
-      careNo:careNo.value,contractCode:contractCode.value,remark:remark.value}
-      res = await editInfo(params)
+    let res: any;
+    if (modifyType.value === 'status') {
+      res = await editStatus({ id: row.id, status: status.value });
+    } else if (modifyType.value === 'invoiceStatus') {
+      res = await editInvoiceStatus({ id: row.id, invoiceStatus: invoiceStatus.value });
+    } else if (modifyType.value === 'info') {
+      const params = { id: row.id, careNo: careNo.value, contractCode: contractCode.value, remark: remark.value };
+      res = await editInfo(params);
     }
     createMessage.success(res.message);
-     handleCancel()
-     emit('refresh')
+    handleCancel();
+    emit('refresh');
   }
 
   /**
    * 取消按钮回调事件
    */
   function handleCancel() {
-    modifyType.value = ''
+    modifyType.value = '';
     visible.value = false;
   }
 

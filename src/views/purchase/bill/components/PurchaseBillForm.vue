@@ -256,7 +256,7 @@
   }
   let amount: number = 0.0;
   function changeGoods(goods) {
-    let num = 0.0;
+    // let num = 0.0;
     goods.forEach((item) => {
       // 计算重量、面积、体积小计
       item.weightSubtotal = 0;
@@ -271,9 +271,11 @@
       if (item.volume) {
         item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
       }
-      num = parseFloat(num) + parseFloat(item.costAmount);
+      // num = parseFloat(num) + parseFloat(item.costAmount);
+      amount += parseFloat(item.costAmount);
     });
-    amount = (num + '').toFixed(decimalPlaces);
+    // amount = (num).toFixed(decimalPlaces);
+    // amount = num;
     calcDebtAmount();
   }
 
@@ -383,6 +385,8 @@
     formData.dynamicSupFields = undefined;
     formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
+    hasInit.value = false;
+    init();
   }
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());

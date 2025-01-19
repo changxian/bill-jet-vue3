@@ -126,6 +126,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     align: 'center',
     dataIndex: 'status_dictText',
+    slots: { customRender: 'status_dictText' },
   },
   {
     title: '开票',

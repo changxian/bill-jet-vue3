@@ -151,7 +151,7 @@
   import { defaultCom, queryNewNo, billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
-  import {fieldsList, getDynamicFieldsAndValue} from '@/views/setting/system/index.api';
+  import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
 
@@ -241,10 +241,10 @@
     return props.formDisabled;
   });
   function init() {
-    if(hasInit.value){
+    if (hasInit.value) {
       return;
     }
-    hasInit.value=true;
+    hasInit.value = true;
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicCustFields = res['4'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
@@ -304,10 +304,10 @@
     }
   }
   // 计算金额
-  let amount = 0;
+  let amount = 0.0;
   function changeGoods(goods) {
     // 销售金额
-    let num = 0.0;
+    // let num = 0.0;
     // 成本金额
     let cost = 0.0;
     // 利润金额
@@ -326,10 +326,11 @@
       if (item.volume) {
         item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
       }
-      num = parseFloat(num) + parseFloat(item.amount);
+      // num = parseFloat(num) + parseFloat(item.amount);
+      amount += parseFloat(item.amount);
       cost = parseFloat(cost) + parseFloat(item.costAmount);
     });
-    amount = (num + '').toFixed(decimalPlaces);
+    // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
     profit = parseFloat(amount) - parseFloat(cost);
     formData.profitAmount = profit.toFixed(decimalPlaces);
@@ -450,6 +451,7 @@
     formData.dynamicCustFields = undefined;
     formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
+    hasInit.value = false;
     init();
   }
   // 保存按钮点击事件

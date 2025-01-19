@@ -132,6 +132,12 @@
       <template #type_dictText="{ record }">
         <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
       </template>
+      <template #status_dictText="{ record }">
+        <span v-if="4 == record.status" style="color: green">{{ record.status_dictText }}</span>
+        <span v-else-if="5 == record.status" style="color: blue">{{ record.status_dictText }}</span>
+        <span v-else-if="9 == record.status" style="color: red">{{ record.status_dictText }}</span>
+        <span v-else>{{ record.status_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
@@ -161,7 +167,7 @@
 </template>
 
 <script lang="ts" name="deliver.bill-deliverBill" setup>
-import { ref, reactive, unref } from "vue";
+  import { ref, reactive, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
@@ -405,6 +411,10 @@ import { ref, reactive, unref } from "vue";
         return createMessage.warning('请先选择数据');
       }
       record = selectedRows.value[0];
+      // 4过账，5审核
+      if (record.status === 4 || record.status === 5) {
+        return createMessage.warning('状态为过账或审核的单据不能修改');
+      }
     }
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
