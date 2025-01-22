@@ -1,14 +1,14 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
 enum Api {
   list = '/deliver/custprice/goodsCustPrice/list',
-  save='/deliver/custprice/goodsCustPrice/add',
-  saveInit='/deliver/custprice/goodsCustPrice/initCustPrice',
-  edit='/deliver/custprice/goodsCustPrice/edit',
-  updatePrice='/deliver/custprice/goodsCustPrice/updatePrice',
+  save = '/deliver/custprice/goodsCustPrice/add',
+  saveInit = '/deliver/custprice/goodsCustPrice/initCustPrice',
+  edit = '/deliver/custprice/goodsCustPrice/edit',
+  updatePrice = '/deliver/custprice/goodsCustPrice/updatePrice',
   deleteOne = '/deliver/custprice/goodsCustPrice/delete',
   deleteBatch = '/deliver/custprice/goodsCustPrice/deleteBatch',
   importExcel = '/deliver/custprice/goodsCustPrice/importExcel',

@@ -148,7 +148,7 @@
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { defaultCom, queryNewNo, billDetail } from '@/views/deliver/bill/DeliverBill.api';
+  import { defaultCom, queryNewNo, billDetail, getCustPrices } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
@@ -158,6 +158,13 @@
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
+
+  // 自动记录客户价，在后台保存
+  const autoCustPrice = userStore.getBillSetting.autoCustPrice;
+
+  // 启用一客一价
+  const singleCustPrice = userStore.getBillSetting.singleCustPrice;
+  // console.log(autoCustPrice, singleCustPrice);
   const span = 6;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
@@ -286,7 +293,6 @@
     if (selectRows?.length > 0) {
       customerId.value = selectRows[0].id;
       console.log(' customerId val', customerId.value);
-      debugger;
       // 获取客户往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
         byDeliverId({ custId: selectRows[0].id }).then((res) => {
@@ -300,7 +306,33 @@
       formData.custAddress = selectRows[0].address;
       formData.dynamicCustFields = selectRows[0].dynamicFields;
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
-
+      // 是否启用一客一价
+      if (singleCustPrice) {
+        // 加载商品的客户价
+        const goods = goodsRef.value.getData().details;
+        let goodsIds = '';
+        debugger;
+        if (goods.length > 0) {
+          goods.forEach((item) => {
+            if (item.goodsId) {
+              goodsIds += item.goodsId + ',';
+            }
+          });
+          getCustPrices({ custId: selectRows[0].id, goodsIds: goodsIds }).then((res) => {
+            console.log(res);
+            if (res) {
+              res.forEach((item) => {
+                goods.forEach((g) => {
+                  if (item.goodsId == g.id) {
+                    g.price = item.price;
+                  }
+                });
+              });
+              goodsRef.value.setValue([...goods]);
+            }
+          });
+        }
+      }
     }
   }
   // 计算金额
@@ -379,8 +411,8 @@
         formData.updateTime = '';
         formData.updateBy = '';
       }
-      hasInit.value=true;
-      getDynamicFieldsAndValue({ category:4 ,id:tmpData.custId }).then(res=>{
+      hasInit.value = true;
+      getDynamicFieldsAndValue({ category: 4, id: tmpData.custId }).then((res) => {
         formData.dynamicCustFields = res;
       });
     });

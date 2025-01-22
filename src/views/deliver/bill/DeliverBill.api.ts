@@ -18,6 +18,7 @@ enum Api {
   queryById = '/deliver/bill/deliverBill/queryById',
   defaultCompany = '/company/tenantCompany/default',
   queryNewNo = '/bill/no/newNo',
+  getCustPrices = '/deliver/custprice/goodsCustPrice/getCustPrices',
 }
 
 /**
@@ -117,3 +118,9 @@ export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
+
+/**
+ * 根据客户id和商品id获取客户价接口
+ * @param params
+ */
+export const getCustPrices = (params) => defHttp.get({ url: Api.getCustPrices, params });
