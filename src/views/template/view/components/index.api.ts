@@ -106,24 +106,57 @@ function roil2(o: any, n) {
     // 防止死循环
     return;
   }
-  // 空白，所有打印数据的值全赋值为''
-  for (const a in o) {
-    if (typeof o[a] == 'string' || typeof o[a] == 'number') {
-      o[a] = '';
-    } else if (o[a] instanceof Array) {
-      for (let i = 0; i < o[a].length; i++) {
-        roil2(o[a][i], n + 1);
+  if (o instanceof Array) {
+    for (let i = 0; i < o.length; i++) {
+      roil2(o[i], n + 1);
+    }
+  } else {
+    for (const a in o) {
+      if (typeof o[a] == 'string' || typeof o[a] == 'number') {
+        o[a] = '';
       }
     }
   }
+  // 空白，所有打印 列表数据的值全赋值为 ''
+  // for (const a in o) {
+  //   if (typeof o[a] == 'string' || typeof o[a] == 'number') {
+  //     o[a] = '';
+  //   } else if (o[a] instanceof Array) {
+  //     for (let i = 0; i < o[a].length; i++) {
+  //       roil2(o[a][i], n + 1);
+  //     }
+  //   }
+  // }
 }
 
-function roil3(o: any, n) {
+const arr = ['price', 'amount', 'count'];
+function m(str, reg) {
+  return -1 < str.indexOf(reg);
+}
+function m2(a) {
+  return m(a, arr[0]) || m(a, arr[1]);
+}
+function m3(a) {
+  return m(a, arr[0]) || m(a, arr[1]) || m(a, arr[2]);
+}
+
+function roil3(o: any, n, f) {
+  if (n > 2) {
+    // 防止死循环
+    return;
+  }
   // 无单价、金额
-}
-
-function roil4(o: any, n) {
-  // 无单价、数量、金额
+  for (const a in o) {
+    if (typeof o[a] == 'string' || typeof o[a] == 'number') {
+      if (f(a)) {
+        o[a] = '';
+      }
+    } else if (o[a] instanceof Array) {
+      for (let i = 0; i < o[a].length; i++) {
+        roil3(o[a][i], n + 1, f);
+      }
+    }
+  }
 }
 
 export const printLimit = (n: any, o: any) => {
@@ -132,15 +165,18 @@ export const printLimit = (n: any, o: any) => {
   }
   switch (n) {
     case '2': {
-      roil2(o, 1);
+      // 空白
+      roil2(o['table'], 1);
       break;
     }
     case '3': {
-      roil3(o, 2);
+      // 无单价、金额
+      roil3(o, 1, m2);
       break;
     }
     case '4': {
-      roil4(o, 3);
+      // 无单价、金额、数量
+      roil3(o, 1, m3);
       break;
     }
     default: {

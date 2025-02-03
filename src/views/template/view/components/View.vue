@@ -2,12 +2,12 @@
   <div style="overflow: hidden; height: 740px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px;">设置为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;">设置为退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;">导出模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;">导入模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;">设置</a-button>
+      <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled">设为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled">设为退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:export-outlined">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:import-outlined">导入模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
     <!--<a-card style="width: 100%; height: 60px;" class="view-modal-preview">-->
     <!--  <a-button type="primary" style=" position: relative; top: -10px;">打印</a-button>-->
@@ -18,7 +18,7 @@
     <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置</a-button>-->
     <!--</a-card>-->
     <!-- 预览 -->
-    <a-card style="width: 100%; margin-top: 5px; height: 680px; overflow-y: scroll">
+    <a-card style="width: 100%; margin-top: 5px; height: 694px; overflow-y: scroll">
       <div id="preview_content_design"></div>
     </a-card>
   </div>
