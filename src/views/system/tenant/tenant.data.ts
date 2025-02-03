@@ -1,8 +1,9 @@
-import { BasicColumn, FormSchema } from '/@/components/Table';
-import { getAutoScrollContainer } from '/@/utils/common/compUtils';
-import { render } from "/@/utils/common/renderUtils";
-import { rules } from "/@/utils/helper/validator";
-import { getAllSysPackList } from './tenant.api';
+import {BasicColumn, FormSchema} from '/@/components/Table';
+import {getAutoScrollContainer} from '/@/utils/common/compUtils';
+import {render} from "/@/utils/common/renderUtils";
+import {rules} from "/@/utils/helper/validator";
+import {getAllSysPackList} from './tenant.api';
+
 export const columns: BasicColumn[] = [
   {
     title: '企业名称',
@@ -14,12 +15,12 @@ export const columns: BasicColumn[] = [
     title: '企业编号(ID)',
     dataIndex: 'id',
     width: 180,
-  },{
+  }, {
     title: '组织LOGO',
     dataIndex: 'companyLogo',
     width: 100,
-    customRender: ({ text }) => {
-      if(!text){
+    customRender: ({text}) => {
+      if (!text) {
         return text;
       }
       return render.renderImage({text});
@@ -55,18 +56,8 @@ export const columns: BasicColumn[] = [
     title: '创建者(拥有者)',
     width: 150
   },
-  {
-    title: '开始时间',
-    dataIndex: 'beginDate',
-    sorter: true,
-    width: 180,
-  },
-  {
-    title: '结束时间',
-    dataIndex: 'endDate',
-    sorter: true,
-    width: 180,
-  }, 
+
+
   {
     title: '状态',
     dataIndex: 'status_dictText',
@@ -79,7 +70,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'name',
     label: '企业名称',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: {span: 8},
   },
   {
     field: 'status',
@@ -87,11 +78,11 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '正常', value: 1 },
-        { label: '冻结', value: 0 },
+        {label: '正常', value: 1},
+        {label: '冻结', value: 0},
       ],
     },
-    colProps: { span: 8 },
+    colProps: {span: 8},
   },
   // {
   //   field: 'fieldTime',
@@ -118,16 +109,16 @@ export const formSchema: FormSchema[] = [
     label: '企业编号(ID)',
     component: 'InputNumber',
     required: true,
-    ifShow: ({ values }) => {
-      return values.id!=null;
+    ifShow: ({values}) => {
+      return values.id != null;
     },
   },
   {
     field: 'companyLogo',
     label: '组织LOGO',
     component: 'JImageUpload',
-    componentProps:{
-      text:'logo'
+    componentProps: {
+      text: 'logo'
     }
   },
   {
@@ -135,14 +126,14 @@ export const formSchema: FormSchema[] = [
     label: '所属行业',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode:'trade',
+      dictCode: 'trade',
     }
   }, {
     field: 'companySize',
     label: '公司规模',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode:'company_size',
+      dictCode: 'company_size',
     }
   }, {
     field: 'companyAddress',
@@ -153,40 +144,40 @@ export const formSchema: FormSchema[] = [
       rows: 4,
     }
   },
- {
-    field: 'beginDate',
-    label: '开始时间',
-    component: 'DatePicker',
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      getPopupContainer: getAutoScrollContainer,
-    },
-  },
-  {
-    field: 'endDate',
-    label: '结束时间',
-    component: 'DatePicker',
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      getPopupContainer: getAutoScrollContainer,
-    },
-  }, 
+  //  {
+  //   field: 'beginDate',
+  //   label: '开始时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
+  // {
+  //   field: 'endDate',
+  //   label: '结束时间',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+  //     getPopupContainer: getAutoScrollContainer,
+  //   },
+  // },
   {
     field: 'houseNumber',
     label: '门牌号',
     component: 'Input',
     dynamicDisabled: true,
-    ifShow: ({ values }) => {
-      return values.id!=null;
+    ifShow: ({values}) => {
+      return values.id != null;
     },
   },
   {
     field: 'position',
     label: '职级',
     component: 'JDictSelectTag',
-    componentProps:{
+    componentProps: {
       dictCode: 'company_rank'
     }
   },
@@ -194,8 +185,8 @@ export const formSchema: FormSchema[] = [
     field: 'department',
     label: '部门',
     component: 'JDictSelectTag',
-    componentProps:{
-      dictCode:'company_department'
+    componentProps: {
+      dictCode: 'company_department'
     }
   },
   {
@@ -205,15 +196,15 @@ export const formSchema: FormSchema[] = [
     defaultValue: 1,
     componentProps: {
       options: [
-        { label: '正常', value: 1 },
-        { label: '冻结', value: 0 },
+        {label: '正常', value: 1},
+        {label: '冻结', value: 0},
       ],
     },
   },
 ];
 
 //定义用户表格列
-export const userColumns: BasicColumn[] =[
+export const userColumns: BasicColumn[] = [
   {
     title: '用户账号',
     dataIndex: 'username',
@@ -264,10 +255,22 @@ export const packColumns: BasicColumn[] = [
     width: 100,
   },
   {
+    title: '开始时间',
+    dataIndex: 'beginDate',
+    sorter: true,
+    width: 180,
+  },
+  {
+    title: '结束时间',
+    dataIndex: 'endDate',
+    sorter: true,
+    width: 180,
+  },
+  {
     title: '状态',
     dataIndex: 'status',
     width: 100,
-    customRender: ({ text }) => {
+    customRender: ({text}) => {
       if (text === '1') {
         return '开启';
       } else {
@@ -288,69 +291,98 @@ export const packFormSchema: FormSchema[] = [
     field: 'packName',
     label: '套餐名称',
     component: 'JInput',
-    colProps: { xxl: 8 },
+    colProps: {xxl: 8},
   },
 ];
 
 //套餐表单
-export const packMenuFormSchema: FormSchema[] = [
-  {
-    field: 'sysPackId',
-    label: '选择系统套餐',
-    component: 'ApiSelect',
-    componentProps: {
-      api: getAllSysPackList,
-      labelField: 'packName',
-      valueField: 'id',
-    },
-  },
-  /**
- {
-    field: 'packName',
-    label: '套餐名称',
-    component: 'Input',
-  },
-  {
-    field: 'permissionIds',
-    label: '菜单列表',
-    component: 'JTreeSelect',
-    componentProps: {
-      dict: 'sys_permission,name,id',
-      pidField: 'parent_id',
-      multiple: true,
-      treeCheckAble:true,
-      treeCheckStrictly: true,
-      getPopupContainer: () => document.body,
-    },
-  },
-**/
-  {
-    field: 'remarks',
-    label: '描述',
-    component: 'InputTextArea',
-  },
-  {
-    field: 'status',
-    label: '开启状态',
-    component: 'Switch',
-    componentProps: {
-      checkedValue: '1',
-      checkedChildren: '开启',
-      unCheckedValue: '0',
-      unCheckedChildren: '关闭',
-    },
-    defaultValue: '1',
-  },
-  {
-    field: 'id',
-    label: '开启状态',
-    component: 'Input',
-    show: false
-  },
-];
+export function packMenuFormData(isUpdate) {
+  const packMenuFormSchema: FormSchema[] =
+    [
+      {
+        field: 'sysPackId',
+        label: '选择系统套餐',
+        dynamicDisabled:isUpdate,
+        component: 'ApiSelect',
+        componentProps: {
+          api: getAllSysPackList,
+          labelField: 'packName',
+          valueField: 'id',
+        },
+      },
+      {
+        field: 'beginDate',
+        label: '开始时间',
+        dynamicDisabled:isUpdate,
+        component: 'DatePicker',
+        componentProps: {
+          showTime: true,
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+          getPopupContainer: getAutoScrollContainer,
+        },
+      },
+      {
+        field: 'endDate',
+        label: '结束时间',
+        dynamicDisabled:isUpdate,
+        component: 'DatePicker',
+        componentProps: {
+          showTime: true,
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+          getPopupContainer: getAutoScrollContainer,
+        },
+      },
+      /**
+       {
+       field: 'packName',
+       label: '套餐名称',
+       component: 'Input',
+       },
+       {
+       field: 'permissionIds',
+       label: '菜单列表',
+       component: 'JTreeSelect',
+       componentProps: {
+       dict: 'sys_permission,name,id',
+       pidField: 'parent_id',
+       multiple: true,
+       treeCheckAble:true,
+       treeCheckStrictly: true,
+       getPopupContainer: () => document.body,
+       },
+       },
+       **/
+      {
+        field: 'remarks',
+        label: '描述',
+        dynamicDisabled:isUpdate,
+        component: 'InputTextArea',
+      },
+      {
+        field: 'status',
+        label: '开启状态',
+        component: 'Switch',
+        componentProps: {
+          checkedValue: '1',
+          checkedChildren: '开启',
+          unCheckedValue: '0',
+          unCheckedChildren: '关闭',
+        },
+        defaultValue: '1',
+      },
+      {
+        field: 'id',
+        label: '开启状态',
+        component: 'Input',
+        show: false
+      },
+    ];
+  console.log(packMenuFormSchema,"======packMenuFormSchema======")
+  return packMenuFormSchema;
+}
 
 //回收站列表
-export const recycleColumns : BasicColumn[] = [
+export const recycleColumns: BasicColumn[] = [
   {
     title: '企业名称',
     dataIndex: 'name',
@@ -366,8 +398,8 @@ export const recycleColumns : BasicColumn[] = [
     title: '组织LOGO',
     dataIndex: 'companyLogo',
     width: 100,
-    customRender: ({ text }) => {
-      if(!text){
+    customRender: ({text}) => {
+      if (!text) {
         return text;
       }
       return render.renderImage({text});
@@ -381,7 +413,7 @@ export const recycleColumns : BasicColumn[] = [
 ]
 
 //企业回收站搜索表单
-export const searchRecycleFormSchema : FormSchema[] = [
+export const searchRecycleFormSchema: FormSchema[] = [
   {
     field: 'name',
     label: '企业名称',
@@ -406,14 +438,14 @@ export const tenantPackUserColumns: BasicColumn[] = [
     dataIndex: 'departNames',
     width: 200,
     ellipsis: true,
-    slots: { customRender: 'departNames' }
+    slots: {customRender: 'departNames'}
   },
   {
     title: '职位',
     dataIndex: 'positionNames',
     ellipsis: true,
     width: 200,
-    slots: { customRender: 'positionNames' }
+    slots: {customRender: 'positionNames'}
   }
 ]
 
@@ -421,13 +453,13 @@ export const tenantPackUserColumns: BasicColumn[] = [
  * 用户企业新增编辑表单
  */
 export const tenantUserSchema: FormSchema[] = [
-  { field: 'id', label: 'id', component: 'Input', show: false },
-  { field: 'username', label: '用户账号', component: 'Input', show: true },
+  {field: 'id', label: 'id', component: 'Input', show: false},
+  {field: 'username', label: '用户账号', component: 'Input', show: true},
   {
     field: 'realname',
     label: '姓名',
     component: 'Input',
-    dynamicDisabled: ({ values }) => {
+    dynamicDisabled: ({values}) => {
       return !!values.id;
     },
   },
@@ -435,13 +467,13 @@ export const tenantUserSchema: FormSchema[] = [
     field: 'phone',
     label: '手机',
     component: 'Input',
-    dynamicRules: ({ model, schema }) => {
+    dynamicRules: ({model, schema}) => {
       if (model.id) {
         return [];
       }
-      return [{ ...rules.phone(true)[0] }, { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] }];
+      return [{...rules.phone(true)[0]}, {...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0]}];
     },
-    dynamicDisabled: ({ values }) => {
+    dynamicDisabled: ({values}) => {
       return !!values.id;
     },
   },
@@ -449,22 +481,27 @@ export const tenantUserSchema: FormSchema[] = [
     field: 'email',
     label: '邮箱',
     component: 'Input',
-    dynamicRules: ({ model, schema }) => {
+    dynamicRules: ({model, schema}) => {
       if (model.id) {
         return [];
       }
-      return [{ ...rules.email(true)[0] }, { ...rules.duplicateCheckRule('sys_user', 'email', model, schema, false)[0] }];
+      return [{...rules.email(true)[0]}, {...rules.duplicateCheckRule('sys_user', 'email', model, schema, false)[0]}];
     },
-    dynamicDisabled: ({ values }) => {
+    dynamicDisabled: ({values}) => {
       return !!values.id;
     },
   },
-  { field: 'selecteddeparts', label: '部门', component: 'JSelectDept', componentProps: { checkStrictly: true } },
-  {
-    field: 'post',
-    label: '职位',
-    component: 'JSelectPosition',
-  },
+  // {
+  //   field: 'selecteddeparts',
+  //   label: '部门',
+  //   component: 'JSelectDept',
+  //   componentProps: {checkStrictly: true}
+  // },
+  // {
+  //   field: 'post',
+  //   label: '职位',
+  //   component: 'JSelectPosition',
+  // },
   // {
   //   field: 'workNo',
   //   label: '工号',
@@ -473,6 +510,19 @@ export const tenantUserSchema: FormSchema[] = [
   //     return [{ required: true, message: '请输入工号' }, { ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false)[0] }];
   //   },
   // },
-  { field: 'relTenantIds', label: '企业', component: 'Input',show:false },
-  { field: 'selectedroles', label: '角色', component: 'Input',show:false },
+  {field: 'relTenantIds', label: '企业', component: 'Input', show: false},
+  {field: 'selectedroles', label: '角色', component: 'Input', show: false},
+  {
+    field: 'loginClient',
+    component: 'JCheckbox',
+    label: '登录客户端',
+    defaultValue: '1,2',
+    componentProps: {
+      options: [
+        {label: 'PC', value: '1'},
+        {label: '小程序', value: '2'},
+      ],
+    }
+  },
+
 ];

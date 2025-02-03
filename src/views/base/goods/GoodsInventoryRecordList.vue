@@ -48,7 +48,15 @@
     </div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" v-auth="'system:jxc_goods_inventory_record:add'" @click="handleRollBack" preIcon="ant-design:plus-outlined"> 撤销</a-button>
+        <a-popconfirm
+          title="确定撤销选定的库存变动吗？"
+          ok-text="确认"
+          cancel-text="取消"
+          @confirm="handleRollBackStock"
+          @cancel="handleCancel"
+        >
+          <a-button type="primary" v-auth="'system:jxc_goods_inventory_record:add'" @click="" preIcon="ant-design:plus-outlined"> 撤销</a-button>
+        </a-popconfirm>
       </template>
        <!--操作栏-->
 <!--      <template #action="{ record }">
@@ -67,12 +75,14 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './GoodsInventoryRecord.data';
-  import { list, deleteOne, getExportUrl } from './GoodsInventoryRecord.api';
+  import { list, getExportUrl, rollBack } from './GoodsInventoryRecord.api';
   import FastDate from '@/components/FastDate.vue';
   import { stockOptions } from './GoodsInventoryRecord.data';
+  import { useMessage } from '@/hooks/web/useMessage';
   const queryParam = reactive<any>({ goodsName: '' });
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
+  const { createMessage } = useMessage();
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -93,7 +103,7 @@
     },
   });
 
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -118,8 +128,22 @@
   /**
    * 撤销事件
    */
-  async function handleRollBack(record) {
-    await deleteOne({id: record.id}, handleSuccess);
+  async function handleRollBackStock(record: Recordable) {
+    debugger;
+    console.log(record);
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择一条数据');
+    }
+    record = selectedRows.value[0];
+    console.log(record);
+    // 只能撤销非开单库存记录
+    if (record.billId != null) {
+      return createMessage.warning('送货开单、进货开单的库存明细请到单据管理里面进行删除操作！');
+    }
+    await rollBack({ id: record.id }).then((data) => {
+      createMessage.success(data);
+      reload();
+    });
   }
 
   /**

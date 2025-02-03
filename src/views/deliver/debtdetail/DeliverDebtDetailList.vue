@@ -34,6 +34,12 @@
                 <a-input placeholder="请输入业务员" v-model:value="queryParam.uName" allow-clear></a-input>
               </a-form-item>
             </a-col>
+            <a-col :lg="6">
+              <a-form-item name="remark">
+                <template #label><span title="备注">备注</span></template>
+                <a-input placeholder="请输入备注" v-model:value="queryParam.rmk" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
@@ -52,6 +58,9 @@
     </div>
     <!--引用表格-->
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
@@ -106,6 +115,8 @@
       useSearchForm: false,
       showActionColumn: false,
       clickToRowSelect: true,
+      clearSelectOnPageChange: true,
+      clearSelection: true,
       dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       // rowSelection: {
       //   type: 'radio'
@@ -152,18 +163,21 @@
     totalPaymentAmount.value = 0;
     totalDiscountAmount.value = 0;
     totalDebtAmount.value = 0;
-    listCount(Object.assign(queryParam, fastDateParam, { custId: custId.value })).then((res) => {
-      totalAmount.value = res.amount;
-      totalPaymentAmount.value = res.paymentAmount;
-      totalDiscountAmount.value = res.discountAmount;
-      totalDebtAmount.value = res.debtAmount;
-    });
+    if (custId.value != '') {
+      listCount(Object.assign(queryParam, fastDateParam, { custId: custId.value })).then((res) => {
+        totalAmount.value = res.amount;
+        totalPaymentAmount.value = res.paymentAmount;
+        totalDiscountAmount.value = res.discountAmount;
+        totalDebtAmount.value = res.debtAmount;
+      });
+    }
   }
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
+    listTotalCount();
   }
 
   /**
@@ -213,6 +227,7 @@
   function searchByCustId(id) {
     custId.value = id;
     reload();
+    listTotalCount();
   }
   function getSelectedData() {
     return {
@@ -234,19 +249,20 @@
       margin-bottom: 24px;
       white-space: nowrap;
     }
-    .query-group-cust{
+    .query-group-cust {
       min-width: 100px !important;
     }
-    .query-group-split-cust{
+    .query-group-split-cust {
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
-    .ant-form-item:not(.ant-form-item-with-help){
+    .ant-form-item:not(.ant-form-item-with-help) {
       margin-bottom: 16px;
       height: 32px;
     }
-    :deep(.ant-picker),:deep(.ant-input-number){
+    :deep(.ant-picker),
+    :deep(.ant-input-number) {
       width: 100%;
     }
   }

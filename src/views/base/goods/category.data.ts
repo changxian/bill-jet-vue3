@@ -96,7 +96,7 @@ export const formSchema: FormSchema[] = [
     },
     colProps: { span: 14 },
   },
-  {
+  /*{
     label: '删除状态',
     field: 'delFlag',
     component: 'JDictSelectTag',
@@ -109,7 +109,7 @@ export const formSchema: FormSchema[] = [
       stringToNumber: true,
     },
     colProps: { span: 14 },
-  },
+  },*/
   /* 前端配置
   {
     field: 'def',

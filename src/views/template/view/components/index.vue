@@ -2,7 +2,7 @@
   <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(236 236 236); width: 1192px">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
-        <left @select="onTreeSelect" :id="form.id" />
+        <left @select="onTreeSelect" @jxcLimit="jxcLimit" :id="form.id" />
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
@@ -51,7 +51,6 @@
     watch: {
       formData: {
         handler: function (newVal, oldVal) {
-          debugger;
           console.info(newVal);
           console.log(oldVal);
           this.form.id = newVal.id;
@@ -99,6 +98,9 @@
       preView() {
         // this.$refs.preView.show(hiprintTemplate, this.formData.data);
         this.$refs.preView.show(hiprintTemplate, printData);
+      },
+      jxcLimit(v) {
+        this.$refs.preView.handleChange(v);
       },
       onTreeSelect(o) {
         console.info(o);

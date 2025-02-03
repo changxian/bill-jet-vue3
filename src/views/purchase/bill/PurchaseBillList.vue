@@ -32,12 +32,11 @@
                   <a-select-option value="">所有</a-select-option>
                   <a-select-option value="1">未打印</a-select-option>
                   <a-select-option value="2">已打印</a-select-option>
-                  <a-select-option value="3">签回</a-select-option>
+                  <a-select-option value="3">签收</a-select-option>
                   <a-select-option value="4">过账</a-select-option>
                   <a-select-option value="5">审核</a-select-option>
                   <a-select-option value="6">已开票</a-select-option>
                   <a-select-option value="9">作废</a-select-option>
-
                 </a-select>
               </a-form-item>
             </a-col>
@@ -73,7 +72,7 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="公司" name="companyId">
-                <j-select-company v-model:value="queryParam.companyId"   allow-clear />
+                <j-select-company v-model:value="queryParam.companyId" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -121,23 +120,34 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
+      <template #status_dictText="{ record }">
+        <span v-if="3 == record.status">签收</span>
+        <span v-else-if="4 == record.status" style="color: green">{{ record.status_dictText }}</span>
+        <span v-else-if="5 == record.status" style="color: blue">{{ record.status_dictText }}</span>
+        <span v-else-if="9 == record.status" style="color: red">{{ record.status_dictText }}</span>
+        <span v-else>{{ record.status_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
-    <div style="position: relative;height: 20px;padding: 0 0 0 18px">
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
-        <span class="total_span">数量：{{totalCount}}</span>
-        <span class="total_span">金额：{{totalAmount}}</span>
-        <span class="total_span">已付款：{{totalPaymentAmount}}</span>
-        <span class="total_span">优惠：{{totalDiscountAmount}}</span>
-        <span class="total_span">未付款：{{totalDebtAmount}}</span>
+        <span class="total_span">数量：{{ totalCount }}</span>
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
+        <span class="total_span">金额：{{ totalAmount }}</span>
+        <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
+        <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
+        <span class="total_span">未付款：{{ totalDebtAmount }}</span>
       </p>
     </div>
 
@@ -145,10 +155,9 @@
     <PurchaseBillModal ref="registerModal2" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <div class="tbl-wrap">
-       <a-spin :spinning="detailLoading">
-         <BasicTable  @register="registerTableDetail" :dataSource="dataSourceDetail">
-        </BasicTable>
-       </a-spin>
+      <a-spin :spinning="detailLoading">
+        <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
+      </a-spin>
     </div>
 
     <RepayDetailDialog ref="repayDetailDialogRef" />
@@ -159,7 +168,7 @@
 </template>
 
 <script lang="ts" name="purchase.bill-purchaseBill" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './PurchaseBill.data';
@@ -179,7 +188,7 @@
   const [registerModal, { openModal }] = useModal();
 
   const route = useRoute();
-  const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
+  const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
     fastDateParam.endDate = route.query.endDate;
@@ -191,14 +200,36 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal2 = ref();
   const modifyModalRef = ref();
-  const totalCount = ref(0);
-  const totalAmount = ref(0);
-  const totalPaymentAmount = ref(0);
-  const totalDiscountAmount = ref(0);
-  const totalDebtAmount = ref(0);
-
-  const hasPan = ref(true);
   const userStore = useUserStore();
+  // 总计：数量
+  const totalCount = ref(0);
+  // 总计：重量
+  const weightTotal = ref(0);
+  // 总计：面积
+  const areaTotal = ref(0);
+  // 总计：体积
+  const volumeTotal = ref(0);
+  // 总计：金额
+  const totalAmount = ref(0);
+  // 总计：已付款
+  const totalPaymentAmount = ref(0);
+  // 总计：优惠
+  const totalDiscountAmount = ref(0);
+  // 总计：未付款
+  const totalDebtAmount = ref(0);
+  const hasPan = ref(true);
+
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
 
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -207,9 +238,10 @@
       api: list,
       columns,
       canResize: false,
-      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       useSearchForm: false,
       clickToRowSelect: true,
+      showIndexColumn: true,
+      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -218,21 +250,9 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems) => {
-        hasPan.value= resultItems.length>0;
-        totalCount.value=0;
-        totalAmount.value=0;
-        totalPaymentAmount.value=0;
-        totalDiscountAmount.value=0;
-        totalDebtAmount.value=0;
-        resultItems.forEach((item)=>{
-          totalCount.value+=item.count;
-          totalAmount.value+=item.amount;
-          totalPaymentAmount.value+=item.paymentAmount;
-          totalDiscountAmount.value+=item.discountAmount;
-          totalDebtAmount.value+=item.debtAmount;
-
-        });
+      afterFetch: async (resultItems, extraInfo) => {
+        hasPan.value = resultItems.length > 0;
+        listTotalCount(extraInfo);
       },
       rowSelection: { type: 'radio' },
     },
@@ -243,57 +263,98 @@
     },
 	  importConfig: {
 	    url: getImportUrl,
-	    success: handleSuccess
+	    success: handleSuccess,
 	  },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  const [ registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
     xl: 6,
     xxl: 4,
   });
-  function handleDel() {
-    if(selectedRowKeys.value.length === 0){
-      return createMessage.warning('请先选择数据');
-    }
-    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
-  }
-  function summaryFunc(resultItems) {
-    return [{
-      _row:'合计',
-      _index:'合计',
-      count:totalCount.value,
-      amount:totalAmount.value,
-      paymentAmount:totalPaymentAmount.value,
-      discountAmount:totalDiscountAmount.value,
-      debtAmount:totalDebtAmount.value,
-    }]
-  }
-  function handleModify(type) {
-    if(selectedRowKeys.value.length === 0){
-      return createMessage.warning('请先选择数据');
-    }
-    const row = selectedRows.value[0]
-    if(type === 'status' && row.status === 5){
-      return createMessage.warning('已经审核了，就不能修改了');
-    }
-    modifyModalRef.value.show(type, row)
-  }
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
-
-
+  // 系统开单设置
+  const billSetting = userStore.getBillSetting;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    // 循环数据
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
+  }
+  // 增加合计行
+  function summaryFunc(resultItems) {
+    return [
+      {
+        _row: '合计',
+        _index: '合计',
+        count: totalCount.value,
+        weight: weightTotal.value,
+        area: areaTotal.value,
+        volume: volumeTotal.value,
+        amount: totalAmount.value,
+        paymentAmount: totalPaymentAmount.value,
+        discountAmount: totalDiscountAmount.value,
+        debtAmount: totalDebtAmount.value,
+      },
+    ];
+  }
+  function handleModify(type) {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    if (type === 'status' && row.status === 5) {
+      return createMessage.warning('已经审核了，就不能修改了');
+    }
+    modifyModalRef.value.show(type, row);
+  }
   /**
-   * 高级查询事件
+   * 列表合计
    */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
+  function listTotalCount(extraInfo) {
+    totalCount.value = extraInfo.count || 0;
+    weightTotal.value = extraInfo.weight || 0;
+    areaTotal.value = extraInfo.area || 0;
+    volumeTotal.value = extraInfo.volume || 0;
+    totalAmount.value = extraInfo.amount || 0;
+    totalPaymentAmount.value = extraInfo.paymentAmount || 0;
+    totalDiscountAmount.value = extraInfo.discountAmount || 0;
+    totalDebtAmount.value = extraInfo.debtAmount || 0;
+  }
+
+  function handleDel() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    if (row.status === 5 || row.status === 9) {
+      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
   }
   function debtDetailHandle() {
     if (selectedRows.value.length === 0) {
@@ -345,6 +406,11 @@
         return createMessage.warning('请先选择数据');
       }
       record = selectedRows.value[0];
+      debugger;
+      // 4过账，5审核
+      if (record.status === 4 || record.status === 5) {
+        return createMessage.warning('状态为过账或审核的单据不能修改');
+      }
     }
     registerModal2.value.disableSubmit = false;
     registerModal2.value.edit(record);
@@ -362,6 +428,11 @@
    * 删除事件
    */
   async function handleDelete(record) {
+    if (record.status === 5 || record.status === 9) {
+      batchDelete({ ids: record.id }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
     await deleteOne({ id: record.id }, handleSuccess);
   }
 
@@ -369,6 +440,12 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
+    // 是否有不能删除的数据
+    let cannotDel = unref(selectedRows).filter((item) => item.status < 5);
+    if (unref(cannotDel).length > 0) {
+      createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+      return;
+    }
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
 
@@ -400,16 +477,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'purchase.bill:jxc_purchase_bill:delete'
-      }
-    ]
+        auth: 'purchase.bill:jxc_purchase_bill:delete',
+      },
+    ];
   }
 
   /**
@@ -429,7 +507,6 @@
     reload();
   }
 
-
   /**
    * form点击事件(以逗号分割)
    * @param key
@@ -441,32 +518,50 @@
     }
   }
 
-const dataSourceDetail:any = ref([])
-    const { tableContext: tableContextDetail } = useListPage({
+  const dataSourceDetail: any = ref([]);
+  const { tableContext: tableContextDetail } = useListPage({
     designScope: 'basic-table-demo',
     tableProps: {
       title: '商品详情',
       columns: detailColumns,
+      showIndexColumn: true,
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
-      pagination: false
+      pagination: false,
     },
   });
 
-
-/**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
-selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
-  const [registerTableDetail, ] = tableContextDetail;
-  const currentRowId = ref('')
-  const detailLoading = ref(false)
-function rowClick(record){
-  detailLoading.value = true
-  currentRowId.value = record.id
-  billDetail({billId: record.id}).then(res=>{
-    dataSourceDetail.value = [...res]
-  }).finally(()=>{
-    detailLoading.value = false
-  })
-}
+  /**
+   * BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
+   * selectedRows选中的行信息、selectedRowKeys 选中的行rowkey
+   */
+  const [registerTableDetail] = tableContextDetail;
+  const currentRowId = ref('');
+  const detailLoading = ref(false);
+  function rowClick(record) {
+    detailLoading.value = true;
+    currentRowId.value = record.id;
+    billDetail({ billId: record.id }).then(res => {
+        res.forEach((item) => {
+          // 重量小计
+          if (item.weight != undefined) {
+            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
+          }
+          // 面积小计
+          if (item.area != undefined) {
+            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
+          }
+          // 体积小计
+          if (item.volume != undefined) {
+            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
+          }
+        });
+        dataSourceDetail.value = [...res];
+    }).finally(() => {
+        detailLoading.value = false;
+    });
+  }
 
 </script>
 

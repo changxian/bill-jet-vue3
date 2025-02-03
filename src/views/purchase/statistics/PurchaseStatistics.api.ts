@@ -3,11 +3,8 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   list = '/purchase/statistics/purchaseStatistics/list',
   exportXls = '/purchase/statistics/purchaseStatistics/exportXls',
-
-
   detailsList = '/purchase/statistics/purchaseStatistics/detailsList',
   detailsExportXls = '/purchase/statistics/purchaseStatistics/detailsExportXls',
-
   totalList = '/purchase/statistics/purchaseStatistics/totalList',
   totalExportXls = '/purchase/statistics/purchaseStatistics/totalExportXls',
 }

@@ -2,6 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   getDictFields = '/bill/dynamic/getMyTelnetDynaFieldsGroup',
+  getDynamicFieldsAndValue = '/bill/dynamic/getDynamicFieldsAndValue',
   myBillSetting = '/setting/billing/billingSetting/getMyBillSetting',
   mySystemSetting = '/setting/system/systemSetting/getMySystemSetting',
   savePrint = '/setting/print/printSetting/add',
@@ -11,6 +12,8 @@ enum Api {
   saveOthers = '/bill/dynamic/saveFieldTitles',
   saveSystem = '/setting/system/systemSetting/add',
   editSystem = '/setting/system/systemSetting/edit',
+
+
 }
 
 /**
@@ -18,6 +21,7 @@ enum Api {
  * @param params
  */
 export const fieldsList = (params) => defHttp.get({ url: Api.getDictFields, params });
+export const getDynamicFieldsAndValue = (params) => defHttp.get({ url: Api.getDynamicFieldsAndValue, params });
 
 /**
  * 保存或者更新打印设置

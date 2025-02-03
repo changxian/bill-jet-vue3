@@ -124,6 +124,10 @@
    * 用户授权弹窗
    */
   function handlePerssion(record) {
+    if(record.id==userStore.getLoginInfo.userInfo.id){
+      createMessage.warning('不能给自己权限!');
+      return;
+    }
     openUserPermissionDrawer(true, { userId: record.id });
   }
   /**
@@ -167,41 +171,41 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
-      {
-        label: '离职',
-        //update-begin---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
-        onClick: handleQuit.bind(null,record.username, record.id),
-        //update-end---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
-        //update-begin---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
-        ifShow: () =>{
-          return record.status === '1' && record.username!== record.createBy;
-        }
-        //update-end---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
-      },
-      {
-        label: '交接',
-        onClick: handleHandover.bind(null, record),
-        ifShow: () =>{
-          return record.username === record.createBy;
-        }
-      },
-      {
-        label: '同意',
-        onClick: updateStatus.bind(null, record.id, '1'),
-        ifShow: () => {
-          return (record.status === '3' || record.status === '4') && record.createBy === createBy;
-        },
-      },
-      {
-        label: '拒绝',
-        popConfirm: {
-          title: '是否确认拒绝',
-          confirm: updateStatus.bind(null, record.id, '4'),
-        },
-        ifShow: () => {
-          return record.status === '3' && record.createBy === createBy;
-        },
-      },
+      // {
+      //   label: '离职',
+      //   //update-begin---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
+      //   onClick: handleQuit.bind(null,record.username, record.id),
+      //   //update-end---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---
+      //   //update-begin---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
+      //   ifShow: () =>{
+      //     return record.status === '1' && record.username!== record.createBy;
+      //   }
+      //   //update-end---author:wangshuai ---date:20230130  for：[QQYUN-3974]企业的创建人 不应该有离职按钮------------
+      // },
+      // {
+      //   label: '交接',
+      //   onClick: handleHandover.bind(null, record),
+      //   ifShow: () =>{
+      //     return record.username === record.createBy;
+      //   }
+      // },
+      // {
+      //   label: '同意',
+      //   onClick: updateStatus.bind(null, record.id, '1'),
+      //   ifShow: () => {
+      //     return (record.status === '3' || record.status === '4') && record.createBy === createBy;
+      //   },
+      // },
+      // {
+      //   label: '拒绝',
+      //   popConfirm: {
+      //     title: '是否确认拒绝',
+      //     confirm: updateStatus.bind(null, record.id, '4'),
+      //   },
+      //   ifShow: () => {
+      //     return record.status === '3' && record.createBy === createBy;
+      //   },
+      // },
     ];
   }
 

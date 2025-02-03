@@ -157,12 +157,11 @@
       <template #bodyCell="{ column, record, index, text }"> </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{ p_san: hasPan }"
-        >总计
+      <p :class="{ 'p_san': hasPan }" >总计
         <span class="total_span">数量：{{ totalCount }}</span>
-        <span class="total_span" v-if="showWeightCol">重量({{ weightColTitle }})：{{ totalWeight }}</span>
-        <span class="total_span" v-if="showAreaCol">面积({{ areaColTitle }})：{{ totalArea }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积({{ volumeColTitle }})：{{ totalVolume }}</span>
+        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
+        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
+        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
         <span class="total_span">金额：{{ totalAmount }}</span>
         <span class="total_span">已付款：{{ totalPaymentAmount }}</span>
         <span class="total_span">优惠：{{ totalDiscountAmount }}</span>
@@ -186,17 +185,16 @@
 </template>
 
 <script lang="ts" name="deliver.bill-deliverBill" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
-  import { list, listCount, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
+  import { list, billDetail, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RepayDetailDialog from '@/views/deliver/debt/components/RepayDetailDialog.vue';
   import ModifyModal from './components/ModifyModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
 
   import { useRoute } from 'vue-router';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
@@ -226,11 +224,11 @@
   // 总计：数量
   const totalCount = ref(0);
   // 总计：重量
-  const totalWeight = ref(0);
+  const weightTotal = ref(0);
   // 总计：面积
-  const totalArea = ref(0);
+  const areaTotal = ref(0);
   // 总计：体积
-  const totalVolume = ref(0);
+  const volumeTotal = ref(0);
   // 总计：金额
   const totalAmount = ref(0);
   // 总计：已付款
@@ -278,9 +276,9 @@
         return Object.assign(params, queryParam, fastDateParam);
       },
       summaryFunc: summaryFunc,
-      afterFetch: async (resultItems) => {
+      afterFetch: async (resultItems, extraInfo) => {
         hasPan.value = resultItems.length > 0;
-        listTotalCount();
+        listTotalCount(extraInfo);
       },
       rowSelection: { type: 'radio' },
     },
@@ -309,33 +307,33 @@
     xs: 24,
     sm: 20,
   });
-
-  // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  // 系统开单设置
+  const billSetting = userStore.getBillSetting;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
     // 循环数据
-    if (res.dynaFieldsGroup['1']) {
-      res.dynaFieldsGroup['1'].forEach((item) => {
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
         if (item.fieldName === 'weightSubtotal') {
-          weightColTitle.value = item.fieldTitle;
+          weightColTitle.value = item.fieldTitle || '';
         }
         // 面积小计
         if (item.fieldName === 'areaSubtotal') {
-          areaColTitle.value = item.fieldTitle;
+          areaColTitle.value = item.fieldTitle || '';
         }
         // 体积小计
         if (item.fieldName === 'volumeSubtotal') {
-          volumeColTitle.value = item.fieldTitle;
+          volumeColTitle.value = item.fieldTitle || '';
         }
       });
     }
-  });
+  }
   // 增加合计行
   function summaryFunc(resultItems) {
     return [
@@ -343,9 +341,9 @@
         _row: '合计',
         _index: '合计',
         count: totalCount.value,
-        weight: totalWeight.value,
-        area: totalArea.value,
-        volume: totalVolume.value,
+        weight: weightTotal.value,
+        area: areaTotal.value,
+        volume: volumeTotal.value,
         amount: totalAmount.value,
         paymentAmount: totalPaymentAmount.value,
         discountAmount: totalDiscountAmount.value,
@@ -360,38 +358,30 @@
   /**
    * 列表合计
    */
-  function listTotalCount() {
-    totalCount.value = 0;
-    totalWeight.value = 0;
-    totalArea.value = 0;
-    totalVolume.value = 0;
-    totalAmount.value = 0;
-    totalPaymentAmount.value = 0;
-    totalDiscountAmount.value = 0;
-    totalDebtAmount.value = 0;
-    totalHisDebtAmount.value = 0;
-    totalCostAmount.value = 0;
-    totalProfitAmount.value = 0;
-    listCount(Object.assign(queryParam, fastDateParam)).then((res) => {
-      totalCount.value = res.count;
-      totalWeight.value = res.weight;
-      totalArea.value = res.area;
-      totalVolume.value = res.volume;
-      totalAmount.value = res.amount;
-      totalPaymentAmount.value = res.paymentAmount;
-      totalDiscountAmount.value = res.discountAmount;
-      totalDebtAmount.value = res.debtAmount;
-      totalHisDebtAmount.value = res.hisDebtAmount;
-      totalCostAmount.value = res.costAmount;
-      totalProfitAmount.value = res.profitAmount;
-    });
+  function listTotalCount(extraInfo) {
+    totalCount.value = extraInfo.count || 0;
+    weightTotal.value = extraInfo.weight || 0;
+    areaTotal.value = extraInfo.area || 0;
+    volumeTotal.value = extraInfo.volume || 0;
+    totalAmount.value = extraInfo.amount || 0;
+    totalPaymentAmount.value = extraInfo.paymentAmount || 0;
+    totalDiscountAmount.value = extraInfo.discountAmount || 0;
+    totalDebtAmount.value = extraInfo.debtAmount || 0;
+    totalHisDebtAmount.value = extraInfo.hisDebtAmount || 0;
+    totalCostAmount.value = extraInfo.costAmount || 0;
+    totalProfitAmount.value = extraInfo.profitAmount || 0;
   }
-  // 删除数据
+  // 删除数据[状态（1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废）为5和9才能删除]
   function handleDel() {
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    const row = selectedRows.value[0];
+    if (row.status === 5 || row.status === 9) {
+      batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
   }
   // 修改状态、开票、信息
   function handleModify(type) {
@@ -456,6 +446,10 @@
         return createMessage.warning('请先选择数据');
       }
       record = selectedRows.value[0];
+      // 4过账，5审核
+      if (record.status === 4 || record.status === 5) {
+        return createMessage.warning('状态为过账或审核的单据不能修改');
+      }
     }
     registerModal2.value.disableSubmit = false;
     registerModal2.value.edit(record);
@@ -471,12 +465,24 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteOne({ id: record.id }, handleSuccess);
+    // console.log('00000000000000000000000000000000000', record);
+    if (record.status === 5 || record.status === 9) {
+      batchDelete({ ids: record.id }, handleSuccess);
+    } else {
+      return createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+    }
+    // await deleteOne({ id: record.id }, handleSuccess);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
+    // 是否有不能删除的数据
+    let cannotDel = unref(selectedRows).filter((item) => item.status < 5);
+    if (unref(cannotDel).length > 0) {
+      createMessage.warning('删除失败！只有审核和作废的单据才能删除');
+      return;
+    }
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   /**
@@ -545,7 +551,7 @@
    */
   function searchQuery() {
     reload();
-    listTotalCount();
+    // listTotalCount();
   }
 
   /**
@@ -556,7 +562,7 @@
     selectedRowKeys.value = [];
     //刷新数据
     reload();
-    listTotalCount();
+    // listTotalCount();
   }
 
   /**
@@ -570,6 +576,9 @@
     }
   }
 
+  /**
+   * 送货单详情列表
+   */
   const dataSourceDetail: any = ref([]);
   const { tableContext: tableContextDetail } = useListPage({
     designScope: 'basic-table-demo',
@@ -577,6 +586,8 @@
       title: '商品详情',
       columns: detailColumns,
       showIndexColumn: true,
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
     },
@@ -592,8 +603,21 @@
   function rowClick(record) {
     detailLoading.value = true;
     currentRowId.value = record.id;
-    billDetail({ billId: record.id })
-      .then((res) => {
+    billDetail({ billId: record.id }).then(res => {
+        res.forEach((item) => {
+          // 重量小计
+          if (item.weight != undefined) {
+            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
+          }
+          // 面积小计
+          if (item.area != undefined) {
+            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
+          }
+          // 体积小计
+          if (item.volume != undefined) {
+            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
+          }
+        });
         dataSourceDetail.value = [...res];
       })
       .finally(() => {

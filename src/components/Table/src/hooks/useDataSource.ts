@@ -224,7 +224,7 @@ export function useDataSource(
     if (!api || !isFunction(api)) return;
     try {
       setLoading(true);
-      const { pageField, sizeField, listField, totalField } = Object.assign({}, FETCH_SETTING, fetchSetting);
+      const { pageField, sizeField, listField, totalField,extraInfoField } = Object.assign({}, FETCH_SETTING, fetchSetting);
       let pageParams: Recordable = {};
 
       const { current = 1, pageSize = PAGE_SIZE } = unref(getPaginationInfo) as PaginationProps;
@@ -269,6 +269,7 @@ export function useDataSource(
       let resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
       const resultTotal: number = isArrayResult ? 0 : get(res, totalField);
 
+      let extraInfo   = isArrayResult ? res : get(res, extraInfoField);
       // 假如数据变少，导致总页数变少并小于当前选中页码，通过getPaginationRef获取到的页码是不正确的，需获取正确的页码再次执行
       if (resultTotal) {
         const currentTotalPage = Math.ceil(Number(resultTotal) / pageSize);
@@ -281,7 +282,7 @@ export function useDataSource(
       }
 
       if (afterFetch && isFunction(afterFetch)) {
-        resultItems = (await afterFetch(resultItems)) || resultItems;
+        resultItems = (await afterFetch(resultItems,extraInfo,res)) || resultItems;
       }
       dataSourceRef.value = resultItems;
       setPagination({

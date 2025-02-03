@@ -53,7 +53,10 @@
         <BasicTable @register="registerTable" :rowSelection="rowSelection" :columns="columnList">
           <!--插槽:table标题-->
           <template #tableTitle>
-            <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+            <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
+          </template>
+          <template #type_dictText="{ record }">
+            <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
           </template>
         </BasicTable>
         <div style="position: relative; height: 20px; padding: 0 0 0 18px">
@@ -82,7 +85,9 @@
   import { detailsList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
   import FastDate from '/@/components/FastDate.vue';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
+  import { useUserStore } from '@/store/modules/user';
+  const userStore = useUserStore();
+  const billSetting = userStore.getBillSetting;
 
   // 总计：数量
   const countTotal = ref(0);
@@ -130,6 +135,7 @@
       title: '送货开单',
       api: detailsList,
       canResize: false,
+      cols: userStore.getCols, // 添加列备注信息
       useSearchForm: false,
       showActionColumn: false,
       showIndexColumn: true,
@@ -144,13 +150,22 @@
       // summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
         hasPan.value = resultItems.length > 0;
-        countTotal.value = resultItems[0].countTotal;
-        weightTotal.value = resultItems[0].weightTotal;
-        areaTotal.value = resultItems[0].areaTotal;
-        volumeTotal.value = resultItems[0].volumeTotal;
-        amountTotal.value = resultItems[0].amountTotal;
-        costAmountTotal.value = resultItems[0].costAmountTotal;
-        profitAmountTotal.value = resultItems[0].profitAmountTotal;
+        countTotal.value = 0;
+        weightTotal.value = 0;
+        areaTotal.value = 0;
+        volumeTotal.value = 0;
+        amountTotal.value = 0;
+        costAmountTotal.value =0;
+        profitAmountTotal.value = 0;
+        if (hasPan.value) {
+          countTotal.value = resultItems[0].countTotal;
+          weightTotal.value = resultItems[0].weightTotal;
+          areaTotal.value = resultItems[0].areaTotal;
+          volumeTotal.value = resultItems[0].volumeTotal;
+          amountTotal.value = resultItems[0].amountTotal;
+          costAmountTotal.value = resultItems[0].costAmountTotal;
+          profitAmountTotal.value = resultItems[0].profitAmountTotal;
+        }
       },
       rowSelection: { type: 'radio' },
     },
@@ -173,31 +188,31 @@
   });
 
   // 加载系统开单设置
-  getMyBillSetting().then((res) => {
-    showWeightCol.value = !!res.showWeightCol;
-    showAreaCol.value = !!res.showAreaCol;
-    showVolumeCol.value = !!res.showVolumeCol;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if(res.dynaFieldsGroup['1']){
-        // 循环数据
-        res.dynaFieldsGroup['1'].forEach((item) => {
-          // 重量小计
-          if (item.fieldName === 'weightSubtotal') {
-            weightColTitle.value = item.fieldTitle;
-          }
-          // 面积小计
-          if (item.fieldName === 'areaSubtotal') {
-            areaColTitle.value = item.fieldTitle;
-          }
-          // 体积小计
-          if (item.fieldName === 'volumeSubtotal') {
-            volumeColTitle.value = item.fieldTitle;
-          }
-        });
+    if (billSetting.dynaFieldsGroup['1']) {
+      // 循环数据
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
     }
-  });
+  }
   // 增加合计行
   function summaryFunc(resultItems) {
     return [
@@ -221,7 +236,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */

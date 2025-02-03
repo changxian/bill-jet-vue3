@@ -19,7 +19,7 @@
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
     <!-- 表单区域 -->
@@ -62,7 +62,7 @@
         fieldMapToTime: [],
       },
       actionColumn: {
-        width: 120,
+        width: 260,
         fixed: 'right',
       },
       beforeFetch: (params) => {
@@ -138,6 +138,19 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         auth: 'bill:jxc_goods_category:edit',
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+          placement: 'topLeft',
+        },
+        auth: 'bill:jxc_goods_category:delete',
       },
     ];
   }

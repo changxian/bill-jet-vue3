@@ -105,8 +105,8 @@
       <template #tableTitle>
         <a-button type="primary" v-auth="'syspack:sys_pack:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'syspack:sys_pack:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'syspack:sys_pack:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+<!--        <j-upload-button type="primary" v-auth="'syspack:sys_pack:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+       --> <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete" v-auth="'syspack:sys_pack:deleteBatch'">

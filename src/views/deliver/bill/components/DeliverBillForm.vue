@@ -60,7 +60,7 @@
               <a-form-item
                 v-if="item.fieldTitle"
                 :label="item.fieldTitle"
-                :id="'GoodsForm-' + item.fieldName"
+                :id="'dynamicCustFields-' + item.fieldName"
                 :name="'dynamicCustFields.' + item.fieldName"
               >
                 <a-input v-model:value="formData.dynamicCustFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
@@ -151,8 +151,9 @@
   import { defaultCom, queryNewNo, billDetail } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { fieldsList } from '@/views/setting/system/index.api';
+  import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
+  import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -186,7 +187,10 @@
     custPhone: '',
     custContact: '',
     custAddress: '',
-    count: undefined,
+    count: 0,
+    weight: 0,
+    area: 0,
+    volume: 0,
     amount: 0,
     paymentAmount: 0,
     discountAmount: 0,
@@ -220,7 +224,7 @@
     //  remark:  [{ required: true, message: '必填', trigger: 'change' }],
     // hisDebtAmount: [{ required: true, message: '必填', trigger: 'change' }],
   };
-
+  const hasInit = ref(false);
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
@@ -237,6 +241,10 @@
     return props.formDisabled;
   });
   function init() {
+    if (hasInit.value) {
+      return;
+    }
+    hasInit.value = true;
     fieldsList({ category: 1, match: '0' }).then((res) => {
       formData.dynamicCustFields = res['4'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
@@ -266,7 +274,6 @@
   function changeUser(val, selectRows) {
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      debugger;
       formData.userId = selectRows[0].id;
       formData.userName = selectRows[0].realname;
     }
@@ -277,31 +284,53 @@
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      customerId.value = selectRows[0].id;
+      console.log(' customerId val', customerId.value);
+      debugger;
+      // 获取客户往期欠款金额
+      if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
+        byDeliverId({ custId: selectRows[0].id }).then((res) => {
+          formData.hisDebtAmount = res.deliverDebtAmount;
+        });
+      }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
       formData.dynamicCustFields = selectRows[0].dynamicFields;
-      customerId.value = selectRows[0].id;
-      console.log(' customerId val', customerId.value);
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
+
     }
   }
   // 计算金额
-  let amount = 0;
+  let amount = 0.0;
   function changeGoods(goods) {
     // 销售金额
-    let num = 0.0;
+    // let num = 0.0;
     // 成本金额
     let cost = 0.0;
     // 利润金额
     let profit = 0.0;
-    goods.forEach(item => {
-      num = parseFloat(num) + parseFloat(item.amount);
+    goods.forEach((item) => {
+      // 计算重量、面积、体积小计
+      item.weightSubtotal = 0;
+      if (item.weight) {
+        item.weightSubtotal = (item.weight * item.count).toFixed(decimalPlaces);
+      }
+      item.areaSubtotal = 0;
+      if (item.area) {
+        item.areaSubtotal = (item.area * item.count).toFixed(decimalPlaces);
+      }
+      item.volumeSubtotal = 0;
+      if (item.volume) {
+        item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
+      }
+      // num = parseFloat(num) + parseFloat(item.amount);
+      amount += parseFloat(item.amount);
       cost = parseFloat(cost) + parseFloat(item.costAmount);
     });
-    amount = num;
+    // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
     profit = parseFloat(amount) - parseFloat(cost);
     formData.profitAmount = profit.toFixed(decimalPlaces);
@@ -350,15 +379,20 @@
         formData.updateTime = '';
         formData.updateBy = '';
       }
+      hasInit.value=true;
+      getDynamicFieldsAndValue({ category:4 ,id:tmpData.custId }).then(res=>{
+        formData.dynamicCustFields = res;
+      });
     });
   }
   // 根据id获取商品数据信息
   function getGoods(id) {
-    billDetail({ billId: id }).then(res=>{
+    billDetail({ billId: id }).then((res) => {
       // dataSourceDetail.value = [...res]
-      nextTick(()=>{
+      nextTick(() => {
         goodsRef.value.setValue([...res]);
       });
+      changeGoods(res);
     });
   }
   // 表单验证
@@ -394,13 +428,16 @@
     formData.custPhone = '';
     formData.custAddress = '';
     formData.custContact = '';
-    formData.count = undefined;
-    formData.amount = undefined;
-    formData.costAmount = undefined;
+    formData.count = 0;
+    formData.weight = 0;
+    formData.area = 0;
+    formData.volume = 0;
+    formData.amount = 0;
+    formData.costAmount = 0;
     formData.paymentAmount = 0;
     formData.discountAmount = 0;
     formData.debtAmount = 0;
-    formData.hisDebtAmount = undefined;
+    formData.hisDebtAmount = 0;
     formData.status = '';
     formData.invoiceStatus = undefined;
     formData.careNo = '';
@@ -414,6 +451,7 @@
     formData.dynamicCustFields = undefined;
     formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
+    hasInit.value = false;
     init();
   }
   // 保存按钮点击事件
@@ -427,7 +465,7 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
-    console.log('params:', params);
+    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {
@@ -491,19 +529,6 @@
         confirmLoading.value = false;
       });
   }
-
-  /**
-   * 初始化默认公司数据
-   */
-  // 默认开单公司
-  // const defaultCompany = userStore.getDefaultCompany;
-  // console.log(defaultCompany);
-  // if (defaultCompany) {
-  //   if (formData.companyId == '') {
-  //     formData.companyId = defaultCompany.id;
-  //     formData.companyName = defaultCompany.compName;
-  //   }
-  // }
 
   defineExpose({
     add,

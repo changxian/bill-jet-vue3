@@ -1,20 +1,26 @@
 <template>
-  <div class="bg-white m-4 mr-0 overflow-hidden" style="height: 560px; overflow-y: scroll">
-    <a-spin :spinning="loading">
-      <BasicTree
-        v-if="!treeReloading"
-        title=""
-        showLine
-        :checkStrictly="true"
-        :clickRowToExpand="false"
-        :treeData="treeData"
-        :selectedKeys="selectedKeys"
-        :expandedKeys="expandedKeys"
-        :autoExpandParent="autoExpandParent"
-        @select="onSelect"
-        @expand="onExpand"
-      />
-    </a-spin>
+  <div>
+    <div class="bg-white m-4 mr-0 overflow-hidden" style="height: 640px; overflow-y: scroll">
+      <a-spin :spinning="loading">
+        <BasicTree
+          v-if="!treeReloading"
+          title=""
+          showLine
+          :checkStrictly="true"
+          :clickRowToExpand="false"
+          :treeData="treeData"
+          :selectedKeys="selectedKeys"
+          :expandedKeys="expandedKeys"
+          :autoExpandParent="autoExpandParent"
+          @select="onSelect"
+          @expand="onExpand"
+        />
+      </a-spin>
+    </div>
+    <div>
+      <span>打印限制:</span>
+      <a-select v-model:value="value" label-in-value style="width: 160px" :options="options" @change="handleChange" />
+    </div>
   </div>
 </template>
 
@@ -23,7 +29,7 @@
   import { BasicTree } from '/@/components/Tree';
   import { tempList } from '@/views/template/view/components/index.api';
 
-  const emit = defineEmits(['select']);
+  const emit = defineEmits(['select', 'jxcLimit']);
 
   const props = defineProps({
     id: { type: String, default: () => '' },
@@ -43,6 +49,26 @@
   let autoExpandParent = ref<boolean>(true);
   // 树组件重新加载
   let treeReloading = ref<boolean>(false);
+
+  let value = ref('1');
+  const options = [
+    {
+      value: '1',
+      label: '正常',
+    },
+    {
+      value: '2',
+      label: '空白',
+    },
+    {
+      value: '3',
+      label: '无单价、金额',
+    },
+    {
+      value: '4',
+      label: '无单价、数量、金额',
+    },
+  ];
 
   watch(
     () => props.id,
@@ -68,6 +94,12 @@
     return treeData.value;
   }
   load();
+
+  function handleChange(v) {
+    console.log(v);
+    value.value = v.value;
+    emit('jxcLimit', v);
+  }
 
   // 自动展开父节点，只展开一级
   async function autoExpandParentNode(key: any) {
@@ -131,6 +163,10 @@
   }
 </script>
 <style lang="less" scoped>
+  :where(.ant-card-body) {
+    padding: 4px;
+    border-radius: 0 0 4px 4px;
+  }
   /*升级antd3后，查询框与树贴的太近，样式优化*/
   :deep(.jeecg-tree-header) {
     margin-bottom: 6px;

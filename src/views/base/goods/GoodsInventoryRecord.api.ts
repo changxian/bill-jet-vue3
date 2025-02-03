@@ -8,6 +8,7 @@ enum Api {
   save = '/system/goodsInventoryRecord/add',
   edit = '/system/goodsInventoryRecord/edit',
   deleteOne = '/system/goodsInventoryRecord/delete',
+  rollBack = '/system/goodsInventoryRecord/rollBackStock',
   deleteBatch = '/system/goodsInventoryRecord/deleteBatch',
   importExcel = '/system/goodsInventoryRecord/importExcel',
   exportXls = '/system/goodsInventoryRecord/exportXls',
@@ -31,11 +32,16 @@ export const list = (params) =>
 /**
  * 删除单个
  */
-export const deleteOne = (params,handleSuccess) => {
-  return defHttp.delete({url: Api.deleteOne, params}, {joinParamsToUrl: true}).then(() => {
+export const deleteOne = (params, handleSuccess) => {
+  return defHttp.delete({ url: Api.deleteOne, params }, {joinParamsToUrl: true}).then(() => {
     handleSuccess();
   });
 }
+/**
+ * 删除单个
+ */
+export const rollBack = (params) => defHttp.get({ url: Api.rollBack, params });
+
 /**
  * 批量删除
  * @param params

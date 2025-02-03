@@ -1,27 +1,31 @@
 <template>
-  <div style="overflow: hidden; height: 630px">
+  <div style="overflow: hidden; height: 740px">
     <!--查询区域-->
-    <a-card style="width: 100%; height: 140px">
-      <span>打印限制:</span>
-      <a-select v-model:value="value" label-in-value style="width: 160px" :options="options" @change="handleChange" allow-clear> </a-select>
-      <a-button type="primary" style="margin-left: 10px;">打印</a-button>
+    <div class="jcx-card">
+      <a-button type="primary" style="">打印</a-button>
       <a-button type="primary" style="margin-left: 10px;">设置为送货模板</a-button>
       <a-button type="primary" style="margin-left: 10px;">设置为退货模板</a-button>
       <a-button type="primary" style="margin-left: 10px;">导出模板</a-button>
       <a-button type="primary" style="margin-left: 10px;">导入模板</a-button>
-      <br/>
-      <a-button type="primary" style="margin-left: 10px; margin-top: 10px">设置</a-button>
-    </a-card>
+      <a-button type="primary" style="margin-left: 10px;">设置</a-button>
+    </div>
+    <!--<a-card style="width: 100%; height: 60px;" class="view-modal-preview">-->
+    <!--  <a-button type="primary" style=" position: relative; top: -10px;">打印</a-button>-->
+    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置为送货模板</a-button>-->
+    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置为退货模板</a-button>-->
+    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">导出模板</a-button>-->
+    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">导入模板</a-button>-->
+    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置</a-button>-->
+    <!--</a-card>-->
     <!-- 预览 -->
-    <a-card style="width: 100%; margin-top: 5px; height: 550px; overflow-y: scroll">
+    <a-card style="width: 100%; margin-top: 5px; height: 680px; overflow-y: scroll">
       <div id="preview_content_design"></div>
     </a-card>
   </div>
 </template>
 
 <script>
-
-  import { printLimit } from './index.api'
+  import { printLimit } from './index.api';
 
   export default {
     name: 'PrintPreview',
@@ -100,6 +104,24 @@
 </script>
 
 <style lang="less" scoped>
+  .jcx-card {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 5px;
+    color: rgba(51, 51, 51, 0.88);
+    font-size: 14px;
+    line-height: 1.5714285714285714;
+    list-style: none;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    position: relative;
+    background: #ffffff;
+    border-radius: 4px;
+  }
+  :where(.view-modal-preview).ant-card .ant-card-body {
+    padding: 2px;
+    border-radius: 0 0 4px 4px;
+  }
   .jeecg-basic-table-form-container {
     padding: 0;
     .table-page-search-submitButtons {

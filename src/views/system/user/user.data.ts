@@ -335,6 +335,19 @@ export const formSchema: FormSchema[] = [
       type: 'radio',
       stringToNumber: true,
     },
+
+  },
+  {
+    field: 'loginClient',
+    component: 'JCheckbox',
+    label: '登录客户端',
+    defaultValue: '1,2',
+    componentProps: {
+      options: [
+        {label: 'PC', value: '1'},
+        {label: '小程序', value: '2'},
+      ],
+    }
   },
 ];
 

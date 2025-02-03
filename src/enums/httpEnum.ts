@@ -47,4 +47,6 @@ export enum ConfigEnum {
   VERSION = 'X-Version',
   // 低代码应用ID
   X_LOW_APP_ID = 'X-Low-App-ID',
+  // CLIENT_TYPE 请求客户端
+  CLIENT_TYPE = 'CLIENT_TYPE',
 }

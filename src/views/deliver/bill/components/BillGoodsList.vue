@@ -10,33 +10,36 @@
           </div>
         </a-form-item>
       </a-col>
-        <BasicModal
-          v-bind="$attrs"
-          @register="register"
-          title="商品搜索"
-          :width="'1400px'"
-          @ok="handleOk"
-        >
-          <div style="width:98%">
-            <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
-          </div>
-        </BasicModal>
+      <BasicModal
+        v-bind="$attrs"
+        @register="register"
+        title="商品搜索"
+        :width="'1400px'"
+        @ok="handleOk"
+      >
+        <div style="width: 98%">
+          <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
+        </div>
+      </BasicModal>
     </a-row>
     <div class="tbl-wrap">
-         <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
+      <BasicTable :beforeEditSubmit="beforeEditSubmit" @register="registerTable" :rowSelection="rowSelection" :dataSource="dataSource">
         <template #tableTitle>
-             <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
-             <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
-             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴</a-button> -->
+          <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
+          <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴</a-button> -->
         </template>
-        </BasicTable>
-        <div class="count-wrap">
-            <span class="name">总计</span>  
-            <span class="name">数量:</span>  <span class="num">{{countNum}}</span>
-            <span class="name">金额:</span>  <span class="num">￥{{countMoney}} 元</span>
-        </div>
+      </BasicTable>
+      <div class="count-wrap">
+        <span class="name">总计</span>
+        <span class="name">数量:</span><span class="num">{{ countNum }}</span>
+        <span class="name">金额:</span><span class="num">￥{{ countMoney }} 元</span>
+        <span class="name" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightNum }}</span>
+        <span class="name" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaNum }}</span>
+        <span class="name" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeNum }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -48,12 +51,76 @@
   import { BasicColumn, BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getMyBillSetting } from '@/views/setting/system/index.api';
   import { useUserStore } from '/@/store/modules/user';
 
   const emit = defineEmits(['change-goods']);
   const { createMessage, createConfirm } = useMessage();
+  const userStore = useUserStore();
+  const dataSource: any = ref([]);
 
+  // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
+  const showWeightCol = ref(false);
+  const weightColTitle = ref('');
+  // 显示面积列【合计 和 列表皆显示】
+  const showAreaCol = ref(false);
+  const areaColTitle = ref('');
+  // 显示体积列【合计 和 列表皆显示】
+  const showVolumeCol = ref(false);
+  const volumeColTitle = ref('');
+  // 系统开单设置
+  const billSetting = userStore.getBillSetting;
+  if (billSetting) {
+    showWeightCol.value = !!billSetting.showWeightCol;
+    showAreaCol.value = !!billSetting.showAreaCol;
+    showVolumeCol.value = !!billSetting.showVolumeCol;
+    if (billSetting.dynaFieldsGroup['1']) {
+      billSetting.dynaFieldsGroup['1'].forEach((item) => {
+        // 重量小计
+        if (item.fieldName === 'weightSubtotal') {
+          weightColTitle.value = item.fieldTitle || '';
+        }
+        // 面积小计
+        if (item.fieldName === 'areaSubtotal') {
+          areaColTitle.value = item.fieldTitle || '';
+        }
+        // 体积小计
+        if (item.fieldName === 'volumeSubtotal') {
+          volumeColTitle.value = item.fieldTitle || '';
+        }
+      });
+    }
+  }
+  // 传递给商品选择页面的参数
+  const billType = 'deliver';
+  // 校验商品是否可重复添加
+  const goodsNameRepeat = ref(false);
+  // 修改金额单价变动
+  const editAmountEditPrice = ref(false);
+  // 进货价计算方式
+  const buyPriceComputeMethod = ref(false);
+  // 金额计算方式
+  const amountComputeMethod = ref('');
+  // 只允许选择商品开单
+  const onlyChooseGoods = ref(false);
+  // 自动记录客户价
+  const autoCustPrice = ref(false);
+  // 启用一客一价
+  const singleCustPrice = ref(false);
+  // 小数位数
+  const decimalPlaces = ref(2);
+  // 加载系统开单设置
+  if (billSetting) {
+    goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
+    editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
+    onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
+    autoCustPrice.value = !!billSetting.autoCustPrice;
+    singleCustPrice.value = !!billSetting.singleCustPrice;
+    buyPriceComputeMethod.value = billSetting.buyPriceComputeMethod;
+    amountComputeMethod.value = billSetting.amountComputeMethod;
+    if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
+      decimalPlaces.value = billSetting.decimalPlaces;
+    }
+  }
   const goodsId = ref('');
   const goodsName = ref('');
 
@@ -70,7 +137,7 @@
 
   const columns: BasicColumn[] = [
     {
-      title: '商品编号(条码)',
+      title: '编号(条码)',
       align: 'center',
       dataIndex: 'goodsCode',
       editable: false,
@@ -102,6 +169,14 @@
       editComponent: 'Input',
     },
     {
+      title: '单价',
+      align: 'center',
+      dataIndex: 'price',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+    },
+    {
       title: '数量',
       align: 'center',
       dataIndex: 'count',
@@ -110,12 +185,85 @@
       editComponent: 'InputNumber',
     },
     {
-      title: '单价',
+      title: '重量',
       align: 'center',
-      dataIndex: 'price',
+      dataIndex: 'weight',
       editable: false,
       edit: true,
       editComponent: 'InputNumber',
+      ifShow: billSetting.showWeightCol || false,
+    },
+    {
+      title: '重量小计(' + weightColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'weightSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showWeightCol || false,
+    },
+    {
+      title: '长',
+      align: 'center',
+      dataIndex: 'length',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '宽',
+      align: 'center',
+      dataIndex: 'width',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthCol || billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '高',
+      align: 'center',
+      dataIndex: 'height',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showLengthWidthHeightCol || false,
+    },
+    {
+      title: '面积',
+      align: 'center',
+      dataIndex: 'area',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showAreaCol || false,
+    },
+    {
+      title: '面积小计(' + areaColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'areaSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showAreaCol || false,
+    },
+    {
+      title: '体积',
+      align: 'center',
+      dataIndex: 'volume',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showVolumeCol || false,
+    },
+    {
+      title: '体积小计(' + volumeColTitle.value + ')',
+      align: 'center',
+      dataIndex: 'volumeSubtotal',
+      editable: false,
+      edit: true,
+      editComponent: 'InputNumber',
+      ifShow: billSetting.showVolumeCol || false,
     },
     {
       title: '成本金额',
@@ -140,8 +288,7 @@
       editComponent: 'Input',
     },
   ];
-  const userStore = useUserStore();
-  const dataSource: any = ref([]);
+
   // 列表页面公共参数、方法
   let delIds: any = [];
   const { tableContext } = useListPage({
@@ -149,6 +296,7 @@
     tableProps: {
       title: '商品详情',
       columns: columns,
+      cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
@@ -175,37 +323,6 @@
       return props.customerId;
     }
   });
-  // 传递给商品选择页面的参数
-  const billType = 'deliver';
-  // 校验商品是否可重复添加
-  const goodsNameRepeat = ref(false);
-  // 修改金额单价变动
-  const editAmountEditPrice = ref(false);
-  // 进货价计算方式
-  const buyPriceComputeMethod = ref(false);
-  // 金额计算方式
-  const amountComputeMethod = ref('');
-  // 只允许选择商品开单
-  const onlyChooseGoods = ref(false);
-  // 自动记录客户价
-  const autoCustPrice = ref(false);
-  // 启用一客一价
-  const singleCustPrice = ref(false);
-  // 小数位数
-  const decimalPlaces = ref(2);
-  // 加载系统开单设置
-  getMyBillSetting().then(res=>{
-    goodsNameRepeat.value = !!res.goodsNameRepeat;
-    editAmountEditPrice.value = !!res.editAmountEditPrice;
-    onlyChooseGoods.value = !!res.onlyChooseGoods;
-    autoCustPrice.value = !!res.autoCustPrice;
-    singleCustPrice.value = !!res.singleCustPrice;
-    buyPriceComputeMethod.value = res.buyPriceComputeMethod;
-    amountComputeMethod.value = res.amountComputeMethod;
-    if (res.decimalPlaces === 0 || res.decimalPlaces) {
-      decimalPlaces.value = res.decimalPlaces;
-    }
-  });
 
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
@@ -215,12 +332,24 @@
       item.goodsCode = item.code;
       item.goodsType = item.type;
       item.goodsUnit = item.unit;
+      // 重量小计
+      if (item.weight != undefined) {
+        item.weightSubtotal = item.weight;
+      }
+      // 面积小计
+      if (item.area != undefined) {
+        item.areaSubtotal = item.area;
+      }
+      // 体积小计
+      if (item.volume != undefined) {
+        item.volumeSubtotal = item.volume;
+      }
       if (singleCustPrice.value && item.custPrice) {
         item.price = item.custPrice;
       }
       item.amount = item.price;
       item.costAmount = item.cost;
-      item.dynamicFields = item.dynamicFields;
+      // item.dynamicFields = item.dynamicFields;
       item.count = 1;
     });
     if (goodsNameRepeat.value) {
@@ -241,20 +370,44 @@
     return tmp;
   }
   // 总计数量
-  const countNum = computed(()=>{
+  const countNum = computed(() => {
     let num = 0;
-    dataSource.value.forEach(item=>{
+    dataSource.value.forEach((item) => {
       num += item.count;
     });
     return num;
   });
   // 总计金额
-  const countMoney = computed(()=>{
+  const countMoney = computed(() => {
     let num = 0.0;
-    dataSource.value.forEach(item=>{
+    dataSource.value.forEach((item) => {
       num = parseFloat(num) + parseFloat(item.amount); // 售价 或 客户价
     });
     return num.toFixed(decimalPlaces.value);
+  });
+  // 总计重量
+  const weightNum = computed(() => {
+    let weight = 0.0;
+    dataSource.value.forEach((item) => {
+      weight = parseFloat(weight) + parseFloat(item.weightSubtotal);
+    });
+    return weight.toFixed(decimalPlaces.value);
+  });
+  // 总计面积
+  const areaNum = computed(() => {
+    let area = 0.0;
+    dataSource.value.forEach((item) => {
+      area = parseFloat(area) + parseFloat(item.areaSubtotal);
+    });
+    return area.toFixed(decimalPlaces.value);
+  });
+  // 总计体积
+  const volumeNum = computed(() => {
+    let volume = 0.0;
+    dataSource.value.forEach((item) => {
+      volume = parseFloat(volume) + parseFloat(item.volumeSubtotal);
+    });
+    return volume.toFixed(decimalPlaces.value);
   });
 
   // 增加一行空商品数据
@@ -321,6 +474,10 @@
       emit('change-goods', [...dataSource.value]);
     } else if (key === 'count') {
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
+      // 修改小计
+      record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);
+      record.areaSubtotal = (value * record.area).toFixed(decimalPlaces.value);
+      record.volumeSubtotal = (value * record.volume).toFixed(decimalPlaces.value);
       if (amountComputeMethod.value === 'num_price') {
         record.amount = (value * record.price).toFixed(decimalPlaces.value);
       } else if (amountComputeMethod.value === 'weight_num_price') {
@@ -348,6 +505,9 @@
     return {
       details: dataSource.value,
       count: countNum.value,
+      weight: weightNum.value,
+      area: areaNum.value,
+      volume: volumeNum.value,
       amount: countMoney.value,
     };
   }

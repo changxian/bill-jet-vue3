@@ -1,13 +1,33 @@
 <template>
   <div>
+    <!--查询区域-->
+    <div class="jeecg-basic-table-form-container">
+      <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-row :gutter="24">
+          <a-col :lg="6">
+            <a-form-item label="搜索" name="goodsName">
+              <JInput v-model:value="queryParam.goodsName" class="query-group-cust" allow-clear></JInput>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
+              <a-col :lg="6">
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
+              </a-col>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk" >
+    <BasicTable @register="registerTable" :rowSelection="rowSelection" @dblclick="handleOk">
       <!--插槽:table标题-->
-      <template v-if="billType != 'deliver'" #tableTitle>
+      <template v-if="billType != 'deliver' && billType != 'purchase'" #tableTitle>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleCustPrice" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:account-book-outlined"> 客户价</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:edit'" @click="handleModify('category')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 改类别</a-button>
-        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateCost')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 更新成本</a-button>
+        <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateCost')" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:edit-outlined"> 更新成本</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleModify('updateStocks')" :disabled="selectedRowKeys.length != 1" preIcon="ant-design:edit-outlined"> 变动库存</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:add'" @click="handleStockDetail" :disabled="selectedRowKeys.length > 1" preIcon="ant-design:plus-outlined"> 库存明细</a-button>
         <a-button type="primary" v-auth="'bill:jxc_goods:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
@@ -28,7 +48,7 @@
         </a-dropdown>
       </template>
       <!--操作栏-->
-      <template v-if="billType != 'deliver'" #action="{ record }">
+      <template v-if="billType != 'deliver' && billType != 'purchase'" #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
     </BasicTable>
@@ -37,7 +57,7 @@
     <!-- 客户价表单 -->
     <CustPriceList @register="registerCustPriceModal" />
     <!-- 商品信息修改 -->
-    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess" />
     <!-- 商品库存明细 -->
     <GoodsInventoryRecordList @register="registerRecordModal" />
   </div>
@@ -56,15 +76,27 @@
   import CustPriceList from './CustPriceList.vue';
   import ModifyModal from './ModifyModal.vue';
   import GoodsInventoryRecordList from '../GoodsInventoryRecordList.vue';
+  import { JInput } from '@/components/Form';
 
   const queryParam = reactive<any>({});
   const userStore = useUserStore();
   const { createMessage } = useMessage();
+  const formRef = ref();
   const modifyModalRef = ref();
   //注册model
   const [registerModal, { openModal }] = useModal();
   const [registerCustPriceModal, { openModal: custPriceModal }] = useModal();
   const [registerRecordModal, { openModal: recordModal }] = useModal();
+  const labelCol = reactive({
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
+  });
+  const wrapperCol = reactive({
+    xs: 24,
+    sm: 20,
+  });
 
   const props = defineProps({
     data: {
@@ -73,24 +105,28 @@
       defaultValue: () => {},
     },
     billType: { type: String, default: '' },
+    goodsName: { type: String, default: '' },
     customerId: { type: String, default: '' },
   });
-  // 开单类型【送货开单：deliver】
+  // 开单类型【送货开单：deliver，进货开单：purchase】
   const billType = computed(() => props?.billType);
+  // 搜索框内容
+  const goodsName = computed(() => props?.goodsName);
+  queryParam.goodsName = goodsName.value;
   // 开单时选择的客户
   const customerId = computed(() => props?.customerId);
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const categoryId = computed(() => props.data?.id);
-  console.log('billType is:' + billType.value, '   customerId is:' + customerId.value);
+  console.log('billType is:' + billType.value, '   customerId is:' + customerId.value, '   goodsName is:' + goodsName.value);
   const emits = defineEmits(['get-select', 'db-ok']);
-
+  // queryParam.name = '';
   const columns = getGoodsColumns(billType.value);
 
   //列表数据
   // const columns: BasicColumn[] =
   // 注册table数据
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { tableContext, onExportXls, onImportXls } = useListPage(reactive({
+  const { tableContext, onExportXls, onImportXls } = useListPage( reactive({
     tableProps: {
       title: '商品信息',
       api: list,
@@ -103,7 +139,7 @@
       showIndexColumn: true,
       formConfig: {
         labelWidth: 120,
-        schemas: searchFormSchema,
+        // schemas: searchFormSchema,
         autoSubmitOnEnter: true,
         showAdvancedButton: true,
         fieldMapToNumber: [],
@@ -117,6 +153,7 @@
         params['categoryId'] = categoryId.value;
         params['billType'] = billType.value;
         params['custId'] = customerId.value;
+        params['goodsName'] = goodsName.value;
         return Object.assign(params, queryParam);
       },
       rowSelection: {
@@ -194,11 +231,10 @@
    * 编辑类别
    */
   function handleModify(type) {
-    if (unref(selectedRowKeys).length != 1) {
-      createMessage.warn('请选择一个商品');
-      return;
+    let row: Recordable = {};
+    if (unref(selectedRowKeys).length > 0) {
+      row = selectedRows.value[0];
     }
-    const row = selectedRows.value[0];
     modifyModalRef.value.show(type, row);
   }
   /**
@@ -241,6 +277,22 @@
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
+
+  /**
+   * 查询
+   */
+  function searchQuery() {
+    reload();
+  }
+  /**
+   * 重置
+   */
+  function searchReset() {
+    formRef.value.resetFields();
+    selectedRowKeys.value = [];
+    //刷新数据
+    reload();
+  }
   /**
    * 操作栏
    */
@@ -276,6 +328,14 @@
 </script>
 
 <style lang="less" scoped>
+  .jeecg-basic-table-form-container {
+    padding: 0;
+    .table-page-search-submitButtons {
+      display: block;
+      margin-bottom: 24px;
+      white-space: nowrap;
+    }
+  }
   :deep(.ant-picker),
   :deep(.ant-input-number) {
     width: 100%;

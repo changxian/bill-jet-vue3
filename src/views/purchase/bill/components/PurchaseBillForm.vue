@@ -2,14 +2,7 @@
   <a-spin :spinning="confirmLoading">
     <JFormContainer :disabled="disabled">
       <template #detail>
-        <a-form
-          ref="formRef"
-          class="antd-modal-form"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          name="PurchaseBillForm"
-          style="background: #ffffff"
-        >
+        <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="PurchaseBillForm" style="background: #ffffff">
           <a-row>
             <a-col :span="span">
               <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="PurchaseBillForm-companyId" name="companyId">
@@ -28,7 +21,7 @@
             </a-col>
             <a-col :span="span">
 							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
-								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
+								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
             <a-col :span="span">
@@ -43,14 +36,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="开单日期" v-bind="validateInfos.billDate" id="PurchaseBillForm-billDate" name="billDate">
-                <a-date-picker
-                  placeholder="请选择开单日期"
-                  v-model:value="formData.billDate"
-                  showTime
-                  value-format="YYYY-MM-DD HH:mm:ss"
-                  style="width: 100%"
-                  allow-clear
-                />
+                <a-date-picker placeholder="请选择开单日期" v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -64,28 +50,25 @@
               </a-form-item>
             </a-col>
           </a-row>
+          <a-row v-if="formData.dynamicSupFields && 0 < formData.dynamicSupFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicSupFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'dynamicSupFields-' + item.fieldName"
+                :name="'dynamicSupFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicSupFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
+          </a-row>
           <goods ref="goodsRef" @change-goods="changeGoods"></goods>
           <a-row>
-            <!-- <a-col :span="span">
-							<a-form-item label="单号" v-bind="validateInfos.billNo" id="PurchaseBillForm-billNo" name="billNo">
-								<a-input v-model:value="formData.billNo" placeholder="请输入单号"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col> -->
             <a-col :span="span">
               <a-form-item label="开单类型" v-bind="validateInfos.type" id="PurchaseBillForm-type" name="type">
                 <j-dict-select-tag v-model:value="formData.type" dictCode="" :options="typeOptions" placeholder="请选择开单类型" allow-clear />
               </a-form-item>
             </a-col>
-            <!-- <a-col :span="span">
-							<a-form-item label="数量（本单商品数量）" v-bind="validateInfos.count" id="PurchaseBillForm-count" name="count">
-								<a-input-number v-model:value="formData.count" placeholder="请输入数量（本单商品数量）" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="本单金额" v-bind="validateInfos.amount" id="PurchaseBillForm-amount" name="amount">
-								<a-input-number v-model:value="formData.amount" placeholder="请输入本单金额" style="width: 100%" />
-							</a-form-item>
-						</a-col> -->
             <a-col :span="span">
               <a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
                 <a-input-number @change="changeMoney" v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
@@ -97,8 +80,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="未付款（欠款）金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
-                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款（欠款）金额" style="width: 100%" />
+              <a-form-item label="未付款金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
+                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -106,47 +89,23 @@
                 <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
               </a-form-item>
             </a-col>
-            <a-col :span="span">
-              <a-form-item
-                label="状态"
-                v-bind="validateInfos.status"
-                id="PurchaseBillForm-status"
-                name="status"
-              >
-                <j-dict-select-tag
-                  v-model:value="formData.status"
-                  :options="statusOptions"
-                  dictCode=""
-                  placeholder="请选择状态"
-                  allow-clear
-                />
-              </a-form-item>
-            </a-col>
-            <!-- <a-col :span="span">
-							<a-form-item label="开票状态（1未开、2不开、3已开、4无信息、9其他）" v-bind="validateInfos.invoiceStatus" id="PurchaseBillForm-invoiceStatus" name="invoiceStatus">
-								<j-dict-select-tag v-model:value="formData.invoiceStatus" dictCode="" placeholder="请选择开票状态（1未开、2不开、3已开、4无信息、9其他）"  allow-clear />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="业务员" v-bind="validateInfos.userName" id="PurchaseBillForm-userName" name="userName">
-						<j-select-user v-model:value="formData.userName"      allow-clear />
-							</a-form-item>
-						</a-col> -->
             <a-col :span="8">
               <a-form-item label="备注" id="PurchaseBillForm-remark" name="remark" >
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
               </a-form-item>
             </a-col>
-            <!-- <a-col :span="span">
-							<a-form-item label="版本" v-bind="validateInfos.version" id="PurchaseBillForm-version" name="version">
-								<a-input-number v-model:value="formData.version" placeholder="请输入版本" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="span">
-							<a-form-item label="制单人" v-bind="validateInfos.createName" id="PurchaseBillForm-createName" name="createName">
-								<a-input v-model:value="formData.createName" placeholder="请输入制单人"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col> -->
+          </a-row>
+          <a-row v-if="formData.dynamicFields && 0 < formData.dynamicFields.length" :gutter="10">
+            <a-col v-for="(item, index) in formData.dynamicFields" :key="item.id" :span="span">
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
           </a-row>
           <a-row class="btns-wrap" v-if="showBtn">
             <a-button type="primary" @click="clickSave">保存</a-button>
@@ -159,20 +118,26 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
+  import { computed, defineExpose, defineProps, nextTick, reactive, ref } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
   import goods from './goods.vue';
   import { getValueType } from '/@/utils';
-  import { saveOrUpdate, billDetail } from '../PurchaseBill.api';
+  import { billDetail, saveOrUpdate } from '../PurchaseBill.api';
   import { statusList } from '../PurchaseBill.data';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { queryNewNo } from "@/views/deliver/bill/DeliverBill.api";
+  import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
+  import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
+  import { byPurchaseId } from '@/views/purchase/debt/PurchaseDebt.api';
+  import { useUserStore } from '@/store/modules/user';
 
+  const userStore = useUserStore();
+  // 小数位数
+  const decimalPlaces = userStore.getBillSetting.decimalPlaces;
   const span = 8;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
@@ -193,7 +158,7 @@
   const formData = reactive({
     id: '',
     billNo: '',
-    type: undefined,
+    type: 1,
     billDate: '',
     companyName: '',
     companyId: '',
@@ -209,17 +174,23 @@
     amount: 0,
     paymentAmount: 0,
     discountAmount: 0,
-    debtAmount: 0,
+    debtAmount: 0.0,
     hisDebtAmount: 0,
     careNo: '',
     contractCode: '',
-    status: '',
-    invoiceStatus: undefined,
+    status: 1,
+    invoiceStatus: 1,
     userName: '',
     remark: '',
-    version: undefined,
+    version: 0,
     createName: '',
+    dynamicSupFields: undefined,
+    dynamicFields: undefined,
   });
+  // 给开单类型设置默认值
+  if (typeOptions.value.length > 0) {
+    formData.type = typeOptions.value[0].value;
+  }
 
   const rules: Record<string, Rule[]> = {
     companyId: [{ required: true, message: '必填', trigger: 'blur' }],
@@ -232,6 +203,7 @@
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   const goodsRef = ref(null);
+  const hasInit = ref(false);
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
@@ -245,6 +217,14 @@
   });
 
   function init() {
+    if (hasInit.value) {
+      return;
+    }
+    hasInit.value = true;
+    fieldsList({ category: 1, match: '0' }).then((res) => {
+      formData.dynamicSupFields = res['5'].filter((item) => item.id != null);
+      formData.dynamicFields = res['6'].filter((item) => item.id != null);
+    });
     queryNewNo({ category: 1 }).then((res) => {
       formData.billNo = res.newNo;
     });
@@ -259,34 +239,59 @@
   function changeSupplier(val, selectRows) {
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      // 获取供应商往期欠款金额
+      if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
+        byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
+          debugger;
+          formData.hisDebtAmount = res.purchaseDebtAmount;
+        });
+      }
+      formData.supplierId = selectRows[0].id;
       formData.supplierName = selectRows[0].orgName;
       formData.supplierPhone = selectRows[0].phone;
       formData.supplierContact = selectRows[0].contact;
       formData.supplierAddress = selectRows[0].address;
+      formData.dynamicSupFields = selectRows[0].dynamicFields;
     }
   }
-  let amount = 0
+  let amount: number = 0.0;
   function changeGoods(goods) {
-    let num = 0
-    goods.forEach(item=>{
-        num += item.costAmount;
-    })
-    amount = num
-    calcDebtAmount()
+    // let num = 0.0;
+    goods.forEach((item) => {
+      // 计算重量、面积、体积小计
+      item.weightSubtotal = 0;
+      if (item.weight) {
+        item.weightSubtotal = (item.weight * item.count).toFixed(decimalPlaces);
+      }
+      item.areaSubtotal = 0;
+      if (item.area) {
+        item.areaSubtotal = (item.area * item.count).toFixed(decimalPlaces);
+      }
+      item.volumeSubtotal = 0;
+      if (item.volume) {
+        item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
+      }
+      // num = parseFloat(num) + parseFloat(item.costAmount);
+      amount += parseFloat(item.costAmount);
+    });
+    // amount = (num).toFixed(decimalPlaces);
+    // amount = num;
+    calcDebtAmount();
   }
 
-  function changeMoney(){
-    calcDebtAmount()
+  function changeMoney() {
+    calcDebtAmount();
   }
-  function calcDebtAmount(){
-    if(amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
-      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount
+  function calcDebtAmount() {
+    if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
+      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount;
     }
   }
   /**
    * 新增
    */
   function add() {
+    init();
     edit({});
   }
 
@@ -304,79 +309,88 @@
       });
       //赋值
       Object.assign(formData, tmpData);
-      formData.status = record.status + ''
-      getGoods(formData.id)
-      if(record.hasCopy){
-        formData.status= ''
-        formData.invoiceStatus= undefined
-        formData.id = ''
-        formData.billNo = ''
-        formData.createBy = ''
-        formData.createTime = ''
-        formData.updateTime = ''
-        formData.updateBy = ''
+      formData.status = record.status + '';
+      getGoods(formData.id);
+      if (record.hasCopy) {
+        formData.status = '';
+        formData.invoiceStatus= undefined;
+        formData.id = '';
+        formData.billNo = '';
+        formData.createBy = '';
+        formData.createTime = '';
+        formData.updateTime = '';
+        formData.updateBy = '';
       }
+      hasInit.value = true;
+      getDynamicFieldsAndValue({ category: 5, id: tmpData.supplierId }).then((res) => {
+        formData.dynamicSupFields = res;
+      });
     });
   }
 
-  function getGoods(id){
-      billDetail({billId: id}).then(res=>{
+  function getGoods(id) {
+    billDetail({ billId: id }).then((res) => {
       // dataSourceDetail.value = [...res]
-      nextTick(()=>{
-        goodsRef.value.setValue([...res])
-      })
-    })
+      nextTick(() => {
+        goodsRef.value.setValue([...res]);
+      });
+      changeGoods(res);
+    });
   }
 
-  function validateForm(){
-    if(!formData.supplierId){
+  function validateForm() {
+    if (!formData.supplierId) {
       createMessage.warning('请选择供应商');
       return false;
     }
-    if(!formData.companyId){
+    if (!formData.companyId) {
       createMessage.warning('请选择公司');
       return false;
     }
-    const goods = goodsRef.value.getData().details
-    if(goods.length === 0){
+    const goods = goodsRef.value.getData().details;
+    if (goods.length === 0) {
       createMessage.warning('请选择商品');
       return false;
     }
-    return true
+    return true;
   }
   function resetForm() {
-    formData.id = ''
-    formData.type = undefined
-    formData.billNo = ''
-    formData.billDate = ''
-    formData.companyName = ''
-    formData.companyId = ''
-    formData.supplierId = ''
-    formData.supplierName = ''
-    formData.supplierPhone = ''
-    formData.supplierAddress = ''
-    formData.supplierContact = ''
-    formData.count = 0
-    formData.weight = 0
-    formData.area = 0
-    formData.volume = 0
-    formData.amount = 0
-    formData.paymentAmount = 0
-    formData.discountAmount = 0
-    formData.debtAmount = 0
-    formData.hisDebtAmount = 0
-    formData.status = ''
-    formData.invoiceStatus = undefined
-    formData.careNo = ''
-    formData.contractCode = ''
-    formData.remark = ''
-    formData.createName = ''
-    formData.userName = ''
+    formData.id = '';
+    formData.type = undefined;
+    formData.billNo = '';
+    formData.billDate = '';
+    formData.companyName = '';
+    formData.companyId = '';
+    formData.supplierId = '';
+    formData.supplierName = '';
+    formData.supplierPhone = '';
+    formData.supplierAddress = '';
+    formData.supplierContact = '';
+    formData.count = 0;
+    formData.weight = 0;
+    formData.area = 0;
+    formData.volume = 0;
+    formData.amount = 0;
+    formData.paymentAmount = 0;
+    formData.discountAmount = 0;
+    formData.debtAmount = 0.0;
+    formData.hisDebtAmount = 0;
+    formData.status = '';
+    formData.invoiceStatus = undefined;
+    formData.careNo = '';
+    formData.contractCode = '';
+    formData.remark = '';
+    formData.createName = '';
+    formData.userName = '';
+    formData.dynamicSupFields = undefined;
+    formData.dynamicFields = undefined;
     goodsRef.value.setValue([]);
+    hasInit.value = false;
+    init();
   }
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
-    if(!validateForm()){
+    if (!validateForm()) {
       return;
     }
     console.log('formData:', formData);
@@ -384,12 +398,13 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {
         if (res.success) {
           createMessage.success(res.message);
-          resetForm()
+          resetForm();
           emit('ok');
         } else {
           createMessage.warning(res.message);
@@ -398,16 +413,6 @@
       .finally(() => {
         confirmLoading.value = false;
       });
-
-
-    // formRef.value
-    //   .validate()
-    //   .then((res) => {
-    //     console.log('res', res);
-    //   })
-    //   .catch((res) => {
-    //     console.log('catch res=====', res);
-    //   });
   }
   /**
    * 提交数据

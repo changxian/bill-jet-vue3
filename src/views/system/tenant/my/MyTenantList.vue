@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button
+        <a-button v-if="false"
           preIcon="ant-design:user-add-outlined"
           type="primary"
           @click="handleInvitation"
@@ -127,6 +127,7 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
+      tenantName: unref(selectedRows.value[0].name),
       //我的企业不显示新增和编辑套餐
       showPackAddAndEdit: false
     });

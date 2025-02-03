@@ -1,11 +1,17 @@
-import {BasicColumn, FormSchema} from '/@/components/Table';
-import {useUserStore} from "@/store/modules/user";
-const userStore = useUserStore(); 
+import { BasicColumn, FormSchema} from '/@/components/Table';
+import { useUserStore } from '@/store/modules/user';
+const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
 //查询数据
 export const searchFormSchema: FormSchema[] = [
   // Input 是精确查询, JInput 是模糊查询
   {
+    label: '搜索条件',
+    field: 'goodsName',
+    component: 'JInput',
+    colProps: { span: 10 },
+  },
+  /*{
     label: '编号(条码)',
     field: 'code',
     component: 'JInput',
@@ -22,7 +28,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'type',
     component: 'JInput',
     //colProps: {span: 6},
-  },
+  },*/
   // {
   //   label: '状态',
   //   field: 'status',

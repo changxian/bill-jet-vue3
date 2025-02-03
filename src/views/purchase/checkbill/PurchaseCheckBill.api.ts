@@ -1,7 +1,4 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
-
-const { createConfirm } = useMessage();
 
 enum Api {
   list = '/purchase/checkbill/purchaseCheckBill/list',

@@ -1,22 +1,24 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
 enum Api {
   list = '/purchase/debt/purchaseDebt/list',
-  save='/purchase/debt/purchaseDebt/add',
-  edit='/purchase/debt/purchaseDebt/edit',
+  byPurchaseId = '/purchase/debt/purchaseDebt/byPurchaseId',
+  listCount = '/purchase/debt/purchaseDebt/listCount',
+  save = '/purchase/debt/purchaseDebt/add',
+  edit = '/purchase/debt/purchaseDebt/edit',
   deleteOne = '/purchase/debt/purchaseDebt/delete',
   deleteBatch = '/purchase/debt/purchaseDebt/deleteBatch',
   importExcel = '/purchase/debt/purchaseDebt/importExcel',
   exportXls = '/purchase/debt/purchaseDebt/exportXls',
-  repay ='/purchase/repay/purchaseRepay/repay',
-  repayEdit ='/purchase/repay/purchaseRepay/repayEdit',
-  oneKeyRepay ='/purchase/repay/purchaseRepay/oneKeyRepay',
-  purchaseRepayList='/purchase/repay/purchaseRepay/list',
-  repayDetailList='/purchase/repay/purchaseRepay/repayDetail',
-  repayRevoke='/purchase/repay/purchaseRepay/repayRevoke',
+  repay = '/purchase/repay/purchaseRepay/repay',
+  repayEdit = '/purchase/repay/purchaseRepay/repayEdit',
+  oneKeyRepay = '/purchase/repay/purchaseRepay/oneKeyRepay',
+  purchaseRepayList = '/purchase/repay/purchaseRepay/list',
+  repayDetailList = '/purchase/repay/purchaseRepay/repayDetail',
+  repayRevoke = '/purchase/repay/purchaseRepay/repayRevoke',
 }
 
 /**
@@ -35,6 +37,19 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 根据供应商id获取欠款接口
+ * @param params
+ */
+export const byPurchaseId = (params) => defHttp.get({ url: Api.byPurchaseId, params });
+
+/**
+ * 获取总计数据
+ * @param params
+ */
+export const listCount = (params) => defHttp.get({ url: Api.listCount, params });
+
 // 供应商还款
 export const purchaseRepayList = (params) => defHttp.get({ url: Api.purchaseRepayList, params });
 export const repayDetailList = (params) => defHttp.get({ url: Api.repayDetailList, params });
