@@ -180,7 +180,7 @@ export function useValidateAntFormAndTable(activeKey, refMap) {
    */
   async function validateFormAndGetData(instance, key) {
     try {
-      let data = await instance.getFormData();
+      const data = await instance.getFormData();
       transformData(data);
       return data;
     } catch (e) {

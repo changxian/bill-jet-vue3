@@ -67,17 +67,17 @@
             </a-col>
             <a-col :lg="5">
               <a-form-item name="billNo" label="单号">
-                <JInput v-model:value="queryParam.billNo" class="query-group-cust" allow-clear></JInput>
+                <JInput v-model:value="queryParam.billNo" class="query-group-cust" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="5">
               <a-form-item name="custContact" label="联系人">
-                <JInput v-model:value="queryParam.custContact" class="query-group-cust" allow-clear></JInput>
+                <JInput v-model:value="queryParam.custContact" class="query-group-cust" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="5">
               <a-form-item name="operatorName" label="制单员">
-                <JInput v-model:value="queryParam.operatorName" class="query-group-cust" allow-clear></JInput>
+                <JInput v-model:value="queryParam.operatorName" class="query-group-cust" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -103,25 +103,50 @@
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="copyAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined">
+          改状态</a-button
+        >
+        <a-button
+          type="primary"
+          v-auth="'deliver.bill:jxc_deliver_bill:add'"
+          @click="handleModify('invoiceStatus')"
+          preIcon="ant-design:edit-outlined"
+        >
+          改开票</a-button
+        >
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined">
+          改信息</a-button
+        >
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined">
+          打印预览</a-button
+        >
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined">
+          还款明细</a-button
+        >
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+          导出</a-button
+        >
+        <j-upload-button
+          type="primary"
+          v-auth="'deliver.bill:jxc_deliver_bill:importExcel'"
+          preIcon="ant-design:import-outlined"
+          @click="onImportXls"
+        >
+          导入</j-upload-button
+        >
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
+                <Icon icon="ant-design:delete-outlined" />
                 删除
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button v-auth="'deliver.bill:jxc_deliver_bill:deleteBatch'">批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
+          <a-button v-auth="'deliver.bill:jxc_deliver_bill:deleteBatch'"
+            >批量操作
+            <Icon icon="mdi:chevron-down" />
           </a-button>
         </a-dropdown>
       </template>
@@ -129,17 +154,7 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
-      <template #type_dictText="{ record }">
-        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
-      </template>
-      <template #status_dictText="{ record }">
-        <span v-if="4 == record.status" style="color: green">{{ record.status_dictText }}</span>
-        <span v-else-if="5 == record.status" style="color: blue">{{ record.status_dictText }}</span>
-        <span v-else-if="9 == record.status" style="color: red">{{ record.status_dictText }}</span>
-        <span v-else>{{ record.status_dictText }}</span>
-      </template>
-      <template v-slot:bodyCell="{ column, record, index, text }">
-      </template>
+      <template #bodyCell="{ column, record, index, text }"> </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{ 'p_san': hasPan }" >总计
@@ -155,14 +170,17 @@
     </div>
 
     <!-- 表单区域 -->
-    <DeliverBillModal ref="registerModal" @success="handleSuccess"></DeliverBillModal>
-    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
+    <DeliverBillModal ref="registerModal2" @success="handleSuccess" />
+    <ModifyModal ref="modifyModalRef" @refresh="handleSuccess" />
     <div class="tbl-wrap">
       <a-spin :spinning="detailLoading">
-        <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
+        <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail" />
       </a-spin>
     </div>
     <RepayDetailDialog ref="repayDetailDialogRef" />
+
+    <!-- 选择模板窗口 -->
+    <ViewModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
@@ -171,7 +189,7 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, detailColumns } from './DeliverBill.data';
-  import { list, billDetail, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
+  import { list, billDetail, batchDelete, getImportUrl, getExportUrl } from './DeliverBill.api';
   import DeliverBillModal from './components/DeliverBillModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import RepayDetailDialog from '@/views/deliver/debt/components/RepayDetailDialog.vue';
@@ -185,6 +203,10 @@
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
   import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
 
+  import { useModal } from '/@/components/Modal';
+  import ViewModal from '@/views/template/view/ViewModal.vue';
+  const [registerModal, { openModal }] = useModal();
+
   const route = useRoute();
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
@@ -196,7 +218,7 @@
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const registerModal = ref();
+  const registerModal2 = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
   // 总计：数量
@@ -265,12 +287,16 @@
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess,
-	  },
+    importConfig: {
+      url: getImportUrl,
+      success: handleSuccess,
+    },
   });
-  const [ registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  const [
+    registerTable,
+    { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource },
+    { rowSelection, selectedRows, selectedRowKeys },
+  ] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
@@ -386,21 +412,30 @@
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    registerModal.value.disableSubmit = false;
+    registerModal2.value.disableSubmit = false;
     const row = selectedRows.value[0];
-    registerModal.value.copyAdd(row);
+    registerModal2.value.copyAdd(row);
   }
   /**
    * 打印预览
    */
   function printPreview() {
+    if (selectedRowKeys.value.length !== 1) {
+      return createMessage.warning('请选中一条数据');
+    }
 
+    openModal(true, {
+      // record: formData,
+      record: { id: selectedRowKeys.value[0], category: 1 },
+      isUpdate: true,
+      showFooter: true,
+    });
   }
   /**
    * 打印
    */
   function print() {
-
+    printPreview();
   }
   /**
    * 编辑事件
@@ -416,15 +451,15 @@
         return createMessage.warning('状态为过账或审核的单据不能修改');
       }
     }
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = false;
+    registerModal2.value.edit(record);
   }
   /**
    * 详情
    */
   function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = true;
+    registerModal2.value.edit(record);
   }
   /**
    * 删除事件
@@ -584,9 +619,10 @@
           }
         });
         dataSourceDetail.value = [...res];
-    }).finally(() => {
+      })
+      .finally(() => {
         detailLoading.value = false;
-    });
+      });
   }
 </script>
 
@@ -598,19 +634,20 @@
       margin-bottom: 24px;
       white-space: nowrap;
     }
-    .query-group-cust{
+    .query-group-cust {
       min-width: 100px !important;
     }
-    .query-group-split-cust{
+    .query-group-split-cust {
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
-    .ant-form-item:not(.ant-form-item-with-help){
+    .ant-form-item:not(.ant-form-item-with-help) {
       margin-bottom: 16px;
       height: 32px;
     }
-    :deep(.ant-picker),:deep(.ant-input-number){
+    :deep(.ant-picker),
+    :deep(.ant-input-number) {
       width: 100%;
     }
   }

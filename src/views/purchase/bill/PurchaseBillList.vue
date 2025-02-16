@@ -95,17 +95,18 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" @row-click="rowClick">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="copyAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="handleAdd" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button v-if="false"  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="copyAdd" preIcon="ant-design:copy-outlined"> 拷贝新增</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('status')" preIcon="ant-design:edit-outlined"> 改状态</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined"> 改开票</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="handleModify('info')" preIcon="ant-design:edit-outlined"> 改信息</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
+          导出</a-button>
+        <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -151,14 +152,18 @@
     </div>
 
     <!-- 表单区域 -->
-    <PurchaseBillModal ref="registerModal" @success="handleSuccess"></PurchaseBillModal>
+    <PurchaseBillModal ref="registerModal2" @success="handleSuccess"></PurchaseBillModal>
     <ModifyModal ref="modifyModalRef" @refresh="handleSuccess"></ModifyModal>
     <div class="tbl-wrap">
       <a-spin :spinning="detailLoading">
         <BasicTable @register="registerTableDetail" :dataSource="dataSourceDetail"></BasicTable>
       </a-spin>
     </div>
+
     <RepayDetailDialog ref="repayDetailDialogRef" />
+
+    <!-- 选择模板窗口 -->
+    <ViewModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 
@@ -177,6 +182,11 @@
   import FastDate from '@/components/FastDate.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { useRoute } from 'vue-router';
+
+  import { useModal } from '/@/components/Modal';
+  import ViewModal from '@/views/template/view/ViewModal.vue';
+  const [registerModal, { openModal }] = useModal();
+
   const route = useRoute();
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
@@ -188,7 +198,7 @@
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
-  const registerModal = ref();
+  const registerModal2 = ref();
   const modifyModalRef = ref();
   const userStore = useUserStore();
   // 总计：数量
@@ -360,15 +370,32 @@
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择数据');
     }
-    registerModal.value.disableSubmit = false;
+    registerModal2.value.disableSubmit = false;
     const row = selectedRows.value[0];
-    registerModal.value.copyAdd(row);
+    registerModal2.value.copyAdd(row);
   }
 
   /**
-   * 新增事件
+   * 打印预览
    */
-  function handleAdd() {
+  function printPreview() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选中一条数据');
+    }
+
+    openModal(true, {
+      // record: formData,
+      record: { id: selectedRowKeys.value[0] },
+      isUpdate: true,
+      showFooter: true,
+    });
+  }
+
+  /**
+   * 打印
+   */
+  function print() {
+    printPreview()
   }
   /**
    * 编辑事件
@@ -385,16 +412,16 @@
         return createMessage.warning('状态为过账或审核的单据不能修改');
       }
     }
-    registerModal.value.disableSubmit = false;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = false;
+    registerModal2.value.edit(record);
   }
 
   /**
    * 详情
    */
   function handleDetail(record: Recordable) {
-    registerModal.value.disableSubmit = true;
-    registerModal.value.edit(record);
+    registerModal2.value.disableSubmit = true;
+    registerModal2.value.edit(record);
   }
 
   /**

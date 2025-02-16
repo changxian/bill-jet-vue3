@@ -4,7 +4,7 @@
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="GoodsForm">
           <a-row>
-            <a-col :span="12">
+            <a-col :span="8">
               <a-form-item label="商品类别" v-bind="validateInfos.categoryId" id="GoodsForm-categoryId" name="categoryId">
                 <JDictSelectTag
                   v-model:value="formData.categoryId"
@@ -14,9 +14,7 @@
                 />
               </a-form-item>
             </a-col>
-          </a-row>
-          <a-row>
-            <a-col :span="12">
+            <a-col :span="8">
               <a-form-item label="商品名称" v-bind="validateInfos.name" id="GoodsForm-name" name="name">
                 <a-input v-model:value="formData.name" placeholder="请输入商品名称" allow-clear />
               </a-form-item>
@@ -39,14 +37,12 @@
             </a-col>
           </a-row>
           <a-row>
-            <a-col :span="12">
-              <a-form-item label="编号（条码）" v-bind="validateInfos.code" id="GoodsForm-code" name="code">
+            <a-col :span="8">
+              <a-form-item label="编号条码" v-bind="validateInfos.code" id="GoodsForm-code" name="code">
                 <a-input v-model:value="formData.code" placeholder="请输入商品编号" allow-clear />
               </a-form-item>
             </a-col>
-          </a-row>
-          <a-row>
-            <a-col :span="12">
+            <a-col :span="8">
               <a-form-item label="规格型号" v-bind="validateInfos.type" id="GoodsForm-type" name="type">
                 <a-input v-model:value="formData.type" placeholder="请输入规格型号" allow-clear />
               </a-form-item>
@@ -109,7 +105,58 @@
             </a-col>
           </a-row>
           <a-row>
-            <a-col :span="18" style="width: 100%">
+            <a-col :span="8">
+              <a-form-item label="剂型" id="GoodsForm-spec2" name="spec2">
+                <a-input v-model:value="formData.spec2" placeholder="请输入重量" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="生产日期" id="GoodsForm-productDate" name="productDate">
+                <a-input v-model:value="formData.productDate" placeholder="请输入面积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="有效期" id="GoodsForm-validity" name="validity">
+                <a-input v-model:value="formData.validity" placeholder="请输入体积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="8">
+              <a-form-item label="生产厂商" id="GoodsForm-firm" name="firm">
+                <a-input v-model:value="formData.firm" placeholder="请输入重量" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="生产地址" id="GoodsForm-firmAddress" name="firmAddress">
+                <a-input v-model:value="formData.firmAddress" placeholder="请输入面积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="生产批号" id="GoodsForm-batchNum" name="batchNum">
+                <a-input v-model:value="formData.batchNum" placeholder="请输入体积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="8">
+              <a-form-item label="批准文号" id="GoodsForm-approvalNo" name="approvalNo">
+                <a-input v-model:value="formData.approvalNo" placeholder="请输入重量" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="注册证号" id="GoodsForm-certificateNo" name="certificateNo">
+                <a-input v-model:value="formData.certificateNo" placeholder="请输入面积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="生产许可证号" id="GoodsForm-productApprovalNo" name="productApprovalNo">
+                <a-input v-model:value="formData.productApprovalNo" placeholder="请输入体积" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="24" style="width: 100%">
               <a-form-item label="备注" v-bind="validateInfos.remark" id="GoodsForm-remark" name="remark">
                 <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
               </a-form-item>
@@ -176,6 +223,18 @@
     remark: '',
     disabled: false,
     dynamicFields: undefined,
+
+    firm: '',
+    firmAddress: '',
+    batchNum: '',
+
+    spec2: '',
+    productDate: '',
+    validity: '',
+
+    approvalNo: '',
+    certificateNo: '',
+    productApprovalNo: '',
   });
 
   watch(

@@ -175,6 +175,7 @@ export function useListPage(options: ListPageOptions) {
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
+          debugger;
           setLoading(true);
           const res = await api();
           if (options?.reload ?? true) {

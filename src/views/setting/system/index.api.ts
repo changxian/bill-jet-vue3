@@ -29,7 +29,7 @@ export const getDynamicFieldsAndValue = (params) => defHttp.get({ url: Api.getDy
  * @param isUpdate
  */
 export const saveOrUpdatePrint = (params, isUpdate) => {
-  let url = isUpdate ? Api.editPrint : Api.savePrint;
+  const url = isUpdate ? Api.editPrint : Api.savePrint;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
 
@@ -39,7 +39,7 @@ export const saveOrUpdatePrint = (params, isUpdate) => {
  * @param isUpdate
  */
 export const saveOrUpdateBilling = (params, isUpdate) => {
-  let url = isUpdate ? Api.editBilling : Api.saveBilling;
+  const url = isUpdate ? Api.editBilling : Api.saveBilling;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
 
@@ -49,7 +49,7 @@ export const saveOrUpdateBilling = (params, isUpdate) => {
  * @param isUpdate
  */
 export const saveOrUpdateOthers = (params) => {
-  let url = Api.saveOthers;
+  const url = Api.saveOthers;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
 
@@ -59,7 +59,7 @@ export const saveOrUpdateOthers = (params) => {
  * @param isUpdate
  */
 export const saveOrUpdateSystem = (params, isUpdate) => {
-  let url = isUpdate ? Api.editSystem : Api.saveSystem;
+  const url = isUpdate ? Api.editSystem : Api.saveSystem;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
 
