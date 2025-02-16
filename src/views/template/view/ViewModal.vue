@@ -17,49 +17,22 @@
   import Index from './components/index.vue';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
-  const isNew = ref(false);
   const isUpdate = ref(false);
   const isDetail = ref(false);
   const registerForm = ref();
 
-  let _d = {};
-  const formData = computed(() => {
-    if (unref(isUpdate)) {
-      // 结合（两种表单）使用传数据，带来的弊端，后做的处理
-      // 第一次编辑时 isUpdate 值为true
-      // 第二次编辑时 isUpdate 的默认值是 true, 编辑的逻辑显示为上一条的数据
-      // 修改为 false，才不影响其它数据编辑(在computed中修改isUpdate的值不触发重新计算)
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      isUpdate.value = false;
-    } else if (unref(isNew)) {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      isNew.value = false;
-    }
-    return {
-      ..._d,
-    };
-  });
+  const formData = ref();
 
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ confirmLoading: false, showCancelBtn: !!data?.showFooter, showOkBtn: !!data?.showFooter });
     isDetail.value = !!data?.showFooter;
-    if (!!data?.isUpdate) {
-      _d = {
-        ..._d,
-        ...data.record,
-        disabled: !data?.showFooter, // 表单禁用
-      };
-      isUpdate.value = !!data?.isUpdate;
-    } else {
-      // 新增时，商品类型默认为选中的类型
-      _d = {
-        ..._d,
-        ...data.record,
-        categoryId: data?.categoryId,
-      };
-      isNew.value = true;
-    }
+
+    formData.value = {
+      ...data.record,
+      disabled: !data?.showFooter, // 表单禁用
+    };
+    isUpdate.value = !!data?.isUpdate;
   });
   //设置标题
   const title = computed(() => (!unref(isUpdate) ? '预览' : !unref(isDetail) ? '预览' : '预览'));

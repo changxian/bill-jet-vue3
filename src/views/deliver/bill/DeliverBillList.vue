@@ -420,13 +420,13 @@
    * 打印预览
    */
   function printPreview() {
-    if (selectedRowKeys.value.length === 0) {
-      return createMessage.warning('请先选中一条数据');
+    if (selectedRowKeys.value.length !== 1) {
+      return createMessage.warning('请选中一条数据');
     }
 
     openModal(true, {
       // record: formData,
-      record: { id: selectedRowKeys.value[0] },
+      record: { id: selectedRowKeys.value[0], category: 1 },
       isUpdate: true,
       showFooter: true,
     });

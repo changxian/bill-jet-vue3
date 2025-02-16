@@ -9,15 +9,6 @@
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:import-outlined">导入模板</a-button>
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
-    <!--<a-card style="width: 100%; height: 60px;" class="view-modal-preview">-->
-    <!--  <a-button type="primary" style=" position: relative; top: -10px;">打印</a-button>-->
-    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置为送货模板</a-button>-->
-    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置为退货模板</a-button>-->
-    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">导出模板</a-button>-->
-    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">导入模板</a-button>-->
-    <!--  <a-button type="primary" style="margin-left: 10px; position: relative; top: -10px;">设置</a-button>-->
-    <!--</a-card>-->
-    <!-- 预览 -->
     <a-card style="width: 100%; margin-top: 5px; height: 694px; overflow-y: scroll">
       <div id="preview_content_design"></div>
     </a-card>
@@ -25,7 +16,7 @@
 </template>
 
 <script>
-  import { printLimit } from './index.api';
+import { printLimit, tempList } from "./index.api";
 
   export default {
     name: 'PrintPreview',
@@ -36,34 +27,15 @@
         printData: null,
         limitData: null,
         value: '',
-        options: [
-          {
-            value: '1',
-            label: '正常',
-          },
-          {
-            value: '2',
-            label: '空白',
-          },
-          {
-            value: '3',
-            label: '无单价、金额',
-          },
-          {
-            value: '4',
-            label: '无单价、数量、金额',
-          },
-        ],
       };
     },
     computed: {},
     watch: {},
-    created() {
-      this.value = this.options[0];
-    },
+    created() {},
     mounted() {},
     methods: {
       handleChange(value) {
+        // 左侧打印限制的逻辑
         console.log(value);
         this.limitData = JSON.parse(JSON.stringify(this.printData));
         printLimit(value.value, this.limitData);
@@ -81,7 +53,7 @@
         setTimeout(() => {
           const html = hiprintTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
-        }, 500);
+        }, 100);
       },
       print() {
         this.waitShowPrinter = true;

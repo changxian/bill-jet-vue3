@@ -193,7 +193,7 @@
   function selectTemplate() {
     openModal(true, {
       // record: formData,
-      record: { id: formData.deliveryBillTempId },
+      record: { templateId: formData.deliveryBillTempId },
       isUpdate: true,
       showFooter: true,
     });

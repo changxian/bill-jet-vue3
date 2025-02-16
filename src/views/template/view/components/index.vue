@@ -2,7 +2,7 @@
   <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(236 236 236); width: 1192px">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
-        <left @select="onTreeSelect" @jxcLimit="jxcLimit" :id="form.id" />
+        <left @select="onTreeSelect" @jxcLimit="jxcLimit" :templateId="form.templateId" :templateList="data.templateList" />
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
@@ -15,7 +15,8 @@
   import '../../public/css/bootstrap.min.css';
   import '../../public/css/print-lock.css';
   import tempData from '../temp-data';
-  import printData from '../print-data';
+  // import printData from '../print-data';
+  import { getTemplateData, roil } from '@/views/template/view/components/index.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
 
@@ -42,18 +43,32 @@
     },
     data() {
       return {
-        template: null,
+        data: {
+          templateList: [],
+          templateId: undefined,
+          printData: {},
+        },
         form: {
           id: '',
+          category: '',
         },
       };
     },
     watch: {
       formData: {
-        handler: function (newVal, oldVal) {
+        handler: async function (newVal, oldVal) {
           console.info(newVal);
-          console.log(oldVal);
+          console.log('------分隔线------');
+          console.info(oldVal);
           this.form.id = newVal.id;
+          this.form.category = newVal.category;
+
+          // TODO 从设置那里进来如何操作，？？？？
+
+          // 获取模板信息 和 获取打印预览的数据信息
+          this.data = await getTemplateData(this.form);
+          roil(this.data.printData['table'], 1);
+          this.preView();
         },
         immediate: true, // 立即执行
       },
@@ -65,10 +80,10 @@
         ...tempData,
       };
       this.init();
-      this.preView();
+      // this.preView();
     },
     methods: {
-      init() {
+      async init() {
         hiprint.init({
           providers: [new defaultElementTypeProvider()],
           lang: 'cn',
@@ -79,25 +94,14 @@
           // ...this.formData,
           ...this.template,
         };
+
         this.template = hiprintTemplate = new hiprint.PrintTemplate({
           template: panels,
-          // 图片选择功能
-          onImageChooseClick: (target) => {
-            // 测试 3秒后修改图片地址值
-            setTimeout(() => {
-              target.refresh(
-                'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAIIAQMAAAB99EudAAAABlBMVEUmf8vG2O41LStnAAABD0lEQVR42u3XQQqCQBSAYcWFS4/QUTpaHa2jdISWLUJjjMpclJoPGvq+1WsYfiJCZ4oCAAAAAAAAAAAAAAAAAHin6pL9c6H/fOzHbRrP0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0u/SY9LS0tLS0tLS0tLS0n+edm+UlpaWlpaWlpaWlpaW/tl0Ndyzbno7/+tPTJdd1wal69dNa6abx+Lq6TSeYtK7BX/Diek0XULSZZrakPRtV0i6Hu/KIt30q4fM0pvBqvR9mvsQkZaW9gyJT+f5lsnzjR54xAk8mAUeJyMPwYFH98ALx5Jr0kRLLndT7b64UX9QR/0eAAAAAAAAAAAAAAAAAAD/4gpryzr/bja4QgAAAABJRU5ErkJggg==',
-                {
-                  real: true, // 根据图片实际尺寸调整(转pt)
-                }
-              );
-            }, 1000);
-          },
         });
       },
       preView() {
         // this.$refs.preView.show(hiprintTemplate, this.formData.data);
-        this.$refs.preView.show(hiprintTemplate, printData);
+        this.$refs.preView.show(hiprintTemplate, this.data.printData);
       },
       jxcLimit(v) {
         this.$refs.preView.handleChange(v);

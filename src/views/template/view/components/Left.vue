@@ -32,7 +32,8 @@
   const emit = defineEmits(['select', 'jxcLimit']);
 
   const props = defineProps({
-    id: { type: String, default: () => '' },
+    templateId: { type: String, default: () => '' },
+    templateList: { type: Array, default: () => [] },
   });
 
   // eslint-disable-next-line vue/no-dupe-keys
@@ -71,17 +72,24 @@
   ];
 
   watch(
-    () => props.id,
+    () => props.templateId,
     () => {
-      if (props.id) {
-        templateId.value = props.id;
+      if (props.templateId) {
+        templateId.value = props.templateId;
 
-        // if (props.data['list']) {
-        //   treeData.value = [];
-        //   treeData.value = props.data['list'];
-        //   autoExpandParentNode();
-        // }
         autoExpandParentNode(templateId.value);
+      }
+    },
+    {
+      immediate: true,
+    }
+  );
+
+  watch(
+    () => props.templateList,
+    () => {
+      if (0 < props.templateList.length) {
+        treeData.value = props.templateList;
       }
     },
     {
@@ -91,9 +99,7 @@
 
   async function load() {
     treeData.value = await tempList({});
-    return treeData.value;
   }
-  load();
 
   function handleChange(v) {
     console.log(v);
@@ -123,7 +129,7 @@
       }
     });
     if (keys.length > 0) {
-      reloadTree();
+      await reloadTree();
       expandedKeys.value = keys;
     }
   }
