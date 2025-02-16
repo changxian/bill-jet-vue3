@@ -19,7 +19,7 @@
   const props = defineProps({
     modelValue: {
       type: Object,
-      default: {timeType:'', startDate: '', endDate: '' },
+      default: { timeType: '', startDate: '', endDate: '' },
     },
     startDateKey: {
       type: string,
@@ -74,19 +74,19 @@
         const d = dayjs().endOf('month').format('YYYY-MM-DD');
         return [s, d];
       },
+      lastMonth: function () {
+        const s = dayjs().subtract(1, 'month').startOf('month').format('YYYY-MM-DD');
+        const d = dayjs().subtract(1, 'month').endOf('month').format('YYYY-MM-DD');
+        return [s, d];
+      },
       month3: function () {
-        const s = dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD');
+        const s = dayjs().subtract(2, 'month').startOf('month').format('YYYY-MM-DD');
         const d = dayjs().endOf('month').format('YYYY-MM-DD');
         return [s, d];
       },
       month6: function () {
-        const s = dayjs().startOf('month').subtract(5, 'month').format('YYYY-MM-DD');
+        const s = dayjs().subtract(5, 'month').startOf('month').format('YYYY-MM-DD');
         const d = dayjs().endOf('month').format('YYYY-MM-DD');
-        return [s, d];
-      },
-      lastMonth: function () {
-        const s = dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD');
-        const d = dayjs().endOf('month').subtract(1, 'month').format('YYYY-MM-DD');
         return [s, d];
       },
     };
