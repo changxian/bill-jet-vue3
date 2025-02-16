@@ -207,8 +207,8 @@
     contractCode: '',
     status: undefined,
     invoiceStatus: undefined,
-    costAmount: undefined,
-    profitAmount: undefined,
+    costAmount: 0,
+    profitAmount: 0,
     userId: '',
     userName: '',
     remark: '',
@@ -360,7 +360,9 @@
       }
       // num = parseFloat(num) + parseFloat(item.amount);
       amount += parseFloat(item.amount);
-      cost = parseFloat(cost) + parseFloat(item.costAmount);
+      if (item.costAmount != null) {
+        cost = parseFloat(cost) + parseFloat(item.costAmount);
+      }
     });
     // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
@@ -486,7 +488,7 @@
     hasInit.value = false;
     init();
   }
-  // 保存按钮点击事件
+  // 保存【编辑确认】按钮点击事件
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
     if (!validateForm()) {
