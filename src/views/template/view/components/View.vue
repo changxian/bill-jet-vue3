@@ -3,8 +3,8 @@
     <!--查询区域-->
     <div class="jcx-card">
       <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled">设为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled">设为退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled" @click="setting(1, 1)">设为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled" @click="setting(1, 2)">设为退货模板</a-button>
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:export-outlined">导出模板</a-button>
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:import-outlined">导入模板</a-button>
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-twotone">设置</a-button>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { printLimit, tempList } from "./index.api";
+  import { printLimit } from './index.api';
 
   export default {
     name: 'PrintPreview',
@@ -27,6 +27,7 @@ import { printLimit, tempList } from "./index.api";
         printData: null,
         limitData: null,
         value: '',
+        templateId: '',
       };
     },
     computed: {},
@@ -34,17 +35,19 @@ import { printLimit, tempList } from "./index.api";
     created() {},
     mounted() {},
     methods: {
-      handleChange(value) {
+      handleChange(value, templateId) {
         // 左侧打印限制的逻辑
         console.log(value);
         this.limitData = JSON.parse(JSON.stringify(this.printData));
         printLimit(value.value, this.limitData);
-        this.show(this.hiprintTemplate, this.limitData, false);
+        this.show(this.hiprintTemplate, this.limitData, templateId, false);
       },
       hideModal() {
         this.visible = false;
       },
-      show(hiprintTemplate, printData, bool = true) {
+      show(hiprintTemplate, printData, templateId, bool = true) {
+        console.log('show-templateId:' + templateId);
+        this.templateId = templateId;
         if (bool) {
           this.printData = printData;
           this.hiprintTemplate = hiprintTemplate;
@@ -54,6 +57,9 @@ import { printLimit, tempList } from "./index.api";
           const html = hiprintTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
         }, 100);
+      },
+      setting(type, category) {
+        return;
       },
       print() {
         this.waitShowPrinter = true;

@@ -4,14 +4,17 @@
       <a-spin :spinning="loading">
         <BasicTree
           v-if="!treeReloading"
-          title=""
+          title="可选有模板列表信息"
+          checkable
           showLine
           :checkStrictly="true"
-          :clickRowToExpand="false"
+          :clickRowToExpand="true"
           :treeData="treeData"
+          :checkedKeys="checkedKeys"
           :selectedKeys="selectedKeys"
           :expandedKeys="expandedKeys"
           :autoExpandParent="autoExpandParent"
+          @check="onSelect"
           @select="onSelect"
           @expand="onExpand"
         />
@@ -46,6 +49,8 @@
   let expandedKeys = ref<any[]>([]);
   // 当前选中的项
   let selectedKeys = ref<any[]>([]);
+  // 树的选择节点信息
+  const checkedKeys = ref<any>([]);
   // 是否自动展开父级
   let autoExpandParent = ref<boolean>(true);
   // 树组件重新加载
@@ -146,20 +151,26 @@
    * 设置当前选中的行
    */
   function setSelectedKey(key: string, data?: object) {
+    debugger
     selectedKeys.value = [key];
+    checkedKeys.value = [key];
     if (data) {
       emit('select', data);
     }
   }
 
-  // 树选择事件
-  function onSelect(selKeys, event) {
-    if (selKeys.length > 0 && selectedKeys.value[0] !== selKeys[0]) {
-      setSelectedKey(selKeys[0], event.selectedNodes[0]);
-    } else {
-      // 这样可以防止用户取消选择
-      setSelectedKey(selectedKeys.value[0]);
+  /**
+   * 树点击事件
+   * src/views/system/role/components/RolePermissionDrawer.vue 有完整的数操作逻辑
+   *
+   * @param selKeys {"checked":["1842056974677499906"],"halfChecked":[]} 选中第二条数据如 {"checked":["1842056974677499906","1842074443005747201"],"halfChecked":[]}
+   * @param e event.node为整体数据信息 event.node.data是表单模板数据
+   */
+  function onSelect(selKeys, e) {
+    if (selKeys == 0) {
+      return;
     }
+    setSelectedKey(e.node.key, e.node);
   }
 
   // 树展开事件

@@ -43,6 +43,7 @@
     },
     data() {
       return {
+        tempData: undefined,
         data: {
           templateList: [],
           templateId: undefined,
@@ -61,12 +62,27 @@
           console.log('------分隔线------');
           console.info(oldVal);
           this.form.id = newVal.id;
+          this.form.templateId = newVal.templateId;
           this.form.category = newVal.category;
 
           // TODO 从设置那里进来如何操作，？？？？
 
           // 获取模板信息 和 获取打印预览的数据信息
           this.data = await getTemplateData(this.form);
+          // 未设置模板时，则选择第一个模板
+
+          const tmpList = this.data.templateList;
+          let find;
+          if ('' === this.data.templateId || null == (find = tmpList.find((item) => (item.id = this.data.templateId)))) {
+            // 未设置模板，或模板列表中不存在该模板，取第一个模板
+            const tmp = this.data.templateList[0];
+            this.form.templateId = this.data.templateId = tmp.id;
+            this.tempData = tmp.data;
+          } else {
+            this.tempData = find.data;
+          }
+          this.tempData = find.data;
+
           roil(this.data.printData['table'], 1);
           this.preView();
         },
@@ -101,10 +117,10 @@
       },
       preView() {
         // this.$refs.preView.show(hiprintTemplate, this.formData.data);
-        this.$refs.preView.show(hiprintTemplate, this.data.printData);
+        this.$refs.preView.show(hiprintTemplate, this.data.printData, this.data.templateId);
       },
-      jxcLimit(v) {
-        this.$refs.preView.handleChange(v);
+      jxcLimit(v, templateId) {
+        this.$refs.preView.handleChange(v, templateId);
       },
       onTreeSelect(o) {
         console.info(o);
