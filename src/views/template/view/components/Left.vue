@@ -28,15 +28,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, ref, watch } from 'vue';
+  import { ref, watch, onMounted } from 'vue';
   import { BasicTree } from '/@/components/Tree';
-  import { tempList } from '@/views/template/view/components/index.api';
 
   const emit = defineEmits(['select', 'jxcLimit']);
 
   const props = defineProps({
-    templateId: { type: String, default: () => '' },
     templateList: { type: Array, default: () => [] },
+    data: { type: Object, default: () => {} },
   });
 
   // eslint-disable-next-line vue/no-dupe-keys
@@ -77,34 +76,27 @@
   ];
 
   watch(
-    () => props.templateId,
+    () => props.data,
     () => {
-      if (props.templateId) {
-        templateId.value = props.templateId;
+      if (0 < props.data.templateList.length) {
+        treeData.value = props.data.templateList;
+      }
+      if ('' != props.data.templateId) {
+        templateId.value = props.data.templateId;
 
-        autoExpandParentNode(templateId.value);
+        setSelectedKey(
+          templateId.value,
+          treeData.value.find((item) => item.id === templateId.value)
+        );
+        setTimeout(() => {
+          document.getElementsByClassName('ant-tree-treenode-checkbox-checked')[0].scrollIntoView({ behavior: 'smooth' });
+        }, 200);
       }
     },
     {
       immediate: true,
     }
   );
-
-  watch(
-    () => props.templateList,
-    () => {
-      if (0 < props.templateList.length) {
-        treeData.value = props.templateList;
-      }
-    },
-    {
-      immediate: true,
-    }
-  );
-
-  async function load() {
-    treeData.value = await tempList({});
-  }
 
   function handleChange(v) {
     console.log(v);
@@ -112,46 +104,11 @@
     emit('jxcLimit', v);
   }
 
-  // 自动展开父节点，只展开一级
-  async function autoExpandParentNode(key: any) {
-    let keys: Array<any> = [];
-    if (treeData.value.length == 0) {
-      await load();
-    }
-    treeData.value.forEach((item, index) => {
-      if (item.children && item.children.length > 0) {
-        keys.push(item.key);
-      }
-      if ('' == key) {
-        if (index === 0) {
-          // 默认选中第一个
-          setSelectedKey(item.id, item);
-        }
-      } else {
-        if (item.key === key) {
-          setSelectedKey(item.id, item);
-        }
-      }
-    });
-    if (keys.length > 0) {
-      await reloadTree();
-      expandedKeys.value = keys;
-    }
-  }
-
-  // 重新加载树组件，防止无法默认展开数据
-  async function reloadTree() {
-    await nextTick();
-    treeReloading.value = true;
-    await nextTick();
-    treeReloading.value = false;
-  }
-
   /**
    * 设置当前选中的行
    */
   function setSelectedKey(key: string, data?: object) {
-    debugger
+    console.log('------------------------setSelectedKey: ' + key);
     selectedKeys.value = [key];
     checkedKeys.value = [key];
     if (data) {

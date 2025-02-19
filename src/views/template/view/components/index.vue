@@ -2,7 +2,7 @@
   <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(236 236 236); width: 1192px">
     <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
       <a-card :bordered="false" style="height: 100%">
-        <left @select="onTreeSelect" @jxcLimit="jxcLimit" :templateId="form.templateId" :templateList="data.templateList" />
+        <left @select="onTreeSelect" @jxcLimit="jxcLimit" :data="data" />
       </a-card>
     </a-col>
     <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
@@ -14,8 +14,6 @@
 <script defer>
   import '../../public/css/bootstrap.min.css';
   import '../../public/css/print-lock.css';
-  import tempData from '../temp-data';
-  // import printData from '../print-data';
   import { getTemplateData, roil } from '@/views/template/view/components/index.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
@@ -46,8 +44,9 @@
         tempData: undefined,
         data: {
           templateList: [],
-          templateId: undefined,
+          templateId: '',
           printData: {},
+          find: {},
         },
         form: {
           id: '',
@@ -72,34 +71,34 @@
           // 未设置模板时，则选择第一个模板
 
           const tmpList = this.data.templateList;
-          let find;
-          if ('' === this.data.templateId || null == (find = tmpList.find((item) => (item.id = this.data.templateId)))) {
+          if ('' === this.data.templateId || null == (this.data.find = tmpList.find((item) => item.id === this.data.templateId))) {
             // 未设置模板，或模板列表中不存在该模板，取第一个模板
             const tmp = this.data.templateList[0];
             this.form.templateId = this.data.templateId = tmp.id;
-            this.tempData = tmp.data;
-          } else {
-            this.tempData = find.data;
+            this.data.find = tmp;
           }
-          this.tempData = find.data;
+
+          this.tempData = this.data.find.data;
+          if ('string' == typeof this.tempData) {
+            this.tempData = JSON.parse(this.tempData);
+          }
 
           roil(this.data.printData['table'], 1);
+
+          await this.init();
           this.preView();
         },
         immediate: true, // 立即执行
       },
     },
     mounted() {
-      hiprint = vuePluginHiprint.hiprint;
-      defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
-      this.template = {
-        ...tempData,
-      };
-      this.init();
       // this.preView();
     },
     methods: {
       async init() {
+        hiprint = vuePluginHiprint.hiprint;
+        defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
         hiprint.init({
           providers: [new defaultElementTypeProvider()],
           lang: 'cn',
@@ -108,7 +107,7 @@
         hiprint.setConfig();
         let panels = {
           // ...this.formData,
-          ...this.template,
+          ...this.tempData,
         };
 
         this.template = hiprintTemplate = new hiprint.PrintTemplate({
@@ -123,9 +122,10 @@
         this.$refs.preView.handleChange(v, templateId);
       },
       onTreeSelect(o) {
+        console.info('onTreeSelect---------------');
         console.info(o);
         if (o['data']) {
-          this.template = JSON.parse(o['data']);
+          this.tempData = JSON.parse(o['data']);
           this.init();
           this.preView();
         }
