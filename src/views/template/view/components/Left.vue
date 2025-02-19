@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, onMounted } from 'vue';
+  import { ref, watch } from 'vue';
   import { BasicTree } from '/@/components/Tree';
 
   const emit = defineEmits(['select', 'jxcLimit']);

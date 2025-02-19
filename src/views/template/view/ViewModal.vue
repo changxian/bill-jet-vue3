@@ -1,6 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" destroyOnClose :title="title" width="1200px" :height="760" @ok="handleSubmit">
-    <Index ref="registerForm" @ok="submitCallback" :formData="formData" />
+    <Index ref="registerForm" @ok="selected" :formData="formData" />
   </BasicModal>
 </template>
 <!--
@@ -15,6 +15,9 @@
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import Index from './components/index.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
+
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(false);
@@ -22,11 +25,13 @@
   const registerForm = ref();
 
   const formData = ref();
+  const template = ref(null);
 
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ confirmLoading: false, showCancelBtn: !!data?.showFooter, showOkBtn: !!data?.showFooter });
     isDetail.value = !!data?.showFooter;
+    template.value = null;
 
     formData.value = {
       ...data.record,
@@ -36,17 +41,24 @@
   });
   //设置标题
   const title = computed(() => (!unref(isUpdate) ? '预览' : !unref(isDetail) ? '预览' : '预览'));
+
   //表单提交事件
   async function handleSubmit() {
-    registerForm.value.submitForm();
+    if (null == template.value) {
+      return createMessage.warning('请先选择模板');
+    }
+    emit('success', template.value);
+    closeModal();
+    // registerForm.value.submitForm();
   }
 
   /**
    * form保存回调事件
    */
-  function submitCallback() {
-    closeModal();
-    emit('success');
+  function selected(o) {
+    template.value = o;
+    console.log('ViewModal.selected');
+    console.info(o);
   }
 </script>
 

@@ -193,10 +193,19 @@
   function selectTemplate() {
     openModal(true, {
       // record: formData,
-      record: { templateId: formData.deliveryBillTempId },
+      record: { templateId: formData.deliveryBillTempId, name: 'deliveryBillTemp' },
       isUpdate: true,
       showFooter: true,
     });
+  }
+
+  /**
+   * 成功回调
+   */
+  function handleSuccess(o, name) {
+    formData[name] = o.title;
+    formData[name + 'Id'] = o.id;
+    console.info('Success!');
   }
 
   /**
@@ -262,12 +271,6 @@
       .finally(() => {
         confirmLoading.value = false;
       });
-  }
-  /**
-   * 成功回调
-   */
-  function handleSuccess() {
-    console.info('Success!');
   }
 
   defineExpose({
