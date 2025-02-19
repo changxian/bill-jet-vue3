@@ -25,7 +25,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryBillTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -40,7 +40,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryReturnTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -50,7 +50,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('accountTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -65,7 +65,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('repayReceiptTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -75,7 +75,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockBillTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -85,7 +85,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockReturnTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -100,7 +100,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockAccountTemp')">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -190,13 +190,24 @@
   /**
    * 新增
    */
-  function selectTemplate() {
+  function selectTemplate(name) {
     openModal(true, {
       // record: formData,
-      record: { templateId: formData.deliveryBillTempId },
+      record: { templateId: formData[name + 'Id'], name: name },
       isUpdate: true,
       showFooter: true,
     });
+  }
+
+  /**
+   * 成功回调
+   */
+  function handleSuccess(o, name) {
+    console.info('Success!');
+    console.info(o);
+    console.info(name);
+    formData[name] = o.name;
+    formData[name + 'Id'] = o.id;
   }
 
   /**
@@ -262,12 +273,6 @@
       .finally(() => {
         confirmLoading.value = false;
       });
-  }
-  /**
-   * 成功回调
-   */
-  function handleSuccess() {
-    console.info('Success!');
   }
 
   defineExpose({
