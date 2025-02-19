@@ -14,6 +14,7 @@
 <script defer>
   import '../../public/css/bootstrap.min.css';
   import '../../public/css/print-lock.css';
+  import printData from '@/views/template/view/print-data';
   import { getTemplateData, roil } from '@/views/template/view/components/index.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
@@ -57,35 +58,39 @@
     watch: {
       formData: {
         handler: async function (newVal, oldVal) {
-          console.info(newVal);
-          console.log('------分隔线------');
-          console.info(oldVal);
+          // 从开单进来 传 id, category
           this.form.id = newVal.id;
-          this.form.templateId = newVal.templateId;
           this.form.category = newVal.category;
 
-          // TODO 从设置那里进来如何操作，？？？？
+          // 从设置那里进来如何操作
+          // 从设置进来 只传 templateId, 可能为空
+          this.form.templateId = newVal.templateId;
 
           // 获取模板信息 和 获取打印预览的数据信息
           this.data = await getTemplateData(this.form);
-          // 未设置模板时，则选择第一个模板
 
-          const tmpList = this.data.templateList;
-          if ('' === this.data.templateId || null == (this.data.find = tmpList.find((item) => item.id === this.data.templateId))) {
-            // 未设置模板，或模板列表中不存在该模板，取第一个模板
-            const tmp = this.data.templateList[0];
-            this.form.templateId = this.data.templateId = tmp.id;
-            this.data.find = tmp;
+          // 处理预览数据
+          {
+            // 未设置模板时 或在模板列表中找不到模板信息，则选择第一个模板来预览
+            if ('' === this.data.templateId || null == (this.data.find = this.data.templateList.find((item) => item.id === this.data.templateId))) {
+              this.data.find = this.data.templateList[0];
+            }
+            if (!this.form.id) {
+              // 从设置进来,用测试数据渲染表单
+              this.data.printData = printData;
+            }
+
+            this.tempData = this.data.find.data;
+            if ('string' == typeof this.tempData) {
+              this.tempData = JSON.parse(this.tempData);
+            }
           }
 
-          this.tempData = this.data.find.data;
-          if ('string' == typeof this.tempData) {
-            this.tempData = JSON.parse(this.tempData);
-          }
-
+          // 处理表格信息：多个表的列名不同，但取值为同一属性，对这些数据进行处理。多属性配置在 roil.config.ts 中
           roil(this.data.printData['table'], 1);
-
+          // 初始化打印预览插件
           await this.init();
+          // 渲染打印表单
           this.preView();
         },
         immediate: true, // 立即执行

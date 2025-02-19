@@ -428,7 +428,7 @@
       // record: formData,
       record: { id: selectedRowKeys.value[0], category: 1 },
       isUpdate: true,
-      showFooter: true,
+      showFooter: false,
     });
   }
   /**
