@@ -89,6 +89,7 @@ export default {
     passwordPlaceholder: 'Please input password',
     smsPlaceholder: 'Please input sms code',
     mobilePlaceholder: 'Please input mobile',
+    emailPlaceholder: 'Please input email',
     mobileCorrectPlaceholder: 'Please input correct mobile',
     policyPlaceholder: 'Register after checking',
     diffPwd: 'The two passwords are inconsistent',

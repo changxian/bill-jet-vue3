@@ -45,15 +45,16 @@
 
 <script lang="ts" name="company-tenantCompany" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './TenantCompany.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './TenantCompany.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
   import TenantCompanyModal from './components/TenantCompanyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
+  import { useMessage } from '@/hooks/web/useMessage';
 
+  const { createMessage } = useMessage();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -141,7 +142,12 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteOne({ id: record.id }, handleSuccess);
+    debugger;
+    if (record.isDefault) {
+      return createMessage.warning('默认公司数据不能删除！');
+    } else {
+      await deleteOne({ id: record.id }, handleSuccess);
+    }
   }
    
   /**
@@ -179,16 +185,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'company:sys_tenant_company:delete'
-      }
-    ]
+        auth: 'company:sys_tenant_company:delete',
+      },
+    ];
   }
 
   /**
@@ -207,17 +214,13 @@
     //刷新数据
     reload();
   }
-  
 
+  let rangeField = '';
 
-
-  
-  let rangeField = ''
-  
   /**
    * 设置范围查询条件
    */
-  async function setRangeQuery(){
+  async function setRangeQuery() {
     let queryParamClone = cloneDeep(queryParam);
     if (rangeField) {
       let fieldsValue = rangeField.split(',');
@@ -231,7 +234,7 @@
           queryParamClone[item+'_begin'] = '';
           queryParamClone[item+'_end'] = '';
         }
-      })
+      });
     }
     return queryParamClone;
   }

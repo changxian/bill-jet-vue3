@@ -27,8 +27,9 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
+        <!-- 高级查询
         <super-query :config="superQueryConfig" @search="handleSuperQuery" />
+         -->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -46,10 +47,10 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './DeliverBillDetail.data';
+  import { columns } from './DeliverBillDetail.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './DeliverBillDetail.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import DeliverBillDetailModal from './components/DeliverBillDetailModal.vue'
+  import DeliverBillDetailModal from './components/DeliverBillDetailModal.vue';
   import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();

@@ -25,6 +25,8 @@ enum Api {
   getInputCode = '/sys/randomImage',
   //获取短信验证码的接口
   getCaptcha = '/sys/sms',
+  //获取邮箱验证码的接口
+  getCaptchaEmail = '/sys/email',
   //注册接口
   registerApi = '/sys/user/register',
   //校验用户接口
@@ -119,7 +121,8 @@ export function getCodeInfo(currdatetime) {
 export function getCaptcha(params) {
   return new Promise((resolve, reject) => {
     defHttp
-      .post({ url: Api.getCaptcha, params }, { isTransformResponse: false })
+      // Api.getCaptcha
+      .post({ url: Api.getCaptchaEmail, params }, { isTransformResponse: false })
       .then((res) => {
         console.log(res);
         if (res.success) {
