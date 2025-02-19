@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { printLimit } from './index.api';
+  import { printLimit } from '../index.api';
 
   export default {
     name: 'PrintPreview',

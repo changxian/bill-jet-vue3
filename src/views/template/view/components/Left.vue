@@ -89,7 +89,10 @@
           treeData.value.find((item) => item.id === templateId.value)
         );
         setTimeout(() => {
-          document.getElementsByClassName('ant-tree-treenode-checkbox-checked')[0].scrollIntoView({ behavior: 'smooth' });
+          let arr = document.getElementsByClassName('ant-tree-treenode-checkbox-checked');
+          if (0 < arr.length) {
+            arr[0].scrollIntoView({ behavior: 'smooth' });
+          }
         }, 200);
       }
     },
