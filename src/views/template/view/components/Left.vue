@@ -88,12 +88,6 @@
           templateId.value,
           treeData.value.find((item) => item.id === templateId.value)
         );
-        setTimeout(() => {
-          let arr = document.getElementsByClassName('ant-tree-treenode-checkbox-checked');
-          if (0 < arr.length) {
-            arr[0].scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 200);
       }
     },
     {
@@ -107,6 +101,13 @@
     emit('jxcLimit', v);
   }
 
+  function scrollIntoView() {
+    let arr = document.getElementsByClassName('ant-tree-treenode-checkbox-checked');
+    console.log('ant-tree-treenode-checkbox-checked------------------------' + arr.length);
+    if (0 < arr.length) {
+      arr[0].scrollIntoView({ behavior: 'smooth' });
+    }
+  }
   /**
    * 设置当前选中的行
    */
@@ -114,6 +115,12 @@
     console.log('------------------------setSelectedKey: ' + key);
     selectedKeys.value = [key];
     checkedKeys.value = [key];
+
+    scrollIntoView();
+    setTimeout(() => {
+      scrollIntoView();
+    }, 500);
+
     if (data) {
       emit('select', data);
     }

@@ -7,13 +7,12 @@ enum Api {
   mySystemSetting = '/setting/system/systemSetting/getMySystemSetting',
   savePrint = '/setting/print/printSetting/add',
   editPrint = '/setting/print/printSetting/edit',
+  myPrintSetting = '/setting/print/printSetting/query',
   saveBilling = '/setting/billing/billingSetting/add',
   editBilling = '/setting/billing/billingSetting/edit',
   saveOthers = '/bill/dynamic/saveFieldTitles',
   saveSystem = '/setting/system/systemSetting/add',
   editSystem = '/setting/system/systemSetting/edit',
-
-
 }
 
 /**
@@ -65,3 +64,4 @@ export const saveOrUpdateSystem = (params, isUpdate) => {
 
 export const getMyBillSetting = () => defHttp.get({ url: Api.myBillSetting });
 export const getMySystemSetting = () => defHttp.get({ url: Api.mySystemSetting });
+export const getMyPrintSetting = () => defHttp.get({ url: Api.myPrintSetting });

@@ -111,7 +111,7 @@
           <a-row>
             <a-col :span="24">
               <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                <a-button type="primary" html-type="submit">保存</a-button>
+                <a-button type="primary" html-type="submit" @click="submitForm">保存</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -125,11 +125,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, h } from 'vue';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, h, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
-  import { saveOrUpdatePrint } from '../index.api';
+  import { getMyPrintSetting, saveOrUpdatePrint } from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import { SearchOutlined } from '@ant-design/icons-vue';
@@ -140,17 +140,16 @@
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: () => ({}) },
     formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   // eslint-disable-next-line vue/no-dupe-keys
-  const formData = reactive<Record<string, any>>({
+  const formData = ref({
     id: '',
     printer: '',
-    num: undefined,
+    num: 1,
     deliveryBillTempId: '',
     deliveryBillTemp: '',
     deliveryReturnTempId: '',
@@ -176,8 +175,8 @@
     { value: 10, label: '10' },
   ]);
   // 给开单类型设置默认值
-  if (formData.num == undefined && numOptions.value.length > 0) {
-    formData.num = numOptions.value[0].value;
+  if (formData.value.num == undefined && numOptions.value.length > 0) {
+    formData.value.num = numOptions.value[0].value;
   }
   // 表单禁用
   const disabled = computed(() => {
@@ -193,7 +192,7 @@
   function selectTemplate(name) {
     openModal(true, {
       // record: formData,
-      record: { templateId: formData[name + 'Id'], name: name },
+      record: { templateId: formData.value[name + 'Id'], name: name },
       isUpdate: true,
       showFooter: true,
     });
@@ -206,8 +205,8 @@
     console.info('Success!');
     console.info(o);
     console.info(name);
-    formData[name] = o.name;
-    formData[name + 'Id'] = o.id;
+    formData.value[name] = o.name;
+    formData.value[name + 'Id'] = o.id;
   }
 
   /**
@@ -247,21 +246,10 @@
     const isUpdate = ref<boolean>(false);
     //时间格式化
     let model = formData;
-    if (model.id) {
+    if (model.value.id) {
       isUpdate.value = true;
     }
-    //循环数据
-    for (let data in model) {
-      //如果该数据是数组并且是字符串类型
-      if (model[data] instanceof Array) {
-        let valueType = getValueType(formRef.value.getProps, data);
-        //如果是字符串类型的需要变成以逗号分割的字符串
-        if (valueType === 'string') {
-          model[data] = model[data].join(',');
-        }
-      }
-    }
-    await saveOrUpdatePrint(model, isUpdate.value)
+    await saveOrUpdatePrint(model.value, isUpdate.value)
       .then((res) => {
         if (res.success) {
           createMessage.success(res.message);
@@ -274,6 +262,21 @@
         confirmLoading.value = false;
       });
   }
+
+  function fetchPrintSettingData() {
+    confirmLoading.value = true;
+    getMyPrintSetting()
+      .then((res) => {
+        formData.value = {
+          ...res,
+        };
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+      });
+  }
+
+  onMounted(fetchPrintSettingData);
 
   defineExpose({
     selectTemplate,

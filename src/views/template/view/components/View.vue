@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: hidden; height: 740px">
+  <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
       <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
@@ -9,7 +9,7 @@
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:import-outlined">导入模板</a-button>
       <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
-    <a-card style="width: 100%; margin-top: 5px; height: 694px; overflow-y: scroll">
+    <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
       <div id="preview_content_design"></div>
     </a-card>
   </div>
@@ -56,7 +56,7 @@
         setTimeout(() => {
           const html = hiprintTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
-        }, 100);
+        }, 10);
       },
       setting(type, category) {
         return;
