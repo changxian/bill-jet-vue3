@@ -127,8 +127,8 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, h, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import { getValueType } from '/@/utils';
   import { getMyPrintSetting, saveOrUpdatePrint } from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
@@ -160,7 +160,6 @@
     stockReturnTemp: '',
     stockAccountTemp: '',
   });
-  const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);

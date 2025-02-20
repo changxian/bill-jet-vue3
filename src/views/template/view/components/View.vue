@@ -3,11 +3,11 @@
     <!--查询区域-->
     <div class="jcx-card">
       <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled" @click="setting(1, 1)">设为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-filled" @click="setting(1, 2)">设为退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:export-outlined">导出模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:import-outlined">导入模板</a-button>
-      <a-button type="primary" style="margin-left: 10px;" preIcon="ant-design:setting-twotone">设置</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:export-outlined">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:import-outlined">导入模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
       <div id="preview_content_design"></div>
@@ -17,37 +17,54 @@
 
 <script>
   import { printLimit } from '../index.api';
+  import { selectiveSaveOrUpdatePrint } from '@/views/setting/system/index.api';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
 
   export default {
     name: 'PrintPreview',
-    props: {},
+    props: {
+      printSetting: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
+    emits: ['setting'],
     data() {
       return {
         hiprintTemplate: null,
         printData: null,
         limitData: null,
         value: '',
-        templateId: '',
+        // 渲染的模板
+        template: {},
       };
     },
-    computed: {},
+    computed: {
+      printSettings() {
+        return {
+          ...this.printSetting,
+        };
+      },
+    },
     watch: {},
     created() {},
     mounted() {},
     methods: {
-      handleChange(value, templateId) {
+      handleChange(value) {
         // 左侧打印限制的逻辑
         console.log(value);
         this.limitData = JSON.parse(JSON.stringify(this.printData));
         printLimit(value.value, this.limitData);
-        this.show(this.hiprintTemplate, this.limitData, templateId, false);
+        this.show(this.hiprintTemplate, this.limitData, this.template, false);
       },
       hideModal() {
         this.visible = false;
       },
-      show(hiprintTemplate, printData, templateId, bool = true) {
-        console.log('show-templateId:' + templateId);
-        this.templateId = templateId;
+      show(hiprintTemplate, printData, template, bool = true) {
+        this.template = {
+          ...template,
+        };
         if (bool) {
           this.printData = printData;
           this.hiprintTemplate = hiprintTemplate;
@@ -58,8 +75,24 @@
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
         }, 10);
       },
-      setting(type, category) {
-        return;
+      setting(category) {
+        let n = 1 === category ? 'deliveryBillTemp' : 'deliveryReturnTemp';
+
+        let obj = {
+          category: category,
+          ...this.printSetting,
+        };
+        obj[n] = this.template.name;
+        obj[n + 'Id'] = this.template.id;
+
+        selectiveSaveOrUpdatePrint(obj).then((res) => {
+          if (res.success) {
+            createMessage.success(res.message);
+            this.$emit('setting', this.template, n);
+          } else {
+            createMessage.warning(res.message);
+          }
+        });
       },
       print() {
         this.waitShowPrinter = true;
@@ -83,7 +116,10 @@
 
 <style lang="less" scoped>
   .jcx-card {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+    box-shadow:
+      0 1px 2px 0 rgba(0, 0, 0, 0.03),
+      0 1px 6px -1px rgba(0, 0, 0, 0.02),
+      0 2px 4px 0 rgba(0, 0, 0, 0.02);
     box-sizing: border-box;
     margin: 0;
     padding: 5px;
@@ -91,7 +127,20 @@
     font-size: 14px;
     line-height: 1.5714285714285714;
     list-style: none;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      Segoe UI,
+      PingFang SC,
+      Hiragino Sans GB,
+      Microsoft YaHei,
+      Helvetica Neue,
+      Helvetica,
+      Arial,
+      sans-serif,
+      Apple Color Emoji,
+      Segoe UI Emoji,
+      Segoe UI Symbol;
     position: relative;
     background: #ffffff;
     border-radius: 4px;

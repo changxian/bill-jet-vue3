@@ -7,6 +7,7 @@ enum Api {
   mySystemSetting = '/setting/system/systemSetting/getMySystemSetting',
   savePrint = '/setting/print/printSetting/add',
   editPrint = '/setting/print/printSetting/edit',
+  selectiveSaveOrUpdate = '/setting/print/printSetting/selectiveSaveOrUpdate',
   myPrintSetting = '/setting/print/printSetting/query',
   saveBilling = '/setting/billing/billingSetting/add',
   editBilling = '/setting/billing/billingSetting/edit',
@@ -30,6 +31,15 @@ export const getDynamicFieldsAndValue = (params) => defHttp.get({ url: Api.getDy
 export const saveOrUpdatePrint = (params, isUpdate) => {
   const url = isUpdate ? Api.editPrint : Api.savePrint;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
+};
+
+/**
+ * 保存或选择性更新
+ * @param params
+ * @param isUpdate
+ */
+export const selectiveSaveOrUpdatePrint = (params) => {
+  return defHttp.post({ url: Api.selectiveSaveOrUpdate, params }, { isTransformResponse: false });
 };
 
 /**

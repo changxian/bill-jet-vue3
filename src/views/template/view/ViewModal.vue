@@ -7,7 +7,7 @@
         </a-card>
       </a-col>
       <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
-        <Preview ref="preView" />
+        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" />
       </a-col>
     </a-row>
   </BasicModal>
@@ -38,35 +38,47 @@
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(false);
   const isDetail = ref(false);
+  // 中间表格预览对象
   const preView = ref();
-  const template = ref({});
+  // 当前使用该模板渲染表格 /左侧模板列表选中时传过来的模板数据
+  const curTemplate = ref({});
 
   // index全移到这里来
   const data = ref({
+    // 左侧的模板列表信息
     templateList: [],
+    // 预览的模板id
     templateId: '',
+    // 打印预览的数据信息
     printData: {},
-    find: undefined,
+    // 打印设置信息
+    printSetting: {},
   });
+
+  // 页面跳传过来的数据信息
   const form = ref({
+    // 开单页面跳转只传且必传以下两个
     id: '',
     category: '',
+    // 参数设置跳转只传且必传以下两个 templateId可能为空
     templateId: '',
     name: '',
   });
 
   function reset() {
-    template.value = {};
+    curTemplate.value = {};
   }
 
   function view() {
     if (null != preView.value) {
-      preView.value.show(hiprintTemplate, data.value.printData, data.value.templateId);
+      preView.value.show(hiprintTemplate, data.value.printData, curTemplate.value);
     }
   }
-  function jxcLimit(v, templateId) {
+
+  // 左侧限制打印的配置信息回调，并调预览窗口，处理数据渲染
+  function jxcLimit(v) {
     if (null != preView.value) {
-      preView.value.handleChange(v, templateId);
+      preView.value.handleChange(v);
     }
   }
 
@@ -90,7 +102,7 @@
   }
 
   function onTreeSelect(o) {
-    template.value = {
+    curTemplate.value = {
       ...o,
     };
     console.info('onTreeSelect---------------');
@@ -117,25 +129,34 @@
     form.value.name = newVal.name;
 
     // 获取模板信息 和 获取打印预览的数据信息
-    data.value = await getTemplateData(form.value);
+    const loadData = await getTemplateData(form.value);
+    data.value = {
+      ...loadData,
+    };
 
     // 处理预览数据
     {
+      // 通过 data.vlaue.templateId 从templateList 找模板数据，若找不到则取第一个来渲染预览表格
+      let _find;
       // 未设置模板时 或在模板列表中找不到模板信息，则选择第一个模板来预览
-      if (!data.value.templateId || null == (data.value.find = data.value.templateList.find((item) => item['id'] === data.value.templateId))) {
-        data.value.find = data.value.templateList[0];
+      if (!data.value.templateId || null == (_find = data.value.templateList.find((item) => item['id'] === data.value.templateId))) {
+        _find = data.value.templateList[0];
       }
       if (!form.value.id) {
         // 从设置进来,用测试数据渲染表单
         data.value.printData = printData;
       }
 
-      if (data.value.find && data.value.find['data']) {
-        tempData = data.value.find['data'];
+      if (_find && _find['data']) {
+        tempData = _find['data'];
         if ('string' == typeof tempData) {
           tempData = JSON.parse(tempData);
         }
       }
+
+      curTemplate.value = {
+        ..._find,
+      };
     }
 
     // 处理表格信息：多个表的列名不同，但取值为同一属性，对这些数据进行处理。多属性配置在 roil.config.ts 中
@@ -162,10 +183,17 @@
 
   // 表单提交事件
   async function handleSubmit() {
-    if (null == template.value) {
+    if (null == curTemplate.value) {
       return createMessage.warning('请先选择模板');
     }
-    emit('success', template.value, form.value.name);
+    emit('success', curTemplate.value, form.value.name);
+    closeModal();
+    // registerForm.value.submitForm();
+  }
+
+  // 设置为送单模板/设置为送货退货单模板
+  async function setting(d, name) {
+    emit('success', d, name);
     closeModal();
     // registerForm.value.submitForm();
   }
