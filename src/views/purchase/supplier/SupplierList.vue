@@ -136,7 +136,7 @@
       },
     },
     exportConfig: {
-      name: "供应商",
+      name: '供应商',
       url: getExportUrl,
       params: queryParam,
     },

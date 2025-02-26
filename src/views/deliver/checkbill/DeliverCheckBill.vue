@@ -19,7 +19,7 @@
                 <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
                   <a-radio value="">所有</a-radio>
                   <a-radio value="1">是</a-radio>
-                  <a-radio value="2">否</a-radio>
+                  <a-radio value="0">否</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>
@@ -65,12 +65,10 @@
       <template #tableTitle>
         <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
         <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">
-          导出</a-button
-        >
+        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">导出</a-button>
       </template>
       <template #type_dictText="{ record }">
-        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else >{{ record.type_dictText }}</span>
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
@@ -196,7 +194,9 @@
     exportConfig: {
       name: '送货对账单',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        return Object.assign(queryParam, fastDateParam);
+      },
     },
   });
   const billSetting = userStore.getBillSetting;

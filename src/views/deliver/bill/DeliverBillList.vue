@@ -127,15 +127,15 @@
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
           导出</a-button
         >
-        <j-upload-button
+<!--        <j-upload-button
           type="primary"
           v-auth="'deliver.bill:jxc_deliver_bill:importExcel'"
           preIcon="ant-design:import-outlined"
           @click="onImportXls"
         >
           导入</j-upload-button
-        >
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        >-->
+<!--        <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -148,7 +148,7 @@
             >批量操作
             <Icon icon="mdi:chevron-down" />
           </a-button>
-        </a-dropdown>
+        </a-dropdown>-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
