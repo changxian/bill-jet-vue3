@@ -406,7 +406,6 @@
         return createMessage.warning('请先选择数据');
       }
       record = selectedRows.value[0];
-      debugger;
       // 4过账，5审核
       if (record.status === 4 || record.status === 5) {
         return createMessage.warning('状态为过账或审核的单据不能修改');

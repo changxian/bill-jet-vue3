@@ -91,7 +91,6 @@
       },
       summaryFunc: summaryFunc,
       afterFetch: async (resultItems) => {
-        debugger;
         hasPan.value = resultItems.length > 0;
         if (resultItems.length > 0) rowClick(resultItems[0]);
         listTotalCount();

@@ -311,7 +311,6 @@
         // 加载商品的客户价
         const goods = goodsRef.value.getData().details;
         let goodsIds = '';
-        debugger;
         if (goods.length > 0) {
           goods.forEach((item) => {
             if (item.goodsId) {
@@ -499,7 +498,6 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
-    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

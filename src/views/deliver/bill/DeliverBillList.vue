@@ -285,7 +285,9 @@
     exportConfig: {
       name: '送货开单',
       url: getExportUrl,
-      params: queryParam,
+      params:  async () => {
+        return Object.assign(queryParam, fastDateParam);
+      }
     },
     importConfig: {
       url: getImportUrl,

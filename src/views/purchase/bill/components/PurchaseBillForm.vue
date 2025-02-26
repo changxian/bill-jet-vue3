@@ -242,7 +242,6 @@
       // 获取供应商往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
         byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
-          debugger;
           formData.hisDebtAmount = res.purchaseDebtAmount;
         });
       }
@@ -398,7 +397,6 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
-    debugger;
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

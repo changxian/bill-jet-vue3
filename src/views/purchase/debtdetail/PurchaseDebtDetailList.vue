@@ -165,7 +165,6 @@
     totalDebtAmount.value = 0;
     if (supplierId.value != '') {
       listCount(Object.assign(queryParam, fastDateParam, { supplierId: supplierId.value })).then((res) => {
-        debugger;
         totalAmount.value = res.amount;
         totalPaymentAmount.value = res.paymentAmount;
         totalDiscountAmount.value = res.discountAmount;

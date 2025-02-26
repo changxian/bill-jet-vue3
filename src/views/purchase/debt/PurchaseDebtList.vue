@@ -126,7 +126,6 @@
     ];
   }
   function rowClick(record) {
-    debugger;
     console.log('record:');
     purchaseDebtDetailListRef.value.searchBySupplierId(record.id);
   }

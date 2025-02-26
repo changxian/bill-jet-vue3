@@ -120,7 +120,6 @@
     id: '',
   };
   function show(type, data) {
-    debugger;
     title.value = titleObj[type];
     modifyType.value = type;
     // if (type == 'updateStocks') {

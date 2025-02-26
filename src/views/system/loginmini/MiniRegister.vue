@@ -142,7 +142,6 @@
    * 获取手机验证码
    */
   async function getLoginCode() {
-    debugger;
     if (!formData.mobile) {
       createMessage.warn(t('sys.login.mobilePlaceholder'));
       return;

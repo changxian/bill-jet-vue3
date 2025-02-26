@@ -129,7 +129,6 @@
    * 撤销事件
    */
   async function handleRollBackStock(record: Recordable) {
-    debugger;
     console.log(record);
     if (selectedRowKeys.value.length === 0) {
       return createMessage.warning('请先选择一条数据');

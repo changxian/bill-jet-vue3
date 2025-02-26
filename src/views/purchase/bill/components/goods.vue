@@ -408,7 +408,6 @@
       record.costAmount = value * record.count;
       emit('change-goods', [...dataSource.value]);
     } else if (key === 'count') {
-      debugger;
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
       // 修改小计
       record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);

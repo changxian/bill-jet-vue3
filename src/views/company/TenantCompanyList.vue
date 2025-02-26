@@ -142,7 +142,6 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    debugger;
     if (record.isDefault) {
       return createMessage.warning('默认公司数据不能删除！');
     } else {
