@@ -103,38 +103,19 @@
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="copyAdd" preIcon="ant-design:plus-outlined"> 拷贝新增</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleEdit" preIcon="ant-design:edit-outlined"> 修改</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleDel" preIcon="ant-design:delete-outlined"> 删除</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined">
-          改状态</a-button
-        >
-        <a-button
-          type="primary"
-          v-auth="'deliver.bill:jxc_deliver_bill:add'"
-          @click="handleModify('invoiceStatus')"
-          preIcon="ant-design:edit-outlined"
-        >
-          改开票</a-button
-        >
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined">
-          改信息</a-button
-        >
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined">
-          打印预览</a-button
-        >
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('status')" preIcon="ant-design:edit-outlined">改状态</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined">改开票</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined">改信息</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined">
-          还款明细</a-button
-        >
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
-          导出</a-button
-        >
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined">还款明细</a-button>
+        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
 <!--        <j-upload-button
           type="primary"
           v-auth="'deliver.bill:jxc_deliver_bill:importExcel'"
           preIcon="ant-design:import-outlined"
           @click="onImportXls"
-        >
-          导入</j-upload-button
-        >-->
+        >导入</j-upload-button>-->
 <!--        <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -285,9 +266,9 @@
     exportConfig: {
       name: '送货开单',
       url: getExportUrl,
-      params:  async () => {
+      params: () => {
         return Object.assign(queryParam, fastDateParam);
-      }
+      },
     },
     importConfig: {
       url: getImportUrl,

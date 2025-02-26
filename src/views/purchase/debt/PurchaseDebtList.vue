@@ -84,7 +84,6 @@
       },
       beforeFetch: async (params) => {
         const queryVal = {
-          // [queryType.value]: queryTypeValue.value,
           queryType: queryTypeValue.value,
         };
         return Object.assign(params, queryVal);
@@ -101,7 +100,6 @@
       url: getExportUrl,
       params: () => {
         const queryVal = {
-          // [queryType.value]: queryTypeValue.value,
           queryType: queryTypeValue.value,
         };
         return Object.assign(queryParam, queryVal);
