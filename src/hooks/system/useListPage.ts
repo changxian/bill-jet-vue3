@@ -1,15 +1,15 @@
-import {reactive, ref, Ref, unref} from 'vue';
-import {merge} from 'lodash-es';
-import {DynamicProps} from '/#/utils';
-import {BasicTableProps, TableActionType, useTable} from '/@/components/Table';
-import {ColEx} from '/@/components/Form/src/types';
-import {FormActionType} from '/@/components/Form';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {useMethods} from '/@/hooks/system/useMethods';
-import {useDesign} from '/@/hooks/web/useDesign';
-import {filterObj} from '/@/utils/common/compUtils';
+import { reactive, ref, Ref, unref } from 'vue';
+import { merge } from 'lodash-es';
+import { DynamicProps } from '/#/utils';
+import { BasicTableProps, TableActionType, useTable } from '/@/components/Table';
+import { ColEx } from '/@/components/Form/src/types';
+import { FormActionType } from '/@/components/Form';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { useMethods } from '/@/hooks/system/useMethods';
+import { useDesign } from '/@/hooks/web/useDesign';
+import { filterObj } from '/@/utils/common/compUtils';
 
-const { handleExportXls, handleImportXls } = useMethods();
+const { handleExportXls, handleImportXls, handleBillExport } = useMethods();
 
 // 定义 useListPage 方法所需参数
 interface ListPageOptions {
@@ -21,6 +21,14 @@ interface ListPageOptions {
   pagination?: boolean;
   // 导出配置
   exportConfig?: {
+    url: string | (() => string);
+    // 导出文件名
+    name?: string | (() => string);
+    //导出参数
+    params?: object;
+  };
+  // 导出配置
+  billExportConfig?: {
     url: string | (() => string);
     // 导出文件名
     name?: string | (() => string);
@@ -45,13 +53,13 @@ interface IDoRequestOptions {
   // 是否自动清空选择，默认 true
   clearSelection?: boolean;
 }
-export  function addDynamicCols(oriColumns,dynamicCols){
-  let dynamicColumns=[];
-  if(!dynamicCols){
-    dynamicCols=[];
+export function addDynamicCols(oriColumns, dynamicCols) {
+  const dynamicColumns = [];
+  if (!dynamicCols) {
+    dynamicCols = [];
   }
-  if(!oriColumns){
-    oriColumns=[];
+  if (!oriColumns) {
+    oriColumns = [];
   }
   function find(arr: any, dataIndex: any) {
     for (let i = 0; i < arr.length; i++) {
@@ -61,7 +69,7 @@ export  function addDynamicCols(oriColumns,dynamicCols){
     }
     return null;
   }
-  if (dynamicCols && 0<dynamicCols.length && 0 < dynamicCols.length &&  oriColumns) {
+  if (dynamicCols && 0 < dynamicCols.length && 0 < dynamicCols.length && oriColumns) {
     for (let i = 0; i < dynamicCols.length; i++) {
       const dynamicCol = dynamicCols[i];
       const fieldName = dynamicCol.fieldName;
@@ -75,21 +83,21 @@ export  function addDynamicCols(oriColumns,dynamicCols){
         value: fieldName,
         dataIndex: fieldName,
         slots: { customRender: fieldName },
-        customRender: ({ text ,record}) => {
-          if(!record){
-            return "";
+        customRender: ({ text, record }) => {
+          if (!record) {
+            return '';
           }
-          if(!record.dynamicField){
-            return "";
+          if (!record.dynamicField) {
+            return '';
           }
           return record?.dynamicField[fieldName];
         },
       };
+      // @ts-ignore
       dynamicColumns.push(col);
     }
   }
- return  [...oriColumns, ...dynamicColumns];
-
+  return [...oriColumns, ...dynamicColumns];
 }
 /**
  * listPage页面公共方法
@@ -132,7 +140,7 @@ export function useListPage(options: ListPageOptions) {
       //如果参数不为空，则整合到一起
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (params) {
-        const  tempParam=typeof params === 'function' ? params() : params
+        const tempParam = typeof params === 'function' ? params() : params;
         Object.keys(tempParam).map((k) => {
           const temp = (tempParam as object)[k];
           if (temp) {
@@ -152,6 +160,44 @@ export function useListPage(options: ListPageOptions) {
     }
   }
 
+  // 导出 excel
+  async function onBillExportXls(id: string, fileName: string) {
+    debugger;
+    //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
+    const { url, name, params } = options?.billExportConfig ?? {};
+    const realUrl = typeof url === 'function' ? url() : url;
+    if (realUrl) {
+      const title = typeof name === 'function' ? name() : name;
+      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
+      let paramsForm: any = {};
+      try {
+        paramsForm = await getForm().validate();
+      } catch (e) {
+        console.error(e);
+      }
+      //update-begin-author:liusq date:20230410 for:[/issues/409]导出功能没有按排序结果导出,设置导出默认排序，创建时间倒序
+      if (!paramsForm?.column) {
+        Object.assign(paramsForm, { column: 'createTime', order: 'desc' });
+      }
+      //如果参数不为空，则整合到一起
+      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
+      if (params) {
+        Object.keys(params).map((k) => {
+          const temp = (params as object)[k];
+          if (temp) {
+            paramsForm[k] = unref(temp);
+          }
+        });
+      }
+      paramsForm['id'] = id;
+      return handleBillExport((fileName || title) as string, realUrl, filterObj(paramsForm));
+      //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
+    } else {
+      $message.createMessage.warn('没有传递 packExportConfig.url 参数');
+      return Promise.reject();
+    }
+  }
+
   // 导入 excel
   function onImportXls(file) {
     const { url, success } = options?.importConfig ?? {};
@@ -167,12 +213,11 @@ export function useListPage(options: ListPageOptions) {
   }
 
   /**
-         * 通用请求处理方法，可自动刷新表格，自动清空选择
+   * 通用请求处理方法，可自动刷新表格，自动清空选择
    * @param api 请求api
    * @param options 是否显示确认框
    */
   function doRequest(api: () => Promise<any>, options?: IDoRequestOptions) {
-
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
@@ -215,6 +260,7 @@ export function useListPage(options: ListPageOptions) {
     ...$design,
     ...$message,
     onExportXls,
+    onBillExportXls,
     onImportXls,
     doRequest,
     doDeleteRecord,
@@ -339,7 +385,7 @@ export function useListTable(tableProps: TableProps): [
 
     // 列添加列备注
     const cols = tableProps.cols;
-    if (cols && 0 < cols.length && tableProps.columns) {
+    if (null != cols && 0 < cols.length && tableProps.columns) {
       for (let i = 0; i < tableProps.columns.length; i++) {
         const column = tableProps.columns[i];
         let col = null,
@@ -352,8 +398,8 @@ export function useListTable(tableProps: TableProps): [
 
     // 列添加列扩展
     const dynamicCols = tableProps.dynamicCols;
-    if (dynamicCols && 0<dynamicCols.length && 0 < dynamicCols.length &&  tableProps.columns) {
-      tableProps.columns=addDynamicCols(tableProps.columns,dynamicCols);
+    if (dynamicCols && 0 < dynamicCols.length && 0 < dynamicCols.length && tableProps.columns) {
+      tableProps.columns = addDynamicCols(tableProps.columns, dynamicCols);
     }
     // if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
     //   for (let i = 0; i < dynamicCols.length; i++) {
@@ -395,7 +441,7 @@ export function useListTable(tableProps: TableProps): [
 
   // 合并方法
   Object.assign(defaultTableProps, { beforeFetch });
-  if (typeof tableProps.beforeFetch === 'function') {
+  if (typeof tableProps !== 'undefined' && typeof tableProps.beforeFetch === 'function') {
     defaultTableProps.beforeFetch = function (params) {
       params = beforeFetch(params);
       // @ts-ignore

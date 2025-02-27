@@ -5,7 +5,7 @@
       <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:export-outlined">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:import-outlined">导入模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
@@ -17,7 +17,8 @@
 
 <script>
   import { printLimit } from '../index.api';
-  import { selectiveSaveOrUpdatePrint } from '@/views/setting/system/index.api';
+  import { selectiveSaveOrUpdatePrint, getBillExportUrl } from '@/views/setting/system/index.api';
+  import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
 
@@ -38,6 +39,10 @@
         value: '',
         // 渲染的模板
         template: {},
+        // 导出
+        billExportXls: undefined,
+        // 导入
+        billInportXls: undefined,
       };
     },
     computed: {
@@ -48,7 +53,16 @@
       },
     },
     watch: {},
-    created() {},
+    created() {
+      const { onBillExportXls } = useListPage({
+        billExportConfig: {
+          name: '导出为预览的模板',
+          url: getBillExportUrl,
+          params: {},
+        },
+      });
+      this.billExportXls = onBillExportXls;
+    },
     mounted() {},
     methods: {
       handleChange(value) {
@@ -109,6 +123,10 @@
       },
       toPdf() {
         this.hiprintTemplate.toPdf({}, '打印预览');
+      },
+      onExport() {
+        // 传选中的模板id
+        this.billExportXls(this.template.id);
       },
     },
   };
