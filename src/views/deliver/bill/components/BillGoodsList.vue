@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div>
     <a-row>
       <a-col :span="8" style="position: relative">
@@ -10,13 +10,7 @@
           </div>
         </a-form-item>
       </a-col>
-      <BasicModal
-        v-bind="$attrs"
-        @register="register"
-        title="商品搜索"
-        :width="'1400px'"
-        @ok="handleOk"
-      >
+      <BasicModal v-bind="$attrs" @register="register" title="商品搜索" :width="'1400px'" @ok="handleOk">
         <div style="width: 98%">
           <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
         </div>

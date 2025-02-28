@@ -4,7 +4,7 @@
       <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtHandle">还款</a-button>
       <a-button type="primary" preIcon="ant-design:search-outlined" @click="oneKeyDebt">一键还款</a-button>
       <a-button type="primary" preIcon="ant-design:search-outlined" @click="debtDetailHandle">还款明细</a-button>
-      <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">导出欠款</a-button>
+      <a-button type="primary" preIcon="ant-design:search-outlined" @click="onExportXls">导出欠款</a-button>
     </div>
     <div class="purchase-debt-List">
       <div class="left-tbl">
@@ -84,7 +84,6 @@
       },
       beforeFetch: async (params) => {
         const queryVal = {
-          // [queryType.value]: queryTypeValue.value,
           queryType: queryTypeValue.value,
         };
         return Object.assign(params, queryVal);
@@ -99,7 +98,12 @@
     exportConfig: {
       name: '供应商欠款',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        const queryVal = {
+          queryType: queryTypeValue.value,
+        };
+        return Object.assign(queryParam, queryVal);
+      },
     },
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
