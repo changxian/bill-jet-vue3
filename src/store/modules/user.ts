@@ -17,7 +17,8 @@ import {
   SYSTEM_SETTING_DATA,
   BILL_SETTING_DATA,
   DEFAULT_COMPANY_DATA,
-} from "/@/enums/cacheEnum";
+  TENANT_PACK_DATA,
+} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
@@ -43,6 +44,7 @@ interface UserState {
   systemSetting?:Object | null;
   billSetting?:Object | null;
   defaultCompany?:Object | null;
+  tenantPack?:Object | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -126,6 +128,12 @@ export const useUserStore = defineStore({
         return this.defaultCompany;
       }
       return getAuthCache(DEFAULT_COMPANY_DATA);
+    },
+    getTenantPack() {
+      if (null != this.tenantPack) {
+        return this.tenantPack;
+      }
+      return getAuthCache(TENANT_PACK_DATA);
     },
 
 

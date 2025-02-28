@@ -3,27 +3,27 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <FastDate v-model:modelValue="fastDateParam"   />
-            <a-col :lg="6">
-              <a-form-item label="单类型" name="type">
-                <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
-                  <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="1">进货开单</a-select-option>
-                  <a-select-option value="2">退货开单</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
+          <FastDate v-model:modelValue="fastDateParam" />
+          <a-col :lg="6">
+            <a-form-item label="单类型" name="type">
+              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="1">进货开单</a-select-option>
+                <a-select-option value="2">退货开单</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :lg="6">
               <a-form-item label="欠款单" name="hasDebt">
-                  <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
-                    <a-radio value="">所有</a-radio>
-                    <a-radio value="1">是</a-radio>
-                    <a-radio value="2">否</a-radio>
+                <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
+                  <a-radio value="">所有</a-radio>
+                  <a-radio value="1">是</a-radio>
+                  <a-radio value="0">否</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>
-              <a-col :lg="6">
+            <a-col :lg="6">
               <a-form-item label="公司" name="companyId">
                 <j-select-company v-model:value="queryParam.companyId" @change="changeCompany" allow-clear />
               </a-form-item>
@@ -72,7 +72,7 @@
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{ 'p_san': hasPan }">总计
+      <p :class="{'p_san': hasPan }">总计
         <span class="total_span">数量：{{ countTotal }}</span>
         <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
         <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
@@ -163,7 +163,7 @@
       showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
-      dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       actionColumn: {
         width: 120,
         fixed: 'right',
@@ -198,7 +198,9 @@
     exportConfig: {
       name: '进货对账单',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        return Object.assign(queryParam, fastDateParam);
+      },
     },
   });
   const billSetting = userStore.getBillSetting;

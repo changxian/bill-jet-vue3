@@ -45,7 +45,7 @@
                 <a-radio-group v-model:value="queryParam.hasDebt" name="radioGroup">
                   <a-radio value="">所有</a-radio>
                   <a-radio value="1">是</a-radio>
-                  <a-radio value="2">否</a-radio>
+                  <a-radio value="0">否</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>
@@ -104,9 +104,8 @@
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="printPreview" preIcon="ant-design:printer-outlined"> 打印预览</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'"  @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined"> 还款明细</a-button>
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">
-          导出</a-button>
-        <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
+<!--        <j-upload-button  type="primary" v-auth="'purchase.bill:jxc_purchase_bill:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -119,7 +118,7 @@
           <a-button v-auth="'purchase.bill:jxc_purchase_bill:deleteBatch'">批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
-        </a-dropdown>
+        </a-dropdown>-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -188,6 +187,7 @@
   const [registerModal, { openModal }] = useModal();
 
   const route = useRoute();
+  const param = reactive<any>({});
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
@@ -259,7 +259,9 @@
     exportConfig: {
       name: '进货开单',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        return Object.assign(queryParam, fastDateParam);
+      },
     },
 	  importConfig: {
 	    url: getImportUrl,
@@ -395,7 +397,7 @@
    * 打印
    */
   function print() {
-    printPreview()
+    printPreview();
   }
   /**
    * 编辑事件

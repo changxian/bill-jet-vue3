@@ -4,7 +4,7 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <a-col :lg="6">
+          <a-col :lg="8">
             <a-form-item label="搜索" name="goodsName">
               <JInput v-model:value="queryParam.goodsName" class="query-group-cust" allow-clear></JInput>
             </a-form-item>
@@ -69,7 +69,7 @@
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
-  import { getGoodsColumns, searchFormSchema } from './goods.data';
+  import { getGoodsColumns } from './goods.data';
   import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
@@ -115,17 +115,13 @@
   queryParam.goodsName = goodsName.value;
   // 开单时选择的客户
   const customerId = computed(() => props?.customerId);
-  // 当前选中的部门ID，可能会为空，代表未选择部门
+  // 当前选中的类别ID，可能会为空，代表未选择类别
   const categoryId = computed(() => props.data?.id);
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value, '   goodsName is:' + goodsName.value);
   const emits = defineEmits(['get-select', 'db-ok']);
-  // queryParam.name = '';
   const columns = getGoodsColumns(billType.value);
 
-  //列表数据
-  // const columns: BasicColumn[] =
   // 注册table数据
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tableContext, onExportXls, onImportXls } = useListPage( reactive({
     tableProps: {
       title: '商品信息',
@@ -166,7 +162,10 @@
     exportConfig: {
       name: '商品信息',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        queryParam['categoryId'] = categoryId.value;
+        return queryParam;
+      },
     },
     importConfig: {
       url: getImportUrl,
@@ -174,7 +173,12 @@
     },
   }));
 
-  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, getPagination }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
+  // 获取总条数
+  // const getTotal = () => {
+  //   const { total } = getPagination();
+  //   return total;
+  // };
 
   function handleOk() {
     console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value);
@@ -188,10 +192,12 @@
     () => reload()
   );
 
+  // const tenantPack = userStore.getTenantPack;
   /**
    * 新增事件
    */
   function handleAdd() {
+    // console.log('=======', 'add', tenantPack.value);
     let record = {
       dynamicFields: userStore.getDynamicCols['jxc_goods'],
     };

@@ -44,8 +44,8 @@
   // 树组件重新加载
   let treeReloading = ref<boolean>(false);
 
-  // 加载部门信息
-  function loadDepartTreeData() {
+  // 加载类别信息
+  function loadCategoryTreeData() {
     loading.value = true;
     treeData.value = [];
     queryGoodsCategoryList()
@@ -63,7 +63,7 @@
       .finally(() => (loading.value = false));
   }
 
-  loadDepartTreeData();
+  loadCategoryTreeData();
 
   // 自动展开父节点，只展开一级
   function autoExpandParentNode() {
