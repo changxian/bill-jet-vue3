@@ -59,7 +59,6 @@
           order: 'ascend',
         },
         rowKey: 'id',
-        showTableSetting: true,
         onChange,
         rowSelection: {
           type: 'checkbox',

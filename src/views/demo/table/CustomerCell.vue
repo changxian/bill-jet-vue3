@@ -93,7 +93,6 @@
         api: demoListApi,
         columns: columns,
         bordered: true,
-        showTableSetting: true,
       });
 
       return {

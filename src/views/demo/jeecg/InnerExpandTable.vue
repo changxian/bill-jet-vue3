@@ -122,7 +122,6 @@
     rowKey: 'id',
     striped: true,
     useSearchForm: false,
-    showTableSetting: true,
     clickToRowSelect: false,
     bordered: true,
     actionColumn: {

@@ -130,7 +130,6 @@
     },
     striped: true,
     useSearchForm: true,
-    showTableSetting: true,
     clickToRowSelect: false,
     bordered: true,
     showIndexColumn: false,
