@@ -2,12 +2,12 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="" preIcon="ant-design:printer-outlined">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:import-outlined">导入模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone">设置</a-button>
+      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:printer-outlined">打印</a-button>
+      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
+      <a-button type="primary" style="margin-left: 22px; margin-right: 22px; " preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
+      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
+      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-twotone">设置</a-button>
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
       <div id="preview_content_design"></div>
@@ -17,13 +17,15 @@
 
 <script>
   import { printLimit } from '../index.api';
-  import { selectiveSaveOrUpdatePrint, getBillExportUrl } from '@/views/setting/system/index.api';
+  import { selectiveSaveOrUpdatePrint, getBillExportUrl, getImportUrl } from '@/views/setting/system/index.api';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import JUploadButton from '@/components/Button/src/JUploadButton.vue';
   const { createMessage } = useMessage();
 
   export default {
     name: 'PrintPreview',
+    components: { JUploadButton },
     props: {
       printSetting: {
         type: Object,
@@ -54,14 +56,18 @@
     },
     watch: {},
     created() {
-      const { onBillExportXls } = useListPage({
+      const { onImportXls, onBillExportXls } = useListPage({
         billExportConfig: {
           name: '导出为预览的模板',
           url: getBillExportUrl,
           params: {},
         },
+        importConfig: {
+          url: getImportUrl,
+        },
       });
       this.billExportXls = onBillExportXls;
+      this.billInportXls = onImportXls;
     },
     mounted() {},
     methods: {
