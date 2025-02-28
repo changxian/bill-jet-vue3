@@ -132,8 +132,8 @@ export function useListPage(options: ListPageOptions) {
       //如果参数不为空，则整合到一起
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (params) {
-        const  tempParam=typeof params === 'function' ? params() : params
-        Object.keys(tempParam).map((k) => {
+       const  tempParam=typeof params === 'function' ? params(paramsForm) : params
+       Object.keys(tempParam).map((k) => {
           const temp = (tempParam as object)[k];
           if (temp) {
             paramsForm[k] = unref(temp);
