@@ -305,7 +305,7 @@ export function useListTable(tableProps: TableProps): [
     // 是否显示序号列
     showIndexColumn: false,
     // 显示表格设置
-    showTableSetting: true,
+    showTableSetting: false,
     // 表格全屏设置
     tableSetting: {
       fullScreen: false,
