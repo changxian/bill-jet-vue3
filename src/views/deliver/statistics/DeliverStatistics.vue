@@ -169,7 +169,9 @@
     exportConfig: {
       name: '送货统计',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        return Object.assign(queryParam, fastDateParam);
+      },
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
