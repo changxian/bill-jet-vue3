@@ -160,4 +160,8 @@ export default {
     n: 1,
     arr: ['生产许可证号'],
   },
+  licensee: {
+    n: 1,
+    arr: ['生产厂商上市许可持有人'],
+  },
 };

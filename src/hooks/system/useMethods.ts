@@ -32,15 +32,15 @@ export function useMethods() {
     }
 
     //update-begin---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
-    let reader = new FileReader()
-    reader.readAsText(data, 'utf-8')
+    const reader = new FileReader();
+    reader.readAsText(data, 'utf-8');
     reader.onload = async () => {
-      if(reader.result){
-        if(reader.result.toString().indexOf("success") !=-1){
+      if (reader.result) {
+        if (reader.result.toString().indexOf('success') != -1) {
           const { success, message } = JSON.parse(reader.result.toString());
           if (!success) {
-            createMessage.warning("导出失败，失败原因："+ message);
-          }else{
+            createMessage.warning('导出失败，失败原因：' + message);
+          } else {
             exportExcel(name, isXlsx, data);
           }
           return;
@@ -48,7 +48,39 @@ export function useMethods() {
       }
       exportExcel(name, isXlsx, data);
       //update-end---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
+    };
+  }
+  /**
+   * 打包导出 zip
+   * @param name
+   * @param url
+   */
+  async function billExport(name, url, params) {
+    //update-begin---author:wangshuai---date:2024-01-25---for:【QQYUN-8118】导出超时时间设置长点---
+    const data = await defHttp.get({ url: url, params: params, responseType: 'blob', timeout: 60000 }, { isTransformResponse: false });
+    //update-end---author:wangshuai---date:2024-01-25---for:【QQYUN-8118】导出超时时间设置长点---
+    if (!data) {
+      createMessage.warning('文件下载失败');
+      return;
     }
+    //update-begin---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
+    const reader = new FileReader();
+    reader.readAsText(data, 'utf-8');
+    reader.onload = async () => {
+      if (reader.result) {
+        if (reader.result.toString().indexOf('success') != -1) {
+          const { success, message } = JSON.parse(reader.result.toString());
+          if (!success) {
+            createMessage.warning('导出失败，失败原因：' + message);
+          } else {
+            billExportXlsx(name, data);
+          }
+          return;
+        }
+      }
+      billExportXlsx(name, data);
+      //update-end---author:wangshuai---date:2024-04-18---for: 导出excel失败提示，不进行导出---
+    };
   }
 
   /**
@@ -61,18 +93,18 @@ export function useMethods() {
     const isReturn = (fileInfo) => {
       try {
         if (fileInfo.code === 201) {
-          let {
+          const {
             message,
             result: { msg, fileUrl, fileName },
           } = fileInfo;
-          let href = glob.uploadUrl + fileUrl;
+          const href = glob.uploadUrl + fileUrl;
           createWarningModal({
             title: message,
             centered: false,
             content: `<div>
-                                <span>${msg}</span><br/> 
-                                <span>具体详情请<a href = ${href} download = ${fileName}> 点击下载 </a> </span> 
-                              </div>`,
+                        <span>${msg}</span><br/> 
+                        <span>具体详情请<a href = ${href} download = ${fileName}> 点击下载 </a> </span> 
+                      </div>`,
           });
           //update-begin---author:wangshuai ---date:20221121  for：[VUEN-2827]导入无权限，提示图标错误------------
         } else if (fileInfo.code === 500 || fileInfo.code === 510) {
@@ -94,6 +126,7 @@ export function useMethods() {
     handleExportXls: (name: string, url: string, params?: object) => exportXls(name, url, params),
     handleImportXls: (data, url, success) => importXls(data, url, success),
     handleExportXlsx: (name: string, url: string, params?: object) => exportXls(name, url, params, true),
+    handleBillExport: (name: string, url: string, params?: object) => billExport(name, url, params),
   };
 
   /**
@@ -106,17 +139,67 @@ export function useMethods() {
     if (!name || typeof name != 'string') {
       name = '导出文件';
     }
-    let blobOptions = { type: 'application/vnd.ms-excel' };
+    const blobOptions = { type: 'application/vnd.ms-excel' };
     let fileSuffix = '.xls';
     if (isXlsx) {
       blobOptions['type'] = XLSX_MIME_TYPE;
       fileSuffix = XLSX_FILE_SUFFIX;
     }
+    // @ts-ignore
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
+      // @ts-ignore
       window.navigator.msSaveBlob(new Blob([data], blobOptions), name + fileSuffix);
     } else {
-      let url = window.URL.createObjectURL(new Blob([data], blobOptions));
-      let link = document.createElement('a');
+      const url = window.URL.createObjectURL(new Blob([data], blobOptions));
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.setAttribute('download', name + fileSuffix);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); //下载完成移除元素
+      window.URL.revokeObjectURL(url); //释放掉blob对象
+    }
+  }
+
+  /**
+   * 导出excel
+   * @param name
+   * @param isXlsx
+   * @param data
+   */
+  function billExportXlsx(name, data) {
+    if (!name || typeof name != 'string') {
+      name = '导出文件';
+    }
+    const blobOptions = { type: 'application/vnd.ms-excel' };
+    const fileSuffix = '.xls';
+    exportFile(data, blobOptions, name, fileSuffix);
+  }
+
+  /**
+   * 导出excel
+   * @param name
+   * @param isXlsx
+   * @param data
+   */
+  function billExportZip(name, data) {
+    if (!name || typeof name != 'string') {
+      name = '导出文件';
+    }
+    const blobOptions = { type: 'application/zip' };
+    const fileSuffix = '.zip';
+    exportFile(data, blobOptions, name, fileSuffix);
+  }
+
+  function exportFile(data, blobOptions, name, fileSuffix) {
+    // @ts-ignore
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+      // @ts-ignore
+      window.navigator.msSaveBlob(new Blob([data], blobOptions), name + fileSuffix);
+    } else {
+      const url = window.URL.createObjectURL(new Blob([data], blobOptions));
+      const link = document.createElement('a');
       link.style.display = 'none';
       link.href = url;
       link.setAttribute('download', name + fileSuffix);
