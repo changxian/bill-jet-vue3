@@ -1,4 +1,4 @@
-import { default as fieldConfig } from '@/views/template/view/components/roil.config';
+import { default as fieldConfig } from '@/views/template/components/hiprint/roil.config';
 
 function roil(obj) {
   let arr = [];
