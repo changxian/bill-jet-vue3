@@ -3,7 +3,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增</a-button>
-        <a-dropdown v-if="false">
+        <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -98,14 +98,14 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-      /*{
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           placement: 'left',
           confirm: handleDelete.bind(null, record),
         },
-      },*/
+      },
       {
         label: '用户',
         onClick: handleSeeUser.bind(null, record),
@@ -189,7 +189,7 @@
       tenantId: unref(selectedRowKeys.value.join(',')),
       tenantName: unref(selectedRows.value[0].name),
       //我的企业显示新增和编辑套餐
-      showPackAddAndEdit: true,
+      showPackAddAndEdit: true
     });
   }
 
