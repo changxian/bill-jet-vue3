@@ -1,6 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit"
-              width="800px" :showCancelBtn="false" :showOkBtn="false">
+              width="1000px" :showCancelBtn="false" :showOkBtn="false">
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd"
@@ -253,10 +253,10 @@ function getDropDownAction(record) {
     //     confirm: handleDelete.bind(null, record),
     //   },
     // },
-    {
-      label: '详情',
-      onClick: handleDetail.bind(null, record),
-    },
+    // {
+    //   label: '详情',
+    //   onClick: handleDetail.bind(null, record),
+    // },
     {
       label: '购买详情',
       onClick: buyRecord.bind(null, record),

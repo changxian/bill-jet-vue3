@@ -4,6 +4,7 @@ import {render} from "/@/utils/common/renderUtils";
 import {rules} from "/@/utils/helper/validator";
 import {getAllSysPackList} from './tenant.api';
 
+//定义企业管理表格列
 export const columns: BasicColumn[] = [
   {
     title: '企业名称',
@@ -15,8 +16,9 @@ export const columns: BasicColumn[] = [
     title: '企业编号(ID)',
     dataIndex: 'id',
     width: 180,
-  }, {
-    title: '组织LOGO',
+  },
+  {
+    title: '企业LOGO',
     dataIndex: 'companyLogo',
     width: 100,
     customRender: ({text}) => {
@@ -26,7 +28,7 @@ export const columns: BasicColumn[] = [
       return render.renderImage({text});
     },
   },
-  {
+  /*{
     dataIndex: 'trade_dictText',
     title: '所属行业',
     width: 150
@@ -35,29 +37,27 @@ export const columns: BasicColumn[] = [
     dataIndex: 'companySize_dictText',
     title: '公司规模',
     width: 100
-  },
+  },*/
   {
     dataIndex: 'houseNumber',
     title: '门牌号',
     width: 100,
   },
-  {
+  /*{
     dataIndex: 'position_dictText',
     title: '职级',
-    width: 150
+    width: 150,
   },
   {
     dataIndex: 'department_dictText',
     title: '部门',
-    width: 150
+    width: 150,
   },
   {
     dataIndex: 'createBy_dictText',
     title: '创建者(拥有者)',
-    width: 150
-  },
-
-
+    width: 150,
+  },*/
   {
     title: '状态',
     dataIndex: 'status_dictText',
@@ -65,6 +65,7 @@ export const columns: BasicColumn[] = [
   },
 ];
 
+//定义企业管理表格搜索条件
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'name',
@@ -97,6 +98,7 @@ export const searchFormSchema: FormSchema[] = [
   // },
 ];
 
+//定义企业管理表单
 export const formSchema: FormSchema[] = [
   {
     field: 'name',
@@ -115,11 +117,11 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'companyLogo',
-    label: '组织LOGO',
+    label: '企业LOGO',
     component: 'JImageUpload',
     componentProps: {
-      text: 'logo'
-    }
+      text: 'logo',
+    },
   },
   {
     field: 'trade',
@@ -127,22 +129,24 @@ export const formSchema: FormSchema[] = [
     component: 'JDictSelectTag',
     componentProps: {
       dictCode: 'trade',
-    }
-  }, {
+    },
+  },
+  {
     field: 'companySize',
     label: '公司规模',
     component: 'JDictSelectTag',
     componentProps: {
       dictCode: 'company_size',
-    }
-  }, {
+    },
+  },
+  {
     field: 'companyAddress',
     label: '公司地址',
     component: 'InputTextArea',
     componentProps: {
       placeholder: '请输入公司地址',
       rows: 4,
-    }
+    },
   },
   //  {
   //   field: 'beginDate',
@@ -164,31 +168,31 @@ export const formSchema: FormSchema[] = [
   //     getPopupContainer: getAutoScrollContainer,
   //   },
   // },
-  {
-    field: 'houseNumber',
-    label: '门牌号',
-    component: 'Input',
-    dynamicDisabled: true,
-    ifShow: ({values}) => {
-      return values.id != null;
-    },
-  },
-  {
-    field: 'position',
-    label: '职级',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'company_rank'
-    }
-  },
-  {
-    field: 'department',
-    label: '部门',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'company_department'
-    }
-  },
+  // {
+  //   field: 'houseNumber',
+  //   label: '门牌号',
+  //   component: 'Input',
+  //   dynamicDisabled: true,
+  //   ifShow: ({values}) => {
+  //     return values.id != null;
+  //   },
+  // },
+  // {
+  //   field: 'position',
+  //   label: '职级',
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'company_rank',
+  //   },
+  // },
+  // {
+  //   field: 'department',
+  //   label: '部门',
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'company_department',
+  //   },
+  // },
   {
     field: 'status',
     label: '状态',
@@ -377,7 +381,7 @@ export function packMenuFormData(isUpdate) {
         show: false
       },
     ];
-  console.log(packMenuFormSchema,"======packMenuFormSchema======")
+  console.log(packMenuFormSchema, '======packMenuFormSchema======');
   return packMenuFormSchema;
 }
 
