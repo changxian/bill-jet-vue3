@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
-import { default as fieldConfig } from '@/views/template/view/components/roil.config';
+import { default as fieldConfig } from '@/views/template/components/hiprint/roil.config';
 
 enum Api {
   tempList = '/bill/template/pre/list',

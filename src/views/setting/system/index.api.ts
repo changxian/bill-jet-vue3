@@ -14,7 +14,11 @@ enum Api {
   saveOthers = '/bill/dynamic/saveFieldTitles',
   saveSystem = '/setting/system/systemSetting/add',
   editSystem = '/setting/system/systemSetting/edit',
+  billExportUrl = '/bill/template/billExportXls',
+  billImportExcel = '/bill/template/billImportExcelXls',
 }
+export const getBillExportUrl = Api.billExportUrl;
+export const getImportUrl = Api.billImportExcel;
 
 /**
  * 系统角色列表

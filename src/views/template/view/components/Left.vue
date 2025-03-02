@@ -101,11 +101,14 @@
     emit('jxcLimit', v);
   }
 
+  /**
+   * 自动滚动到选中的模板
+   */
   function scrollIntoView() {
     let arr = document.getElementsByClassName('ant-tree-treenode-checkbox-checked');
     console.log('ant-tree-treenode-checkbox-checked------------------------' + arr.length);
     if (0 < arr.length) {
-      arr[0].scrollIntoView({ behavior: 'smooth' });
+      arr[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
   /**
@@ -116,7 +119,6 @@
     selectedKeys.value = [key];
     checkedKeys.value = [key];
 
-    scrollIntoView();
     setTimeout(() => {
       scrollIntoView();
     }, 500);
