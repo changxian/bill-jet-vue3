@@ -28,7 +28,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'accountNum',
   },
   {
-    title: '支持商品数量',
+    title: '支持商品数',
     align: 'center',
     dataIndex: 'goodsNum',
   },
@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'price',
   },
-  {
+  /*{
     title: '产品折扣',
     align: 'center',
     dataIndex: 'discounted',
@@ -56,7 +56,7 @@ export const columns: BasicColumn[] = [
     title: '规格单位',
     align: 'center',
     dataIndex: 'specificationUnit',
-  },
+  },*/
   {
     title: '启用状态',
     align: 'center',

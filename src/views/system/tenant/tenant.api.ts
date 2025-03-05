@@ -26,17 +26,16 @@ enum Api {
   addTenantPackUser = '/sys/tenant/addTenantPackUser',
   //获取用户企业列表
   getTenantPageListByUserId = '/sys/tenant/getTenantPageListByUserId',
-  
+
   //新增、编辑用户企业
   saveUser = '/sys/user/add',
   editUser = '/sys/user/editTenantUser',
 
-
   queryDataRule = '/sys/role/datarule',
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryTenantPackPermission',
-  saveRolePermission = '/sys/permission/saveTenantPackPermission', 
-  getAllSysPackList = '/syspack/sysPack/getAllSysPackList', 
+  saveRolePermission = '/sys/permission/saveTenantPackPermission',
+  getAllSysPackList = '/syspack/sysPack/getAllSysPackList',
 }
 
 /**

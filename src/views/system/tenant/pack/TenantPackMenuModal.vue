@@ -6,14 +6,113 @@
 <script lang="ts" setup name="tenant-pack-menu-modal">
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { packMenuFormData } from '../tenant.data';
-  import { addPackPermission, editPackPermission } from '../tenant.api';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
+  // import { packMenuFormData } from '../tenant.data';
+  import { addPackPermission, editPackPermission, getAllSysPackList } from '../tenant.api';
+  import { getAutoScrollContainer } from '@/utils/common/compUtils';
 
   const isUpdate = ref<boolean>(false);
   // Emits声明
   const emit = defineEmits(['register', 'success']);
-  const packMenuFormSchema = packMenuFormData(isUpdate);
+  // const packMenuFormSchema = packMenuFormData(isUpdate, formRef);
+
+  //系统首次给企业绑定套餐表单数据项
+  const packMenuFormSchema: FormSchema[] = [
+    {
+      field: 'sysPackId',
+      label: '选择系统套餐',
+      dynamicDisabled: isUpdate,
+      component: 'ApiSelect',
+      componentProps: {
+        api: getAllSysPackList,
+        labelField: 'packName',
+        valueField: 'id',
+        resultField: 'list',
+        onChange: function (e) {
+          console.log('11111111111111111111111', e);
+          getAllSysPackList().then((res) => {
+            console.log('res', res);
+            res.forEach((item) => {
+              if (item.id === e) {
+                setFieldsValue({ ...item });
+              }
+            });
+          });
+        },
+      },
+    },
+    {
+      field: 'price',
+      label: '交易价格',
+      dynamicDisabled: !isUpdate,
+      component: 'InputNumber',
+    },
+    {
+      field: 'accountNum',
+      label: '支持账号数',
+      dynamicDisabled: !isUpdate,
+      component: 'InputNumber',
+    },
+    {
+      field: 'orgNum',
+      label: '支持机构数',
+      dynamicDisabled: !isUpdate,
+      component: 'InputNumber',
+    },
+    {
+      field: 'goodsNum',
+      label: '支持商品数',
+      dynamicDisabled: !isUpdate,
+      component: 'InputNumber',
+    },
+    {
+      field: 'beginDate',
+      label: '开始时间',
+      dynamicDisabled: !isUpdate,
+      component: 'DatePicker',
+      componentProps: {
+        showTime: true,
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        getPopupContainer: getAutoScrollContainer,
+      },
+    },
+    {
+      field: 'endDate',
+      label: '结束时间',
+      dynamicDisabled: !isUpdate,
+      component: 'DatePicker',
+      componentProps: {
+        showTime: true,
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        getPopupContainer: getAutoScrollContainer,
+      },
+    },
+    {
+      field: 'remarks',
+      label: '备注',
+      dynamicDisabled: !isUpdate,
+      component: 'InputTextArea',
+    },
+    {
+      field: 'status',
+      label: '开启状态',
+      component: 'Switch',
+      componentProps: {
+        checkedValue: '1',
+        checkedChildren: '开启',
+        unCheckedValue: '0',
+        unCheckedChildren: '关闭',
+      },
+      defaultValue: '1',
+    },
+    {
+      field: 'id',
+      label: '开启状态',
+      component: 'Input',
+      show: false,
+    },
+  ];
+
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate, setProps }] = useForm({
     schemas: packMenuFormSchema,
@@ -21,18 +120,16 @@
   });
   //企业
   const tenantId = ref<number>();
-  //套餐类型
-  const packType = ref<number>();
   //表单赋值
-  const [registerModal, {  setModalProps, closeModal }] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     console.log("======useModalInner=======");
+    debugger;
     //重置表单
     await resetFields();
     isUpdate.value = !!data?.isUpdate;
-    if(data.tenantId){
+    if (data.tenantId) {
       tenantId.value = data.tenantId;
     }
-    packType.value = data.packType;
     if (unref(isUpdate)) {
       //表单赋值
       await setFieldsValue({ ...data.record });
@@ -50,7 +147,7 @@
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
-    
+
     setModalProps({ confirmLoading: true });
     values.tenantId = unref(tenantId);
     if (!unref(isUpdate)) {

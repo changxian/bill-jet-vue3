@@ -2,8 +2,8 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增企业信息</a-button>
+        <a-dropdown v-if="selectedRowKeys.length < 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -31,23 +31,27 @@
           @click="handlePack"
           style="margin-right: 5px"
           :disabled="selectedRowKeys.length != 1"
-          >套餐</a-button
+          >绑定套餐</a-button
         >
         <a-button v-if="false" type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />
       </template>
+      <template #customizedTemp_dictText="{ record }">
+        <span v-if="1 == record.customizedTemp" style="color: red">需要</span><span v-else>不需要</span>
+      </template>
     </BasicTable>
     <TenantModal @register="registerModal" @success="reload" />
-    <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk"/>
+    <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk" />
     <TenantUserModal @register="registerTenUserModal" />
-    <!--  套餐  -->
+    <!--  租户绑定的套餐列表页面  -->
     <TenantPackList @register="registerPackModal" />
     <!--  企业回收站  -->
     <TenantRecycleBinModal @register="registerRecycleBinModal" @success="reload" />
   </div>
 </template>
+<!-- 该页面是【企业管理】主页面 -->
 <script lang="ts" name="system-tenant" setup>
   import { ref, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
@@ -76,14 +80,17 @@
       title: '企业列表',
       api: getTenantList,
       columns: columns,
+      clickToRowSelect: true,
+      showIndexColumn: true,
+      rowSelection: { type: 'radio' },
       formConfig: {
         schemas: searchFormSchema,
         fieldMapToTime: [['fieldTime', ['beginDate', 'endDate'], 'YYYY-MM-DD HH:mm:ss']],
       },
-      actionColumn:{
+      actionColumn: {
         width: 150,
-        fixed:'right'
-      }
+        fixed: 'right',
+      },
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
@@ -136,6 +143,10 @@
    * 删除事件
    */
   async function handleDelete(record) {
+    if (record.status === 1) {
+      createMessage.warn('正常企业不能删除');
+      return;
+    }
     await deleteTenant({ id: record.id }, handleSuccess);
   }
 
@@ -189,7 +200,7 @@
       tenantId: unref(selectedRowKeys.value.join(',')),
       tenantName: unref(selectedRows.value[0].name),
       //我的企业显示新增和编辑套餐
-      showPackAddAndEdit: true
+      showPackAddAndEdit: true,
     });
   }
 
