@@ -144,7 +144,7 @@ export default function (hiprint) {
           {
             tid: 'defaultModule.table',
             field: 'table',
-            title: '表格1',
+            title: '表格',
             type: 'table',
             options: {
               field: 'table',
@@ -156,34 +156,34 @@ export default function (hiprint) {
                   title: '姓名',
                   align: 'left',
                   field: 'name',
-                  width: 100,
+                  width: 50,
                 },
-                { title: '性别', field: 'gender', width: 100 },
+                { title: '性别', field: 'gender', width: 50 },
                 {
                   title: '销售数量',
                   field: 'count',
-                  width: 100,
+                  width: 50,
                 },
                 {
                   title: '销售金额',
                   field: 'amount',
-                  width: 100,
+                  width: 50,
                 },
               ],
             ],
-            editable: true,
-            columnDisplayEditable: true, //列显示是否能编辑
-            columnDisplayIndexEditable: true, //列顺序显示是否能编辑
-            columnTitleEditable: true, //列标题是否能编辑
-            columnResizable: true, //列宽是否能调整
-            columnAlignEditable: true, //列对齐是否调整
-            isEnableEditField: true, //编辑字段
-            isEnableContextMenu: true, //开启右键菜单 默认true
-            isEnableInsertRow: true, //插入行
-            isEnableDeleteRow: true, //删除行
-            isEnableInsertColumn: true, //插入列
-            isEnableDeleteColumn: true, //删除列
-            isEnableMergeCell: true, //合并单元格
+            editable: true, // 是否可编辑表格
+            columnDisplayEditable: true, // 列显示是否能编辑
+            columnDisplayIndexEditable: true, // 列顺序显示是否能编辑
+            columnTitleEditable: true, // 列标题是否能编辑
+            columnResizable: true, // 列宽是否能调整
+            columnAlignEditable: true, // 列对齐是否调整
+            isEnableEditField: true, // 编辑字段
+            isEnableContextMenu: true, // 开启右键菜单 默认true
+            isEnableInsertRow: true, // 插入行
+            isEnableDeleteRow: true, // 删除行
+            isEnableInsertColumn: true, // 插入列
+            isEnableDeleteColumn: true, // 删除列
+            isEnableMergeCell: true, // 合并单元格
           },
         ]),
       ]);

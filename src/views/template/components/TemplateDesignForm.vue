@@ -128,10 +128,21 @@
           <a-row>
             <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
               <a-row class="drag_item_title">拖拽组件列表</a-row>
-              <div style="height: 21vh; width: 180px; overflow: auto">
-                <TemplateTableProvider />
-              </div>
+              <hr />
+              <!--<div style="height: 21vh; width: 180px; overflow: auto">-->
+              <!--  <TemplateTableProvider />-->
+              <!--</div>-->
               <a-row class="drag_item_title">基础组件</a-row>
+              <a-row style="height: 80px">
+                <a-col :span="8" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.table">
+                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                      <p class="glyphicon-class">表格</p>
+                    </a>
+                  </div>
+                </a-col>
+              </a-row>
               <a-row style="height: 80px">
                 <a-col :span="8" class="drag_item_box">
                   <div>

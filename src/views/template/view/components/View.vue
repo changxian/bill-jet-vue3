@@ -2,15 +2,17 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:printer-outlined">打印</a-button>
-      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
-      <a-button type="primary" style="margin-left: 22px; margin-right: 22px; " preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined">打印</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
       <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
-      <a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-twotone">设置</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
+      <!--<a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-twotone">设置</a-button>-->
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
-      <div id="preview_content_design"></div>
+      <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
   </div>
 </template>
@@ -35,6 +37,7 @@
     emits: ['setting'],
     data() {
       return {
+        previewContentStyle: {},
         hiprintTemplate: null,
         printData: null,
         limitData: null,
@@ -45,6 +48,10 @@
         billExportXls: undefined,
         // 导入
         billInportXls: undefined,
+        // 缩放
+        scaleValue: 1,
+        scaleMax: 1.5,
+        scaleMin: 0.5,
       };
     },
     computed: {
@@ -113,6 +120,20 @@
             createMessage.warning(res.message);
           }
         });
+      },
+      changeScale(big) {
+        let scaleValue = this.scaleValue;
+        if (big) {
+          scaleValue += 0.1;
+          if (scaleValue > this.scaleMax) scaleValue = this.scaleMax;
+        } else {
+          scaleValue -= 0.1;
+          if (scaleValue < this.scaleMin) scaleValue = this.scaleMin;
+        }
+        this.previewContentStyle = {
+          transform: 'scale(' + scaleValue + ')',
+        };
+        this.scaleValue = scaleValue;
       },
       print() {
         this.waitShowPrinter = true;
