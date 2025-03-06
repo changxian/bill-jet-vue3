@@ -31,8 +31,6 @@
   //ts语法
   import { onMounted, ref, unref } from 'vue';
   import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
-  import UserDrawer from '../user/UserDrawer.vue';
-  import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
   import UserQuitAgentModal from '../user/UserQuitAgentModal.vue';
   import UserQuitModal from '../user/UserQuitModal.vue';
   import { useDrawer } from '/@/components/Drawer';
@@ -40,7 +38,17 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from '../user/user.data';
-  import { list , deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch , getUserTenantPageList, updateUserTenantStatus } from '../user/user.api';
+  import {
+    list,
+    deleteUser,
+    batchDeleteUser,
+    getImportUrl,
+    getExportUrl,
+    frozenBatch,
+    getUserTenantPageList,
+    updateUserTenantStatus,
+    tenantUserNum
+  } from "../user/user.api";
   // import { usePermission } from '/@/hooks/web/usePermission'
   // const { hasPermission } = usePermission();
   import { userTenantColumns, userTenantFormSchema } from '../user/user.data';
@@ -52,6 +60,7 @@
   import TenantUserDrawer from './components/TenantUserDrawer.vue';
   import { tenantSaasMessage } from '@/utils/common/compUtils';
   import UserPermissionDrawer from './components/UserPermissionDrawer.vue';
+  import { tenantCompanyNum } from "@/views/company/TenantCompany.api";
   const { createMessage, createConfirm } = useMessage();
 
   //注册drawer
@@ -88,15 +97,27 @@
   //注册table数据
   const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
+  // 用户个数
+  const total = ref(0);
+  // 租户套餐信息
+  const tenantPack = userStore.getTenantPack;
   /**
    * 新增事件
    */
   function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-      showFooter: true,
-      tenantSaas: true,
+    tenantUserNum().then((res) => {
+      total.value = res.total;
     });
+    // 如果公司数量小于套餐内规定数量，则可以继续添加
+    if (tenantPack.orgNum != null && tenantPack.orgNum > total.value) {
+      openDrawer(true, {
+        isUpdate: false,
+        showFooter: true,
+        tenantSaas: true,
+      });
+    } else {
+      createMessage.warning('用户数量已达上限！如果还想添加更多用户，请联系运营商扩容！');
+    }
   }
   /**
    * 编辑事件
