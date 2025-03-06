@@ -101,6 +101,11 @@
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
+    <div style="position: relative; height: 20px; padding: 0 0 0 18px">
+      <p :class="{ 'p_san': hasPan }" >总计
+        <span class="total_span">交易金额：{{ totalMoney }}</span>
+      </p>
+    </div>
     <!-- 表单区域 -->
     <TradingLedgerModal ref="registerModal" @success="handleSuccess" />
   </div>
@@ -124,6 +129,9 @@
   const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
+  const hasPan = ref(true);
+  // 总计：总金额
+  const totalMoney = ref(0);
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   if (route.query) {
     fastDateParam.startDate = route.query.startDate;
@@ -144,6 +152,10 @@
       },
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
+      },
+      afterFetch: async (resultItems, extraInfo) => {
+        hasPan.value = resultItems.length > 0;
+        listTotalCount(extraInfo);
       },
     },
     exportConfig: {
@@ -169,11 +181,10 @@
   });
 
   /**
-   * 新增事件
+   * 列表合计
    */
-  function handleAdd() {
-    registerModal.value.disableSubmit = false;
-    registerModal.value.add();
+  function listTotalCount(extraInfo) {
+    totalMoney.value = extraInfo.price || 0;
   }
 
   /**
@@ -219,7 +230,7 @@
   function getTableAction(record) {
     return [
       {
-        label: '编辑',
+        label: '修改开票信息',
         onClick: handleEdit.bind(null, record),
         // auth: 'org.jeecg.modules.trading:jxc_trading_ledger:edit',
       },
@@ -288,5 +299,12 @@
     :deep(.ant-picker),:deep(.ant-input-number) {
       width: 100%;
     }
+  }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
   }
 </style>
