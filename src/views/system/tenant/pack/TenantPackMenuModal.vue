@@ -123,7 +123,6 @@
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     console.log("======useModalInner=======");
-    debugger;
     //重置表单
     await resetFields();
     isUpdate.value = !!data?.isUpdate;

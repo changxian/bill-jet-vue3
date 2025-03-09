@@ -28,6 +28,9 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="1 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
     </BasicTable>
     <!-- 表单区域 -->
     <TemplateModal @register="registerModal" @success="handleSuccess" />
@@ -35,14 +38,13 @@
 </template>
 
 <script lang="ts" name="bill-template" setup>
-  import { ref, reactive, computed, unref } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { ref, reactive } from 'vue';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import TemplateModal from './components/TemplateModal.vue';
   import { columns, searchFormSchema } from './Template.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Template.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
   import { useUserStore } from '/@/store/modules/user';
   const queryParam = reactive<any>({});
   const checkedKeys = ref<Array<string | number>>([]);
@@ -56,6 +58,7 @@
       api: list,
       columns,
       canResize: false,
+      showIndexColumn: true,
       // 显示表格设置
       showTableSetting: false,
       // 点击是否选中

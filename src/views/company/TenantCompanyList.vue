@@ -32,24 +32,15 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './TenantCompany.data';
-  import {
-    list,
-    deleteOne,
-    batchDelete,
-    getImportUrl,
-    getExportUrl,
-    tenantCompanyNum
-  } from "./TenantCompany.api";
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl, tenantCompanyNum } from './TenantCompany.api';
   import TenantCompanyModal from './components/TenantCompanyModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { tenantGoodsNum } from "@/views/base/goods/components/goods.api";
 
   const { createMessage } = useMessage();
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
   const userStore = useUserStore();
   // 公司个数

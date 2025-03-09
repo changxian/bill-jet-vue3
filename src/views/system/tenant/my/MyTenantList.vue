@@ -30,20 +30,18 @@
   </div>
 </template>
 <script lang="ts" name="tenant-my-tenant-list" setup>
-  import { onMounted, ref, unref } from 'vue';
+  import { onMounted, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { invitationUserJoin, getTenantPageListByUserId } from '../tenant.api';
   import { columns, searchFormSchema } from '../tenant.data';
-  import TenantModal from '../components/TenantModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useListPage } from '/@/hooks/system/useListPage';
   import TenantInviteUserModal from '../components/TenantInviteUserModal.vue';
   import TenantUserModal from '../components/TenantUserList.vue';
   import TenantPackList from '../pack/TenantPackList.vue';
-  import { getTenantId } from '/@/utils/auth';
   import { useUserStore } from '/@/store/modules/user';
-  import { tenantSaasMessage } from "@/utils/common/compUtils";
+  import { tenantSaasMessage } from '@/utils/common/compUtils';
 
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
@@ -66,8 +64,8 @@
         width: 150,
         fixed: 'right',
       },
-      rowSelection:{
-        type: "radio"
+      rowSelection: {
+        type: 'radio',
       },
       beforeFetch: (params) => {
         return Object.assign(params, { userTenantStatus: '1,3,4' });
@@ -84,7 +82,7 @@
     return [
       {
         label: '用户',
-        onClick: handleSeeUser.bind(null, record.id),
+        onClick: handleSeeUser.bind(null, record),
       },
     ];
   }
@@ -111,9 +109,10 @@
    * 查看用户
    * @param id
    */
-  async function handleSeeUser(id) {
+  async function handleSeeUser(record) {
     tenUserOpenModal(true, {
-      id: id,
+      id: record.id,
+      tenantName: record.name,
     });
   }
 
@@ -129,7 +128,7 @@
       tenantId: unref(selectedRowKeys.value.join(',')),
       tenantName: unref(selectedRows.value[0].name),
       //我的企业不显示新增和编辑套餐
-      showPackAddAndEdit: false
+      showPackAddAndEdit: false,
     });
   }
 
@@ -142,6 +141,6 @@
 
   onMounted(()=>{
     //提示信息
-    tenantSaasMessage('我的企业')
-  })
+    tenantSaasMessage('我的企业');
+  });
 </script>

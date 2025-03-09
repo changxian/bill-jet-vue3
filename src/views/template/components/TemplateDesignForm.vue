@@ -118,6 +118,9 @@
           <a-select-option :value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
           <a-select-option :value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
         </a-select>
+        <div>模板类别：</div>
+<!--        <a-switch v-model:checked="form.type" checked-children="定制化模板" un-checked-children="公共模板" />-->
+        <a-checkbox v-model:checked="form.customized" @change="handleChange">定制化模板</a-checkbox>
         <div>模板名称<span style="color: red"> *</span>：</div>
         <a-input v-model:value="form.name" style="width: 328px" placeholder="请输入模板名称" />
       </a-space>
@@ -254,7 +257,9 @@
   import jsonView from './json-view.vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { ref } from 'vue';
   const { createMessage } = useMessage();
+
   // vuePluginHiprint.disAutoConnect();
   var hiprint, defaultElementTypeProvider;
   let hiprintTemplate;
@@ -271,8 +276,10 @@
             category: null,
             id: '',
             name: '',
+            type: 0,
             data: '',
             status: '1',
+            customized: false,
           };
         },
       },
@@ -344,8 +351,10 @@
           category: null,
           id: '',
           name: '',
+          type: 0,
           data: '',
           status: '1',
+          customized: false,
         },
       };
     },
@@ -387,6 +396,7 @@
         this.form = {
           ...this.formData,
         };
+        this.form.customized = this.form.type === 1;
         let panels;
         if (this.form && this.form.data) {
           panels = JSON.parse(this.form.data);
@@ -438,6 +448,14 @@
         console.log(hiprintTemplate);
         // 获取当前放大比例, 当zoom时传true 才会有
         this.scaleValue = hiprintTemplate.editingPanel.scale || 1;
+      },
+      handleChange(e) {
+        console.log('Checkbox checked:', e.target.checked); // e.target.checked 是当前CheckBox的状态
+        if (e.target.checked) {
+          this.form.type = 1;
+        } else {
+          this.form.type = 0;
+        }
       },
       /**
        * 设置纸张大小

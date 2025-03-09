@@ -127,7 +127,6 @@
     (selectedRowKeys.value = []) && reload();
   }
 
-
   /**
    * 编辑
    * @param record
@@ -138,7 +137,7 @@
       record: record,
       tenantId: unref(tenantId),
       tenantName: unref(tenantName),
-      showFooter: true
+      showFooter: true,
     });
   }
 
@@ -149,12 +148,12 @@
       packName: record.packName,
       packType: record.packType,
       packNum: 1,
-      packUnit: "2",
-      tenantId:record.tenantId
-    }
+      packUnit: '2',
+      tenantId: record.tenantId,
+    };
     renewModal(true, {
       record: data, packId: record.id, isUpdate: true,
-      showFooter: true
+      showFooter: true,
     });
   }
 
@@ -168,13 +167,13 @@
       record: record,
       tenantId: unref(tenantId),
       tenantName: unref(tenantName),
-      showFooter: true
+      showFooter: true,
     });
   }
 
   //默认系统套餐不允许删除,包含(超级管理员、组织账户管理员、组织应用管理员)
   const packCode = reactive<any>(['superAdmin', 'accountAdmin', 'appAdmin']);
-  const {createMessage} = useMessage();
+  const { createMessage } = useMessage();
 
   /**
    * 删除套餐
@@ -210,8 +209,8 @@
       cancelText: '取消',
       onOk: async () => {
         await deleteTenantPack({ids: selectedRowKeys.value.join(',')}, success);
-      }
-    })
+      },
+    });
   }
 
   /**
@@ -223,7 +222,7 @@
       isUpdate: false,
       tenantId: unref(tenantId),
       tenantName: unref(tenantName),
-      showFooter: true
+      showFooter: true,
     });
   }
 
@@ -233,8 +232,8 @@
    */
   function seeTenantPackUser(record) {
     packUserOpenModal(true, {
-      record: record
-    })
+      record: record,
+    });
   }
 
   /**
@@ -276,7 +275,7 @@
       tenantId: unref(tenantId),
       tenantName: unref(tenantName),
       packType: '',
-      showFooter: false
+      showFooter: false,
     });
   }
 </script>
