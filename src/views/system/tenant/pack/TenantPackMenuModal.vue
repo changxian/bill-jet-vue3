@@ -66,19 +66,25 @@
       component: 'InputNumber',
     },
     {
-      field: 'beginDate',
-      label: '开始时间',
+      field: 'packNum',
+      label: '购买周期',
       dynamicDisabled: !isUpdate,
-      component: 'DatePicker',
-      componentProps: {
-        showTime: true,
-        valueFormat: 'YYYY-MM-DD HH:mm:ss',
-        getPopupContainer: getAutoScrollContainer,
-      },
+      component: 'InputNumber',
     },
     {
-      field: 'endDate',
-      label: '结束时间',
+      label: '周期单位',
+      field: 'packUnit',
+      component: 'JDictSelectTag',
+      dynamicDisabled: true,
+      componentProps: {
+        dictCode: '',
+        options: [{value:"1",label:"月"}, {value:"2",label:"年"}]
+      },
+      defaultValue: '2',
+    },
+    {
+      field: 'beginDate',
+      label: '开始时间',
       dynamicDisabled: !isUpdate,
       component: 'DatePicker',
       componentProps: {
@@ -137,7 +143,7 @@
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     // 隐藏底部时禁用整个表单
 
-    setProps({ disabled: !data?.showFooter ,schemas:packMenuFormData(isUpdate)})
+    setProps({ disabled: !data?.showFooter, schemas: packMenuFormData(isUpdate)})
 
     //update-end---author:wangshuai ---date:20230705  for：【QQYUN-5685】2 套餐增加一个查看：添加底部有没有按钮及表单禁用------------
   });
@@ -146,9 +152,11 @@
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
-
+    debugger;
     setModalProps({ confirmLoading: true });
     values.tenantId = unref(tenantId);
+    // 新增套餐绑定，ID为空
+    values.id = '';
     if (!unref(isUpdate)) {
       await addPackPermission(values);
     } else {

@@ -149,10 +149,14 @@
   }
   function renew(record) {
     const data = {
-      packId: record.id,
+      tenantPackId: record.id,
       packCode: record.packCode,
       packName: record.packName,
       packType: record.packType,
+      accountNum: record.accountNum,
+      orgNum: record.orgNum,
+      goodsNum: record.goodsNum,
+      price: record.price,
       packNum: 1,
       packUnit: '2',
       tenantId: record.tenantId,
