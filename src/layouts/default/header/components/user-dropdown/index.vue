@@ -15,7 +15,7 @@
         <MenuDivider v-if="getShowDoc" />
         <MenuItem itemKey="account" :text="t('layout.header.dropdownItemSwitchAccount')" icon="ant-design:setting-outlined" />
         <MenuItem itemKey="password" :text="t('layout.header.dropdownItemSwitchPassword')" icon="ant-design:edit-outlined" />
-        <MenuItem itemKey="depart" :text="t('layout.header.dropdownItemSwitchDepart')" icon="ant-design:cluster-outlined" />
+        <!--<MenuItem itemKey="depart" :text="t('layout.header.dropdownItemSwitchDepart')" icon="ant-design:cluster-outlined" />-->
         <MenuItem itemKey="cache" :text="t('layout.header.dropdownItemRefreshCache')" icon="ion:sync-outline" />
         <!-- <MenuItem
             v-if="getUseLockPage"
@@ -28,7 +28,7 @@
     </template>
   </Dropdown>
   <LockAction v-if="lockActionVisible" ref="lockActionRef" @register="register" />
-  <DepartSelect ref="loginSelectRef" />
+  <!--  <DepartSelect ref="loginSelectRef" />-->
   <UpdatePassword v-if="passwordVisible" ref="updatePasswordRef" />
 </template>
 <script lang="ts">
@@ -68,7 +68,7 @@
       MenuItem: createAsyncComponent(() => import('./DropMenuItem.vue')),
       MenuDivider: Menu.Divider,
       LockAction: createAsyncComponent(() => import('../lock/LockModal.vue')),
-      DepartSelect: createAsyncComponent(() => import('./DepartSelect.vue')),
+      // DepartSelect: createAsyncComponent(() => import('./DepartSelect.vue')),
       UpdatePassword: createAsyncComponent(() => import('./UpdatePassword.vue')),
     },
     props: {
@@ -135,10 +135,10 @@
           // update-end--author:liaozhiyang---date:20240124---for：【QQYUN-7970】国际化
         }
       }
-      // 切换部门
-      function updateCurrentDepart() {
-        loginSelectRef.value.show();
-      }
+      // // 切换部门
+      // function updateCurrentDepart() {
+      //   loginSelectRef.value.show();
+      // }
       // 修改密码
       const updatePasswordRef = ref();
       // update-begin--author:liaozhiyang---date:20230901---for：【QQYUN-6333】空路由问题—首次访问资源太大
@@ -162,9 +162,9 @@
           case 'cache':
             clearCache();
             break;
-          case 'depart':
-            updateCurrentDepart();
-            break;
+          // case 'depart':
+          //   updateCurrentDepart();
+          //   break;
           case 'password':
             updatePassword();
             break;

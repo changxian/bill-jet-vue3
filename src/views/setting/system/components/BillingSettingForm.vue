@@ -227,12 +227,14 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import { formatToDateS, formatToDateTimeSSS, formatToMonthS } from '@/utils/dateUtil';
+  import { useUserStore } from '@/store/modules/user';
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
+  const userStore = useUserStore();
 
   const formData = ref<Record<any>>({});
   function init() {
@@ -369,6 +371,8 @@
       .finally(() => {
         init();
         confirmLoading.value = false;
+        // 重新获取用户信息和菜单
+        userStore.getUserInfoAction();
       });
   }
 
