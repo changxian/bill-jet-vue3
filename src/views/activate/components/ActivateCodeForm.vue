@@ -4,41 +4,53 @@
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="ActivateCodeForm">
           <a-row>
+            <a-col :span="24">
+              <a-form-item label="激活码个数" v-bind="validateInfos.actNum" id="ActivateCodeForm-actNum" name="actNum">
+                <a-input-number v-model:value="formData.actNum" placeholder="请输入激活码个数" style="width: 100%" />
+              </a-form-item>
+            </a-col>
 						<a-col :span="24">
-							<a-form-item label="所属租户" v-bind="validateInfos.belongTenantId" id="ActivateCodeForm-belongTenantId" name="belongTenantId">
-								<a-input-number v-model:value="formData.belongTenantId" placeholder="请输入所属租户id" style="width: 100%" />
-							</a-form-item>
+              <a-form-item label="所属租户" v-bind="validateInfos.belongTenantId" id="ActivateCodeForm-belongTenantId" name="belongTenantId">
+                <JDictSelectTag
+                  v-model:value="formData.belongTenantId"
+                  placeholder="请选择所属租户"
+                  dictCode="sys_tenant,name,id,del_flag='0' order by create_time desc"
+                  :showChooseOption="false"
+                />
+              </a-form-item>
 						</a-col>
-						<a-col :span="24">
+<!--						<a-col :span="24">
 							<a-form-item label="(激活)租户" v-bind="validateInfos.actTenantId" id="ActivateCodeForm-actTenantId" name="actTenantId">
 								<a-input-number v-model:value="formData.actTenantId" placeholder="请输入(激活)租户id" style="width: 100%" />
 							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="激活码" v-bind="validateInfos.activateCode" id="ActivateCodeForm-activateCode" name="activateCode">
-								<a-input v-model:value="formData.activateCode" placeholder="请输入激活码"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="状态" v-bind="validateInfos.ststus" id="ActivateCodeForm-ststus" name="ststus">
-								<a-input v-model:value="formData.ststus" placeholder="请输入状态"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="激活时间" v-bind="validateInfos.activateDateTime" id="ActivateCodeForm-activateDateTime" name="activateDateTime">
-								<a-input v-model:value="formData.activateDateTime" placeholder="请输入激活时间"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="激活码类型(1送货单版/2进销存版)" v-bind="validateInfos.packType" id="ActivateCodeForm-packType" name="packType">
-								<a-input-number v-model:value="formData.packType" placeholder="请输入激活码类型(1送货单版/2进销存版)" style="width: 100%" />
-							</a-form-item>
-						</a-col>
-						<a-col :span="24">
-							<a-form-item label="激活码类别(1单机版/2云端版)" v-bind="validateInfos.packCategory" id="ActivateCodeForm-packCategory" name="packCategory">
-								<a-input v-model:value="formData.packCategory" placeholder="请输入激活码类别(1单机版/2云端版)"  allow-clear ></a-input>
-							</a-form-item>
-						</a-col>
+						</a-col>-->
+<!--						<a-col :span="24">-->
+<!--							<a-form-item label="激活码" v-bind="validateInfos.activateCode" id="ActivateCodeForm-activateCode" name="activateCode">-->
+<!--								<a-input v-model:value="formData.activateCode" placeholder="请输入激活码"  allow-clear ></a-input>-->
+<!--							</a-form-item>-->
+<!--						</a-col>-->
+<!--						<a-col :span="24">-->
+<!--							<a-form-item label="状态" v-bind="validateInfos.ststus" id="ActivateCodeForm-ststus" name="ststus">-->
+<!--								<a-input v-model:value="formData.ststus" placeholder="请输入状态"  allow-clear ></a-input>-->
+<!--							</a-form-item>-->
+<!--						</a-col>-->
+<!--						<a-col :span="24">-->
+<!--							<a-form-item label="激活时间" v-bind="validateInfos.activateDateTime" id="ActivateCodeForm-activateDateTime" name="activateDateTime">-->
+<!--								<a-input v-model:value="formData.activateDateTime" placeholder="请输入激活时间"  allow-clear ></a-input>-->
+<!--							</a-form-item>-->
+<!--						</a-col>-->
+            <a-col :span="24">
+              <a-form-item label="产品类别" v-bind="validateInfos.packCategory" id="ActivateCodeForm-category" name="packCategory">
+                <j-dict-select-tag v-model:value="formData.packCategory" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
+              </a-form-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-item label="产品类型" v-bind="validateInfos.packType" id="ActivateCodeForm-packType" name="packType">
+                <j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
+              </a-form-item>
+            </a-col>
+
+
 						<a-col :span="24">
 							<a-form-item label="备注" v-bind="validateInfos.remark" id="ActivateCodeForm-remark" name="remark">
 								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
@@ -59,6 +71,7 @@
   import { saveOrUpdate } from '../ActivateCode.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import JDictSelectTag from "../../../components/Form/src/jeecg/components/JDictSelectTag.vue";
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({})},
@@ -69,10 +82,11 @@
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
+    actNum:1,
     belongTenantId: undefined,
     actTenantId: undefined,
     activateCode: '',   
-    ststus: '',   
+    ststus: '1',
     activateDateTime: '',   
     packType: undefined,
     packCategory: '',   

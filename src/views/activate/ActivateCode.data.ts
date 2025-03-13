@@ -11,25 +11,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'belongTenantIdName'
   },
   {
-    title: '(激活)租户',
-    align: "center",
-    dataIndex: 'actTenantIdName'
-  },
-  {
     title: '激活码',
     align: "center",
     dataIndex: 'activateCode'
   },
-  {
-    title: '状态',
-    align: "center",
-    dataIndex: 'ststusName'
-  },
-  {
-    title: '激活时间',
-    align: "center",
-    dataIndex: 'activateDateTime'
-  },
+  
  {
     title: '套餐类型',
     dataIndex: 'packType',
@@ -53,6 +39,21 @@ export const columns: BasicColumn[] = [
         return '云端版';
       }
     },
+  },
+  {
+    title: '状态',
+    align: "center",
+    dataIndex: 'ststusName'
+  },
+   {
+    title: '(激活)租户',
+    align: "center",
+    dataIndex: 'actTenantIdName'
+  },
+  {
+    title: '激活时间',
+    align: "center",
+    dataIndex: 'activateDateTime'
   },
   {
     title: '备注',
