@@ -99,6 +99,7 @@
   import { fieldsList, saveOrUpdateOthers } from "../index.api";
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import { useUserStore } from "@/store/modules/user";
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
@@ -112,6 +113,7 @@
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
+  const userStore = useUserStore();
   //表单验证
   const validatorRules = reactive({
   });
@@ -178,6 +180,8 @@
       .finally(() => {
         init();
         confirmLoading.value = false;
+        // 重新获取用户信息和菜单
+        userStore.getUserInfoAction();
       });
   }
 

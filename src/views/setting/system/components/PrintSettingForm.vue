@@ -127,7 +127,6 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, h, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  const { createMessage } = useMessage();
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getMyPrintSetting, saveOrUpdatePrint } from '../index.api';
   import { Form } from 'ant-design-vue';
@@ -136,7 +135,9 @@
 
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
+  import { useUserStore } from '@/store/modules/user';
   const [registerModal, { openModal }] = useModal();
+  const { createMessage } = useMessage();
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
@@ -163,6 +164,7 @@
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
+  const userStore = useUserStore();
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
@@ -272,6 +274,8 @@
       })
       .finally(() => {
         confirmLoading.value = false;
+        // 重新获取用户信息和菜单
+        userStore.getUserInfoAction();
       });
   }
 

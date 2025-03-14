@@ -574,5 +574,9 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+
+    .ant-form-item {
+      margin-bottom: 10px !important;
+    }
   }
 </style>
