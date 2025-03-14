@@ -87,11 +87,11 @@
     actTenantId: undefined,
     activateCode: '',   
     ststus: '1',
-    activateDateTime: '',   
+    activateDateTime: '',
     packType: undefined,
     packCategory: '',   
     delFlag: undefined,
-    remark: '',   
+    remark: '',
     version: undefined,
   });
   const { createMessage } = useMessage();
