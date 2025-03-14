@@ -150,7 +150,22 @@
     </div>
     <!-- 第三方登录相关弹框 -->
     <ThirdModal ref="thirdModalRef"></ThirdModal>
-    
+    <a-modal v-model:visible="activateDialog" title="提示" @ok="activateDialogOk" @cancel="activateDialogOk">
+      <div class="">
+        <div class="">
+          <div style="padding: 20px;color: red" class="aui-flex aui-form-nav investment_title">
+            {{tenantPackMsg}}
+          </div>
+          <div class="aui-form-box" style="height: 260px">
+              <div class="aui-account">
+                <div class="aui-inputClear">
+                    <a-input v-model:value="activateCode" placeholder="请输入激活码" style="width: 100%" />
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </a-modal>
     <!-- 图片验证码弹窗 -->
     <CaptchaModal @register="captchaRegisterModal" @ok="getLoginCode" />
   </div>
@@ -178,10 +193,12 @@
   import CaptchaModal from '@/components/jeecg/captcha/CaptchaModal.vue';
   import { useModal } from "@/components/Modal";
   import { ExceptionEnum } from "@/enums/exceptionEnum";
+  import {activateCodeSave, saveOrUpdate} from "@/views/activate/ActivateCode.api";
 
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
   });
+  const activateCode = ref< string >('')
   const { prefixCls } = useDesign('mini-login');
   const { notification, createMessage } = useMessage();
   const userStore = useUserStore();
@@ -193,7 +210,29 @@
     requestCodeSuccess: false,
     checkKey: null,
   });
+
+  const  callData=ref();
   const rememberMe = ref<string>('0');
+  const activateDialog = ref<boolean>(false);
+  const tenantPackMsg=ref<string>('');
+  async function  activateDialogOk(){
+    if(activateCode.value){
+      await activateCodeSave({"activateCode":activateCode.value} )
+        .then((res) => {
+          if (res.success) {
+            createMessage.success(res.message);
+          } else {
+            createMessage.warning(res.message);
+          }
+        })
+        .finally(() => {
+        });
+    }
+    activateDialog.value=false;
+    callData.value= {};
+    tenantPackMsg.value="";
+    userStore.afterLoginAction(true,callData.value)
+  }
   //手机号登录还是账号登录
   const activeIndex = ref<string>('accountLogin');
   const type = ref<string>('login');
@@ -210,6 +249,7 @@
     smscode: '',
   });
   const loginRef = ref();
+
   //第三方登录弹窗
   const thirdModalRef = ref();
   //扫码登录
@@ -232,6 +272,7 @@
       type: Boolean,
     },
   });
+
 
   /**
    * 获取验证码
@@ -276,7 +317,11 @@
     }
     try {
       loginLoading.value = true;
-      const { userInfo } = await userStore.login(
+      callData.value= {};
+      activateDialog.value=false;
+      tenantPackMsg.value="";
+
+      const data = await userStore.login(
         toRaw({
           password: formData.password,
           username: formData.username,
@@ -286,6 +331,13 @@
           mode: 'none', //不要默认的错误提示
         })
       );
+
+      const { userInfo, extraInfo }=data;
+        if(extraInfo && extraInfo.showTenantPackDialog){
+          callData.value=data;
+          activateDialog.value=true;
+          tenantPackMsg.value=extraInfo.tenantPackMsg;
+        }
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
@@ -294,6 +346,7 @@
         });
       }
     } catch (error) {
+
       notification.error({
         message: t('sys.api.errorTip'),
         description: error.message || t('sys.login.networkExceptionMsg'),
@@ -319,8 +372,7 @@
           businessType: formData.businessType,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
-        })
-      );
+        }));
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),

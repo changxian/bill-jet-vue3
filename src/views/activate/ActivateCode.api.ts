@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/activate/activateCode/deleteBatch',
   importExcel = '/activate/activateCode/importExcel',
   exportXls = '/activate/activateCode/exportXls',
+  activateCodeUrl='/activate/activateCode/activate',
 }
 
 /**
@@ -69,4 +70,15 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
+}
+
+
+/**
+ * 保存或者更新
+ * @param params
+ * @param isUpdate
+ */
+export const activateCodeSave = (params, isUpdate) => {
+
+  return defHttp.post({ url:Api.activateCodeUrl, params }, { isTransformResponse: false });
 }
