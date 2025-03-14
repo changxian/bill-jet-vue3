@@ -205,7 +205,7 @@
       total.value = res.total;
     });
     // 如果商品数量小于套餐内规定数量，则可以继续添加
-    if (tenantPack.goodsNum != null && tenantPack.goodsNum > total.value) {
+    if (tenantPack.goodsNum == null || tenantPack.goodsNum > total.value) {
       let record = {
         dynamicFields: userStore.getDynamicCols['jxc_goods'],
       };

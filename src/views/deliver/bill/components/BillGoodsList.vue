@@ -96,8 +96,6 @@
   const amountComputeMethod = ref('');
   // 只允许选择商品开单
   const onlyChooseGoods = ref(false);
-  // 自动记录客户价
-  const autoCustPrice = ref(false);
   // 启用一客一价
   const singleCustPrice = ref(false);
   // 小数位数
@@ -107,7 +105,6 @@
     goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
     editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
     onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
-    autoCustPrice.value = !!billSetting.autoCustPrice;
     singleCustPrice.value = !!billSetting.singleCustPrice;
     buyPriceComputeMethod.value = billSetting.buyPriceComputeMethod;
     amountComputeMethod.value = billSetting.amountComputeMethod;
@@ -292,11 +289,16 @@
       columns: columns,
       cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
-      rowkey: 'id',
+      rowKey: 'id',
       pagination: false,
       //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选
-      rowSelection: {type: 'checkbox',
+      rowSelection: {
+        type: 'checkbox',
         onChange: function (ids, rows) {
+          debugger;
+          if (rows.stock <= 0) {
+            alert(0);
+          }
           console.log('get-select', rows, ids);
           delIds = ids;
         },
@@ -433,7 +435,7 @@
       content: `确定要删除吗？`,
       iconType: 'warning',
       onOk: () => {
-        const tmp = dataSource.value.filter(item => !(delIds.indexOf(item.id) > -1));
+        const tmp = dataSource.value.filter((item) => !(delIds.indexOf(item.id) > -1));
         dataSource.value = [...tmp];
         delIds = [];
       },
@@ -488,9 +490,6 @@
       emit('change-goods', [...dataSource.value]);
     }
   }
-  function test() {
-    console.log('dataSource.value:', dataSource.value);
-  }
 
   function setValue(goods) {
     dataSource.value = [...goods];
@@ -518,10 +517,10 @@
 <style lang="less" scoped>
   .tbl-wrap {
     :deep(.ant-row) {
-      width:100% !important
+      width: 100% !important;
     }
     :deep(.ant-col) {
-      max-width:100% !important
+      max-width: 100% !important;
     }
   }
   .count-wrap {

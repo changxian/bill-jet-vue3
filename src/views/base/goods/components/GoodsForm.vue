@@ -186,7 +186,7 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, watch } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { saveOrUpdate } from './goods.api';
+  import { saveOrUpdate, tenantGoodsNameNum } from './goods.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
@@ -300,11 +300,19 @@
     });
   }
 
+  // 商品总条数
+  const total = ref(0);
   /**
    * 提交数据
    */
   async function submitForm() {
     try {
+      // 商品名称重复判断
+      if (billSetting.goodsNameRepeat) {
+        await tenantGoodsNameNum({ goodsName: formData.name }).then((res) => {
+          total.value = res.total;
+        });
+      }
       // 触发表单验证
       await validate();
     } catch ({ errorFields }) {
@@ -323,19 +331,23 @@
     if (model.id) {
       isUpdate.value = true;
     }
-
-    await saveOrUpdate(model, isUpdate.value)
-      .then((res) => {
-        if (res.success) {
-          createMessage.success(res.message);
-          emit('ok');
-        } else {
-          createMessage.warning(res.message);
-        }
-      })
-      .finally(() => {
-        confirmLoading.value = false;
-      });
+    if (total.value > 0) {
+      createMessage.warning('商品名重复，添加失败！');
+      confirmLoading.value = false;
+    } else {
+      saveOrUpdate(model, isUpdate.value)
+        .then((res) => {
+          if (res.success) {
+            createMessage.success(res.message);
+            emit('ok');
+          } else {
+            createMessage.warning(res.message);
+          }
+        })
+        .finally(() => {
+          confirmLoading.value = false;
+        });
+    }
   }
 
   defineExpose({

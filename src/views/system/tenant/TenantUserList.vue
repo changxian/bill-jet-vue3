@@ -108,8 +108,8 @@
     tenantUserNum().then((res) => {
       total.value = res.total;
     });
-    // 如果公司数量小于套餐内规定数量，则可以继续添加
-    if (tenantPack.orgNum != null && tenantPack.orgNum > total.value) {
+    // 如果用户数量小于套餐内规定数量，则可以继续添加
+    if (tenantPack.accountNum == null || tenantPack.accountNum > total.value) {
       openDrawer(true, {
         isUpdate: false,
         showFooter: true,
