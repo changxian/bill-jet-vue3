@@ -221,6 +221,8 @@
 
   // 小数位数
   const decimalPlaces = ref(2);
+  // 小计的小数位数
+  const subtotalDecimalPlaces = ref(2);
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
   const showWeightCol = ref(false);
   const weightColTitle = ref('');
@@ -287,6 +289,9 @@
     showVolumeCol.value = !!billSetting.showVolumeCol;
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.subtotalDecimalPlaces === 0 || billSetting.subtotalDecimalPlaces) {
+      subtotalDecimalPlaces.value = billSetting.subtotalDecimalPlaces;
     }
     // 循环数据
     if (billSetting.dynaFieldsGroup['1']) {
@@ -465,7 +470,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'purchase.bill:jxc_purchase_bill:edit'
+        auth: 'purchase.bill:jxc_purchase_bill:edit',
       },
     ];
   }
@@ -547,15 +552,15 @@
         res.forEach((item) => {
           // 重量小计
           if (item.weight != undefined) {
-            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
+            item.weightSubtotal = (item.count * item.weight).toFixed(subtotalDecimalPlaces.value);
           }
           // 面积小计
           if (item.area != undefined) {
-            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
+            item.areaSubtotal = (item.count * item.area).toFixed(subtotalDecimalPlaces.value);
           }
           // 体积小计
           if (item.volume != undefined) {
-            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
+            item.volumeSubtotal = (item.count * item.volume).toFixed(subtotalDecimalPlaces.value);
           }
         });
         dataSourceDetail.value = [...res];

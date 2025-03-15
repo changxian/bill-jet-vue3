@@ -98,8 +98,10 @@
   const onlyChooseGoods = ref(false);
   // 启用一客一价
   const singleCustPrice = ref(false);
-  // 小数位数
+  // 普通单价类小数位数
   const decimalPlaces = ref(2);
+  // 小计类小数位数
+  const subtotalDecimalPlaces = ref(2);
   // 加载系统开单设置
   if (billSetting) {
     goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
@@ -110,6 +112,9 @@
     amountComputeMethod.value = billSetting.amountComputeMethod;
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.subtotalDecimalPlaces === 0 || billSetting.subtotalDecimalPlaces) {
+      subtotalDecimalPlaces.value = billSetting.subtotalDecimalPlaces;
     }
   }
   const goodsId = ref('');
@@ -471,9 +476,9 @@
     } else if (key === 'count') {
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
       // 修改小计
-      record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);
-      record.areaSubtotal = (value * record.area).toFixed(decimalPlaces.value);
-      record.volumeSubtotal = (value * record.volume).toFixed(decimalPlaces.value);
+      record.weightSubtotal = (value * record.weight).toFixed(subtotalDecimalPlaces.value);
+      record.areaSubtotal = (value * record.area).toFixed(subtotalDecimalPlaces.value);
+      record.volumeSubtotal = (value * record.volume).toFixed(subtotalDecimalPlaces.value);
       if (amountComputeMethod.value === 'num_price') {
         record.amount = (value * record.price).toFixed(decimalPlaces.value);
       } else if (amountComputeMethod.value === 'weight_num_price') {

@@ -159,9 +159,6 @@
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
 
-  // 自动记录客户价，在后台保存
-  const autoCustPrice = userStore.getBillSetting.autoCustPrice;
-
   // 启用一客一价
   const singleCustPrice = userStore.getBillSetting.singleCustPrice;
   // console.log(autoCustPrice, singleCustPrice);

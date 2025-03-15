@@ -283,12 +283,17 @@
   const editAmountEditPrice = ref(false);
   const onlyChooseGoods = ref(false);
   const decimalPlaces = ref(2);
+  // 小计类小数位数
+  const subtotalDecimalPlaces = ref(2);
   if (billSetting) {
     goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
     editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
     onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.subtotalDecimalPlaces === 0 || billSetting.subtotalDecimalPlaces) {
+      subtotalDecimalPlaces.value = billSetting.subtotalDecimalPlaces;
     }
   }
   const handleOk = (e: MouseEvent) => {
@@ -410,19 +415,15 @@
     } else if (key === 'count') {
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
       // 修改小计
-      record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);
-      record.areaSubtotal = (value * record.area).toFixed(decimalPlaces.value);
-      record.volumeSubtotal = (value * record.volume).toFixed(decimalPlaces.value);
+      record.weightSubtotal = (value * record.weight).toFixed(subtotalDecimalPlaces.value);
+      record.areaSubtotal = (value * record.area).toFixed(subtotalDecimalPlaces.value);
+      record.volumeSubtotal = (value * record.volume).toFixed(subtotalDecimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     } else if (editAmountEditPrice.value && key === 'costAmount') {
       record.cost = ((value * 100 / record.count)/100).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     }
   }
-  function test() {
-    console.log('dataSource.value:', dataSource.value);
-  }
-
   function setValue(goods) {
     dataSource.value = [...goods];
   }
