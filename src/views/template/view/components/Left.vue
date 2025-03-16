@@ -4,7 +4,7 @@
       <a-spin :spinning="loading">
         <BasicTree
           v-if="!treeReloading"
-          title="可选有模板列表信息"
+          title="可选用模板列表信息"
           checkable
           showLine
           :checkStrictly="true"
