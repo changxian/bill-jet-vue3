@@ -9,7 +9,7 @@
       <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
-      <!--<a-button type="primary" style="margin-left: 22px" preIcon="ant-design:setting-twotone">设置</a-button>-->
+      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone" @click="setPaper">设置</a-button>-->
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
@@ -120,6 +120,10 @@
             createMessage.warning(res.message);
           }
         });
+      },
+      setPaper() {
+        let ht = this.hiprintTemplate;
+        console.info(ht);
       },
       changeScale(big) {
         let scaleValue = this.scaleValue;

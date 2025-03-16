@@ -5,12 +5,12 @@
     <div class="aui-logo" v-if="!getIsMobile">
       <div>
         <h3>
-          <img :src="logoImg" alt="jeecg" />
+          <!--<img :src="logoImg" alt="jeecg" />-->
         </h3>
       </div>
     </div>
     <div v-else class="aui-phone-logo">
-      <img :src="logoImg" alt="jeecg" />
+      <!--<img :src="logoImg" alt="jeecg" />-->
     </div>
     <div v-show="type === 'login'">
       <div class="aui-content">
@@ -18,7 +18,7 @@
           <div class="aui-form">
             <div class="aui-image">
               <div class="aui-image-text">
-                <img :src="adTextImg" />
+                <!--<img :src="adTextImg" />-->
               </div>
             </div>
             <div class="aui-formBox">
@@ -150,7 +150,7 @@
     </div>
     <!-- 第三方登录相关弹框 -->
     <ThirdModal ref="thirdModalRef"></ThirdModal>
-    
+
     <!-- 图片验证码弹窗 -->
     <CaptchaModal @register="captchaRegisterModal" @ok="getLoginCode" />
   </div>
@@ -200,8 +200,8 @@
   //账号登录表单字段
   const formData = reactive<any>({
     inputCode: '',
-    username: 'admin',
-    password: '123456',
+    username: '',
+    password: '',
     businessType: '2',
   });
   //手机登录表单字段
@@ -603,7 +603,7 @@ html[data-theme='dark'] {
     -webkit-text-fill-color: #c9d1d9 !important;
     box-shadow: inherit !important;
   }
-  
+
   .ant-divider-inner-text {
     font-size: 12px !important;
     color: @text-color-secondary !important;

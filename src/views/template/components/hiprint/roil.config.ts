@@ -116,8 +116,8 @@ export default {
   },
 
   remark: {
-    n: 1,
-    arr: ['remark'],
+    n: 2,
+    arr: ['备注', 'remark'],
   },
   description: {
     n: 1,

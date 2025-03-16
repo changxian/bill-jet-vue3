@@ -7,7 +7,7 @@
         </a-card>
       </a-col>
       <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
-        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" />
+        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" @paperConfig="paperConfig"/>
       </a-col>
     </a-row>
   </BasicModal>
@@ -99,6 +99,10 @@
     hiprintTemplate = new hiprint.PrintTemplate({
       template: panels,
     });
+  }
+
+  function paperConfig(config) {
+
   }
 
   function onTreeSelect(o) {
