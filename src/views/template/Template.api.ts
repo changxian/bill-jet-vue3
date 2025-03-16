@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/bill/template/deleteBatch',
   importExcel = '/bill/template/importExcel',
   exportXls = '/bill/template/exportXls',
+  allCustomizedTemp = '/bill/template/allCustomizedTemp',
 }
 /**
  * 导出api
@@ -26,6 +27,12 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 所有定制类模板列表接口
+ * @param params
+ */
+export const allCustomizedTemp = (params) => defHttp.get({ url: Api.allCustomizedTemp, params });
 
 /**
  * 删除单个

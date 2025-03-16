@@ -11,6 +11,8 @@ enum Api {
   deleteBatch = '/bill/goods/deleteBatch',
   importExcel = '/bill/goods/importExcel',
   exportXls = '/bill/goods/exportXls',
+  tenantGoodsNum = '/bill/goods/tenantGoodsNum',
+  tenantGoodsNameNum = '/bill/goods/tenantGoodsNameNum',
 }
 
 /**
@@ -29,6 +31,16 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 获取租户总商品数接口
+ */
+export const tenantGoodsNum = () => defHttp.get({ url: Api.tenantGoodsNum });
+
+/**
+ * 获取租户总商品数接口
+ */
+export const tenantGoodsNameNum = (params) => defHttp.get({ url: Api.tenantGoodsNameNum, params });
 
 /**
  * 删除单个

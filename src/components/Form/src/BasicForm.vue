@@ -357,16 +357,15 @@
       &-with-help {
         margin-bottom: 0;
       }
-      // update-begin--author:liaozhiyang---date:20240514---for：【QQYUN-9241】form表单上下间距大点
-      //&:not(.ant-form-item-with-help) {
-      //  margin-bottom: 24px;
-      //}
-      // update-begin--author:liaozhiyang---date:20240514---for：【QQYUN-9241】form表单上下间距大点
-      // update-begin--author:liaozhiyang---date:20240620---for：【TV360X-1420】校验时闪动
+      // form表单上下间距小点
+      &:not(.ant-form-item-with-help) {
+        margin-bottom: 10px;
+      }
+
       &-has-error {
         margin-bottom: 24px;
       }
-      // update-end--author:liaozhiyang---date:20240620---for：【TV360X-1420】校验时闪动
+
       &.suffix-item {
         .ant-form-item-children {
           display: flex;

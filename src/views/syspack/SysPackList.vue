@@ -103,10 +103,10 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'syspack:sys_pack:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" v-auth="'syspack:sys_pack:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-<!--        <j-upload-button type="primary" v-auth="'syspack:sys_pack:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-       --> <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button type="primary" v-auth="'syspack:sys_pack:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增套餐</a-button>
+        <!--<a-button type="primary" v-auth="'syspack:sys_pack:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+        <!--<j-upload-button type="primary" v-auth="'syspack:sys_pack:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
+        <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete" v-auth="'syspack:sys_pack:deleteBatch'">
@@ -115,12 +115,7 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <!--<a-button v-auth="'syspack:sys_pack:deleteBatch'">批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>-->
         </a-dropdown>
-        <!-- 高级查询 -->
-        <!-- <super-query :config="superQueryConfig" @search="handleSuperQuery" /> -->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -138,7 +133,7 @@
 
 <script lang="ts" name="syspack-sysPack" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './SysPack.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './SysPack.api';

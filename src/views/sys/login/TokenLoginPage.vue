@@ -1,11 +1,11 @@
 <template>
   <div class="app-loading">
     <div class="app-loading-wrap">
-      <img src="/resource/img/logo.png" class="app-loading-logo" alt="Logo" />
+      <img src="/src/assets/images/logo1.png" class="app-loading-logo" alt="Logo" />
       <div class="app-loading-dots">
         <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
       </div>
-      <div class="app-loading-title">进销存管理系统</div>
+      <div class="app-loading-title">鑫泓软件</div>
     </div>
   </div>
 </template>

@@ -70,7 +70,14 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
   import { getGoodsColumns } from './goods.data';
-  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './goods.api';
+  import {
+    batchDelete,
+    deleteOne,
+    getExportUrl,
+    getImportUrl,
+    list,
+    tenantGoodsNum
+  } from "./goods.api";
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';
@@ -120,6 +127,8 @@
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value, '   goodsName is:' + goodsName.value);
   const emits = defineEmits(['get-select', 'db-ok']);
   const columns = getGoodsColumns(billType.value);
+  // 商品总条数
+  const total = ref(0);
 
   // 注册table数据
   const { tableContext, onExportXls, onImportXls } = useListPage( reactive({
@@ -173,12 +182,7 @@
     },
   }));
 
-  const [registerTable, { reload, getPagination }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
-  // 获取总条数
-  // const getTotal = () => {
-  //   const { total } = getPagination();
-  //   return total;
-  // };
+  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
   function handleOk() {
     console.log('=======', 'get-select', selectedRows.value, selectedRowKeys.value);
@@ -191,22 +195,29 @@
     () => props.data,
     () => reload()
   );
-
-  // const tenantPack = userStore.getTenantPack;
+  // 租户套餐信息
+  const tenantPack = userStore.getTenantPack;
   /**
    * 新增事件
    */
   function handleAdd() {
-    // console.log('=======', 'add', tenantPack.value);
-    let record = {
-      dynamicFields: userStore.getDynamicCols['jxc_goods'],
-    };
-    openModal(true, {
-      record,
-      isUpdate: false,
-      showFooter: true,
-      categoryId: categoryId.value,
+    tenantGoodsNum().then((res) => {
+      total.value = res.total;
     });
+    // 如果商品数量小于套餐内规定数量，则可以继续添加
+    if (tenantPack.goodsNum == null || tenantPack.goodsNum > total.value) {
+      let record = {
+        dynamicFields: userStore.getDynamicCols['jxc_goods'],
+      };
+      openModal(true, {
+        record,
+        isUpdate: false,
+        showFooter: true,
+        categoryId: categoryId.value,
+      });
+    } else {
+      createMessage.warning('商品数量已达上限！如果还想添加更多商品，请联系运营商扩容！');
+    }
   }
   /**
    * 编辑事件

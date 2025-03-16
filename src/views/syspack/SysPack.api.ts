@@ -14,7 +14,7 @@ enum Api {
   queryDataRule = '/sys/role/datarule',
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryPackPermission',
-  saveRolePermission = '/sys/permission/savePackPermission', 
+  saveRolePermission = '/sys/permission/savePackPermission',
 }
 
 /**

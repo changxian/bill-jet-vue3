@@ -67,26 +67,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import JCheckbox from "/@/components/Form/src/jeecg/components/JCheckbox.vue";
-  import { getValueType } from '/@/utils';
-  import {getMySystemSetting, saveOrUpdateSystem} from '../index.api';
+  import { getMySystemSetting, saveOrUpdateSystem } from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import { useUserStore } from '@/store/modules/user';
 
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formBpm: { type: Boolean, default: true }
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
+  const userStore = useUserStore();
   const emit = defineEmits(['register', 'ok']);
   const formData = ref<Record<any>>({});
-  function init(){
-    getMySystemSetting().then(res=>{
-      formData.value=res;
+  function init() {
+    getMySystemSetting().then((res) => {
+      formData.value = res;
     });
   }
   init();
@@ -95,23 +94,17 @@
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   //表单验证
-  const validatorRules = reactive({
-  });
+  const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+  const disabled = computed(() => {
+    if (props.formBpm === true){
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */
@@ -127,10 +120,10 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
@@ -172,6 +165,8 @@
       .finally(() => {
         init();
         confirmLoading.value = false;
+        // 重新获取用户信息和菜单
+        userStore.getUserInfoAction();
       });
   }
 

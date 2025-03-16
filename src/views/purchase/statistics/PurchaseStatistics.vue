@@ -23,8 +23,7 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="公司" name="companyId">
-                <j-select-company v-model:value="queryParam.companyId" @change="changeCompany"
-                                  allow-clear/>
+                <j-select-company v-model:value="queryParam.companyId" @change="changeCompany" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -32,12 +31,10 @@
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset"
-                          style="margin-left: 8px">重置</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
                 <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
                   {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon
-                    :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'"/>
+                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'"/>
                 </a>
               </a-col>
             </span>
@@ -84,7 +81,7 @@
 
 <script lang="ts" name="purchase.statistics-PurchaseStatistics" setup>
   import { ref, defineExpose, reactive } from 'vue';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { goodsCountColumns, typeCountColumns, supplierCountColumns, operatorCountColumns, careNoCountColumns } from './PurchaseStatistics.data';
   import { list, getExportUrl } from './PurchaseStatistics.api';
@@ -137,7 +134,7 @@
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
     }
-    if (billSetting.dynaFieldsGroup['1']){
+    if (billSetting.dynaFieldsGroup['1']) {
       // 循环数据
       billSetting.dynaFieldsGroup['1'].forEach((item) => {
         // 重量小计
@@ -202,7 +199,9 @@
     exportConfig: {
       name: '进货统计',
       url: getExportUrl,
-      params: queryParam,
+      params: () => {
+        return Object.assign(queryParam, fastDateParam);
+      },
     },
   });
   const [registerTable, { reload }, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;

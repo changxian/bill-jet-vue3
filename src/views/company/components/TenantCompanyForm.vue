@@ -6,62 +6,62 @@
           <a-row>
 						<a-col :span="24">
 							<a-form-item label="企业全称" v-bind="validateInfos.compName" id="TenantCompanyForm-compName" name="compName">
-								<a-input v-model:value="formData.compName" placeholder="请输入企业全称"  allow-clear ></a-input>
+								<a-input v-model:value="formData.compName" placeholder="请输入企业全称" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="简称" v-bind="validateInfos.shortName" id="TenantCompanyForm-shortName" name="shortName">
-								<a-input v-model:value="formData.shortName" placeholder="请输入简称"  allow-clear ></a-input>
+								<a-input v-model:value="formData.shortName" placeholder="请输入简称" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
             <a-col :span="24">
               <a-form-item label="开户行" v-bind="validateInfos.bankBelong" id="TenantCompanyForm-bankBelong" name="bankBelong">
-                <a-input v-model:value="formData.bankBelong" placeholder="请输入开户行"  allow-clear ></a-input>
+                <a-input v-model:value="formData.bankBelong" placeholder="请输入开户行" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="24">
               <a-form-item label="开户行账号" v-bind="validateInfos.bankAccount" id="TenantCompanyForm-bankAccount" name="bankAccount">
-                <a-input v-model:value="formData.bankAccount" placeholder="请输入开户行账号"  allow-clear ></a-input>
+                <a-input v-model:value="formData.bankAccount" placeholder="请输入开户行账号" allow-clear ></a-input>
               </a-form-item>
             </a-col>
 						<a-col :span="24">
 							<a-form-item label="英文名称" v-bind="validateInfos.enName" id="TenantCompanyForm-enName" name="enName">
-								<a-input v-model:value="formData.enName" placeholder="请输入英文名称"  allow-clear ></a-input>
+								<a-input v-model:value="formData.enName" placeholder="请输入英文名称" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="地址" v-bind="validateInfos.address" id="TenantCompanyForm-address" name="address">
-								<a-input v-model:value="formData.address" placeholder="请输入地址"  allow-clear ></a-input>
+								<a-input v-model:value="formData.address" placeholder="请输入地址" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="网站" v-bind="validateInfos.webSite" id="TenantCompanyForm-webSite" name="webSite">
-								<a-input v-model:value="formData.webSite" placeholder="请输入网站"  allow-clear ></a-input>
+								<a-input v-model:value="formData.webSite" placeholder="请输入网站" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="电话" v-bind="validateInfos.phone" id="TenantCompanyForm-phone" name="phone">
-								<a-input v-model:value="formData.phone" placeholder="请输入电话"  allow-clear ></a-input>
+								<a-input v-model:value="formData.phone" placeholder="请输入电话" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="传真" v-bind="validateInfos.fax" id="TenantCompanyForm-fax" name="fax">
-								<a-input v-model:value="formData.fax" placeholder="请输入传真"  allow-clear ></a-input>
+								<a-input v-model:value="formData.fax" placeholder="请输入传真" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="QQ" v-bind="validateInfos.qq" id="TenantCompanyForm-qq" name="qq">
-								<a-input v-model:value="formData.qq" placeholder="请输入QQ"  allow-clear ></a-input>
+								<a-input v-model:value="formData.qq" placeholder="请输入QQ" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="微信" v-bind="validateInfos.wechat" id="TenantCompanyForm-wechat" name="wechat">
-								<a-input v-model:value="formData.wechat" placeholder="请输入微信"  allow-clear ></a-input>
+								<a-input v-model:value="formData.wechat" placeholder="请输入微信" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="邮箱" v-bind="validateInfos.email" id="TenantCompanyForm-email" name="email">
-								<a-input v-model:value="formData.email" placeholder="请输入邮箱"  allow-clear ></a-input>
+								<a-input v-model:value="formData.email" placeholder="请输入邮箱" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -77,8 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JCheckbox from '/@/components/Form/src/jeecg/components/JCheckbox.vue';
   import { getValueType } from '/@/utils';
@@ -97,8 +96,8 @@
     id: '',
     compName: '',
     shortName: '',
-    bankBelong:'',
-    bankAccount:'',
+    bankBelong: '',
+    bankAccount: '',
     enName: '',
     address: '',
     webSite: '',
@@ -119,14 +118,13 @@
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
       return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */

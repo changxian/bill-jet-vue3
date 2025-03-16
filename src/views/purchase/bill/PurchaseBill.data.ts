@@ -151,7 +151,7 @@ export const columns: BasicColumn[] = [
   {
     title: '开票状态',
     align: 'center',
-    dataIndex: 'billStatus_dictText',
+    dataIndex: 'invoiceStatus_dictText',
   },
   {
     title: '业务员',

@@ -135,6 +135,16 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
+      <template #type_dictText="{ record }">
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else>{{ record.type_dictText }}</span>
+      </template>
+      <template #status_dictText="{ record }">
+        <span v-if="3 == record.status">签收</span>
+        <span v-else-if="4 == record.status" style="color: green">{{ record.status_dictText }}</span>
+        <span v-else-if="5 == record.status" style="color: blue">{{ record.status_dictText }}</span>
+        <span v-else-if="9 == record.status" style="color: red">{{ record.status_dictText }}</span>
+        <span v-else>{{ record.status_dictText }}</span>
+      </template>
       <template #bodyCell="{ column, record, index, text }"> </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
@@ -228,6 +238,8 @@
 
   // 小数位数
   const decimalPlaces = ref(2);
+  // 小计类小数位数
+  const subtotalDecimalPlaces = ref(2);
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
   const showWeightCol = ref(false);
   const weightColTitle = ref('');
@@ -298,6 +310,9 @@
     showVolumeCol.value = !!billSetting.showVolumeCol;
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.subtotalDecimalPlaces === 0 || billSetting.subtotalDecimalPlaces) {
+      subtotalDecimalPlaces.value = billSetting.subtotalDecimalPlaces;
     }
     // 循环数据
     if (billSetting.dynaFieldsGroup['1']) {
@@ -590,15 +605,15 @@
         res.forEach((item) => {
           // 重量小计
           if (item.weight != undefined) {
-            item.weightSubtotal = (item.count * item.weight).toFixed(decimalPlaces.value);
+            item.weightSubtotal = (item.count * item.weight).toFixed(subtotalDecimalPlaces.value);
           }
           // 面积小计
           if (item.area != undefined) {
-            item.areaSubtotal = (item.count * item.area).toFixed(decimalPlaces.value);
+            item.areaSubtotal = (item.count * item.area).toFixed(subtotalDecimalPlaces.value);
           }
           // 体积小计
           if (item.volume != undefined) {
-            item.volumeSubtotal = (item.count * item.volume).toFixed(decimalPlaces.value);
+            item.volumeSubtotal = (item.count * item.volume).toFixed(subtotalDecimalPlaces.value);
           }
         });
         dataSourceDetail.value = [...res];

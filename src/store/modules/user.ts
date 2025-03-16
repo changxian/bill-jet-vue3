@@ -70,6 +70,7 @@ export const useUserStore = defineStore({
     systemSetting: null,
     billSetting: null,
     defaultCompany: null,
+    tenantPack: null,
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
@@ -136,7 +137,6 @@ export const useUserStore = defineStore({
       return getAuthCache(TENANT_PACK_DATA);
     },
 
-
     getRoleList(): RoleEnum[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
     },
@@ -196,7 +196,10 @@ export const useUserStore = defineStore({
       this.defaultCompany = defaultCompany;
       setAuthCache(DEFAULT_COMPANY_DATA, defaultCompany);
     },
-
+    setTenantPack(tenantPack) {
+      this.tenantPack = tenantPack;
+      setAuthCache(TENANT_PACK_DATA, tenantPack);
+    },
 
     setAllDictItemsByLocal() {
       // update-begin--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
@@ -241,6 +244,10 @@ export const useUserStore = defineStore({
         // save token
         this.setToken(token);
         this.setTenant(userInfo.loginTenantId);
+        console.log(data.extraInfo)
+        if (data && data.extraInfo && data.extraInfo.showTenantPackDialog) {
+          return data
+        }
         return this.afterLoginAction(goHome, data);
       } catch (error) {
         return Promise.reject(error);
@@ -349,7 +356,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems, cols, dynamicCols ,systemSetting,billSetting} = await getUserInfo();
+      const { userInfo, sysAllDictItems, cols, dynamicCols, systemSetting, billSetting, defaultCompany, tenantPack } = await getUserInfo();
 
       if (userInfo) {
         const { roles = [] } = userInfo;
@@ -383,9 +390,17 @@ export const useUserStore = defineStore({
       if (systemSetting) {
         this.setSystemSetting(systemSetting);
       }
-      // 添加开单设置息到缓存
+      // 添加开单设置信息到缓存
       if (billSetting) {
         this.setBillSetting(billSetting);
+      }
+      // 添加默认公司信息到缓存
+      if (defaultCompany) {
+        this.setDefaultCompany(defaultCompany);
+      }
+      // 添加套餐信息到缓存
+      if (tenantPack) {
+        this.setTenantPack(tenantPack);
       }
       return userInfo;
     },

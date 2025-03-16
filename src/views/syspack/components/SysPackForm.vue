@@ -30,7 +30,7 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="支持商品数量" v-bind="validateInfos.goodsNum" id="SysPackForm-goodsNum" name="goodsNum">
+							<a-form-item label="支持商品数" v-bind="validateInfos.goodsNum" id="SysPackForm-goodsNum" name="goodsNum">
 								<a-input-number v-model:value="formData.goodsNum" placeholder="请输入支持商品数量" style="width: 100%" />
 							</a-form-item>
 						</a-col>
@@ -39,7 +39,7 @@
 								<a-input-number v-model:value="formData.price" placeholder="请输入产品价格" style="width: 100%" />
 							</a-form-item>
 						</a-col>
-						<a-col :span="12">
+<!--						<a-col :span="12">
 							<a-form-item label="产品折扣" v-bind="validateInfos.discounted" id="SysPackForm-discounted" name="discounted">
 								<a-input-number v-model:value="formData.discounted" placeholder="请输入产品折扣" style="width: 100%" />
 							</a-form-item>
@@ -58,15 +58,15 @@
 							<a-form-item label="规格单位" v-bind="validateInfos.specificationUnit" id="SysPackForm-specificationUnit" name="specificationUnit">
 								<a-input v-model:value="formData.specificationUnit" placeholder="请输入规格单位"  allow-clear ></a-input>
 							</a-form-item>
-						</a-col>
+						</a-col>-->
             <a-col :span="12">
               <a-form-item label="启用状态" v-bind="validateInfos.status" id="SysPackForm-status" name="status">
                 <j-dict-select-tag v-model:value="formData.status" dictCode="jxc_status" placeholder="请选择启用状态" allow-clear />
               </a-form-item>
             </a-col>
 						<a-col :span="12">
-							<a-form-item label="产品描述" v-bind="validateInfos.discription" id="SysPackForm-discription" name="discription">
-								<a-textarea v-model:value="formData.discription" :rows="4" placeholder="请输入产品描述" />
+							<a-form-item label="产品描述" v-bind="validateInfos.description" id="SysPackForm-description" name="description">
+								<a-textarea v-model:value="formData.description" :rows="4" placeholder="请输入产品描述" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -106,11 +106,11 @@
     accountNum: undefined,
     goodsNum: undefined,
     price: undefined,
-    discounted: undefined,
+    discounted: 1,
     discountedPrice: undefined,
-    specification: undefined,
-    specificationUnit: '',
-    discription: '',
+    specification: 1,
+    specificationUnit: '年',
+    description: '',
     status: '',
     remarks: '',
   });
@@ -121,7 +121,7 @@
   //表单验证
   const validatorRules = reactive({
     packName: [{ required: true, message: '请输入产品名称!' }],
-    discription: [{ required: true, message: '请输入产品描述!' }],
+    description: [{ required: true, message: '请输入产品描述!' }],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
@@ -133,7 +133,6 @@
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */

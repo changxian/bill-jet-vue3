@@ -12,7 +12,7 @@
       </a-col>
       <BasicModal v-bind="$attrs" @register="register" title="商品搜索" :width="'1400px'" @ok="handleOk">
         <div style="width: 98%">
-          <goodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></goodsSelectList>
+          <GoodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></GoodsSelectList>
         </div>
       </BasicModal>
     </a-row>
@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
   import { ref, computed, defineEmits, defineProps } from 'vue';
-  import goodsSelectList from '@/views/base/goods/index.vue';
+  import GoodsSelectList from '@/views/base/goods/index.vue';
   import { BasicModal, useModal } from '/@/components/Modal';
   import { BasicColumn, BasicTable } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -48,10 +48,9 @@
   import { useUserStore } from '/@/store/modules/user';
 
   const emit = defineEmits(['change-goods']);
-  const { createMessage, createConfirm } = useMessage();
+  const { createWarningModal, createConfirm } = useMessage();
   const userStore = useUserStore();
   const dataSource: any = ref([]);
-
   // 显示重量列【合计 和 列表皆显示，0不显示，1显示】
   const showWeightCol = ref(false);
   const weightColTitle = ref('');
@@ -96,23 +95,28 @@
   const amountComputeMethod = ref('');
   // 只允许选择商品开单
   const onlyChooseGoods = ref(false);
-  // 自动记录客户价
-  const autoCustPrice = ref(false);
+  // 商品库存不能小于零
+  const notLessZeroStock = ref(false);
   // 启用一客一价
   const singleCustPrice = ref(false);
-  // 小数位数
+  // 普通单价类小数位数
   const decimalPlaces = ref(2);
+  // 小计类小数位数
+  const subtotalDecimalPlaces = ref(2);
   // 加载系统开单设置
   if (billSetting) {
     goodsNameRepeat.value = !!billSetting.goodsNameRepeat;
     editAmountEditPrice.value = !!billSetting.editAmountEditPrice;
     onlyChooseGoods.value = !!billSetting.onlyChooseGoods;
-    autoCustPrice.value = !!billSetting.autoCustPrice;
+    notLessZeroStock.value = !!billSetting.notLessZeroStock;
     singleCustPrice.value = !!billSetting.singleCustPrice;
     buyPriceComputeMethod.value = billSetting.buyPriceComputeMethod;
     amountComputeMethod.value = billSetting.amountComputeMethod;
     if (billSetting.decimalPlaces === 0 || billSetting.decimalPlaces) {
       decimalPlaces.value = billSetting.decimalPlaces;
+    }
+    if (billSetting.subtotalDecimalPlaces === 0 || billSetting.subtotalDecimalPlaces) {
+      subtotalDecimalPlaces.value = billSetting.subtotalDecimalPlaces;
     }
   }
   const goodsId = ref('');
@@ -126,6 +130,27 @@
   };
   let selectedGoods: any = [];
   function getSelect(rows, ids) {
+    if (billType == 'deliver') {
+      // 只允许选择开单，且 商品库存不能小于零
+      if (onlyChooseGoods.value && notLessZeroStock.value) {
+        let temp = rows.filter((item) => item.stock <= 0);
+        // console.log(temp);
+        if (temp.length > 0) {
+          let tps = ''; // 消息内容
+          let idx = 1; // 序号
+          temp.forEach((item) => {
+            tps += idx + '、' + item.code + '，' + item.name + '，' + item.type + '；<br>';
+            idx += 1;
+          });
+          if (tps.length > 0) {
+            createWarningModal({ title: '库存不足', content: '以下商品库存不足，不能选择开单，请取消选择！<br>' + tps });
+          }
+        }
+        // 过滤出商品库存大于0的商品
+        rows = rows.filter((item) => item.stock > 0);
+        // console.log(rows);
+      }
+    }
     selectedGoods = [...rows];
   }
 
@@ -292,11 +317,12 @@
       columns: columns,
       cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
-      rowkey: 'id',
+      rowKey: 'id',
       pagination: false,
       //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选
-      rowSelection: {type: 'checkbox',
-        onChange: function (ids, rows) {
+      rowSelection: {
+        type: 'checkbox',
+        onChange: (ids, rows) => {
           console.log('get-select', rows, ids);
           delIds = ids;
         },
@@ -433,7 +459,7 @@
       content: `确定要删除吗？`,
       iconType: 'warning',
       onOk: () => {
-        const tmp = dataSource.value.filter(item => !(delIds.indexOf(item.id) > -1));
+        const tmp = dataSource.value.filter((item) => !(delIds.indexOf(item.id) > -1));
         dataSource.value = [...tmp];
         delIds = [];
       },
@@ -469,9 +495,9 @@
     } else if (key === 'count') {
       record.costAmount = (value * record.cost).toFixed(decimalPlaces.value);
       // 修改小计
-      record.weightSubtotal = (value * record.weight).toFixed(decimalPlaces.value);
-      record.areaSubtotal = (value * record.area).toFixed(decimalPlaces.value);
-      record.volumeSubtotal = (value * record.volume).toFixed(decimalPlaces.value);
+      record.weightSubtotal = (value * record.weight).toFixed(subtotalDecimalPlaces.value);
+      record.areaSubtotal = (value * record.area).toFixed(subtotalDecimalPlaces.value);
+      record.volumeSubtotal = (value * record.volume).toFixed(subtotalDecimalPlaces.value);
       if (amountComputeMethod.value === 'num_price') {
         record.amount = (value * record.price).toFixed(decimalPlaces.value);
       } else if (amountComputeMethod.value === 'weight_num_price') {
@@ -487,9 +513,6 @@
       record.price = ((value * 100) / record.count / 100).toFixed(decimalPlaces.value);
       emit('change-goods', [...dataSource.value]);
     }
-  }
-  function test() {
-    console.log('dataSource.value:', dataSource.value);
   }
 
   function setValue(goods) {
@@ -518,10 +541,10 @@
 <style lang="less" scoped>
   .tbl-wrap {
     :deep(.ant-row) {
-      width:100% !important
+      width: 100% !important;
     }
     :deep(.ant-col) {
-      max-width:100% !important
+      max-width: 100% !important;
     }
   }
   .count-wrap {

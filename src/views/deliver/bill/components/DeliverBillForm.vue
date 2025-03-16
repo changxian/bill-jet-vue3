@@ -137,7 +137,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
@@ -158,9 +158,6 @@
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
-
-  // 自动记录客户价，在后台保存
-  const autoCustPrice = userStore.getBillSetting.autoCustPrice;
 
   // 启用一客一价
   const singleCustPrice = userStore.getBillSetting.singleCustPrice;
@@ -574,5 +571,9 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+
+    .ant-form-item {
+      margin-bottom: 10px !important;
+    }
   }
 </style>

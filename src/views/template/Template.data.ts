@@ -13,6 +13,12 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
   },
   {
+    title: '是否定制模板',
+    align: 'center',
+    dataIndex: 'type',
+    slots: { customRender: 'type_dictText' },
+  },
+  {
     title: '状态',
     align: 'center',
     dataIndex: 'delFlag_dictText',
@@ -24,6 +30,16 @@ export const searchFormSchema: FormSchema[] = [
     label: '模板名称',
     field: 'name',
     component: 'JInput', //TODO 范围查询
+    //colProps: {span: 6},
+  },
+  {
+    label: '模板类别',
+    field: 'type',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'jxc_template_type',
+      placeholder: '请模板类别',
+    },
     //colProps: {span: 6},
   },
   {

@@ -12,6 +12,7 @@ enum Api {
   deleteBatch = '/company/tenantCompany/deleteBatch',
   importExcel = '/company/tenantCompany/importExcel',
   exportXls = '/company/tenantCompany/exportXls',
+  tenantCompanyNum = '/company/tenantCompany/tenantCompanyNum',
 }
 
 /**
@@ -30,6 +31,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 获取租户总公司数接口
+ */
+export const tenantCompanyNum = () => defHttp.get({ url: Api.tenantCompanyNum });
 
 /**
  * 列表接口

@@ -130,7 +130,7 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
+  import { defaultCom, queryNewNo } from '@/views/deliver/bill/DeliverBill.api';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import { byPurchaseId } from '@/views/purchase/debt/PurchaseDebt.api';
   import { useUserStore } from '@/store/modules/user';
@@ -226,13 +226,23 @@
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
     });
     queryNewNo({ category: 1 }).then((res) => {
-      formData.billNo = res.newNo;
+      if (formData.billNo == '') {
+        formData.billNo = res.newNo;
+      }
+    });
+    defaultCom().then((res) => {
+      if (formData.companyId == '') {
+        formData.companyId = res.id;
+        formData.companyName = res.compName;
+      }
     });
   }
   init();
+  // 选择开单公司信息
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      formData.companyId = selectRows[0].id;
       formData.companyName = selectRows[0].compName;
     }
   }
@@ -471,6 +481,10 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+
+    .ant-form-item {
+      margin-bottom: 10px !important;
+    }
   }
   .btns-wrap {
     display: flex;

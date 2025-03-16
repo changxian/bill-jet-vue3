@@ -2,8 +2,8 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增企业信息</a-button>
+        <a-dropdown v-if="selectedRowKeys.length < 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -12,42 +12,32 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button
-            >批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
+          <a-button>批量操作<Icon icon="mdi:chevron-down"></Icon></a-button>
         </a-dropdown>
-        <a-button v-if="false"
-          preIcon="ant-design:user-add-outlined"
-          type="primary"
-          @click="handleInvitation"
-          style="margin-right: 5px"
-          :disabled="selectedRowKeys.length != 1"
-          >邀请用户加入</a-button
-        >
-        <a-button
-          preIcon="ant-design:plus-outlined"
-          type="primary"
-          @click="handlePack"
-          style="margin-right: 5px"
-          :disabled="selectedRowKeys.length != 1"
-          >套餐</a-button
-        >
+        <a-button v-if="false" preIcon="ant-design:user-add-outlined" type="primary" @click="handleInvitation" style="margin-right: 5px" :disabled="selectedRowKeys.length != 1">邀请用户加入</a-button>
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handlePack" style="margin-right: 5px" :disabled="selectedRowKeys.length != 1">绑定套餐</a-button>
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleTemplate" style="margin-right: 5px" :disabled="selectedRowKeys.length != 1">定制模板</a-button>
         <a-button v-if="false" type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />
       </template>
+      <template #customizedTemp_dictText="{ record }">
+        <span v-if="1 == record.customizedTemp" style="color: red">需要</span><span v-else>不需要</span>
+      </template>
     </BasicTable>
     <TenantModal @register="registerModal" @success="reload" />
-    <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk"/>
+    <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk" />
     <TenantUserModal @register="registerTenUserModal" />
-    <!--  套餐  -->
+    <!--  租户绑定的套餐列表页面  -->
     <TenantPackList @register="registerPackModal" />
+    <!--  租户定制的模板列表页面  -->
+    <TemplateCustomizedList @register="registerCustomizedListModal" />
     <!--  企业回收站  -->
     <TenantRecycleBinModal @register="registerRecycleBinModal" @success="reload" />
   </div>
 </template>
+<!-- 该页面是【企业管理】主页面 -->
 <script lang="ts" name="system-tenant" setup>
   import { ref, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
@@ -61,12 +51,14 @@
   import TenantUserModal from './components/TenantUserList.vue';
   import TenantPackList from './pack/TenantPackList.vue';
   import TenantRecycleBinModal from './components/TenantRecycleBinModal.vue';
+  import TemplateCustomizedList from '@/views/system/tenant/customized/TemplateCustomizedList.vue';
 
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
   const [registerSelUserModal, { openModal: userOpenModal }] = useModal();
   const [registerTenUserModal, { openModal: tenUserOpenModal }] = useModal();
   const [registerPackModal, { openModal: packModal }] = useModal();
+  const [registerCustomizedListModal, { openModal: customizedModal }] = useModal();
   const [registerRecycleBinModal, { openModal: recycleBinModal }] = useModal();
 
   // 列表页面公共参数、方法
@@ -76,14 +68,17 @@
       title: '企业列表',
       api: getTenantList,
       columns: columns,
+      clickToRowSelect: true,
+      showIndexColumn: true,
+      rowSelection: { type: 'radio' },
       formConfig: {
         schemas: searchFormSchema,
         fieldMapToTime: [['fieldTime', ['beginDate', 'endDate'], 'YYYY-MM-DD HH:mm:ss']],
       },
-      actionColumn:{
+      actionColumn: {
         width: 150,
-        fixed:'right'
-      }
+        fixed: 'right',
+      },
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
@@ -136,6 +131,10 @@
    * 删除事件
    */
   async function handleDelete(record) {
+    if (record.status === 1) {
+      createMessage.warn('状态正常的企业不能被删除！');
+      return;
+    }
     await deleteTenant({ id: record.id }, handleSuccess);
   }
 
@@ -182,14 +181,36 @@
    */
   function handlePack() {
     if (unref(selectedRowKeys).length > 1) {
-      createMessage.warn('请选择一个');
+      createMessage.warn('请选择一个企业');
       return;
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
       tenantName: unref(selectedRows.value[0].name),
       //我的企业显示新增和编辑套餐
-      showPackAddAndEdit: true
+      showPackAddAndEdit: true,
+    });
+  }
+
+  /**
+   * 新增定制模板
+   */
+  function handleTemplate() {
+    if (unref(selectedRowKeys).length > 1) {
+      createMessage.warn('请选择一个企业');
+      return;
+    // } else if (unref(selectedRowKeys).length == 1) {
+    //   if (unref(selectedRows.value[0].customizedTemp) !== 1) {
+    //     createMessage.warn('该企业没有定制模板的需求！');
+    //     return;
+    //   }
+    }
+    customizedModal(true, {
+      tenantId: unref(selectedRowKeys.value.join(',')),
+      tenantName: unref(selectedRows.value[0].name),
+      customizedTemp: unref(selectedRows.value[0].customizedTemp),
+      //我的企业显示新增和编辑模板
+      showTemplateAddAndEdit: true,
     });
   }
 

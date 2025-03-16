@@ -31,6 +31,7 @@ enum Api {
   putCancelQuit = '/sys/user/putCancelQuit',
   updateUserTenantStatus = '/sys/tenant/updateUserTenantStatus',
   getUserTenantPageList = '/sys/tenant/getUserTenantPageList',
+  tenantUserNum = '/sys/tenant/tenantUserNum',
 }
 /**
  * 导出api
@@ -46,6 +47,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 列表接口(查询用户，通过企业隔离)
+ * @param params
+ */
+export const tenantUserNum = () => defHttp.get({ url: Api.tenantUserNum });
 /**
  * 列表接口(查询用户，通过企业隔离)
  * @param params
