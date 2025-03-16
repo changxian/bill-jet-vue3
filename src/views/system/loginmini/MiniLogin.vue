@@ -53,7 +53,7 @@
                           <img v-else style="margin-top: 2px; max-width: initial" :src="codeImg" @click="handleChangeCheckCode" />
                         </div>
                       </div>
-                      <div class="aui-inputClear">
+                      <!--<div class="aui-inputClear">
                         <div class="aui-flex">
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
@@ -66,7 +66,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div>-->
                       <div class="aui-flex" style="padding-top: 5px">
                         <div class="aui-flex-box">
                           <div class="aui-choice">
@@ -115,7 +115,7 @@
                 </div>
               </div>
               <!-- 体验一下 -->
-              <a-form  >
+              <a-form>
                 <div class="aui-flex aui-third-text">
                   <div class="aui-flex-box aui-third-border">
                     <span>体验一下</span>
@@ -172,9 +172,8 @@
 </template>
 <script lang="ts" setup name="login-mini">
   import { getCaptcha, getCodeInfo } from '/@/api/sys/user';
-  import { computed, onMounted, reactive, ref, toRaw, unref } from 'vue';
+  import { onMounted, reactive, ref, toRaw, unref } from 'vue';
   import codeImg from '/@/assets/images/checkcode.png';
-  import { Rule } from '/@/components/Form';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -187,18 +186,18 @@
   import adTextImg from '/@/assets/loginmini/icon/jeecg_ad_text.png';
   import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
   import { useLocaleStore } from '/@/store/modules/locale';
-  import { useDesign } from "/@/hooks/web/useDesign";
-  import { useAppInject } from "/@/hooks/web/useAppInject";
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useAppInject } from '/@/hooks/web/useAppInject';
   import { GithubFilled, WechatFilled, DingtalkCircleFilled, createFromIconfontCN } from '@ant-design/icons-vue';
   import CaptchaModal from '@/components/jeecg/captcha/CaptchaModal.vue';
-  import { useModal } from "@/components/Modal";
-  import { ExceptionEnum } from "@/enums/exceptionEnum";
-  import {activateCodeSave, saveOrUpdate} from "@/views/activate/ActivateCode.api";
+  import { useModal } from '@/components/Modal';
+  import { ExceptionEnum } from '@/enums/exceptionEnum';
+  import { activateCodeSave, saveOrUpdate } from '@/views/activate/ActivateCode.api';
 
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
   });
-  const activateCode = ref< string >('')
+  const activateCode = ref<string>('');
   const { prefixCls } = useDesign('mini-login');
   const { notification, createMessage } = useMessage();
   const userStore = useUserStore();
@@ -211,13 +210,13 @@
     checkKey: null,
   });
 
-  const  callData=ref();
+  const callData = ref();
   const rememberMe = ref<string>('0');
   const activateDialog = ref<boolean>(false);
-  const tenantPackMsg=ref<string>('');
-  async function  activateDialogOk(){
+  const tenantPackMsg = ref<string>('');
+  async function activateDialogOk() {
     if(activateCode.value){
-      await activateCodeSave({"activateCode":activateCode.value} )
+      await activateCodeSave({ 'activateCode': activateCode.value } )
         .then((res) => {
           if (res.success) {
             createMessage.success(res.message);
@@ -228,10 +227,10 @@
         .finally(() => {
         });
     }
-    activateDialog.value=false;
-    callData.value= {};
-    tenantPackMsg.value="";
-    userStore.afterLoginAction(true,callData.value)
+    activateDialog.value = false;
+    callData.value = {};
+    tenantPackMsg.value = '';
+    userStore.afterLoginAction(true, callData.value);
   }
   //手机号登录还是账号登录
   const activeIndex = ref<string>('accountLogin');
@@ -241,7 +240,7 @@
     inputCode: '',
     username: 'admin',
     password: '123456',
-    businessType: '2',
+    businessType: '',
   });
   //手机登录表单字段
   const phoneFormData = reactive<any>({
@@ -272,7 +271,6 @@
       type: Boolean,
     },
   });
-
 
   /**
    * 获取验证码
@@ -306,6 +304,9 @@
     }
   }
 
+  /**
+   * 账号登录
+   */
   async function accountLogin() {
     if (!formData.username) {
       createMessage.warn(t('sys.login.accountPlaceholder'));
@@ -317,9 +318,9 @@
     }
     try {
       loginLoading.value = true;
-      callData.value= {};
-      activateDialog.value=false;
-      tenantPackMsg.value="";
+      callData.value = {};
+      activateDialog.value = false;
+      tenantPackMsg.value = '';
 
       const data = await userStore.login(
         toRaw({
@@ -332,12 +333,12 @@
         })
       );
 
-      const { userInfo, extraInfo }=data;
-        if(extraInfo && extraInfo.showTenantPackDialog){
-          callData.value=data;
-          activateDialog.value=true;
-          tenantPackMsg.value=extraInfo.tenantPackMsg;
-        }
+      const { userInfo, extraInfo } = data;
+      if (extraInfo && extraInfo.showTenantPackDialog) {
+        callData.value = data;
+        activateDialog.value = true;
+        tenantPackMsg.value = extraInfo.tenantPackMsg;
+      }
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
@@ -346,7 +347,6 @@
         });
       }
     } catch (error) {
-
       notification.error({
         message: t('sys.api.errorTip'),
         description: error.message || t('sys.login.networkExceptionMsg'),
@@ -359,9 +359,9 @@
   }
 
   async function demoLogin(businessType) {
-    formData.username='demo';
-    formData.password='123456';
-    formData.businessType=businessType;
+    formData.username = 'demo';
+    formData.password = '123456';
+    formData.businessType = businessType;
     try {
       loginLoading.value = true;
       const { userInfo } = await userStore.login(
@@ -372,7 +372,8 @@
           businessType: formData.businessType,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
-        }));
+        })
+      );
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),

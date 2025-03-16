@@ -244,9 +244,9 @@ export const useUserStore = defineStore({
         // save token
         this.setToken(token);
         this.setTenant(userInfo.loginTenantId);
-        console.log(data.extraInfo)
+        console.log(data.extraInfo);
         if (data && data.extraInfo && data.extraInfo.showTenantPackDialog) {
-          return data
+          return data;
         }
         return this.afterLoginAction(goHome, data);
       } catch (error) {

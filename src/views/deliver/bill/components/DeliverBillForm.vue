@@ -80,6 +80,11 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
+              <a-form-item label="折扣（折）" v-bind="validateInfos.discount" id="DeliverBillForm-discount" name="discount">
+                <a-input-number @change="changeDiscount" v-model:value="formData.discount" :min="0" :max="10" placeholder="请输入折扣" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
               <a-form-item label="优惠金额" v-bind="validateInfos.discountAmount" id="DeliverBillForm-discountAmount" name="discountAmount">
                 <a-input-number @change="changeMoney" v-model:value="formData.discountAmount" placeholder="请输入优惠" style="width: 100%" />
               </a-form-item>
@@ -197,6 +202,7 @@
     volume: 0,
     amount: 0,
     paymentAmount: 0,
+    discount: 10,
     discountAmount: 0,
     debtAmount: 0,
     hisDebtAmount: 0,
@@ -298,6 +304,9 @@
       }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
+      if (formData.discount == 10) {
+        formData.discount = selectRows[0].discount;
+      }
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
@@ -334,12 +343,10 @@
   // 计算金额
   let amount = 0.0;
   function changeGoods(goods) {
-    // 销售金额
-    // let num = 0.0;
+    // 先将金额置为0
+    amount = 0.0;
     // 成本金额
     let cost = 0.0;
-    // 利润金额
-    let profit = 0.0;
     goods.forEach((item) => {
       // 计算重量、面积、体积小计
       item.weightSubtotal = 0;
@@ -362,19 +369,32 @@
     });
     // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
-    profit = parseFloat(amount) - parseFloat(cost);
-    formData.profitAmount = profit.toFixed(decimalPlaces);
+    formData.discountAmount = (parseFloat(amount) * (10 - formData.discount) * 0.1).toFixed(decimalPlaces);
     calcDebtAmount();
   }
   // 修改已付款、优惠金额时计算欠款金额
   function changeMoney() {
+    if (amount > 0) {
+      formData.discount = (10 - (formData.discountAmount / amount) * 10).toFixed(decimalPlaces);
+    }
     calcDebtAmount();
   }
   // 计算欠款金额
   function calcDebtAmount() {
+    // 利润金额
+    // let profit = 0.0;
     if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
       formData.debtAmount = (amount - formData.paymentAmount - formData.discountAmount).toFixed(decimalPlaces);
+      let profit = parseFloat(amount) - parseFloat(formData.costAmount) - formData.discountAmount;
+      formData.profitAmount = profit.toFixed(decimalPlaces);
     }
+  }
+  // 折扣变化时重新计算优惠金额
+  function changeDiscount() {
+    if (amount > 0) {
+      formData.discountAmount = (parseFloat(amount) * (10 - formData.discount) * 0.1).toFixed(decimalPlaces);
+    }
+    calcDebtAmount();
   }
   /**
    * 新增
@@ -465,6 +485,7 @@
     formData.amount = 0;
     formData.costAmount = 0;
     formData.paymentAmount = 0;
+    formData.discount = 10;
     formData.discountAmount = 0;
     formData.debtAmount = 0;
     formData.hisDebtAmount = 0;

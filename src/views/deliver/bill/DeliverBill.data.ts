@@ -85,6 +85,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'paymentAmount',
   },
   {
+    title: '折扣率',
+    align: 'center',
+    dataIndex: 'discount',
+  },
+  {
     title: '优惠金额',
     align: 'center',
     dataIndex: 'discountAmount',
