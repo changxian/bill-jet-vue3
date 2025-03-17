@@ -6,7 +6,7 @@ import {BasicColumn} from '/@/components/Table';
 //列表数据
 export const columns: BasicColumn[] = [
   {
-    title: '商品单位',
+    title: '单位',
     align: 'center',
     dataIndex: 'name',
   },
