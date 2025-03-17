@@ -41,6 +41,11 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '价格',
+    align: "center",
+    dataIndex: 'price'
+  },
+  {
     title: '状态',
     align: "center",
     dataIndex: 'ststusName'
@@ -55,6 +60,8 @@ export const columns: BasicColumn[] = [
     align: "center",
     dataIndex: 'activateDateTime'
   },
+
+
   {
     title: '备注',
     align: "center",
