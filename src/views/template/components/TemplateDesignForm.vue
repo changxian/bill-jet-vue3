@@ -111,15 +111,14 @@
         </a-popconfirm>
       </a-space>
       <a-space style="margin-bottom: 10px">
-        <div>模板类型<span style="color: red"> *</span>：</div>
-        <a-select v-model:value="form.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
-          <a-select-option :value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>
-          <a-select-option :value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>
-          <a-select-option :value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>
-          <a-select-option :value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>
-        </a-select>
+        <!--<div>模板类型<span style="color: red"> *</span>：</div>-->
+        <!--<a-select v-model:value="form.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">-->
+        <!--  <a-select-option :value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>-->
+        <!--  <a-select-option :value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>-->
+        <!--  <a-select-option :value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>-->
+        <!--  <a-select-option :value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>-->
+        <!--</a-select>-->
         <div>模板类别：</div>
-<!--        <a-switch v-model:checked="form.type" checked-children="定制化模板" un-checked-children="公共模板" />-->
         <a-checkbox v-model:checked="form.customized" @change="handleChange">定制化模板</a-checkbox>
         <div>模板名称<span style="color: red"> *</span>：</div>
         <a-input v-model:value="form.name" style="width: 328px" placeholder="请输入模板名称" />
@@ -268,7 +267,6 @@
   import jsonView from './json-view.vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { ref } from 'vue';
   const { createMessage } = useMessage();
 
   // vuePluginHiprint.disAutoConnect();

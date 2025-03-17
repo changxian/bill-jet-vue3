@@ -462,6 +462,7 @@
         const tmp = dataSource.value.filter((item) => !(delIds.indexOf(item.id) > -1));
         dataSource.value = [...tmp];
         delIds = [];
+        emit('change-goods', [...dataSource.value]);
       },
     });
   }

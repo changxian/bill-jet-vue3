@@ -50,7 +50,11 @@
               </a-form-item>
             </a-col>
 
-
+            <a-col :span="24">
+              <a-form-item label="价格" v-bind="validateInfos.remark" id="ActivateCodeForm-price" name="price">
+                <a-input-number v-model:value="formData.price" placeholder="请输入价格"  allow-clear ></a-input-number>
+              </a-form-item>
+            </a-col>
 						<a-col :span="24">
 							<a-form-item label="备注" v-bind="validateInfos.remark" id="ActivateCodeForm-remark" name="remark">
 								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
@@ -92,6 +96,7 @@
     packCategory: '',   
     delFlag: undefined,
     remark: '',
+    price:0,
     version: undefined,
   });
   const { createMessage } = useMessage();
