@@ -66,7 +66,10 @@
 						</a-col>
 						<a-col :span="24">
 							<a-form-item label="默认公司" v-bind="validateInfos.isDefault" id="TenantCompanyForm-isDefault" name="isDefault">
-								<j-checkbox type="checkbox" v-model:value="formData.isDefault" dictCode="yn" placeholder="请选择默认公司"  allow-clear />
+                <a-radio-group v-model:value="formData.isDefault" button-style="solid">
+                  <a-radio-button value="1">是</a-radio-button>
+                  <a-radio-button value="0">否</a-radio-button>
+                </a-radio-group>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -79,7 +82,6 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import JCheckbox from '/@/components/Form/src/jeecg/components/JCheckbox.vue';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../TenantCompany.api';
   import { Form } from 'ant-design-vue';
@@ -140,8 +142,12 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key];
+        if (record.hasOwnProperty(key)) {
+          if (key === 'isDefault') {
+            tmpData[key] = record[key].toString();
+          } else {
+            tmpData[key] = record[key];
+          }
         }
       });
       //赋值
