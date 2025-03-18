@@ -53,6 +53,7 @@
                           <img v-else style="margin-top: 2px; max-width: initial" :src="codeImg" @click="handleChangeCheckCode" />
                         </div>
                       </div>
+                      <!--
                       <div class="aui-inputClear">
                         <div class="aui-flex">
                           <div class="aui-flex-box">
@@ -66,7 +67,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div>-->
                       <div class="aui-flex" style="padding-top: 5px">
                         <div class="aui-flex-box">
                           <div class="aui-choice">
@@ -241,7 +242,7 @@
     inputCode: '',
     username: '',
     password: '',
-    businessType: '2',
+    businessType: '',
   });
   //手机登录表单字段
   const phoneFormData = reactive<any>({
