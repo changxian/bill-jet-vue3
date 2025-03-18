@@ -12,11 +12,11 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'name',
   },
-  {
-    title: '模板类型',
-    align: 'center',
-    dataIndex: 'category_dictText',
-  },
+  // {
+  //   title: '模板类型',
+  //   align: 'center',
+  //   dataIndex: 'category_dictText',
+  // },
   {
     title: '定制日期',
     align: 'center',

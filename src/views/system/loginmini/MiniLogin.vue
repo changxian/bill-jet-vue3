@@ -53,7 +53,7 @@
                           <img v-else style="margin-top: 2px; max-width: initial" :src="codeImg" @click="handleChangeCheckCode" />
                         </div>
                       </div>
-                      <!--<div class="aui-inputClear">
+                      <div class="aui-inputClear">
                         <div class="aui-flex">
                           <div class="aui-flex-box">
                             <div class="aui-third-login" style="margin-top: 8px; margin-bottom: 12px">
@@ -66,7 +66,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>-->
+                      </div>
                       <div class="aui-flex" style="padding-top: 5px">
                         <div class="aui-flex-box">
                           <div class="aui-choice">
@@ -102,7 +102,8 @@
                 <div class="aui-formButton">
                   <div class="aui-flex">
                     <a-button :loading="loginLoading" class="aui-link-login" type="primary" @click="loginHandleClick">
-                      {{ t('sys.login.loginButton') }}</a-button>
+                      {{ t('sys.login.loginButton') }}</a-button
+                    >
                   </div>
                   <!-- 取消二维码登录
                   <div class="aui-flex">
