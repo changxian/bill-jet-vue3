@@ -11,7 +11,9 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-input v-model:value="billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
+              <a-form-item label="比如：">
+                <a-input v-model:value="billNoGeneMethodExamp" :bordered="false" class="underLine-text" />
+              </a-form-item>
             </a-col>
           </a-row>
           <a-row>
@@ -240,6 +242,7 @@
   function init() {
     getMyBillSetting().then((res) => {
       formData.value = res;
+      change(res.billNoGenerateMethod);
     });
   }
   init();
@@ -266,12 +269,12 @@
   });
   // 单号生成方式改变
   function change(value) {
-    if (value == 'YYYYMMDDHHmmssSSS'){
+    if (value == 'YYYYMMDDHHmmssSSS') {
       billNoGeneMethodExamp.value = formatToDateTimeSSS(new Date());
     } else if (value == 'YYYYMMDD_SERIAL') {
-      billNoGeneMethodExamp.value = formatToDateS() + "0001";
+      billNoGeneMethodExamp.value = formatToDateS() + '0001';
     } else if (value == 'YYYYMM_SERIAL') {
-      billNoGeneMethodExamp.value = formatToMonthS() + "00001";
+      billNoGeneMethodExamp.value = formatToMonthS() + '00001';
     } else if (value == '8_SERIAL') {
       billNoGeneMethodExamp.value = '00000001';
     }
