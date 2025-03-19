@@ -11,17 +11,17 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <a-row>
+          <!--<a-row>
             <a-col :span="12">
               <a-form-item label="打印份数" v-bind="validateInfos.num" id="PrintSettingForm-num" name="num">
                 <j-dict-select-tag v-model:value="formData.num" dictCode="" :options="numOptions" placeholder="请选择打印份数" />
               </a-form-item>
             </a-col>
-          </a-row>
+          </a-row>-->
           <a-row>
             <a-col :span="12">
               <a-form-item label="送货单模板" v-bind="validateInfos.deliveryBillTemp" id="PrintSettingForm-deliveryBillTemp" name="deliveryBillTemp">
-                <a-input v-model:value="formData.deliveryBillTemp" placeholder="请选择送货单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.deliveryBillTemp" class="full-input" placeholder="请选择送货单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -36,7 +36,7 @@
                 id="PrintSettingForm-deliveryReturnTemp"
                 name="deliveryReturnTemp"
               >
-                <a-input v-model:value="formData.deliveryReturnTemp" placeholder="请选择送货退货单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.deliveryReturnTemp" class="full-input" placeholder="请选择送货退货单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -46,7 +46,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="对账单模板" v-bind="validateInfos.accountTemp" id="PrintSettingForm-accountTemp" name="accountTemp">
-                <a-input v-model:value="formData.accountTemp" placeholder="请选择对账单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.accountTemp" class="full-input" placeholder="请选择对账单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -61,7 +61,7 @@
                 id="PrintSettingForm-repayReceiptTemp"
                 name="repayReceiptTemp"
               >
-                <a-input v-model:value="formData.repayReceiptTemp" placeholder="请选择还款收据模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.repayReceiptTemp" class="full-input" placeholder="请选择还款收据模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -71,7 +71,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="进货单模板" v-bind="validateInfos.stockBillTemp" id="PrintSettingForm-stockBillTemp" name="stockBillTemp">
-                <a-input v-model:value="formData.stockBillTemp" placeholder="请输入进货单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.stockBillTemp" class="full-input" placeholder="请输入进货单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -81,7 +81,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="进货退货单模板" v-bind="validateInfos.stockReturnTemp" id="PrintSettingForm-stockReturnTemp" name="stockReturnTemp">
-                <a-input v-model:value="formData.stockReturnTemp" placeholder="请选择进货退货单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.stockReturnTemp" class="full-input" placeholder="请选择进货退货单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -96,7 +96,7 @@
                 id="PrintSettingForm-stockAccountTemp"
                 name="stockAccountTemp"
               >
-                <a-input v-model:value="formData.stockAccountTemp" placeholder="请选择进货对账单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.stockAccountTemp" class="full-input" placeholder="请选择进货对账单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -175,10 +175,10 @@
     { value: 5, label: '5' },
     { value: 10, label: '10' },
   ]);
-  // 给开单类型设置默认值
-  if (formData.value.num == undefined && numOptions.value.length > 0) {
-    formData.value.num = numOptions.value[0].value;
-  }
+  // 给开单类型设置默认值1
+  // if (formData.value.num == undefined && numOptions.value.length > 0) {
+  //   formData.value.num = numOptions.value[0].value;
+  // }
   // 表单禁用
   const disabled = computed(() => {
     if (props.formBpm === true) {
@@ -222,6 +222,7 @@
           tmpData[key] = record[key];
         }
       });
+      formData.value.num = 1;
       //赋值
       Object.assign(formData, tmpData);
     });
@@ -291,5 +292,9 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+
+    .full-input {
+      color: #1a1a1a;
+    }
   }
 </style>
