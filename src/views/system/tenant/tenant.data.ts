@@ -10,14 +10,52 @@ export const columns: BasicColumn[] = [
     align: 'left',
   },
   {
-    title: '企业编号(ID)',
+    title: '企业编号',
     dataIndex: 'id',
-    width: 180,
+    width: 150,
+  },
+  {
+    title: '企业类别',
+    dataIndex: 'category_dictText',
+    width: 120,
   },
   {
     title: '企业LOGO',
     dataIndex: 'companyLogo',
     width: 100,
+    customRender: ({ text }) => {
+      if (!text) {
+        return text;
+      }
+      return render.renderImage({ text });
+    },
+  },
+  {
+    title: '支付宝收款码',
+    dataIndex: 'zfbPaymentCode',
+    width: 120,
+    customRender: ({ text }) => {
+      if (!text) {
+        return text;
+      }
+      return render.renderImage({ text });
+    },
+  },
+  {
+    title: '微信收款码',
+    dataIndex: 'wxPaymentCode',
+    width: 120,
+    customRender: ({ text }) => {
+      if (!text) {
+        return text;
+      }
+      return render.renderImage({ text });
+    },
+  },
+  {
+    title: '客服二维码',
+    dataIndex: 'customerServiceQrcode',
+    width: 120,
     customRender: ({ text }) => {
       if (!text) {
         return text;

@@ -1,12 +1,15 @@
-import { defHttp } from "/@/utils/http/axios";
+import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  userEdit='/sys/user/login/setting/userEdit',
-  getUserData='/sys/user/login/setting/getUserData',
-  queryNameByCodes='/sys/position/queryByCodes',
-  updateMobile='/sys/user/updateMobile',
-  updateUserPassword='/sys/user/passwordChange',
+  userEdit = '/sys/user/login/setting/userEdit',
+  getUserData = '/sys/user/login/setting/getUserData',
+  queryNameByCodes = '/sys/position/queryByCodes',
+  updateMobile = '/sys/user/updateMobile',
+  updateUserPassword = '/sys/user/passwordChange',
+  tenantEdit = '/sys/tenant/tenantEdit',
   getTenantListByUserId = '/sys/tenant/getTenantListByUserId',
+  getCurrentUserTenant = '/sys/tenant/getCurrentUserTenant',
+  getCurrentUserServerTenant = '/sys/tenant/getCurrentUserServerTenant',
   cancelApplyTenant = '/sys/tenant/cancelApplyTenant',
   exitUserTenant = '/sys/tenant/exitUserTenant',
   changeOwenUserTenant = '/sys/tenant/changeOwenUserTenant',
@@ -24,7 +27,7 @@ enum Api {
  */
 export const userEdit = (params) => {
   return defHttp.post({ url: Api.userEdit, params },{ isTransformResponse:false });
-}
+};
 
 /**
  * 获取用户信息
@@ -59,11 +62,33 @@ export const updateUserPassword = (params) => {
 }
 
 /**
+ * 租户编辑
+ * @param params
+ */
+export const tenantEdit = (params) => {
+  return defHttp.post({ url: Api.tenantEdit, params },{ isTransformResponse:false });
+};
+
+/**
  * 通过用户id获取企业列表
  * @param params
  */
 export const getTenantListByUserId = (params) => {
   return defHttp.get({ url: Api.getTenantListByUserId, params }, { isTransformResponse: false });
+};
+
+/**
+ * 获取当前登录用户的企业列表
+ */
+export const getCurrentUserTenant = () => {
+  return defHttp.get({ url: Api.getCurrentUserTenant }, { isTransformResponse: false });
+};
+
+/**
+ * 获取当前登录用户的企业列表
+ */
+export const getCurrentUserServerTenant = () => {
+  return defHttp.get({ url: Api.getCurrentUserServerTenant }, { isTransformResponse: false });
 };
 
 /**
