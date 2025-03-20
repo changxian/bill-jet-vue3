@@ -99,14 +99,14 @@
           <!--<span class="gray-3">{{ serverTenant.email ? userInfo.email : '未填写' }}</span>-->
           <!--<CropperImage v-if="serverTenant?.companyLogo" :src="companyLogo" :isReady="true" height="100px" :circled="true" />-->
           <span class="gray-3" v-if="serverTenant?.companyLogo">
-            <a-image :width="120" :src="serverTenant?.companyLogo" />
+            <img v-if="serverTenant?.companyLogo" :width="120" :src="getFileAccessHttpUrl(serverTenant?.companyLogo)" alt="服务商LOGO" />
           </span>
           <span class="gray-3" v-else>未设置服务商LOGO</span>
         </div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">微信客服</span>
           <span class="gray-3" v-if="serverTenant?.customerServiceQrcode">
-            <a-image :width="120" :src="getFileAccessHttpUrl(serverTenant?.customerServiceQrcode)" />
+            <img :width="120" :src="getFileAccessHttpUrl(serverTenant?.customerServiceQrcode)" />
           </span>
           <span class="gray-3" v-else>未设置客服二维码</span>
         </div>
@@ -114,8 +114,8 @@
           <span class="gray-75 item-label">收款码</span>
           <template v-if="serverTenant?.wxPaymentCode || serverTenant?.zfbPaymentCode">
             <a-image-preview-group>
-              <a-image v-if="serverTenant?.wxPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.wxPaymentCode)" alt="微信收款码" />
-              <a-image v-if="serverTenant?.zfbPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.wxPaymentCode)" alt="支付宝收款码" style="margin-left: 10px;" />
+              <img v-if="serverTenant?.wxPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.wxPaymentCode)" alt="微信收款码" />
+              <img v-if="serverTenant?.zfbPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.wxPaymentCode)" alt="支付宝收款码" style="margin-left: 10px;" />
             </a-image-preview-group>
           </template>
           <span class="gray-3" v-else>未设置收款码</span>
@@ -208,7 +208,6 @@
 
   //企业数据
   const companyLogo = computed(() => {
-    debugger;
     return getFileAccessHttpUrl(serverTenant.value.companyLogo);
   });
   //企业微信收款码
@@ -304,7 +303,6 @@
    */
   function getServerTenantDetail() {
     getCurrentUserServerTenant().then((async res => {
-      debugger;
       if (res.success) {
         if (res.result.data) {
           serverTenant.value = res.result.data;
@@ -321,7 +319,6 @@
    */
   function getMyTenantDetail() {
     getCurrentUserTenant().then((res) => {
-      debugger;
       if (res.success) {
         if (res.result.list && res.result.list.length>0) {
           myTenant.value = res.result.list[0];

@@ -152,7 +152,6 @@
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
-    debugger;
     setModalProps({ confirmLoading: true });
     values.tenantId = unref(tenantId);
     // 新增套餐绑定，ID为空

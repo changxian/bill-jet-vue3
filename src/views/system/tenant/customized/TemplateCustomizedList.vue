@@ -104,7 +104,6 @@
    * 新增事件
    */
   function handleAdd() {
-    debugger;
     if (customizedTemp.value === 1) {
       allCustomizedTemp({ tenantCustomerId: tenantCustomerId.value }).then((res) => {
         if (res && res.length > 0) {

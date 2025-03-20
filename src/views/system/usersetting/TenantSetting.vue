@@ -286,7 +286,6 @@ import { computed, onMounted, ref, unref } from "vue";
     //update-begin---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息-----------
     // getTenantListByUserId({ userTenantStatus: '1,3,5' }).then((res) => {
     getCurrentUserTenant().then((res) => {
-      debugger;
       if (res.success) {
         if (res.result.list && res.result.list.length>0) {
           let result = res.result.list;
