@@ -67,6 +67,10 @@
           <span class="gray-3">{{ packInfo?.packType == 1 ? '送货单版' : '进销存版' }}</span>
         </div>
         <div class="margin-bottom-10 font-size-13">
+          <span class="gray-75 item-label">套餐价格</span>
+          <span class="gray-3">￥ {{ packInfo?.price }} 元</span>
+        </div>
+        <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">商品数量</span>
           <span class="gray-3">支持 {{ packInfo?.goodsNum }} 个商品</span>
         </div>
@@ -197,7 +201,7 @@
       }
     });
   }
-
+/*
   function handleCropend({ imgBase64 }: CropendResult) {
     previewSource.value = imgBase64;
   }
@@ -222,6 +226,7 @@
   const customerServiceQrcode = computed(() => {
     return getFileAccessHttpUrl(serverTenant.value.customerServiceQrcode);
   });
+*/
 
   /**
    * 编辑按钮点击事件

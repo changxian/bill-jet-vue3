@@ -233,29 +233,17 @@
 </template>
 
 <script lang="ts" name="tenant-setting" setup>
-import { computed, onMounted, ref, unref } from "vue";
-  import {
-    getTenantListByUserId,
-    cancelApplyTenant,
-    exitUserTenant,
-    changeOwenUserTenant,
-    agreeOrRefuseJoinTenant,
-    getCurrentUserTenant, userEdit, tenantEdit
-  } from "./UserSetting.api";
+  import { computed, onMounted, ref, unref } from 'vue';
+  import { cancelApplyTenant, exitUserTenant, changeOwenUserTenant, agreeOrRefuseJoinTenant, getCurrentUserTenant, tenantEdit } from './UserSetting.api';
   import { useUserStore } from '/@/store/modules/user';
-  import { CollapseContainer } from '/@/components/Container';
   import { getFileAccessHttpUrl, userExitChangeLoginTenantId } from '/@/utils/common/compUtils';
-  import headerImg from '/@/assets/images/header.jpg';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { initDictOptions } from '/@/utils/dict';
-  import { uniqWith } from 'lodash-es';
   import { Modal } from 'ant-design-vue';
   import UserSelect from '/@/components/Form/src/jeecg/components/userSelect/index.vue';
   import { router } from '/@/router';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { render } from "@/utils/common/renderUtils";
-  import { uploadImg } from "@/api/sys/upload";
-  import { CropperAvatar } from "@/components/Cropper";
+  import { uploadImg } from '@/api/sys/upload';
+  import { CropperAvatar } from '@/components/Cropper';
 
   const { prefixCls } = useDesign('j-user-tenant-setting-container');
   //数据源
