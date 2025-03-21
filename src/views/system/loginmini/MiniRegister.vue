@@ -96,7 +96,6 @@
   import { getCaptcha, register } from '/@/api/sys/user';
   import { SmsEnum } from '/@/views/sys/login/useLogin';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import logoImg from '/@/assets/loginmini/icon/jeecg_logo.png';
   import jeecgAdTextImg from '/@/assets/loginmini/icon/jeecg_ad_text.png';
   import eyeKImg from '/@/assets/loginmini/icon/icon-eye-k.png';
   import eyeGImg from '/@/assets/loginmini/icon/icon-eye-g.png';
@@ -106,7 +105,7 @@
   import { ExceptionEnum } from '@/enums/exceptionEnum';
 
   const { t } = useI18n();
-  const { notification, createErrorModal, createMessage } = useMessage();
+  const { notification, createMessage } = useMessage();
   const emit = defineEmits(['go-back', 'success', 'register']);
   const formRef = ref();
   const formData = reactive<any>({
@@ -200,7 +199,7 @@
       createMessage.warn(t('sys.login.diffPwd'));
       return;
     }
-    if(!formData.policy){
+    if (!formData.policy) {
       createMessage.warn(t('sys.login.policyPlaceholder'));
       return;
     }
@@ -249,7 +248,7 @@
    */
   function initForm() {
     Object.assign(formData,{username: '', email: '',  mobile: '', smscode: '', password: '', confirmPassword: '', policy: false})
-    if(!unref(timer)){
+    if (!unref(timer)) {
       showInterval.value = true;
       clearInterval(unref(timer));
       timer.value = null;

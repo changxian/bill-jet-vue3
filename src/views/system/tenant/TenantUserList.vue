@@ -37,20 +37,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { columns, searchFormSchema } from '../user/user.data';
-  import {
-    list,
-    deleteUser,
-    batchDeleteUser,
-    getImportUrl,
-    getExportUrl,
-    frozenBatch,
-    getUserTenantPageList,
-    updateUserTenantStatus,
-    tenantUserNum
-  } from "../user/user.api";
-  // import { usePermission } from '/@/hooks/web/usePermission'
-  // const { hasPermission } = usePermission();
+  import { getUserTenantPageList, updateUserTenantStatus, tenantUserNum } from '../user/user.api';
   import { userTenantColumns, userTenantFormSchema } from '../user/user.data';
   import { useUserStore } from '/@/store/modules/user';
   import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
@@ -60,8 +47,7 @@
   import TenantUserDrawer from './components/TenantUserDrawer.vue';
   import { tenantSaasMessage } from '@/utils/common/compUtils';
   import UserPermissionDrawer from './components/UserPermissionDrawer.vue';
-  import { tenantCompanyNum } from "@/views/company/TenantCompany.api";
-  const { createMessage, createConfirm } = useMessage();
+  const { createMessage } = useMessage();
 
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
@@ -123,12 +109,16 @@
    * 编辑事件
    */
   async function handleEdit(record: Recordable) {
-    openDrawer(true, {
-      record,
-      isUpdate: true,
-      showFooter: true,
-      tenantSaas: true,
-    });
+    if (createBy === 'demo') {
+      createMessage.warning('体验账户不能修改！');
+    } else {
+      openDrawer(true, {
+        record,
+        isUpdate: true,
+        showFooter: true,
+        tenantSaas: true,
+      });
+    }
   }
   /**
    * 详情

@@ -184,17 +184,15 @@
   import MiniForgotpad from './MiniForgotpad.vue';
   import MiniRegister from './MiniRegister.vue';
   import MiniCodelogin from './MiniCodelogin.vue';
-  import logoImg from '/@/assets/loginmini/icon/jeecg_logo.png';
-  import adTextImg from '/@/assets/loginmini/icon/jeecg_ad_text.png';
   import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
   import { useLocaleStore } from '/@/store/modules/locale';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useAppInject } from '/@/hooks/web/useAppInject';
-  import { GithubFilled, WechatFilled, DingtalkCircleFilled, createFromIconfontCN } from '@ant-design/icons-vue';
+  import { createFromIconfontCN } from '@ant-design/icons-vue';
   import CaptchaModal from '@/components/jeecg/captcha/CaptchaModal.vue';
   import { useModal } from '@/components/Modal';
   import { ExceptionEnum } from '@/enums/exceptionEnum';
-  import { activateCodeSave, saveOrUpdate } from '@/views/activate/ActivateCode.api';
+  import { activateCodeSave } from '@/views/activate/ActivateCode.api';
 
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
@@ -217,7 +215,7 @@
   const activateDialog = ref<boolean>(false);
   const tenantPackMsg = ref<string>('');
   async function activateDialogOk() {
-    if(activateCode.value){
+    if (activateCode.value) {
       await activateCodeSave({ 'activateCode': activateCode.value } )
         .then((res) => {
           if (res.success) {
@@ -361,8 +359,8 @@
   }
 
   async function demoLogin(businessType) {
-    formData.username = 'demo';
-    formData.password = '123456';
+    formData.username = '';
+    formData.password = '';
     formData.businessType = businessType;
     try {
       loginLoading.value = true;
