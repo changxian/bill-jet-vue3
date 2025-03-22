@@ -27,8 +27,11 @@
                   <div class="aui-flex-box" :class="activeIndex === 'accountLogin' ? 'activeNav on' : ''" @click="loginClick('accountLogin')"
                     >{{ t('sys.login.signInFormTitle') }}
                   </div>
+                  <div class="aui-flex-box" :class="activeIndex === 'phoneLogin' ? 'activeNav on' : ''" @click="loginClick('phoneLogin')"
+                    >{{ t('sys.login.mobileSignInFormTitle') }}
+                  </div>
                 </div>
-                <div class="aui-form-box" style="height: 260px">
+                <div class="aui-form-box" style="height: 210px">
                   <a-form ref="loginRef" :model="formData" v-if="activeIndex === 'accountLogin'" @keyup.enter.native="loginHandleClick">
                     <div class="aui-account">
                       <div class="aui-inputClear">
@@ -81,7 +84,6 @@
                       </div>
                     </div>
                   </a-form>
-                  <!--
                   <a-form v-else ref="phoneFormRef" :model="phoneFormData" @keyup.enter.native="loginHandleClick">
                     <div class="aui-account phone">
                       <div class="aui-inputClear phoneClear">
@@ -98,7 +100,6 @@
                       </div>
                     </div>
                   </a-form>
-                  -->
                 </div>
                 <div class="aui-formButton">
                   <div class="aui-flex">

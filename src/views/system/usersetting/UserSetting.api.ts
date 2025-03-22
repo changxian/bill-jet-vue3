@@ -35,7 +35,7 @@ export const userEdit = (params) => {
  */
 export const getUserData = () => {
   return defHttp.get({ url: Api.getUserData },{ isTransformResponse:false });
-}
+};
 
 /**
  * 获取多个职务信息
@@ -43,7 +43,7 @@ export const getUserData = () => {
  */
 export const queryNameByCodes = (params) => {
   return defHttp.get({ url: Api.queryNameByCodes, params },{isTransformResponse:false});
-}
+};
 
 /**
  * 修改手机号
@@ -51,7 +51,7 @@ export const queryNameByCodes = (params) => {
  */
 export const updateMobile = (params) => {
   return defHttp.put({ url: Api.updateMobile, params },{isTransformResponse:false});
-}
+};
 
 /**
  * 修改密码
@@ -59,7 +59,7 @@ export const updateMobile = (params) => {
  */
 export const updateUserPassword = (params) => {
   return defHttp.get({ url: Api.updateUserPassword, params },{isTransformResponse:false});
-}
+};
 
 /**
  * 租户编辑
@@ -105,7 +105,7 @@ export const cancelApplyTenant = (params) => {
  */
 export const exitUserTenant = (params)=>{
   return defHttp.delete({ url: Api.exitUserTenant, params },{ isTransformResponse: false, joinParamsToUrl: true });
-}
+};
 
 /**
  * 变更企业拥有者
@@ -113,7 +113,7 @@ export const exitUserTenant = (params)=>{
  */
 export const changeOwenUserTenant = (params)=>{
   return defHttp.post({ url: Api.changeOwenUserTenant, params },{ isTransformResponse: false, joinParamsToUrl: true });
-}
+};
 
 /**
  * 获取账号第三方信息通过第三方类型
@@ -152,5 +152,5 @@ export const agreeOrRefuseJoinTenant = (params) => {
  * @param params
  */
 export const changePhone = (params) => {
-  return defHttp.put({ url: Api.changePhone, params },{ joinParamsToUrl: true, isTransformResponse: false });
+  return defHttp.post({ url: Api.changePhone, params },{ joinParamsToUrl: true, isTransformResponse: false });
 };
