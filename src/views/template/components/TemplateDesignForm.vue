@@ -573,10 +573,6 @@
         });
       },
       submitForm() {
-        if (!this.form.category) {
-          createMessage.error(`模板类型不能为空`);
-          return;
-        }
         if (!this.form.name) {
           createMessage.error(`模板名称不能为空`);
           return;
