@@ -1,12 +1,15 @@
-import { defHttp } from "/@/utils/http/axios";
+import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  userEdit='/sys/user/login/setting/userEdit',
-  getUserData='/sys/user/login/setting/getUserData',
-  queryNameByCodes='/sys/position/queryByCodes',
-  updateMobile='/sys/user/updateMobile',
-  updateUserPassword='/sys/user/passwordChange',
+  userEdit = '/sys/user/login/setting/userEdit',
+  getUserData = '/sys/user/login/setting/getUserData',
+  queryNameByCodes = '/sys/position/queryByCodes',
+  updateMobile = '/sys/user/updateMobile',
+  updateUserPassword = '/sys/user/passwordChange',
+  tenantEdit = '/sys/tenant/tenantEdit',
   getTenantListByUserId = '/sys/tenant/getTenantListByUserId',
+  getCurrentUserTenant = '/sys/tenant/getCurrentUserTenant',
+  getCurrentUserServerTenant = '/sys/tenant/getCurrentUserServerTenant',
   cancelApplyTenant = '/sys/tenant/cancelApplyTenant',
   exitUserTenant = '/sys/tenant/exitUserTenant',
   changeOwenUserTenant = '/sys/tenant/changeOwenUserTenant',
@@ -24,7 +27,7 @@ enum Api {
  */
 export const userEdit = (params) => {
   return defHttp.post({ url: Api.userEdit, params },{ isTransformResponse:false });
-}
+};
 
 /**
  * 获取用户信息
@@ -32,7 +35,7 @@ export const userEdit = (params) => {
  */
 export const getUserData = () => {
   return defHttp.get({ url: Api.getUserData },{ isTransformResponse:false });
-}
+};
 
 /**
  * 获取多个职务信息
@@ -40,7 +43,7 @@ export const getUserData = () => {
  */
 export const queryNameByCodes = (params) => {
   return defHttp.get({ url: Api.queryNameByCodes, params },{isTransformResponse:false});
-}
+};
 
 /**
  * 修改手机号
@@ -48,7 +51,7 @@ export const queryNameByCodes = (params) => {
  */
 export const updateMobile = (params) => {
   return defHttp.put({ url: Api.updateMobile, params },{isTransformResponse:false});
-}
+};
 
 /**
  * 修改密码
@@ -56,7 +59,15 @@ export const updateMobile = (params) => {
  */
 export const updateUserPassword = (params) => {
   return defHttp.get({ url: Api.updateUserPassword, params },{isTransformResponse:false});
-}
+};
+
+/**
+ * 租户编辑
+ * @param params
+ */
+export const tenantEdit = (params) => {
+  return defHttp.post({ url: Api.tenantEdit, params },{ isTransformResponse:false });
+};
 
 /**
  * 通过用户id获取企业列表
@@ -64,6 +75,20 @@ export const updateUserPassword = (params) => {
  */
 export const getTenantListByUserId = (params) => {
   return defHttp.get({ url: Api.getTenantListByUserId, params }, { isTransformResponse: false });
+};
+
+/**
+ * 获取当前登录用户的企业列表
+ */
+export const getCurrentUserTenant = () => {
+  return defHttp.get({ url: Api.getCurrentUserTenant }, { isTransformResponse: false });
+};
+
+/**
+ * 获取当前登录用户的企业列表
+ */
+export const getCurrentUserServerTenant = () => {
+  return defHttp.get({ url: Api.getCurrentUserServerTenant }, { isTransformResponse: false });
 };
 
 /**
@@ -80,7 +105,7 @@ export const cancelApplyTenant = (params) => {
  */
 export const exitUserTenant = (params)=>{
   return defHttp.delete({ url: Api.exitUserTenant, params },{ isTransformResponse: false, joinParamsToUrl: true });
-}
+};
 
 /**
  * 变更企业拥有者
@@ -88,7 +113,7 @@ export const exitUserTenant = (params)=>{
  */
 export const changeOwenUserTenant = (params)=>{
   return defHttp.post({ url: Api.changeOwenUserTenant, params },{ isTransformResponse: false, joinParamsToUrl: true });
-}
+};
 
 /**
  * 获取账号第三方信息通过第三方类型
@@ -127,5 +152,5 @@ export const agreeOrRefuseJoinTenant = (params) => {
  * @param params
  */
 export const changePhone = (params) => {
-  return defHttp.put({ url: Api.changePhone, params },{ joinParamsToUrl: true, isTransformResponse: false });
+  return defHttp.post({ url: Api.changePhone, params },{ joinParamsToUrl: true, isTransformResponse: false });
 };

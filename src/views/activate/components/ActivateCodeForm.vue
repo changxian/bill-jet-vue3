@@ -14,7 +14,7 @@
                 <JDictSelectTag
                   v-model:value="formData.belongTenantId"
                   placeholder="请选择所属租户"
-                  dictCode="sys_tenant,name,id,del_flag='0' order by create_time desc"
+                  dictCode="sys_tenant,name,id,del_flag='0' and  category >0  order by create_time desc"
                   :showChooseOption="false"
                 />
               </a-form-item>

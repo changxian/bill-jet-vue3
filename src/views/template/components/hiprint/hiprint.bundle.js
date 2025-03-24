@@ -9365,7 +9365,6 @@ var hiprint = function (t) {
             barcolor: this.options.barColor || "#000",
           })
           // pub-beta 0.0.57-beta22 优化了条码自动调整宽度的逻辑，title 文本改为使用 bwipjs 文本内部实现
-          // debugger;
           barcode = $(barcode)
           // pub-beta 0.0.57-beta22 svg 元素需要添加 preserveAspectRatio 属性，使其横向可以自适应缩放
           barcode.attr("preserveAspectRatio", "none slice")
@@ -9433,7 +9432,6 @@ var hiprint = function (t) {
           const paddingwidth = width >= height ? Math.abs(parseInt((width - height) / 2)) : 0;
           const paddingheight = width >= height ? 0 : Math.abs(parseInt((height - width) / 2));
 
-          // debugger;
           var qrcode = bwipjs.toSVG({
             bcid: this.options.qrcodeType || 'qrcode',
             text: text || this.options.testData || this.options.title,

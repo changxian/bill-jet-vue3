@@ -13,7 +13,7 @@
       <a-form-item name="password">
         <span class="black font-size-13">新密码</span>
         <div class="pass-padding">
-          <a-input-password v-model:value="formState.password" placeholder="新密码" autocomplete="new-password"/>
+          <a-input-password v-model:value="formState.password" placeholder="新密码" autocomplete="new-password" />
         </div>
         <span class="gray-9e font-size-13">8-20位，需包含字母和数字</span>
       </a-form-item>
@@ -21,34 +21,32 @@
   </BasicModal>
 </template>
 <script lang="ts" name="user-pass-word-modal" setup>
-  import { ref, computed, unref, reactive } from 'vue';
+  import { ref, unref, reactive } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { Rule } from '/@/components/Form/index';
   import { updateUserPassword } from '../UserSetting.api';
-  import { useMessage } from "/@/hooks/web/useMessage";
-  import { useUserStore, useUserStoreWithOut } from "/@/store/modules/user";
-  import { getCaptcha } from "@/api/sys/user";
-  import { SmsEnum } from "@/views/sys/login/useLogin";
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
   import { CountdownInput } from '/@/components/CountDown';
-  import { defHttp } from "@/utils/http/axios";
+  import { defHttp } from '@/utils/http/axios';
 
   const { createMessage, createErrorModal } = useMessage();
   //用户名
-  const username = ref<string>('')
+  const username = ref<string>('');
   const formRef = ref();
   const formState = reactive({
-    oldpassword:'',
-    password:'',
-    smscode:'',
-    phone:'',
+    oldpassword: '',
+    password: '',
+    smscode: '',
+    phone: '',
   });
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ confirmLoading: false });
-    username.value = data.record.username
-    Object.assign(formState, { password:'', smscode:'', phone:'',})
+    username.value = data.record.username;
+    Object.assign(formState, { password: '', smscode: '', phone: '',})
   });
   const userStore = useUserStore();
   const validatorRules: Record<string, Rule[]> = {
@@ -64,19 +62,19 @@
       setModalProps({ confirmLoading: true });
       //提交表单
       values.username = unref(username);
-      await updateUserPassword(values).then((res) =>{
-        if(res.success){
+      await updateUserPassword(values).then((res) => {
+        if (res.success) {
           createMessage.info({
-            content:'密码修改成功，请重新登录！3s后自动退出登录',
-            duration: 3
-          })
+            content: '密码修改成功，请重新登录！3s后自动退出登录',
+            duration: 3,
+          });
           //3s后返回登录页面
-          setTimeout(()=>{
+          setTimeout(() => {
             userStore.logout(true);
-          },3000)
+          }, 3000);
           //关闭弹窗
           closeModal();
-        }else{
+        } else {
           createMessage.warn(res.message);
         }
       });
@@ -89,7 +87,7 @@
    * 验证新密码是否为空
    */
   function checkPassword(_rule: Rule, value: string) {
-    if(value === ''){
+    if (value === '') {
       return Promise.reject('请输入新密码');
     }
     return Promise.resolve();

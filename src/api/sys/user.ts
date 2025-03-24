@@ -121,8 +121,7 @@ export function getCodeInfo(currdatetime) {
 export function getCaptcha(params) {
   return new Promise((resolve, reject) => {
     defHttp
-      // Api.getCaptcha
-      .post({ url: Api.getCaptchaEmail, params }, { isTransformResponse: false })
+      .post({ url: Api.getCaptcha, params }, { isTransformResponse: false })
       .then((res) => {
         console.log(res);
         if (res.success) {

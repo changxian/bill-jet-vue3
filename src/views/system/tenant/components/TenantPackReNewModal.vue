@@ -114,7 +114,6 @@
   //表单提交事件
   async function handleSubmit(v) {
     try {
-      debugger;
       let values = await validate();
       setModalProps({confirmLoading: true});
       //提交表单

@@ -162,7 +162,6 @@ export function useListPage(options: ListPageOptions) {
 
   // 导出 excel
   async function onBillExportXls(id: string, fileName: string) {
-    debugger;
     //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
     const { url, name, params } = options?.billExportConfig ?? {};
     const realUrl = typeof url === 'function' ? url() : url;

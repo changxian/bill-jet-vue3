@@ -1,50 +1,93 @@
 <template>
   <div class="tenant-padding" :class="[`${prefixCls}`]">
     <div class="my-tenant">
-      <span style="flex: 1">我的组织</span>
-      <span class="invited" @click="invitedClick">我的受邀信息<span class="approved-count" v-if="invitedCount>0">{{invitedCount}}</span></span>
+      <span style="flex: 1">我的企业</span>
+      <!--<span class="invited" @click="invitedClick">我的受邀信息<span class="approved-count" v-if="invitedCount>0">{{invitedCount}}</span></span>-->
     </div>
     <div class="tenant-list" v-if="dataSource.length>0">
       <div v-for="item in dataSource" class="tenant-list-item" @click="drownClick(item)">
         <div class="tenant-title">
           <div class="item-left">
             <div class="item-name">{{ item.name }}</div>
-            <div class="vip-message">
+            <div class="vip-message" v-if="tenantInfo.category > 0">
               <div class="item-house" @click.stop="copyClick(item.houseNumber)">
                 <span>
-                  组织门牌号：{{ item.houseNumber }}
+                  企业邀请码：{{ item.houseNumber }}
                   <Icon icon="ant-design:copy-outlined" style="font-size: 13px; margin-left: 2px" />
                 </span>
               </div>
             </div>
           </div>
-          <div class="item-right">
-            <span v-if="item.userTenantStatus === '3'">
-              <span class="pointer examine">待审核</span>
-              <span class="pointer cancel-apply" @click.stop="cancelApplyClick(item.tenantUserId)">取消申请</span>
-            </span>
-            <span v-else-if="item.userTenantStatus === '5'">
-              <span class="pointer examine" @click="joinOrRefuseClick(item.tenantUserId,'1')">加入</span>
-              <span class="pointer cancel-apply" @click.stop="joinOrRefuseClick(item.tenantUserId,'4')">拒绝</span>
-            </span>
-            <div v-else style="width: 75px"></div>
-            <span style="margin-left: 24px">
-              <Icon v-if="item.show" icon="ant-design:down-outlined" style="font-size: 13px; color: #707070" />
-              <Icon v-else icon="ant-design:right-outlined" style="font-size: 13px; color: #707070" />
-            </span>
-          </div>
         </div>
-        <div class="item-content" v-show="item.show">
+        <div class="item-content" v-show="true">
           <div class="content-box">
-            <div class="content-name"> 组织名片 </div>
+            <div class="content-name"></div>
             <div class="content-desc">
               <div class="flex-flow">
-                <div class="content-des-text">姓名</div>
-                <div style="font-size: 13px;color: #000000">
+                <div class="content-des-text" style="line-height: 40px">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</div>
+                <div style="font-size: 13px; color: #000000; line-height: 40px">
                   {{ userDetail.realname }}
                 </div>
               </div>
               <div class="flex-flow">
+                <div class="content-des-text" style="line-height: 40px">企业标识码</div>
+                <div style="font-size: 13px; color: #000000; line-height: 40px">
+                  {{ tenantInfo.id }}
+                </div>
+              </div>
+              <div class="flex-flow">
+                <div class="content-des-text">企&nbsp;业&nbsp;LOGO</div>
+                <div style="font-size: 13px">
+                  <CropperAvatar
+                    :uploadApi="uploadImg"
+                    :showBtn="false"
+                    :value="companyLogo"
+                    :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
+                    @change="updateTenantAvatar"
+                    width="80"
+                  />
+                </div>
+              </div>
+              <div v-if="tenantInfo.category > 0" class="flex-flow">
+                <div class="content-des-text">客&nbsp;服&nbsp;微&nbsp;信</div>
+                <div style="font-size: 13px">
+                  <CropperAvatar
+                    :uploadApi="uploadImg"
+                    :showBtn="false"
+                    :value="customerServiceQrcode"
+                    :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
+                    @change="updateTenantServiceQrcode"
+                    width="80"
+                  />
+                </div>
+              </div>
+              <div v-if="tenantInfo.category > 0" class="flex-flow">
+                <div class="content-des-text">支付宝收款码</div>
+                <div style="font-size: 13px">
+                  <CropperAvatar
+                    :uploadApi="uploadImg"
+                    :showBtn="false"
+                    :value="zfbPaymentCode"
+                    :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
+                    @change="updateTenantZfbPaymentCode"
+                    width="80"
+                  />
+                </div>
+              </div>
+              <div v-if="tenantInfo.category > 0" class="flex-flow">
+                <div class="content-des-text">微信收款码</div>
+                <div style="font-size: 13px">
+                  <CropperAvatar
+                    :uploadApi="uploadImg"
+                    :showBtn="false"
+                    :value="wxPaymentCode"
+                    :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
+                    @change="updateTenantWxPaymentCode"
+                    width="80"
+                  />
+                </div>
+              </div>
+              <!--<div class="flex-flow">
                 <div class="content-des-text">部门</div>
                 <div style="font-size: 13px">
                   {{ userDetail.orgCodeTxt ? userDetail.orgCodeTxt : '未填写' }}
@@ -55,11 +98,11 @@
                 <div style="font-size: 13px">
                   {{ userDetail.postText ? userDetail.postText : '未填写' }}
                 </div>
-              </div>
+              </div>-->
             </div>
           </div>
           <div class="footer-box">
-            <span
+            <!--<span
               v-if="item.userTenantStatus !== '3'"
               @click.stop="footerClick('editTenant', item)"
               class="font-color333 flex-center margin-right40 font-size13 pointer"
@@ -70,8 +113,8 @@
             <span v-else class="font-color9e flex-center margin-right40 font-size13">
               <Icon icon="ant-design:edit-outlined" class="footer-icon" />
               <span>查看企业名片</span>
-            </span>
-            <span
+            </span>-->
+            <!--<span
               v-if="item.userTenantStatus !== '3'"
               @click.stop="footerClick('exitTenant', item)"
               class="font-color333 flex-center margin-right40 font-size13 pointer"
@@ -82,12 +125,12 @@
             <span v-else class="font-color9e flex-center margin-right40 font-size13">
               <Icon icon="ant-design:export-outlined" class="footer-icon" />
               <span>退出企业</span>
-            </span>
+            </span>-->
           </div>
         </div>
       </div>
     </div>
-    <a-empty v-else description="暂无数据" style="position: relative;top: 50px;"/>
+    <a-empty v-else description="暂无数据" style="position: relative; top: 50px;"/>
   </div>
   <a-modal v-model:open="tenantVisible" width="400px" wrapClassName="edit-tenant-setting">
     <template #title>
@@ -109,6 +152,7 @@
   </a-modal>
 
   <!-- 退出企业 -->
+  <!--
   <a-modal v-model:open="cancelVisible" width="800" destroy-on-close>
     <template #title>
       <div class="cancellation">
@@ -143,6 +187,7 @@
       <a-button @click="handleCancelOutClick">取消</a-button>
     </template>
   </a-modal>
+  -->
 
   <a-modal
     title="变更拥有者"
@@ -188,72 +233,74 @@
 </template>
 
 <script lang="ts" name="tenant-setting" setup>
-import { onMounted, ref, unref } from "vue";
-import { getTenantListByUserId, cancelApplyTenant, exitUserTenant, changeOwenUserTenant, agreeOrRefuseJoinTenant } from "./UserSetting.api";
-import { useUserStore } from "/@/store/modules/user";
-import { CollapseContainer } from "/@/components/Container";
-import { getFileAccessHttpUrl, userExitChangeLoginTenantId } from "/@/utils/common/compUtils";
-import headerImg from "/@/assets/images/header.jpg";
-import {useMessage} from "/@/hooks/web/useMessage";
-import { initDictOptions } from '/@/utils/dict';
-import { uniqWith } from 'lodash-es';
-import { Modal } from 'ant-design-vue';
-import UserSelect from '/@/components/Form/src/jeecg/components/userSelect/index.vue';
-import {router} from "/@/router";
-import { useDesign } from '/@/hooks/web/useDesign';
+  import { computed, onMounted, ref, unref } from 'vue';
+  import { cancelApplyTenant, exitUserTenant, changeOwenUserTenant, agreeOrRefuseJoinTenant, getCurrentUserTenant, tenantEdit } from './UserSetting.api';
+  import { useUserStore } from '/@/store/modules/user';
+  import { getFileAccessHttpUrl, userExitChangeLoginTenantId } from '/@/utils/common/compUtils';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { Modal } from 'ant-design-vue';
+  import UserSelect from '/@/components/Form/src/jeecg/components/userSelect/index.vue';
+  import { router } from '/@/router';
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { uploadImg } from '@/api/sys/upload';
+  import { CropperAvatar } from '@/components/Cropper';
 
-const { prefixCls } = useDesign('j-user-tenant-setting-container');
-//数据源
-const dataSource = ref<any>([]);
-const userStore = useUserStore();
+  const { prefixCls } = useDesign('j-user-tenant-setting-container');
+  //数据源
+  const dataSource = ref<any>([]);
+  const userStore = useUserStore();
 
-//数据源
-const { createMessage } = useMessage();
-//部门字典
-const departOptions = ref<any>([]);
-//企业编辑是或否隐藏
-const tenantVisible = ref<boolean>(false);
-//用户数据
-const userData = ref<any>([]);
-//用户
-const userDetail = ref({
-  realname: userStore.getUserInfo.realname,
-  workNo: userStore.getUserInfo.workNo,
-  orgCodeTxt: userStore.getUserInfo.orgCodeTxt,
-  postText: userStore.getUserInfo.postText,
-});
-/**
- * 初始化企业数据
- */
+  //数据源
+  const { createMessage } = useMessage();
+  //部门字典
+  const departOptions = ref<any>([]);
+  //企业编辑是或否隐藏
+  const tenantVisible = ref<boolean>(false);
+  //用户数据
+  const userData = ref<any>([]);
+  //用户
+  const userDetail = ref({
+    realname: userStore.getUserInfo.realname,
+    workNo: userStore.getUserInfo.workNo,
+    orgCodeTxt: userStore.getUserInfo.orgCodeTxt,
+    postText: userStore.getUserInfo.postText,
+  });
+  /**
+   * 初始化企业数据
+   */
   async function initDataSource() {
-  //获取用户数据
+    //获取用户数据
     //update-begin---author:wangshuai ---date:20230109  for: [QQYUN-3645]个人设置我的企业查询审核中和正常的------------
     //update-begin---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息-----------
-    getTenantListByUserId({ userTenantStatus: '1,3,5' }).then((res) => {
+    // getTenantListByUserId({ userTenantStatus: '1,3,5' }).then((res) => {
+    getCurrentUserTenant().then((res) => {
       if (res.success) {
-        if(res.result && res.result.length>0){
-          let result = res.result;
+        if (res.result.list && res.result.list.length>0) {
+          let result = res.result.list;
           //存放正常和审核中的数组
-          let normal:any = [];
+          let normal: any = [];
           //存放受邀的信息
-          let invited:any = [];
+          let invited: any = [];
           for (let i = 0; i < result.length; i++) {
-            let status = result[i].userTenantStatus;
+            // let status = result[i].userTenantStatus;
             //状态为邀请的放入invited数组中
-            if(status === '5'){
-              invited.push(result[i]);
-            }
+            // if(status === '5'){
+            //   invited.push(result[i]);
+            // }
             normal.push(result[i]);
           }
           dataSource.value = normal;
           invitedList.value = invited;
           invitedCount.value = invited.length;
-        }else{
+          if (dataSource.value.length > 0) {
+            tenantInfo.value = dataSource.value[0];
+          }
+        } else {
           setInitedValue();
         }
       } else {
         setInitedValue();
-    //update-end---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息------------
+        //update-end---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息------------
       }
     });
     //update-end---author:wangshuai ---date:20230109  for：[QQYUN-3645]个人设置我的企业查询审核中和正常的------------
@@ -261,7 +308,7 @@ const userDetail = ref({
   function setInitedValue() {
     dataSource.value = [];
     invitedList.value = [];
-    invitedCount.value = 0;  
+    invitedCount.value = 0;
   }
 
   /**
@@ -342,9 +389,9 @@ const userDetail = ref({
     //编辑组织名片
     if (type === 'editTenant') {
       tenantVisible.value = true;
-    }else if(type === 'exitTenant'){
+    } else if (type === 'exitTenant') {
       //退出企业
-      formCancelState.value = {loginPassword:'', tenantName:''};
+      formCancelState.value = { loginPassword: '', tenantName: '' };
       outBtnDisabled.value = true;
       cancelVisible.value = true;
       myTenantInfo.value = item;
@@ -356,6 +403,24 @@ const userDetail = ref({
   //退出企业数据
   const formCancelState = ref<any>({});
   //企业数据
+  const tenantInfo = ref<any>({});
+  //企业数据
+  const companyLogo = computed(() => {
+    return getFileAccessHttpUrl(tenantInfo.value.companyLogo);
+  });
+  //企业微信收款码
+  const wxPaymentCode = computed(() => {
+    return getFileAccessHttpUrl(tenantInfo.value.wxPaymentCode);
+  });
+  //企业支付宝收款码
+  const zfbPaymentCode = computed(() => {
+    return getFileAccessHttpUrl(tenantInfo.value.zfbPaymentCode);
+  });
+  //企业客服微信二维码
+  const customerServiceQrcode = computed(() => {
+    return getFileAccessHttpUrl(tenantInfo.value.customerServiceQrcode);
+  });
+  //企业数据(关联表)
   const myTenantInfo = ref<any>({});
   //注销企业弹窗确定按钮是否可以点击
   const outBtnDisabled = ref<boolean>(true);
@@ -370,9 +435,9 @@ const userDetail = ref({
   function tenantNameChange() {
     let name = unref(myTenantInfo).name;
     let tenantName = unref(formCancelState).tenantName;
-    if(name === tenantName){
+    if (name === tenantName) {
       outBtnDisabled.value = false;
-    }else{
+    } else {
       outBtnDisabled.value = true;
     }
   }
@@ -381,9 +446,9 @@ const userDetail = ref({
    * 退出确定点击事件
    */
   async function handleOutClick() {
-    if(!unref(formCancelState).loginPassword){
-        createMessage.warning("请输入登录密码");
-        return;
+    if (!unref(formCancelState).loginPassword){
+      createMessage.warning('请输入登录密码');
+      return;
     }
     console.log("myTenantInfo::::",myTenantInfo);
     await exitUserTenant({ id: unref(myTenantInfo).tenantUserId, loginPassword: unref(formCancelState).loginPassword }).then((res) => {
@@ -397,8 +462,7 @@ const userDetail = ref({
           //需要指定变更者
           owenVisible.value = true;
           cancelVisible.value = false;
-        //update-begin---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下企业全部退出后，再次登录，提示企业全部冻结。拥有者提示前往注销------------
-        }else if(res.message === 'cancelTenant'){
+        } else if (res.message === 'cancelTenant') {
           cancelVisible.value = false;
           let fullPath = router.currentRoute.value.fullPath;
           Modal.confirm({
@@ -414,14 +478,13 @@ const userDetail = ref({
               router.push('/myapps/settings/organization/organMessage/'+unref(myTenantInfo).tenantUserId)
             }
           })
-        //update-end---author:wangshuai ---date:20230426  for：【QQYUN-5270】名下企业全部退出后，再次登录，提示企业全部冻结。拥有者提示前往注销------------
         } else {
           createMessage.warning(res.message);
         }
       }
     }).catch((res) => {
       createMessage.warning(res.message);
-    })
+    });
   }
 
   /**
@@ -436,12 +499,12 @@ const userDetail = ref({
    * 变更拥有着
    */
   function changeOwen() {
-    if(!unref(tenantOwen)){
-      createMessage.warning("请选择变更拥有者");
+    if (!unref(tenantOwen)) {
+      createMessage.warning('请选择变更拥有者');
       return;
     }
-    changeOwenUserTenant({ userId:unref(tenantOwen), tenantId:unref(myTenantInfo).tenantUserId }).then((res) =>{
-      if(res.success){
+    changeOwenUserTenant({ userId: unref(tenantOwen), tenantId: unref(myTenantInfo).tenantUserId }).then((res) => {
+      if (res.success) {
         createMessage.success(res.message);
         initDataSource();
         //update-begin---author:wangshuai---date:2023-10-23---for:【QQYUN-6822】7、登录拥有多个企业身份的用户，退出企业，只剩下一个企业后显示为空---
@@ -450,9 +513,9 @@ const userDetail = ref({
       } else {
         createMessage.warning(res.message);
       }
-    })
+    });
   }
-  
+
   //邀请数量
   const invitedCount = ref<number>(0);
   //受邀信息
@@ -467,6 +530,57 @@ const userDetail = ref({
     invitedVisible.value = true;
   }
 
+  /**
+   * 更新机构头像
+   */
+  function updateTenantAvatar(src: string, data: string) {
+    tenantInfo.value.companyLogo = data;
+    if (data) {
+      updateTenantInfo({ companyLogo: data, id: tenantInfo.value.id });
+    }
+  }
+
+  /**
+   * 更新机构微信客服二维码
+   */
+  function updateTenantServiceQrcode(src: string, data: string) {
+    tenantInfo.value.customerServiceQrcode = data;
+    if (data) {
+      updateTenantInfo({ customerServiceQrcode: data, id: tenantInfo.value.id });
+    }
+  }
+
+  /**
+   * 更新机构支付宝收款码
+   */
+  function updateTenantZfbPaymentCode(src: string, data: string) {
+    tenantInfo.value.zfbPaymentCode = data;
+    if (data) {
+      updateTenantInfo({ zfbPaymentCode: data, id: tenantInfo.value.id });
+    }
+  }
+
+  /**
+   * 更新机构微信收款码
+   */
+  function updateTenantWxPaymentCode(src: string, data: string) {
+    tenantInfo.value.wxPaymentCode = data;
+    if (data) {
+      updateTenantInfo({ wxPaymentCode: data, id: tenantInfo.value.id });
+    }
+  }
+
+  /**
+   * 更新租户信息
+   * @params 参数
+   */
+  function updateTenantInfo(params) {
+    tenantEdit(params).then((res) => {
+      if (!res.success) {
+        createMessage.warn(res.message);
+      }
+    });
+  }
   /**
    * 加入组织点击事件
    */
@@ -579,14 +693,16 @@ const userDetail = ref({
     color: @text-color;
     /*end 兼容暗夜模式*/
     text-align: left;
-    width: 76px;
+    width: 120px;
     font-size: 13px;
+    line-height: 80px;
   }
 }
 
 .flex-flow {
   display: flex;
   min-width: 0;
+  margin-bottom: 20px;
 }
 
 .flex-center {
