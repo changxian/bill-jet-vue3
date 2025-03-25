@@ -6,9 +6,9 @@
 
 <script lang="ts" setup>
   import { ref, nextTick, defineExpose } from 'vue';
-  import ActivateCodeForm from './ActivateCodeForm.vue'
+  import ActivateCodeForm from './ActivateCodeForm.vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
-  
+
   const title = ref<string>('');
   const width = ref<number>(800);
   const visible = ref<boolean>(false);
@@ -20,7 +20,7 @@
    * 新增
    */
   function add() {
-    title.value = '新增';
+    title.value = '激活码交易';
     visible.value = true;
     nextTick(() => {
       registerForm.value.add();
