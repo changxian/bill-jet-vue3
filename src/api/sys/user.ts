@@ -123,7 +123,6 @@ export function getCaptcha(params) {
     defHttp
       .post({ url: Api.getCaptcha, params }, { isTransformResponse: false })
       .then((res) => {
-        console.log(res);
         if (res.success) {
           resolve(true);
         } else {
@@ -137,7 +136,7 @@ export function getCaptcha(params) {
         }
       })
       .catch((res) => {
-        createErrorModal({ title: '错误提示', content: res.message || '未知问题' });
+        // createErrorModal({ title: '错误提示', content: res.message || '未知问题' });
         reject();
       });
   });
