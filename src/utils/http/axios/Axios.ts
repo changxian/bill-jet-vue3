@@ -230,7 +230,7 @@ export class VAxios {
                 resolve(ret);
               }else{
                 createMessage.error(res.data.message);
-                reject(res.data.message);
+                reject(res.data);
               }
               //zhangyafei---添加回调方法
             } catch (err) {

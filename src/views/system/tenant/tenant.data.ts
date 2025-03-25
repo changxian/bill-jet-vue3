@@ -263,6 +263,18 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
+    field: 'category',
+    label: '客户类型',
+    component: 'RadioButtonGroup',
+    defaultValue: 0,
+    componentProps: {
+      options: [
+        { label: '分销商', value: 5 },
+        { label: '客户', value: 0 },
+      ],
+    },
+  },
+  {
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
