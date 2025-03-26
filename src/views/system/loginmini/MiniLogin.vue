@@ -153,7 +153,7 @@
     </div>
     <!-- 第三方登录相关弹框 -->
     <ThirdModal ref="thirdModalRef" />
-    <a-modal v-model:visible="activateDialog" title="提示" @ok="activateDialogOk" @cancel="activateDialogOk">
+    <a-modal v-model:visible="activateDialog" title="提示" @ok="activateOk" @cancel="activateClose">
       <div class="">
         <div class="">
           <div style="padding: 20px;color: red" class="aui-flex aui-form-nav investment_title">
@@ -215,8 +215,14 @@
   const rememberMe = ref<string>('0');
   const activateDialog = ref<boolean>(false);
   const tenantPackMsg = ref<string>('');
-  async function activateDialogOk() {
-    if (activateCode.value) {
+  async function activateOk() {
+    activateDialogOk(true);
+  }
+  async function activateClose() {
+    activateDialogOk(false);
+  }
+  async function activateDialogOk(goSave) {
+    if (goSave && activateCode.value) {
       await activateCodeSave({ 'activateCode': activateCode.value } )
         .then((res) => {
           if (res.success) {
