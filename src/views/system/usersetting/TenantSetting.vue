@@ -10,9 +10,9 @@
           <div class="item-left">
             <div class="item-name">{{ item.name }}</div>
             <div class="vip-message" v-if="tenantInfo.category > 0">
-              <div class="item-house" @click.stop="copyClick(item.houseNumber)">
+              <div class="item-house" @click.stop="copyClick(item.id)">
                 <span>
-                  企业邀请码：{{ item.houseNumber }}
+                  企业邀请码：{{ item.id }}
                   <Icon icon="ant-design:copy-outlined" style="font-size: 13px; margin-left: 2px" />
                 </span>
               </div>
@@ -51,6 +51,7 @@
               <div v-if="tenantInfo.category > 0" class="flex-flow">
                 <div class="content-des-text">客&nbsp;服&nbsp;微&nbsp;信</div>
                 <div style="font-size: 13px">
+                  <!-- 参考企业管理-添加企业信息页面 <JImageUpload v-model:value="tenantInfo.customerServiceQrcode"></JImageUpload>-->
                   <CropperAvatar
                     :uploadApi="uploadImg"
                     :showBtn="false"
@@ -244,6 +245,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { uploadImg } from '@/api/sys/upload';
   import { CropperAvatar } from '@/components/Cropper';
+  import JImageUpload from '@/components/Form/src/jeecg/components/JImageUpload.vue';
 
   const { prefixCls } = useDesign('j-user-tenant-setting-container');
   //数据源
@@ -533,7 +535,7 @@
   /**
    * 更新机构头像
    */
-  function updateTenantAvatar(src: string, data: string) {
+  function updateTenantAvatar(data: string) {
     tenantInfo.value.companyLogo = data;
     if (data) {
       updateTenantInfo({ companyLogo: data, id: tenantInfo.value.id });
@@ -543,7 +545,7 @@
   /**
    * 更新机构微信客服二维码
    */
-  function updateTenantServiceQrcode(src: string, data: string) {
+  function updateTenantServiceQrcode(data: string) {
     tenantInfo.value.customerServiceQrcode = data;
     if (data) {
       updateTenantInfo({ customerServiceQrcode: data, id: tenantInfo.value.id });
@@ -553,7 +555,7 @@
   /**
    * 更新机构支付宝收款码
    */
-  function updateTenantZfbPaymentCode(src: string, data: string) {
+  function updateTenantZfbPaymentCode(data: string) {
     tenantInfo.value.zfbPaymentCode = data;
     if (data) {
       updateTenantInfo({ zfbPaymentCode: data, id: tenantInfo.value.id });
@@ -563,7 +565,7 @@
   /**
    * 更新机构微信收款码
    */
-  function updateTenantWxPaymentCode(src: string, data: string) {
+  function updateTenantWxPaymentCode(data: string) {
     tenantInfo.value.wxPaymentCode = data;
     if (data) {
       updateTenantInfo({ wxPaymentCode: data, id: tenantInfo.value.id });
@@ -592,293 +594,143 @@
   onMounted(() => {
     initDataSource();
   });
-
 </script>
 
 <style lang="less" scoped>
-.tenant-padding{
-  padding: 30px 40px 0 20px;
-}
-.my-tenant{
-  display: flex;
-  font-size: 17px;
-  font-weight: 700!important;
-  /*begin 兼容暗夜模式*/
-  color: @text-color;
-  /*end 兼容暗夜模式*/
-  margin-bottom: 20px;
-  .invited{
-    font-size: 14px;
-    text-align: right;
-    cursor: pointer;
+  .tenant-padding{
+    padding: 30px 40px 0 20px;
   }
-}
-.tenant-list{
-  box-sizing: border-box;
-  flex: 1;
-  min-height: 0;
-  overflow-x: hidden;
-}
-.tenant-list-item{
-  /*begin 兼容暗夜模式*/
-  border: 1px solid @border-color-base;
-  /*end 兼容暗夜模式*/
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  overflow: hidden;
-  padding: 0 25px;
-  width: 100%;
-  .item-name{
-    align-items: center;
-    box-sizing: border-box;
+  .my-tenant{
     display: flex;
-    justify-content: space-between;
-    padding: 14px 0;
-    cursor: pointer;
-    font-size:17px;
+    font-size: 17px;
+    font-weight: 700!important;
     /*begin 兼容暗夜模式*/
     color: @text-color;
     /*end 兼容暗夜模式*/
-    font-weight: 700!important;
+    margin-bottom: 20px;
+    .invited{
+      font-size: 14px;
+      text-align: right;
+      cursor: pointer;
+    }
   }
-}
-.tenant-list-item:hover{
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
-}
-.pointer {
-  cursor: pointer;
-}
+  .tenant-list{
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+  }
+  .tenant-list-item{
+    /*begin 兼容暗夜模式*/
+    border: 1px solid @border-color-base;
+    /*end 兼容暗夜模式*/
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    overflow: hidden;
+    padding: 0 25px;
+    width: 100%;
+    .item-name{
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      cursor: pointer;
+      font-size: 17px;
+      /*begin 兼容暗夜模式*/
+      color: @text-color;
+      /*end 兼容暗夜模式*/
+      font-weight: 700 !important;
+    }
+  }
+  .tenant-list-item:hover {
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
+  }
+  .pointer {
+    cursor: pointer;
+  }
 
-.examine {
-  color: #2c9cff;
-  font-size: 13px;
-}
+  .examine {
+    color: #2c9cff;
+    font-size: 13px;
+  }
 
-.cancel-apply {
-  margin-left: 24px;
-  color: red;
-  font-size: 13px;
-}
+  .cancel-apply {
+    margin-left: 24px;
+    color: red;
+    font-size: 13px;
+  }
 
-.item-content {
-  transition: ease-in 2s;
+  .item-content {
+    transition: ease-in 2s;
 
-  .content-box {
+    .content-box {
+      /*begin 兼容暗夜模式*/
+      border-top: 1px solid @border-color-base;
+      /*end 兼容暗夜模式*/
+      box-sizing: border-box;
+      display: flex;
+      padding: 24px 0;
+    }
+
+    .content-name {
+      /*begin 兼容暗夜模式*/
+      color: @text-color;
+      /*end 兼容暗夜模式*/
+      text-align: center;
+      width: 100px;
+      font-size: 13px;
+    }
+
+    .content-desc {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .content-des-text {
+      /*begin 兼容暗夜模式*/
+      color: @text-color;
+      /*end 兼容暗夜模式*/
+      text-align: left;
+      width: 120px;
+      font-size: 13px;
+      line-height: 80px;
+    }
+  }
+
+  .flex-flow {
+    display: flex;
+    min-width: 0;
+    margin-bottom: 20px;
+  }
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .footer-box {
     /*begin 兼容暗夜模式*/
     border-top: 1px solid @border-color-base;
     /*end 兼容暗夜模式*/
     box-sizing: border-box;
     display: flex;
     padding: 24px 0;
+    color: #757575;
   }
 
-  .content-name {
-    /*begin 兼容暗夜模式*/
-    color: @text-color;
-    /*end 兼容暗夜模式*/
-    text-align: center;
-    width: 100px;
-    font-size: 13px;
-  }
-
-  .content-desc {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .content-des-text {
-    /*begin 兼容暗夜模式*/
-    color: @text-color;
-    /*end 兼容暗夜模式*/
-    text-align: left;
-    width: 120px;
-    font-size: 13px;
-    line-height: 80px;
-  }
-}
-
-.flex-flow {
-  display: flex;
-  min-width: 0;
-  margin-bottom: 20px;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 0;
-}
-
-.footer-box {
-  /*begin 兼容暗夜模式*/
-  border-top: 1px solid @border-color-base;
-  /*end 兼容暗夜模式*/
-  box-sizing: border-box;
-  display: flex;
-  padding: 24px 0;
-  color: #757575;
-}
-
-.margin-right40 {
-  margin-right: 40px;
-}
-
-/*begin 兼容暗夜模式*/
-.font-color333 {
-  color: @text-color;
-  font-weight: normal;
-}
-
-.font-color9e {
-  color: @text-color;
-}
-
-.font-color75 {
-  color: @text-color;
-}
-/*end 兼容暗夜模式*/
-
-.font-size13 {
-  font-size: 13px;
-}
-
-.footer-icon {
-  font-size: 13px !important;
-  margin-right: 13px;
-  position: relative;
-  top: 0px;
-}
-:deep(.edit-tenant-setting) {
-  color: #0a8fe9;
-}
-.margin-top6 {
-  margin-top: 6px;
-}
-.margin-bottom-16 {
-  margin-bottom: 16px;
-}
-.item-right {
-  align-items: center;
-  display: flex;
-  .buy-margin{
-    margin-left: 10px;
-    width: 66px;
-    border-radius: 20px;
-    background: rgba(255, 154, 0, 1);
-    height: 28px;
-    line-height: 28px;
-    cursor: pointer;
-    text-align: center;
-    span{
-      font-size: 14px;
-      font-weight: 400;
-      color: #ffffff;
-    }
-  }
-  .ordinary-user{
-    margin-left: 10px;
-    width: 66px;
-    span{
-      font-size: 14px;
-      font-weight: 400;
-      color: #9e9e9e;
-    }
-  }
-}
-.tenant-title {
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  padding: 24px 0;
-  .vip-message{
-    display: flex;
-    .vip-message-margin{
-      margin-right: 20px;
-    }
-  }
-}
-.change-owen{
-  font-size: 14px;
-  font-weight: 700;
-}
-//update-begin---author:wangshuai ---date:20230704  for：被邀弹窗样式------------
-.approved-count{
-  background: #ffd2d2;
-  border-radius: 19px;
-  color: red;
-  display: inline-block;
-  font-weight: 500;
-  height: 19px;
-  line-height: 18px;
-  margin-left: 8px;
-  min-width: 19px;
-  padding: 0 6px;
-  text-align: center;
-}
-
-.invited-row{
-  padding: 10px 34px;
-}
-.invited-row-list{
-  padding: 0px 34px;
-  .common{
-    color: #1e88e5;
-    cursor: pointer;
-  }
-  .refuse{
-    color: red;
-    margin-left: 20px;
-  }
-}
-.pointer{
-  cursor: pointer;
-}
-//update-end---author:wangshuai ---date:20230704  for：被邀弹窗样式------------
-</style>
-
-<style lang="less">
-  // update-begin-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
-@prefix-cls: ~'@{namespace}-j-user-tenant-setting-container';
-/*begin 兼容暗夜模式*/
-.@{prefix-cls} {
-
-  .my-tenant{
-    color: @text-color;
-  }
-
-  .tenant-list-item{
-    border: 1px solid @border-color-base;
-
-    .item-name{
-      color: @text-color;
-    }
-  }
-
-  .item-content {
-
-    .content-box {
-      border-top: 1px solid @border-color-base;
-    }
-
-    .content-name {
-      color: @text-color;
-    }
-
-    .content-des-text {
-      color: @text-color;
-    }
-  }
-  .footer-box {
-    border-top: 1px solid @border-color-base;
+  .margin-right40 {
+    margin-right: 40px;
   }
 
   /*begin 兼容暗夜模式*/
   .font-color333 {
     color: @text-color;
+    font-weight: normal;
   }
 
   .font-color9e {
@@ -888,7 +740,154 @@
   .font-color75 {
     color: @text-color;
   }
-}
-/*end 兼容暗夜模式*/
+  /*end 兼容暗夜模式*/
+
+  .font-size13 {
+    font-size: 13px;
+  }
+
+  .footer-icon {
+    font-size: 13px !important;
+    margin-right: 13px;
+    position: relative;
+    top: 0px;
+  }
+  :deep(.edit-tenant-setting) {
+    color: #0a8fe9;
+  }
+  .margin-top6 {
+    margin-top: 6px;
+  }
+  .margin-bottom-16 {
+    margin-bottom: 16px;
+  }
+  .item-right {
+    align-items: center;
+    display: flex;
+    .buy-margin{
+      margin-left: 10px;
+      width: 66px;
+      border-radius: 20px;
+      background: rgba(255, 154, 0, 1);
+      height: 28px;
+      line-height: 28px;
+      cursor: pointer;
+      text-align: center;
+      span{
+        font-size: 14px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+    }
+    .ordinary-user{
+      margin-left: 10px;
+      width: 66px;
+      span{
+        font-size: 14px;
+        font-weight: 400;
+        color: #9e9e9e;
+      }
+    }
+  }
+  .tenant-title {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0;
+    .vip-message{
+      display: flex;
+      .vip-message-margin{
+        margin-right: 20px;
+      }
+    }
+  }
+  .change-owen{
+    font-size: 14px;
+    font-weight: 700;
+  }
+  //update-begin---author:wangshuai ---date:20230704  for：被邀弹窗样式------------
+  .approved-count{
+    background: #ffd2d2;
+    border-radius: 19px;
+    color: red;
+    display: inline-block;
+    font-weight: 500;
+    height: 19px;
+    line-height: 18px;
+    margin-left: 8px;
+    min-width: 19px;
+    padding: 0 6px;
+    text-align: center;
+  }
+
+  .invited-row {
+    padding: 10px 34px;
+  }
+  .invited-row-list{
+    padding: 0px 34px;
+    .common{
+      color: #1e88e5;
+      cursor: pointer;
+    }
+    .refuse{
+      color: red;
+      margin-left: 20px;
+    }
+  }
+  .pointer{
+    cursor: pointer;
+  }
+  //update-end---author:wangshuai ---date:20230704  for：被邀弹窗样式------------
+</style>
+
+<style lang="less">
+  // update-begin-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
+  @prefix-cls: ~'@{namespace}-j-user-tenant-setting-container';
+  /*begin 兼容暗夜模式*/
+  .@{prefix-cls} {
+    .my-tenant{
+      color: @text-color;
+    }
+
+    .tenant-list-item{
+      border: 1px solid @border-color-base;
+
+      .item-name{
+        color: @text-color;
+      }
+    }
+
+    .item-content {
+      .content-box {
+        border-top: 1px solid @border-color-base;
+      }
+
+      .content-name {
+        color: @text-color;
+      }
+
+      .content-des-text {
+        color: @text-color;
+      }
+    }
+    .footer-box {
+      border-top: 1px solid @border-color-base;
+    }
+
+    /*begin 兼容暗夜模式*/
+    .font-color333 {
+      color: @text-color;
+    }
+
+    .font-color9e {
+      color: @text-color;
+    }
+
+    .font-color75 {
+      color: @text-color;
+    }
+  }
+  /*end 兼容暗夜模式*/
   // update-end-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
 </style>

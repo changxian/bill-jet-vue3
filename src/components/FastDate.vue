@@ -28,7 +28,7 @@
     endDateKey: {
       type: string,
       default: 'endDate',
-    }
+    },
   });
 
   const emits = defineEmits(['update:modelValue', 'update']);
@@ -47,6 +47,7 @@
     { label: '上月', value: 'lastMonth' },
     { label: '最近三月', value: 'month3' },
     { label: '最近六月', value: 'month6' },
+    { label: '最近一年', value: 'month12' },
   ];
   const options = ref(dateOptions);
 
@@ -88,6 +89,13 @@
         const s = dayjs().subtract(5, 'month').startOf('month').format('YYYY-MM-DD');
         const d = dayjs().endOf('month').format('YYYY-MM-DD');
         return [s, d];
+      },
+      month12: function () {
+        const s = dayjs().subtract(11, 'month').startOf('month').format('YYYY-MM-DD');
+        const d = dayjs().endOf('month').format('YYYY-MM-DD');
+        return [s, d];
+        // const s = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
+        // return [s, s];
       },
     };
     return obj[val] ? obj[val]() : ['', ''];

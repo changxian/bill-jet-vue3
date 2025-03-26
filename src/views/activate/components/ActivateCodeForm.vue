@@ -4,16 +4,11 @@
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="ActivateCodeForm">
           <a-row>
-            <a-col :span="24">
-              <a-form-item label="激活码个数" v-bind="validateInfos.actNum" id="ActivateCodeForm-actNum" name="actNum">
-                <a-input-number v-model:value="formData.actNum" placeholder="请输入激活码个数" style="width: 100%" />
-              </a-form-item>
-            </a-col>
 						<a-col :span="24">
-              <a-form-item label="所属租户" v-bind="validateInfos.belongTenantId" id="ActivateCodeForm-belongTenantId" name="belongTenantId">
+              <a-form-item label="运营商户" v-bind="validateInfos.belongTenantId" id="ActivateCodeForm-belongTenantId" name="belongTenantId">
                 <JDictSelectTag
                   v-model:value="formData.belongTenantId"
-                  placeholder="请选择所属租户"
+                  placeholder="请选择运营商户"
                   dictCode="sys_tenant,name,id,del_flag='0' and  category >0  order by create_time desc"
                   :showChooseOption="false"
                 />
@@ -49,15 +44,24 @@
                 <j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
               </a-form-item>
             </a-col>
-
             <a-col :span="24">
-              <a-form-item label="价格" v-bind="validateInfos.remark" id="ActivateCodeForm-price" name="price">
-                <a-input-number v-model:value="formData.price" placeholder="请输入价格"  allow-clear ></a-input-number>
+              <a-form-item label="激活码数量" v-bind="validateInfos.actNum" id="ActivateCodeForm-actNum" name="actNum">
+                <a-input-number v-model:value="formData.actNum" @change="changeAmount" placeholder="请输入激活码数量" style="width: 100%" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-item label="激活码单价" v-bind="validateInfos.price" id="ActivateCodeForm-price" name="price">
+                <a-input-number v-model:value="formData.price" @change="changeAmount" placeholder="请输入激活码单价" allow-clear></a-input-number>
+              </a-form-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-item label="总交易额" v-bind="validateInfos.amount" id="ActivateCodeForm-price" name="amount">
+                <a-input-number v-model:value="formData.amount" disabled></a-input-number>
               </a-form-item>
             </a-col>
 						<a-col :span="24">
 							<a-form-item label="备注" v-bind="validateInfos.remark" id="ActivateCodeForm-remark" name="remark">
-								<a-input v-model:value="formData.remark" placeholder="请输入备注"  allow-clear ></a-input>
+								<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -68,35 +72,35 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
-  import { defHttp } from '/@/utils/http/axios';
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../ActivateCode.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-  import JDictSelectTag from "../../../components/Form/src/jeecg/components/JDictSelectTag.vue";
+  import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: () => ({})},
-    formBpm: { type: Boolean, default: true }
+    formData: { type: Object, default: () => ({}) },
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
   const formData = reactive<Record<string, any>>({
     id: '',
-    actNum:1,
+    actNum: 1,
     belongTenantId: undefined,
     actTenantId: undefined,
-    activateCode: '',   
+    activateCode: '',
     ststus: '1',
     activateDateTime: '',
     packType: undefined,
-    packCategory: '',   
+    packCategory: '',
     delFlag: undefined,
     remark: '',
-    price:0,
+    price: 0,
+    amount: 0,
     version: undefined,
   });
   const { createMessage } = useMessage();
@@ -109,18 +113,18 @@
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
-        return false;
-      }else{
-        return true;
-      }
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      return props.formData.disabled !== false;
     }
     return props.formDisabled;
   });
 
-  
+  // 修改单价时计算总金额
+  function changeAmount() {
+    formData.amount = (formData.price * formData.actNum).toFixed(2);
+  }
+
   /**
    * 新增
    */
@@ -136,10 +140,10 @@
       resetFields();
       const tmpData = {};
       Object.keys(formData).forEach((key) => {
-        if(record.hasOwnProperty(key)){
-          tmpData[key] = record[key]
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
         }
-      })
+      });
       //赋值
       Object.assign(formData, tmpData);
     });
