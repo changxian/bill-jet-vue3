@@ -7,7 +7,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="单据打印机" v-bind="validateInfos.printer" id="PrintSettingForm-printer" name="printer">
-                <j-dict-select-tag v-model:value="formData.printer" dictCode="" placeholder="请选择单据打印机" />
+                <j-dict-select-tag v-model:value="formData.printer" :options="printerOptions" placeholder="请选择单据打印机" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -128,7 +128,7 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, h, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import { getMyPrintSetting, saveOrUpdatePrint } from '../index.api';
+  import { getMyPrintSetting, listPrinters, saveOrUpdatePrint } from "../index.api";
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import { SearchOutlined } from '@ant-design/icons-vue';
@@ -175,6 +175,7 @@
     { value: 5, label: '5' },
     { value: 10, label: '10' },
   ]);
+  const printerOptions = ref<Recordable[]>([]);
   // 给开单类型设置默认值1
   // if (formData.value.num == undefined && numOptions.value.length > 0) {
   //   formData.value.num = numOptions.value[0].value;
@@ -278,6 +279,13 @@
         // 重新获取用户信息和菜单
         userStore.getUserInfoAction();
       });
+    listPrinters().then((res) => {
+      res.forEach((item) => {
+        if (item) {
+          printerOptions.value.push({ label: item, value: `${item}` });
+        }
+      });
+    });
   }
 
   onMounted(fetchPrintSettingData);
