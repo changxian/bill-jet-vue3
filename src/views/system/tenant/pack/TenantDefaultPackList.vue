@@ -2,6 +2,7 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
+        <a-button type="primary" v-auth="'system:sys_tenant_pack_record:add'" @click="handleModify" preIcon="ant-design:edit-outlined">套餐扩容</a-button>
         <!--         <a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>-->
         <!--        <a-button
                   v-if="selectedRowKeys.length > 0"
@@ -13,54 +14,60 @@
                 </a-button>-->
       </template>
       <template #action="{ record }">
-        <TableAction :actions="getActions(record)" :dropDownActions="getDropDownAction(record)" />
+        <TableAction :actions="getActions(record)" />
       </template>
     </BasicTable>
-    <!--  套餐  -->
+    <!--  绑定套餐  -->
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess" />
     <!--套餐菜单授权抽屉-->
     <PackPermissionDrawer @register="packPermissionDrawer" />
-    <!--续费-->
+    <!-- 续费 -->
     <TenantPackReNewModel @register="registerRenewModal" />
     <!--  套餐记录 -->
     <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" />
+    <!--  套餐扩容 -->
+    <ModifyTenantPackModal @register="registerModifyTenantPackModal" @success="handleSuccess" />
   </div>
 </template>
 <!-- 该页面是【企业套餐管理页面】 -->
 <script lang="ts" name="tenant-default-pack" setup>
-  import {ref, unref} from 'vue';
-  import {BasicTable, TableAction} from '/@/components/Table';
-  import {useModal} from '/@/components/Modal';
-  import {deleteTenantPack, packList} from '../tenant.api';
-  import {packColumns, packFormSchema} from '../tenant.data';
+  import { unref } from 'vue';
+  import { BasicTable, TableAction } from '/@/components/Table';
+  import { useModal } from '/@/components/Modal';
+  import { deleteTenantPack, packList } from '../tenant.api';
+  import { packColumns, packFormSchema } from '../tenant.data';
   import TenantPackMenuModal from './TenantPackMenuModal.vue';
-  import {useMessage} from '/@/hooks/web/useMessage';
-  import {useListPage} from '/@/hooks/system/useListPage';
-  import {useUserStore} from '/@/store/modules/user';
-  import {Modal} from "ant-design-vue";
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { Modal } from 'ant-design-vue';
 
-  import {useDrawer} from '/@/components/Drawer';
+  import { useDrawer } from '/@/components/Drawer';
   import PackPermissionDrawer from '../components/PackPermissionDrawer.vue';
   import TenantPackReNewModel from '../components/TenantPackReNewModal.vue';
   import SysTenantPackRecordListModal from '@/views/system/tenant/pack/SysTenantPackRecordListModal.vue';
 
-  const [packPermissionDrawer, {openDrawer: openPackPermissionDrawer}] = useDrawer();
+  const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
 
   const [registerSysTenantPackRecordListModal, { openModal: sysTenantPackRecordListModal }] = useModal();
-  const [registerRenewModal, {openModal: renewModal}] = useModal();
+  const [registerRenewModal, { openModal: renewModal }] = useModal();
+  const [registerModifyTenantPackModal, { openModal: modifyTenantPackModal }] = useModal();
 
-  const {createMessage} = useMessage();
-  const [registerModal, {openModal}] = useModal();
-  const [registerPackMenuModal, {openModal: packModal}] = useModal();
-  const userStore = useUserStore();
+  const { createMessage } = useMessage();
+  // const [registerModal, { openModal }] = useModal();
+  const [registerPackMenuModal, { openModal: packModal }] = useModal();
+  // const userStore = useUserStore();
+
+  // const modifyModalRef = ref();
 
   // 列表页面公共参数、方法
-  const {prefixCls, tableContext} = useListPage({
+  const { tableContext } = useListPage({
     designScope: 'tenant-template',
     tableProps: {
       api: packList,
       columns: packColumns,
+      clickToRowSelect: true,
       showIndexColumn: true,
+      rowSelection: { type: 'radio' },
       formConfig: {
         schemas: packFormSchema,
       },
@@ -74,7 +81,7 @@
       },
     },
   });
-  const [registerTable, {reload}, {rowSelection, selectedRowKeys, selectedRows}] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
 
   /**
    * 操作列定义
@@ -162,11 +169,27 @@
       tenantId: record.tenantId,
     };
     renewModal(true, {
-      record: data, packId: record.id, isUpdate: true,
+      record: data,
+      packId: record.id,
+      isUpdate: true,
       showFooter: true,
     });
   }
 
+  // 修改企业套餐扩容信息
+  function handleModify() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    // modifyModalRef.value.show(row);
+    modifyTenantPackModal(true, {
+      record: row,
+      tenantPackId: row.id,
+      isUpdate: true,
+      showFooter: true,
+    });
+  }
   /**
    * 新增套餐
    */

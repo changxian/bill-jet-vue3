@@ -101,12 +101,12 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="制单人" v-bind="validateInfos.operatorName" id="DeliverBillForm-operatorName" name="operatorName">
-                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear ></a-input>
+                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
-                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear ></a-input>
+                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <!--<a-col :span="8">

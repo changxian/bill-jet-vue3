@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-  import {ref, computed, unref} from 'vue';
-  import {BasicModal, useModalInner} from '/@/components/Modal';
+  import { ref, computed, unref } from 'vue';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
   // import {formSchema} from '../SysTenantPackRecord.data';
-  import {saveOrUpdate} from '../SysTenantPackRecord.api';
+  import { saveOrUpdate } from '../SysTenantPackRecord.api';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
@@ -93,7 +93,7 @@
 
   const formData = ref({});
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     //重置表单
     await resetFields();
     setModalProps({confirmLoading: false,showCancelBtn:!!data?.showFooter,showOkBtn:!!data?.showFooter});
@@ -115,7 +115,7 @@
   async function handleSubmit(v) {
     try {
       let values = await validate();
-      setModalProps({confirmLoading: true});
+      setModalProps({ confirmLoading: true });
       //提交表单
       await saveOrUpdate(Object.assign(formData.value, values));
       //关闭弹窗
@@ -131,7 +131,7 @@
       }
       return Promise.reject(errorFields);
     } finally {
-      setModalProps({confirmLoading: false});
+      setModalProps({ confirmLoading: false });
     }
   }
 </script>

@@ -4,15 +4,42 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
+          <a-col :lg="4">
+            <a-form-item label="类别" name="packCategory">
+              <a-select v-model:value="queryParam.packCategory" allow-clear>
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="1">单机版</a-select-option>
+                <a-select-option value="2">云端版</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="5">
+            <a-form-item label="类型" name="packType">
+              <a-select v-model:value="queryParam.packType" allow-clear>
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="1">送货单版</a-select-option>
+                <a-select-option value="2">进销存版</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="5">
+            <a-form-item label="状态" name="ststus">
+              <a-select v-model:value="queryParam.ststus" allow-clear>
+                <a-select-option value="">所有</a-select-option>
+                <a-select-option value="1">未激活</a-select-option>
+                <a-select-option value="2">已激活</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
                 <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
+                <!--<a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
                   {{ toggleSearchStatus ? '收起' : '展开' }}
                   <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>
+                </a>-->
               </a-col>
             </span>
           </a-col>

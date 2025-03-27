@@ -7,7 +7,6 @@
   import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
-  // import { packMenuFormData } from '../tenant.data';
   import { addPackPermission, editPackPermission, getAllSysPackList } from '../tenant.api';
   import { getAutoScrollContainer } from '@/utils/common/compUtils';
 
@@ -30,7 +29,7 @@
         resultField: 'list',
         onChange: function (e) {
           console.log('11111111111111111111111', e);
-          getAllSysPackList().then((res) => {
+          getAllSysPackList({}).then((res) => {
             console.log('res', res);
             res.forEach((item) => {
               if (item.id === e) {
