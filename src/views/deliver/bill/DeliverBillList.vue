@@ -61,8 +61,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="6">
-              <a-form-item label="业务员" v-bind="queryParam.realname" name="realname">
-                <j-select-salesman v-model:value="queryParam.realname" @change="changeUser" allow-clear />
+              <a-form-item label="业务员" v-bind="queryParam.userId" name="userId">
+                <j-select-salesman v-model:value="queryParam.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="5">
@@ -541,6 +541,7 @@
   function changeUser(val, selectRows) {
     if (selectRows?.length > 0) {
       queryParam.userId = selectRows[0].id;
+      queryParam.userName = selectRows[0].name;
       queryParam.realname = selectRows[0].name;
     }
   }
