@@ -37,6 +37,7 @@
   import { deleteTenantPack, packList } from '../tenant.api';
   import { packColumns, packFormSchema } from '../tenant.data';
   import TenantPackMenuModal from './TenantPackMenuModal.vue';
+  import ModifyTenantPackModal from "./ModifyTenantPackModal.vue";
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { Modal } from 'ant-design-vue';
