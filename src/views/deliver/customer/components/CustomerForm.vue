@@ -56,7 +56,7 @@
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="业务员" v-bind="validateInfos.userId" id="CustomerForm-userName" name="userId">
-								<j-dict-select-tag v-model:value="formData.userId" :url="listTenantUser" label-field="realname" value-field="id" placeholder="请选择业务员"  allow-clear />
+								<j-dict-select-tag v-model:value="formData.userId" :url="allSalesmanList" label-field="name" value-field="id" placeholder="请选择业务员"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -106,6 +106,7 @@ import {
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
 import {useUserStore} from "@/store/modules/user";
+import {allSalesmanList} from "@/views/salesman/Salesman.api";
 const userStore = useUserStore();
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },

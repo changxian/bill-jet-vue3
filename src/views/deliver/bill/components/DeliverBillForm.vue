@@ -31,7 +31,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-user-id v-model:value="formData.userId" @change="changeUser" allow-clear />
+                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -159,6 +159,7 @@
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
+  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
 
   const userStore = useUserStore();
   // 小数位数
@@ -285,7 +286,7 @@
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       formData.userId = selectRows[0].id;
-      formData.userName = selectRows[0].realname;
+      formData.userName = selectRows[0].name;
     }
   }
   // 传递给商品选择页面的参数

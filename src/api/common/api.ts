@@ -6,6 +6,7 @@ const baseUploadUrl = globSetting.uploadUrl;
 enum Api {
   positionList = '/sys/position/list',
   userList = '/sys/user/list',
+  salesmanList= '/salesman/salesman/list',
   roleList = '/sys/role/list',
   queryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
   queryTreeList = '/sys/sysDepart/queryTreeList',
@@ -58,6 +59,9 @@ export const getUserList = (params) => {
   return defHttp.get({ url: Api.userList, params });
 };
 
+export const getSalesmanList = (params) => {
+  return defHttp.get({ url: Api.salesmanList, params });
+};
 /**
  * 角色列表
  * @param params

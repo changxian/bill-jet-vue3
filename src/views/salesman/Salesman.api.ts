@@ -13,6 +13,7 @@ enum Api {
   exportXls = '/salesman/salesman/exportXls',
   getAllSalesmanList = '/salesman/salesman/allList',
 }
+export const allSalesmanList = Api.getAllSalesmanList;
 
 /**
  * 导出api

@@ -62,7 +62,7 @@
             </a-col>
             <a-col :span="6">
               <a-form-item label="业务员" v-bind="queryParam.realname" name="realname">
-                <j-select-user v-model:value="queryParam.realname" @change="changeUser" allow-clear />
+                <j-select-salesman v-model:value="queryParam.realname" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="5">
@@ -192,10 +192,11 @@
   import { JInput } from '@/components/Form';
   import FastDate from '@/components/FastDate.vue';
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
-  import JSelectUser from '@/components/Form/src/jeecg/components/JSelectUser.vue';
+
 
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
+  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
   const [registerModal, { openModal }] = useModal();
 
   const route = useRoute();
@@ -540,7 +541,7 @@
   function changeUser(val, selectRows) {
     if (selectRows?.length > 0) {
       queryParam.userId = selectRows[0].id;
-      queryParam.realname = selectRows[0].realname;
+      queryParam.realname = selectRows[0].name;
     }
   }
 
