@@ -16,9 +16,18 @@
       <div class="aui-content">
         <div class="aui-container">
           <div class="aui-form">
-            <div class="aui-image">
-              <div class="aui-image-text">
-                <!--<img :src="adTextImg" />-->
+            <div class="aui-image" style="padding: 50px 50px;position: relative;">
+              <div style="display: flex;flex-direction: column;justify-content: space-between;">
+                <div class="" style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex: 1">
+                   <div><img src="../../../../public/logo.png" height="100" width="100" /> </div>
+                   <div style="display: flex; ;justify-content: center;align-items: center;text-align: center;font-weight: 800;color: blue">鑫泓软件</div>
+                </div>
+                <div class="" style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex: 2;margin-top: 20px ">
+                  这里修改成其他 客户提供信息
+                </div>
+                <div class="" style=" justify-content: center; position: absolute;bottom: 30px;left: 45% ;">
+                  <a href="https://beian.miit.gov.cn" style="color: blue;">备案号xxxxxxx</a>
+                </div>
               </div>
             </div>
             <div class="aui-formBox">
