@@ -2,8 +2,9 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" v-auth="'system:sys_tenant_pack_record:add'" @click="handleModify" preIcon="ant-design:edit-outlined">套餐扩容</a-button>
-        <a-button type="primary"   @click="renewByCode" preIcon="ant-design:edit-outlined">激活码续费</a-button>
+        <a-button type="primary" :disabled="selectedRowKeys.length != 1"  v-auth="'system:sys_tenant_pack_record:add'" @click="handleModify" preIcon="ant-design:edit-outlined">套餐扩容</a-button>
+        <a-button type="primary"  :disabled="selectedRowKeys.length != 1" v-auth="'activate:activate:activateCodeList'" @click="renewByCode" preIcon="ant-design:edit-outlined">激活码续费</a-button>
+        <a-button type="primary"  :disabled="selectedRowKeys.length != 1"  v-auth="'system:sys_tenant_pack_record:add'" @click="renew" preIcon="ant-design:edit-outlined">续费</a-button>
         <!--         <a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>-->
         <!--        <a-button
                   v-if="selectedRowKeys.length > 0"
@@ -25,9 +26,9 @@
     <!-- 续费 -->
     <TenantPackReNewModel @register="registerRenewModal" />
     <!-- 续费 -->
-    <TenantPackReNewByCodeModel @register="registerRenewByCodeModal" />
+    <TenantPackReNewByCodeModel @register="registerRenewByCodeModal"  @success="handleSuccess"/>
     <!--  套餐记录 -->
-    <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" />
+    <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal"  @success="handleSuccess"/>
     <!--  套餐扩容 -->
     <ModifyTenantPackModal @register="registerModifyTenantPackModal" @success="handleSuccess" />
   </div>
@@ -103,10 +104,10 @@
         label: '授权',
         onClick: handlePerssion.bind(null, record),
       },
-      {
-        label: '续费',
-        onClick: renew.bind(null, record),
-      },
+      // {
+      //   label: '续费',
+      //   onClick: renew.bind(null, record),
+      // },
       // {
       //   label: '删除',
       //   popConfirm: {
@@ -160,7 +161,11 @@
   function handlePerssion(record) {
     openPackPermissionDrawer(true, {packId: record.id});
   }
-  function renew(record) {
+  function renew( ) {
+    if(selectedRowKeys.value.length != 1) {
+      return createMessage.warning('请先选择一条数据');
+    }
+    const record = selectedRows.value[0];
     const data = {
       tenantPackId: record.id,
       packCode: record.packCode,
@@ -189,7 +194,7 @@
       return createMessage.warning('请先选择一条数据');
     }
     const record = selectedRows.value[0];
- 
+
     const data = {
       tenantPackId: record.id,
       actTenantId: record.tenantId,
