@@ -3,6 +3,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button type="primary" v-auth="'system:sys_tenant_pack_record:add'" @click="handleModify" preIcon="ant-design:edit-outlined">套餐扩容</a-button>
+        <a-button type="primary"   @click="renewByCode" preIcon="ant-design:edit-outlined">激活码续费</a-button>
         <!--         <a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>-->
         <!--        <a-button
                   v-if="selectedRowKeys.length > 0"
@@ -23,6 +24,8 @@
     <PackPermissionDrawer @register="packPermissionDrawer" />
     <!-- 续费 -->
     <TenantPackReNewModel @register="registerRenewModal" />
+    <!-- 续费 -->
+    <TenantPackReNewByCodeModel @register="registerRenewByCodeModal" />
     <!--  套餐记录 -->
     <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" />
     <!--  套餐扩容 -->
@@ -45,12 +48,14 @@
   import { useDrawer } from '/@/components/Drawer';
   import PackPermissionDrawer from '../components/PackPermissionDrawer.vue';
   import TenantPackReNewModel from '../components/TenantPackReNewModal.vue';
+  import  TenantPackReNewByCodeModel from '../components/TenantPackReNewByCodeModal.vue'
   import SysTenantPackRecordListModal from '@/views/system/tenant/pack/SysTenantPackRecordListModal.vue';
 
   const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
 
   const [registerSysTenantPackRecordListModal, { openModal: sysTenantPackRecordListModal }] = useModal();
   const [registerRenewModal, { openModal: renewModal }] = useModal();
+  const [registerRenewByCodeModal, { openModal: renewByCodeModal }] = useModal();
   const [registerModifyTenantPackModal, { openModal: modifyTenantPackModal }] = useModal();
 
   const { createMessage } = useMessage();
@@ -177,6 +182,26 @@
     });
   }
 
+
+  function renewByCode( ) {
+
+    if(selectedRowKeys.value.length != 1) {
+      return createMessage.warning('请先选择一条数据');
+    }
+    const record = selectedRows.value[0];
+ 
+    const data = {
+      tenantPackId: record.id,
+      actTenantId: record.tenantId,
+    };
+    renewByCodeModal(true, {
+      record: data,
+      tenantPackId: record.id,
+      actTenantId: record.tenantId,
+      isUpdate: true,
+      showFooter: true,
+    });
+  }
   // 修改企业套餐扩容信息
   function handleModify() {
     if (selectedRowKeys.value.length === 0) {

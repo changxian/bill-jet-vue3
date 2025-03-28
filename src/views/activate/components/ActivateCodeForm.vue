@@ -25,8 +25,8 @@
 <!--							</a-form-item>-->
 <!--						</a-col>-->
 <!--						<a-col :span="24">-->
-<!--							<a-form-item label="状态" v-bind="validateInfos.ststus" id="ActivateCodeForm-ststus" name="ststus">-->
-<!--								<a-input v-model:value="formData.ststus" placeholder="请输入状态"  allow-clear ></a-input>-->
+<!--							<a-form-item label="状态" v-bind="validateInfos.status" id="ActivateCodeForm-status" name="status">-->
+<!--								<a-input v-model:value="formData.status" placeholder="请输入状态"  allow-clear ></a-input>-->
 <!--							</a-form-item>-->
 <!--						</a-col>-->
 <!--						<a-col :span="24">-->
@@ -93,7 +93,7 @@
     belongTenantId: undefined,
     actTenantId: undefined,
     activateCode: '',
-    ststus: '1',
+    status: '1',
     activateDateTime: '',
     packType: undefined,
     packCategory: '',

@@ -12,6 +12,7 @@ enum Api {
   importExcel = '/activate/activateCode/importExcel',
   exportXls = '/activate/activateCode/exportXls',
   activateCodeUrl = '/activate/activateCode/activate',
+  myActivateCodeList = '/activate/activateCode/myActivateCodeList',
 }
 
 /**
@@ -30,6 +31,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 列表接口
+ * @param params
+ */
+export const myActivateCodeList = (params) => defHttp.get({ url: Api.myActivateCodeList, params });
 
 /**
  * 删除单个

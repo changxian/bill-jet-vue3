@@ -44,7 +44,7 @@ export const columns: BasicColumn[] = [
   {
     title: '状态',
     align: 'center',
-    dataIndex: 'ststusName',
+    dataIndex: 'statusName',
   },
   {
     title: '激活企业',

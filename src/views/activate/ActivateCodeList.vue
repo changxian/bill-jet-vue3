@@ -23,8 +23,8 @@
             </a-form-item>
           </a-col>
           <a-col :lg="5">
-            <a-form-item label="状态" name="ststus">
-              <a-select v-model:value="queryParam.ststus" allow-clear>
+            <a-form-item label="状态" name="status">
+              <a-select v-model:value="queryParam.status" allow-clear>
                 <a-select-option value="">所有</a-select-option>
                 <a-select-option value="1">未激活</a-select-option>
                 <a-select-option value="2">已激活</a-select-option>
