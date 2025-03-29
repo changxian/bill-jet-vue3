@@ -5,14 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { ref, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
 
-  import {
-    activateCodeSave,
-    myActivateCodeList
-  } from "@/views/activate/ActivateCode.api";
+  import { activateCodeSave, myActivateCodeList } from '@/views/activate/ActivateCode.api';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
@@ -28,7 +25,7 @@
       componentProps: {
         api: myActivateCodeList,
         params: {
-          "status":"1"
+          'status': '1'
         },
         resultField: 'list',
         // use name as label
@@ -76,7 +73,7 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     //重置表单
     await resetFields();
-    setModalProps({confirmLoading: false,showCancelBtn:!!data?.showFooter,showOkBtn:!!data?.showFooter});
+    setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     isUpdate.value = !!data?.isUpdate;
     isDetail.value = !!data?.showFooter;
     if (unref(isUpdate)) {

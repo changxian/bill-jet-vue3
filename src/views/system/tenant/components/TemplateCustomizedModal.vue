@@ -22,7 +22,7 @@
    * 新增
    */
   function add() {
-    title.value = '新增';
+    title.value = '新增定制模板';
     visible.value = true;
     nextTick(() => {
       registerForm.value.add();

@@ -27,6 +27,7 @@
                   <a-select-option value="2">套餐续费</a-select-option>
                   <a-select-option value="3">定制模板</a-select-option>
                   <a-select-option value="4">购买激活码</a-select-option>
+                  <a-select-option value="5">套餐扩容</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>

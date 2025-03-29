@@ -27,16 +27,16 @@
 </template>
 <!-- 该页面是【企业管理页面 ==》 绑定套餐页面】 -->
 <script lang="ts" setup name="tenant-pack-modal">
-  import {computed, reactive, ref, unref} from 'vue';
-  import {BasicModal, useModal, useModalInner} from '/@/components/Modal';
-  import {packColumns, packFormSchema} from '../tenant.data';
-  import {packList, deleteTenantPack} from '../tenant.api';
-  import {useListPage} from '/@/hooks/system/useListPage';
-  import {BasicTable, TableAction} from '/@/components/Table';
+  import { computed, reactive, ref, unref } from 'vue';
+  import { BasicModal, useModal, useModalInner } from '/@/components/Modal';
+  import { packColumns, packFormSchema } from '../tenant.data';
+  import { packList, deleteTenantPack } from '../tenant.api';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import TenantPackMenuModal from './TenantPackMenuModal.vue';
-  import {Modal} from "ant-design-vue";
+  import { Modal } from 'ant-design-vue';
   import TenantPackUserModal from './TenantPackUserModal.vue';
-  import {useMessage} from "/@/hooks/web/useMessage";
+  import { useMessage } from '/@/hooks/web/useMessage';
   import SysTenantPackRecordListModal from './SysTenantPackRecordListModal.vue';
   import TenantPackReNewModel from '@/views/system/tenant/components/TenantPackReNewModal.vue';
 
@@ -74,7 +74,7 @@
         },
       },
       beforeFetch: (params) => {
-        return Object.assign(params, {tenantId: unref(tenantId), tenantName: unref(tenantName)});
+        return Object.assign(params, { tenantId: unref(tenantId), tenantName: unref(tenantName) });
       },
       afterFetch: async (resultItems) => {
         showPackAddAndEdit.value = resultItems.length <= 0;
