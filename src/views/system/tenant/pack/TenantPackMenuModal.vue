@@ -43,9 +43,6 @@
           console.log('get options', options.length, options);
         },
       },
-      colProps: {
-        span: 24,
-      },
       defaultValue: '',
     },
     {

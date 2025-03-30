@@ -77,7 +77,7 @@
         return Object.assign(params, { tenantId: unref(tenantId), tenantName: unref(tenantName) });
       },
       afterFetch: async (resultItems) => {
-        showPackAddAndEdit.value = resultItems.length <= 0;
+        showPackAddAndEdit.value = true || resultItems.length <= 0;
       },
     },
   });
