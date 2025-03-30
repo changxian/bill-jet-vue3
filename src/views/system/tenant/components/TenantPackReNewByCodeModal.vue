@@ -29,7 +29,7 @@
         },
         resultField: 'list',
         // use name as label
-        labelField: 'activateCode',
+        labelField: 'activateCodeName',
         // use id as value
         valueField: 'activateCode',
         // not request untill to select
