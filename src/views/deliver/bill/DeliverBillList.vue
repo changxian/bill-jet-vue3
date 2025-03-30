@@ -335,22 +335,32 @@
   }
   // 增加合计行
   function summaryFunc(resultItems) {
+    let toCount={
+      _row: '合计',
+      _index: '合计',
+      count: totalCount.value,
+      weight: weightTotal.value,
+      area: areaTotal.value,
+      volume: volumeTotal.value,
+      amount: totalAmount.value,
+      paymentAmount: totalPaymentAmount.value,
+      discountAmount: totalDiscountAmount.value,
+      debtAmount: totalDebtAmount.value,
+      costAmount: totalCostAmount.value,
+      hisDebtAmount: totalHisDebtAmount.value,
+      profitAmount: totalProfitAmount.value,
+    };
+    if(showAreaCol){
+      toCount.area=areaTotal.value;
+    }
+    if(showWeightCol){
+      toCount.weight=weightTotal.value;
+    }
+    if(showVolumeCol){
+      toCount.volume=volumeTotal.value;
+    }
     return [
-      {
-        _row: '合计',
-        _index: '合计',
-        count: totalCount.value,
-        weight: weightTotal.value,
-        area: areaTotal.value,
-        volume: volumeTotal.value,
-        amount: totalAmount.value,
-        paymentAmount: totalPaymentAmount.value,
-        discountAmount: totalDiscountAmount.value,
-        debtAmount: totalDebtAmount.value,
-        costAmount: totalCostAmount.value,
-        hisDebtAmount: totalHisDebtAmount.value,
-        profitAmount: totalProfitAmount.value,
-      },
+      toCount
     ];
   }
 
