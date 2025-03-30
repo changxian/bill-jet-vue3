@@ -316,7 +316,9 @@
       // 获取客户往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
         byDeliverId({ custId: selectRows[0].id }).then((res) => {
-          formData.hisDebtAmount = res.deliverDebtAmount;
+          if (res) {
+            formData.hisDebtAmount = res.deliverDebtAmount;
+          }
         });
       }
       formData.custId = selectRows[0].id;

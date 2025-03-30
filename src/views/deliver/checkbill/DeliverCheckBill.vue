@@ -73,7 +73,7 @@
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
       <p :class="{'p_san': hasPan}" >总计
-        <span class="total_span">数量：{{ totalCount }}</span>
+        <span class="total_span">数量：{{ countTotal }}</span>
         <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
         <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
         <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
@@ -103,7 +103,7 @@
 
   const userStore = useUserStore();
   // 总计：数量
-  const totalCount = ref(0);
+  const countTotal = ref(0);
   // 总计：重量
   const weightTotal = ref(0);
   // 总计：面积
@@ -118,8 +118,6 @@
   const discountAmountTotal = ref(0);
   // 总计：未付款
   const debtAmountTotal = ref(0);
-  // 总计：历史欠付款
-  const hisDebtAmountTotal = ref(0);
   const hasPan = ref(true);
 
   // 小数位数
@@ -168,27 +166,9 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
       },
-      afterFetch: async (resultItems) => {
+      afterFetch: async (resultItems, extraInfo) => {
         hasPan.value = resultItems.length > 0;
-        totalCount.value = 0;
-        weightTotal.value = 0;
-        areaTotal.value = 0;
-        volumeTotal.value = 0;
-        amountTotal.value = 0;
-        paymentAmountTotal.value = 0;
-        discountAmountTotal.value = 0;
-        debtAmountTotal.value = 0;
-        if (hasPan.value) {
-          totalCount.value = resultItems[0].count;
-          weightTotal.value = resultItems[0].weight;
-          areaTotal.value = resultItems[0].area;
-          volumeTotal.value = resultItems[0].volume;
-          amountTotal.value = resultItems[0].amountTotal;
-          paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
-          discountAmountTotal.value = resultItems[0].discountAmountTotal;
-          debtAmountTotal.value = resultItems[0].debtAmountTotal;
-          hisDebtAmountTotal.value = resultItems[0].hisDebtAmountTotal;
-        }
+        listTotalCount(extraInfo);
       },
     },
     exportConfig: {
@@ -238,6 +218,25 @@
     sm: 19,
   });
 
+  /**
+   * 列表合计
+   */
+  function listTotalCount(extraInfo) {
+    countTotal.value = extraInfo.count || 0;
+    if (showWeightCol.value) {
+      weightTotal.value = extraInfo.weight || 0;
+    }
+    if (showAreaCol.value) {
+      areaTotal.value = extraInfo.area || 0;
+    }
+    if (showVolumeCol.value) {
+      volumeTotal.value = extraInfo.volume || 0;
+    }
+    amountTotal.value = extraInfo.amount || 0;
+    paymentAmountTotal.value = extraInfo.paymentAmount || 0;
+    discountAmountTotal.value = extraInfo.discountAmount || 0;
+    debtAmountTotal.value = extraInfo.debtAmount || 0;
+  }
   /**
    * 打印预览
    */
