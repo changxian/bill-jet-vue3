@@ -87,7 +87,7 @@
     setProps({ disabled: !data?.showFooter });
   });
   //设置标题
-  const title = '续费';//computed(() => (!unref(isUpdate) ? '续费' : !unref(isDetail) ? '详情' : '编辑'));
+  const title = '企业套餐续费';//computed(() => (!unref(isUpdate) ? '续费' : !unref(isDetail) ? '详情' : '编辑'));
   //表单提交事件
   async function handleSubmit(v) {
     try {

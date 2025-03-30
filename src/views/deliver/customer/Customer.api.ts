@@ -1,12 +1,12 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from "/@/hooks/web/useMessage";
+import { useMessage } from '/@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
 enum Api {
   list = '/deliver/customer/customer/list',
-  save='/deliver/customer/customer/add',
-  edit='/deliver/customer/customer/edit',
+  save = '/deliver/customer/customer/add',
+  edit = '/deliver/customer/customer/edit',
   deleteOne = '/deliver/customer/customer/delete',
   deleteBatch = '/deliver/customer/customer/deleteBatch',
   importExcel = '/deliver/customer/customer/importExcel',

@@ -16,7 +16,6 @@
     >
       <a-row>
         <BasicTable
-          @register="registerTable"
           ref="tableRef"
           :columns="columns"
           :scroll="tableScroll"
@@ -38,7 +37,7 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, unref, ref, watch, reactive} from 'vue';
+import {defineComponent, unref, ref, watch} from 'vue';
 import {BasicModal, useModalInner} from '/@/components/Modal';
 import {getCustomerList} from '/@/api/common/api';
 import {createAsyncComponent} from '/@/utils/factory/createAsyncComponent';
@@ -77,58 +76,13 @@ export default defineComponent({
     const tableScroll = ref<any>({x: false});
     const tableRef = ref();
     const maxHeight = ref(600);
-    /**
-     * 确定选择
-     */
-    function registerTable(tableActon,formActions) {
 
-    }
-//查询form
-    const formConfig =ref({
-      baseColProps: {
-        xs: 24,
-        sm: 6,
-        md: 6,
-        lg: 6,
-        xl: 6,
-        xxl: 6,
-      },
-      actionColOptions: {
-        xs: 24,
-        sm: 6,
-        md: 6,
-        lg: 6,
-        xl: 6,
-        xxl: 6,
-      },
-      schemas: [
-        {
-          label: '客户名',
-          field: 'orgName',
-          component: 'JInput',
-          defaultValue:'',
-        },
-        {
-          label: '电话',
-          field: 'phone',
-          component: 'JInput',
-        },
-        {
-          label: '联系人',
-          field: 'contact',
-          component: 'JInput',
-        },
-      ],
-    }) ;
     //注册弹框
-    const [register, {closeModal}] = useModalInner(async (data) => {
+    const [register, {closeModal}] = useModalInner(() => {
       if (window.innerWidth < 900) {
         tableScroll.value = {x: 900};
       } else {
         tableScroll.value = {x: false};
-      }
-      if(data && data.record){
-        formConfig.value.schemas[0].defaultValue=data.record.custName
       }
       setTimeout(() => {
         if (tableRef.value) {
@@ -163,7 +117,42 @@ export default defineComponent({
         tableRef.value.setSelectedRowKeys(newVal);
       }
     });
-
+    //查询form
+    const formConfig = {
+      baseColProps: {
+        xs: 24,
+        sm: 6,
+        md: 6,
+        lg: 6,
+        xl: 6,
+        xxl: 6,
+      },
+      actionColOptions: {
+        xs: 24,
+        sm: 6,
+        md: 6,
+        lg: 6,
+        xl: 6,
+        xxl: 6,
+      },
+      schemas: [
+        {
+          label: '客户名',
+          field: 'orgName',
+          component: 'JInput',
+        },
+        {
+          label: '电话',
+          field: 'phone',
+          component: 'JInput',
+        },
+        {
+          label: '联系人',
+          field: 'contact',
+          component: 'JInput',
+        },
+      ],
+    };
     //定义表格列
     const dynamicCols = userStore.getDynamicCols['jxc_customer']  // 添加扩展列信息
 
@@ -316,7 +305,6 @@ export default defineComponent({
       handleCancel,
       maxHeight,
       beforeFetch,
-      registerTable,
     };
   },
 });
