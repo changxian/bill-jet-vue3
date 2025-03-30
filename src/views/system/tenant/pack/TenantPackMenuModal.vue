@@ -9,6 +9,7 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { addPackPermission, editPackPermission, getAllSysPackList } from '../tenant.api';
   import { getAutoScrollContainer } from '@/utils/common/compUtils';
+  import {myActivateCodeList} from "@/views/activate/ActivateCode.api";
 
   const isUpdate = ref<boolean>(false);
   // Emits声明
@@ -17,6 +18,36 @@
 
   //系统首次给企业绑定套餐表单数据项
   const packMenuFormSchema: FormSchema[] = [
+    {
+      label: '激活码',
+      field: 'activateCode',
+      component: 'ApiSelect',
+      required: true,
+      componentProps: {
+        api: myActivateCodeList,
+        params: {
+          "status":"1"
+        },
+        resultField: 'list',
+        // use name as label
+        labelField: 'activateCode',
+        // use id as value
+        valueField: 'activateCode',
+        // not request untill to select
+        immediate: false,
+        onChange: (e) => {
+          console.log('selected:', e);
+        },
+        // atfer request callback
+        onOptionsChange: (options) => {
+          console.log('get options', options.length, options);
+        },
+      },
+      colProps: {
+        span: 24,
+      },
+      defaultValue: '',
+    },
     {
       field: 'sysPackId',
       label: '选择系统套餐',
@@ -28,7 +59,6 @@
         valueField: 'id',
         resultField: 'list',
         onChange: function (e) {
-          console.log('11111111111111111111111', e);
           getAllSysPackList({}).then((res) => {
             console.log('res', res);
             res.forEach((item) => {

@@ -6,7 +6,7 @@
     <a-row v-else class="j-select-row" type="flex" :gutter="8">
       <a-col class="left" :class="{ full: !showButton }">
         <!-- 显示加载效果 -->
-        <a-input v-if="loading" readOnly placeholder="加载中…">
+        <a-input v-if="loading"   placeholder="加载中…">
           <template #prefix>
             <LoadingOutlined />
           </template>
