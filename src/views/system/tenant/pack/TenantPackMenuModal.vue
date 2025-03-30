@@ -157,7 +157,6 @@
   const tenantId = ref<number>();
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    console.log("======useModalInner=======");
     //重置表单
     await resetFields();
     isUpdate.value = !!data?.isUpdate;
@@ -172,7 +171,7 @@
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     // 隐藏底部时禁用整个表单
 
-    setProps({ disabled: !data?.showFooter, schemas: packMenuFormData(isUpdate)})
+    setProps({ disabled: !data?.showFooter, schemas: packMenuFormData(isUpdate) });
 
     //update-end---author:wangshuai ---date:20230705  for：【QQYUN-5685】2 套餐增加一个查看：添加底部有没有按钮及表单禁用------------
   });

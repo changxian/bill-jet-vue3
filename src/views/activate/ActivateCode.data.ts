@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '价格',
+    title: '购买价格',
     align: 'center',
     dataIndex: 'price',
   },

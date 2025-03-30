@@ -74,16 +74,14 @@ export const batchDelete = (params, handleSuccess) => {
  * @param isUpdate
  */
 export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
+  const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
-
 
 /**
  * 保存或者更新
  * @param params
- * @param isUpdate
  */
-export const activateCodeSave = (params, isUpdate) => {
+export const activateCodeSave = (params) => {
   return defHttp.post({ url: Api.activateCodeUrl, params }, { isTransformResponse: false });
 };

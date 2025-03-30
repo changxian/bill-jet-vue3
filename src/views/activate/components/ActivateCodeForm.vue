@@ -4,7 +4,7 @@
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="ActivateCodeForm">
           <a-row>
-						<a-col :span="24">
+            <a-col :span="24">
               <a-form-item label="运营商户" v-bind="validateInfos.belongTenantId" id="ActivateCodeForm-belongTenantId" name="belongTenantId">
                 <JDictSelectTag
                   v-model:value="formData.belongTenantId"
@@ -13,27 +13,7 @@
                   :showChooseOption="false"
                 />
               </a-form-item>
-						</a-col>
-<!--						<a-col :span="24">
-							<a-form-item label="(激活)租户" v-bind="validateInfos.actTenantId" id="ActivateCodeForm-actTenantId" name="actTenantId">
-								<a-input-number v-model:value="formData.actTenantId" placeholder="请输入(激活)租户id" style="width: 100%" />
-							</a-form-item>
-						</a-col>-->
-<!--						<a-col :span="24">-->
-<!--							<a-form-item label="激活码" v-bind="validateInfos.activateCode" id="ActivateCodeForm-activateCode" name="activateCode">-->
-<!--								<a-input v-model:value="formData.activateCode" placeholder="请输入激活码"  allow-clear ></a-input>-->
-<!--							</a-form-item>-->
-<!--						</a-col>-->
-<!--						<a-col :span="24">-->
-<!--							<a-form-item label="状态" v-bind="validateInfos.status" id="ActivateCodeForm-status" name="status">-->
-<!--								<a-input v-model:value="formData.status" placeholder="请输入状态"  allow-clear ></a-input>-->
-<!--							</a-form-item>-->
-<!--						</a-col>-->
-<!--						<a-col :span="24">-->
-<!--							<a-form-item label="激活时间" v-bind="validateInfos.activateDateTime" id="ActivateCodeForm-activateDateTime" name="activateDateTime">-->
-<!--								<a-input v-model:value="formData.activateDateTime" placeholder="请输入激活时间"  allow-clear ></a-input>-->
-<!--							</a-form-item>-->
-<!--						</a-col>-->
+            </a-col>
             <a-col :span="24">
               <a-form-item label="产品类别" v-bind="validateInfos.packCategory" id="ActivateCodeForm-category" name="packCategory">
                 <j-dict-select-tag v-model:value="formData.packCategory" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
@@ -46,24 +26,24 @@
             </a-col>
             <a-col :span="24">
               <a-form-item label="激活码数量" v-bind="validateInfos.actNum" id="ActivateCodeForm-actNum" name="actNum">
-                <a-input-number v-model:value="formData.actNum" @change="changeAmount" placeholder="请输入激活码数量" style="width: 100%" />
+                <a-input-number v-model:value="formData.actNum" :min="0" @change="changeAmount" placeholder="请输入激活码数量" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="24">
-              <a-form-item label="激活码单价" v-bind="validateInfos.price" id="ActivateCodeForm-price" name="price">
-                <a-input-number v-model:value="formData.price" @change="changeAmount" placeholder="请输入激活码单价" allow-clear></a-input-number>
+              <a-form-item label="激活码销售单价" v-bind="validateInfos.price" id="ActivateCodeForm-price" name="price">
+                <a-input-number v-model:value="formData.price" :min="0" @change="changeAmount" style="width: 100%" allow-clear></a-input-number>
               </a-form-item>
             </a-col>
             <a-col :span="24">
               <a-form-item label="总交易额" v-bind="validateInfos.amount" id="ActivateCodeForm-price" name="amount">
-                <a-input-number v-model:value="formData.amount" disabled></a-input-number>
+                <a-input-number v-model:value="formData.amount" style="width: 100%" disabled></a-input-number>
               </a-form-item>
             </a-col>
-						<a-col :span="24">
-							<a-form-item label="备注" v-bind="validateInfos.remark" id="ActivateCodeForm-remark" name="remark">
-								<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
-							</a-form-item>
-						</a-col>
+            <a-col :span="24">
+              <a-form-item label="备注" v-bind="validateInfos.remark" id="ActivateCodeForm-remark" name="remark">
+                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
           </a-row>
         </a-form>
       </template>
@@ -108,8 +88,7 @@
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   //表单验证
-  const validatorRules = reactive({
-  });
+  const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用

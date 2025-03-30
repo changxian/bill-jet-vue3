@@ -81,13 +81,10 @@
   import { columns } from './ActivateCode.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './ActivateCode.api';
   import ActivateCodeModal from './components/ActivateCodeModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
-  const userStore = useUserStore();
   //注册table数据
   const { tableContext, onExportXls } = useListPage({
     tableProps: {
@@ -97,6 +94,7 @@
       showActionColumn: false,
       canResize: false,
       useSearchForm: false,
+      showIndexColumn: true,
       actionColumn: {
         width: 120,
         fixed: 'right',

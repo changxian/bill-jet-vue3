@@ -152,7 +152,6 @@
         },
         //update-end-author:taoyan date:2022-5-24 for: VUEN-1086 【移动端】用户选择 查询按钮 效果不好 列表展示没有滚动条---查询表单按钮的栅格布局和表单的保持一致
         schemas: [
-
           {
             label: '姓名',
             field: 'name',
@@ -162,31 +161,20 @@
       };
       //定义表格列
       const columns = [
-
         {
           title: '用户姓名',
           dataIndex: 'name',
-          width: 120,
-        },
-        {
-          title: '性别',
-          dataIndex: 'sex_dictText',
-          width: 50,
+          width: 150,
         },
         {
           title: '手机号码',
-          dataIndex: 'phone',
-          width: 120,
+          dataIndex: 'cellPhone',
+          width: 150,
         },
         {
           title: '邮箱',
           dataIndex: 'email',
           // width: 40,
-        },
-        {
-          title: '状态',
-          dataIndex: 'status_dictText',
-          width: 80,
         },
       ];
       //已选择的table信息

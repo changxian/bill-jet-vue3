@@ -61,6 +61,12 @@
     if (data.tenantPackId) {
       tenantPackId.value = data.tenantPackId;
     }
+    if (data.record.remarks) {
+      data.record.remarks = '';
+    }
+    if (data.record.price) {
+      data.record.price = 0;
+    }
     if (unref(isUpdate)) {
       //表单赋值
       await setFieldsValue({ ...data.record });
@@ -68,19 +74,18 @@
     //update-begin---author:wangshuai ---date:20230705  for：【QQYUN-5685】2 套餐增加一个查看：添加底部有没有按钮及表单禁用------------
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     // 隐藏底部时禁用整个表单
-    setProps({ disabled: !data?.showFooter, schemas: packModifyFormSchema(isUpdate) });
+    setProps({ disabled: !data?.showFooter, schemas: packModifyFormSchema });
   });
   //设置标题
-  const title = computed(() => (unref(isUpdate) ? '编辑企业套餐' : '新增企业套餐'));
+  const title = computed(() => (unref(isUpdate) ? '企业套餐扩容' : '新增企业套餐'));
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
+    debugger;
     setModalProps({ confirmLoading: true });
-    values.tenantId = unref(tenantId);
-    // 新增套餐绑定，ID为空
-    values.id = '';
-    if (!unref(isUpdate)) {
-      // await tenantPackExpansion(values);
+    values.id = unref(tenantPackId);
+    if (unref(isUpdate)) {
+      await tenantPackExpansion(values);
     }
     emit('success');
     setModalProps({ confirmLoading: false });
