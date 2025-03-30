@@ -30,7 +30,7 @@
         },
         resultField: 'list',
         // use name as label
-        labelField: 'activateCode',
+        labelField: 'activateCodeName',
         // use id as value
         valueField: 'activateCode',
         // not request untill to select
@@ -45,104 +45,104 @@
       },
       defaultValue: '',
     },
-    {
-      field: 'sysPackId',
-      label: '选择系统套餐',
-      dynamicDisabled: isUpdate,
-      component: 'ApiSelect',
-      componentProps: {
-        api: getAllSysPackList,
-        labelField: 'packName',
-        valueField: 'id',
-        resultField: 'list',
-        onChange: function (e) {
-          getAllSysPackList({}).then((res) => {
-            console.log('res', res);
-            res.forEach((item) => {
-              if (item.id === e) {
-                setFieldsValue({ ...item });
-              }
-            });
-          });
-        },
-      },
-    },
+    // {
+    //   field: 'sysPackId',
+    //   label: '选择系统套餐',
+    //   dynamicDisabled: isUpdate,
+    //   component: 'ApiSelect',
+    //   componentProps: {
+    //     api: getAllSysPackList,
+    //     labelField: 'packName',
+    //     valueField: 'id',
+    //     resultField: 'list',
+    //     onChange: function (e) {
+    //       getAllSysPackList({}).then((res) => {
+    //         console.log('res', res);
+    //         res.forEach((item) => {
+    //           if (item.id === e) {
+    //             setFieldsValue({ ...item });
+    //           }
+    //         });
+    //       });
+    //     },
+    //   },
+    // },
     {
       field: 'price',
       label: '交易价格',
       dynamicDisabled: !isUpdate,
       component: 'InputNumber',
     },
-    {
-      field: 'accountNum',
-      label: '支持账号数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'orgNum',
-      label: '支持机构数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'goodsNum',
-      label: '支持商品数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'packNum',
-      label: '购买周期',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      label: '周期单位',
-      field: 'packUnit',
-      component: 'JDictSelectTag',
-      dynamicDisabled: true,
-      componentProps: {
-        dictCode: '',
-        options: [{value:"1",label:"月"}, {value:"2",label:"年"}]
-      },
-      defaultValue: '2',
-    },
-    {
-      field: 'beginDate',
-      label: '开始时间',
-      dynamicDisabled: !isUpdate,
-      component: 'DatePicker',
-      componentProps: {
-        showTime: true,
-        valueFormat: 'YYYY-MM-DD HH:mm:ss',
-        getPopupContainer: getAutoScrollContainer,
-      },
-    },
+    // {
+    //   field: 'accountNum',
+    //   label: '支持账号数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'orgNum',
+    //   label: '支持机构数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'goodsNum',
+    //   label: '支持商品数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'packNum',
+    //   label: '购买周期',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   label: '周期单位',
+    //   field: 'packUnit',
+    //   component: 'JDictSelectTag',
+    //   dynamicDisabled: true,
+    //   componentProps: {
+    //     dictCode: '',
+    //     options: [{value:"1",label:"月"}, {value:"2",label:"年"}]
+    //   },
+    //   defaultValue: '2',
+    // },
+    // {
+    //   field: 'beginDate',
+    //   label: '开始时间',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'DatePicker',
+    //   componentProps: {
+    //     showTime: true,
+    //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    //     getPopupContainer: getAutoScrollContainer,
+    //   },
+    // },
     {
       field: 'remarks',
       label: '备注',
       dynamicDisabled: !isUpdate,
       component: 'InputTextArea',
     },
-    {
-      field: 'status',
-      label: '开启状态',
-      component: 'Switch',
-      componentProps: {
-        checkedValue: '1',
-        checkedChildren: '开启',
-        unCheckedValue: '0',
-        unCheckedChildren: '关闭',
-      },
-      defaultValue: '1',
-    },
-    {
-      field: 'id',
-      label: '开启状态',
-      component: 'Input',
-      show: false,
-    },
+    // {
+    //   field: 'status',
+    //   label: '开启状态',
+    //   component: 'Switch',
+    //   componentProps: {
+    //     checkedValue: '1',
+    //     checkedChildren: '开启',
+    //     unCheckedValue: '0',
+    //     unCheckedChildren: '关闭',
+    //   },
+    //   defaultValue: '1',
+    // },
+    // {
+    //   field: 'id',
+    //   label: '开启状态',
+    //   component: 'Input',
+    //   show: false,
+    // },
   ];
 
   //表单配置
