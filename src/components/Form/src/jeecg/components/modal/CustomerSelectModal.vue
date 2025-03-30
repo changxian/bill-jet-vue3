@@ -127,7 +127,9 @@ export default defineComponent({
       } else {
         tableScroll.value = {x: false};
       }
-      formConfig.value.schemas[0].defaultValue=data.record.custName
+      if(data && data.record){
+        formConfig.value.schemas[0].defaultValue=data.record.custName
+      }
       setTimeout(() => {
         if (tableRef.value) {
           tableRef.value.setSelectedRowKeys(selectValues['value'] || []);
