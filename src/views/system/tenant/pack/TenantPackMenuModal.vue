@@ -9,6 +9,7 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { addPackPermission, editPackPermission, getAllSysPackList } from '../tenant.api';
   import { getAutoScrollContainer } from '@/utils/common/compUtils';
+  import {myActivateCodeList} from "@/views/activate/ActivateCode.api";
 
   const isUpdate = ref<boolean>(false);
   // Emits声明
@@ -18,104 +19,130 @@
   //系统首次给企业绑定套餐表单数据项
   const packMenuFormSchema: FormSchema[] = [
     {
-      field: 'sysPackId',
-      label: '选择系统套餐',
-      dynamicDisabled: isUpdate,
+      label: '激活码',
+      field: 'activateCode',
       component: 'ApiSelect',
+      required: true,
       componentProps: {
-        api: getAllSysPackList,
-        labelField: 'packName',
-        valueField: 'id',
+        api: myActivateCodeList,
+        params: {
+          "status":"1"
+        },
         resultField: 'list',
-        onChange: function (e) {
-          console.log('11111111111111111111111', e);
-          getAllSysPackList({}).then((res) => {
-            console.log('res', res);
-            res.forEach((item) => {
-              if (item.id === e) {
-                setFieldsValue({ ...item });
-              }
-            });
-          });
+        // use name as label
+        labelField: 'activateCodeName',
+        // use id as value
+        valueField: 'activateCode',
+        // not request untill to select
+        immediate: false,
+        onChange: (e) => {
+          console.log('selected:', e);
+        },
+        // atfer request callback
+        onOptionsChange: (options) => {
+          console.log('get options', options.length, options);
         },
       },
+      defaultValue: '',
     },
+    // {
+    //   field: 'sysPackId',
+    //   label: '选择系统套餐',
+    //   dynamicDisabled: isUpdate,
+    //   component: 'ApiSelect',
+    //   componentProps: {
+    //     api: getAllSysPackList,
+    //     labelField: 'packName',
+    //     valueField: 'id',
+    //     resultField: 'list',
+    //     onChange: function (e) {
+    //       getAllSysPackList({}).then((res) => {
+    //         console.log('res', res);
+    //         res.forEach((item) => {
+    //           if (item.id === e) {
+    //             setFieldsValue({ ...item });
+    //           }
+    //         });
+    //       });
+    //     },
+    //   },
+    // },
     {
       field: 'price',
       label: '交易价格',
       dynamicDisabled: !isUpdate,
       component: 'InputNumber',
     },
-    {
-      field: 'accountNum',
-      label: '支持账号数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'orgNum',
-      label: '支持机构数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'goodsNum',
-      label: '支持商品数',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      field: 'packNum',
-      label: '购买周期',
-      dynamicDisabled: !isUpdate,
-      component: 'InputNumber',
-    },
-    {
-      label: '周期单位',
-      field: 'packUnit',
-      component: 'JDictSelectTag',
-      dynamicDisabled: true,
-      componentProps: {
-        dictCode: '',
-        options: [{value:"1",label:"月"}, {value:"2",label:"年"}]
-      },
-      defaultValue: '2',
-    },
-    {
-      field: 'beginDate',
-      label: '开始时间',
-      dynamicDisabled: !isUpdate,
-      component: 'DatePicker',
-      componentProps: {
-        showTime: true,
-        valueFormat: 'YYYY-MM-DD HH:mm:ss',
-        getPopupContainer: getAutoScrollContainer,
-      },
-    },
+    // {
+    //   field: 'accountNum',
+    //   label: '支持账号数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'orgNum',
+    //   label: '支持机构数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'goodsNum',
+    //   label: '支持商品数',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   field: 'packNum',
+    //   label: '购买周期',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'InputNumber',
+    // },
+    // {
+    //   label: '周期单位',
+    //   field: 'packUnit',
+    //   component: 'JDictSelectTag',
+    //   dynamicDisabled: true,
+    //   componentProps: {
+    //     dictCode: '',
+    //     options: [{value:"1",label:"月"}, {value:"2",label:"年"}]
+    //   },
+    //   defaultValue: '2',
+    // },
+    // {
+    //   field: 'beginDate',
+    //   label: '开始时间',
+    //   dynamicDisabled: !isUpdate,
+    //   component: 'DatePicker',
+    //   componentProps: {
+    //     showTime: true,
+    //     valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    //     getPopupContainer: getAutoScrollContainer,
+    //   },
+    // },
     {
       field: 'remarks',
       label: '备注',
       dynamicDisabled: !isUpdate,
       component: 'InputTextArea',
     },
-    {
-      field: 'status',
-      label: '开启状态',
-      component: 'Switch',
-      componentProps: {
-        checkedValue: '1',
-        checkedChildren: '开启',
-        unCheckedValue: '0',
-        unCheckedChildren: '关闭',
-      },
-      defaultValue: '1',
-    },
-    {
-      field: 'id',
-      label: '开启状态',
-      component: 'Input',
-      show: false,
-    },
+    // {
+    //   field: 'status',
+    //   label: '开启状态',
+    //   component: 'Switch',
+    //   componentProps: {
+    //     checkedValue: '1',
+    //     checkedChildren: '开启',
+    //     unCheckedValue: '0',
+    //     unCheckedChildren: '关闭',
+    //   },
+    //   defaultValue: '1',
+    // },
+    // {
+    //   field: 'id',
+    //   label: '开启状态',
+    //   component: 'Input',
+    //   show: false,
+    // },
   ];
 
   //表单配置
