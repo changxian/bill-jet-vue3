@@ -78,12 +78,13 @@ export default defineComponent({
     const maxHeight = ref(600);
 
     //注册弹框
-    const [register, {closeModal}] = useModalInner(() => {
+    const [register, {closeModal}] = useModalInner(async (data) => {
       if (window.innerWidth < 900) {
         tableScroll.value = {x: 900};
       } else {
         tableScroll.value = {x: false};
       }
+      console.log(data.record.custName,"22222222222222222");
       setTimeout(() => {
         if (tableRef.value) {
           tableRef.value.setSelectedRowKeys(selectValues['value'] || []);

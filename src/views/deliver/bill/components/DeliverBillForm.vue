@@ -11,7 +11,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="客户名称" v-bind="validateInfos.custName" id="DeliverBillForm-custName" name="custName">
-                <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custPhone" placeholder="请输入客户名称" allow-clear></a-input>
+                <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custName" placeholder="请输入客户名称" allow-clear></a-input>
                 <a-button type="primary" @click="selectCustomer">选择</a-button>
               </a-form-item>
               <!--<a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
@@ -301,7 +301,7 @@
   function selectCustomer() {
 
     openCustomerSelectModal(true, {
-      // record: formData,
+      record: formData,
       // record: { id: selectedRowKeys.value[0], category: 1 },
       isUpdate: true,
       showFooter: false,
