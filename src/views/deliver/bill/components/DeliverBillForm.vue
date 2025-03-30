@@ -156,20 +156,18 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
+  import CustomerSelectModal from '@/components/Form/src/jeecg/components/modal/CustomerSelectModal.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
   import { defaultCom, queryNewNo, billDetail, getCustPrices } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
-  import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
-  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
-  import ViewModal from "@/views/template/view/ViewModal.vue";
+  import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   import { useModal } from '@/components/Modal';
 
-  const [registerCustomerSelectModal, { openModel: openCustomerSelectModal }] = useModal();
+  const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
