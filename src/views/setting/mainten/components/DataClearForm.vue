@@ -89,14 +89,7 @@ const clearBillCycleOptions = ref([
  */
 async function cleanBillsCycle() {
 
-  delBillsByCycle({"dataDate":formData.value.clearBillCycle}).then((res) => {
-    if (res.success) {
-      createMessage.warning(res.message);
-    }
-  }).finally(() => {
-  });
-
-
+  delBillsByCycle({"dataDate":formData.value.clearBillCycle});
 }
 
 /**

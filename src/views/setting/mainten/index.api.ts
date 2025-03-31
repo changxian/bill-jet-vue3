@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 import { useMessage } from "/@/hooks/web/useMessage";
-const { createConfirm } = useMessage();
+const { createConfirm,createMessage } = useMessage();
 enum Api {
   getDataBackupParam = '/setting/mainten/getData',
   addDataBackupParam = '/setting/mainten/add',
@@ -59,7 +59,12 @@ export const delBillsByCycle = (params) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.delBillsByCycle, params }, { isTransformResponse: false });
+      return defHttp.post({ url: Api.delBillsByCycle, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
     }
   });
 };
@@ -76,7 +81,12 @@ export const delCustomer = (params) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.delCustomer, params }, { isTransformResponse: false });
+      return defHttp.post({ url: Api.delCustomer, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      })
     }
   });
 
@@ -94,7 +104,12 @@ export const delGoods = (params) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.delGoods, params }, { isTransformResponse: false });
+      return defHttp.post({ url: Api.delGoods, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
     }
   });
 
@@ -112,7 +127,12 @@ export const delStock = (params) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.delStock, params }, { isTransformResponse: false });
+      return defHttp.post({ url: Api.delStock, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
     }
   });
 
@@ -130,7 +150,12 @@ export const delSupplier = (params) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.delSupplier, params }, { isTransformResponse: false });
+      return defHttp.post({ url: Api.delSupplier, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
     }
   });
 
