@@ -113,18 +113,21 @@ export const columns: BasicColumn[] = [
     title: '重量合计(' + weightColTitle.value + ')',
     align: 'center',
     dataIndex: 'weight',
+    defaultHidden:!billSetting.showWeightCol,
     ifShow: billSetting.showWeightCol || false,
   },
   {
     title: '面积合计(' + areaColTitle.value + ')',
     align: 'center',
     dataIndex: 'area',
+    defaultHidden:!billSetting.showAreaCol,
     ifShow: billSetting.showAreaCol || false,
   },
   {
     title: '体积合计(' + volumeColTitle.value + ')',
     align: 'center',
     dataIndex: 'volume',
+    defaultHidden:!billSetting.showVolumeCol,
     ifShow: billSetting.showVolumeCol || false,
   },
   {

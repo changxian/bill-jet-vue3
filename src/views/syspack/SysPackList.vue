@@ -16,13 +16,13 @@
               <a-input placeholder="请输入产品编码" v-model:value="queryParam.packCode" allow-clear ></a-input>
             </a-form-item>
           </a-col>
+          <a-col :lg="6">
+            <a-form-item name="category">
+              <template #label><span title="产品类别">产品类别</span></template>
+              <j-dict-select-tag v-model:value="queryParam.category" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
-            <a-col :lg="6">
-              <a-form-item name="category">
-                <template #label><span title="产品类别">产品类别</span></template>
-                <j-dict-select-tag v-model:value="queryParam.category" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
-              </a-form-item>
-            </a-col>
             <a-col :lg="6">
               <a-form-item name="type">
                 <template #label><span title="产品类型">产品类型</span></template>

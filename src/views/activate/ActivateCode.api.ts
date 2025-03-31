@@ -12,6 +12,7 @@ enum Api {
   importExcel = '/activate/activateCode/importExcel',
   exportXls = '/activate/activateCode/exportXls',
   activateCodeUrl = '/activate/activateCode/activate',
+  myActivateCodeList = '/activate/activateCode/myActivateCodeList',
 }
 
 /**
@@ -30,6 +31,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 列表接口
+ * @param params
+ */
+export const myActivateCodeList = (params) => defHttp.get({ url: Api.myActivateCodeList, params });
 
 /**
  * 删除单个
@@ -68,16 +74,14 @@ export const batchDelete = (params, handleSuccess) => {
  * @param isUpdate
  */
 export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
+  const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
-
 
 /**
  * 保存或者更新
  * @param params
- * @param isUpdate
  */
-export const activateCodeSave = (params, isUpdate) => {
+export const activateCodeSave = (params) => {
   return defHttp.post({ url: Api.activateCodeUrl, params }, { isTransformResponse: false });
 };

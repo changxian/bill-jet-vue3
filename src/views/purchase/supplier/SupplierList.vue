@@ -69,9 +69,9 @@
       <template #tableTitle>
         <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:add'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:repayment_detail'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 还款明细</a-button>
-        <a-button  type="primary" v-auth="'purchase.supplier:jxc_supplier:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" v-auth="'purchase.supplier:jxc_supplier:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button type="primary" v-auth="'purchase.supplier:jxc_supplier:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -84,8 +84,6 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-<!--        <super-query :config="superQueryConfig" @search="handleSuperQuery" />-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">

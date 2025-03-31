@@ -6,12 +6,16 @@
           <a-row>
             <a-col :span="6">
               <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="DeliverBillForm-companyId" name="companyId">
-                <j-select-company v-model:value="formData.companyId" @change="changeCompany" allow-clear />
+                <j-select-company v-model:value="formData.companyId" @change="changeCompany" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
+              <!--<a-form-item label="客户名称" v-bind="validateInfos.custName" id="DeliverBillForm-custName" name="custName">
+                <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custName" placeholder="请输入客户名称" allow-clear></a-input>
+                <a-button type="primary" @click="selectCustomer">选择</a-button>
+              </a-form-item>-->
               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
-                <j-select-customer v-model:value="formData.custId" @change="changeCustomer" allow-clear />
+                <j-select-customer v-model:value="formData.custId" @change="changeCustomer" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -31,7 +35,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-user-id v-model:value="formData.userId" @change="changeUser" allow-clear />
+                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -101,12 +105,13 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="制单人" v-bind="validateInfos.operatorName" id="DeliverBillForm-operatorName" name="operatorName">
-                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear ></a-input>
+                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
-                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear ></a-input>
+                <!--<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>-->
+                <SelectInput v-model="formData.remark" style="width: 100%" />
               </a-form-item>
             </a-col>
             <!--<a-col :span="8">
@@ -139,6 +144,9 @@
       </template>
     </JFormContainer>
   </a-spin>
+  <!-- 选择客户窗口
+  <CustomerSelectModal @register="registerCustomerSelectModal" @success="handleSuccess" />
+  -->
 </template>
 
 <script lang="ts" setup>
@@ -157,12 +165,16 @@
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
-  import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
+  import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
+  import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
 
+  // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
+  const tipsShowPrice = userStore.getSystemSetting.tipsShowPrice;
+  console.log('////////////////////////////////////////////////////////////////////////////////////////////', tipsShowPrice);
 
   // 启用一客一价
   const singleCustPrice = userStore.getBillSetting.singleCustPrice;
@@ -285,11 +297,19 @@
     console.log(' changeUser val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       formData.userId = selectRows[0].id;
-      formData.userName = selectRows[0].realname;
+      formData.userName = selectRows[0].name;
     }
   }
   // 传递给商品选择页面的参数
   const customerId = ref<string>('');
+  // function selectCustomer() {
+  //   openCustomerSelectModal(true, {
+  //     record: formData,
+  //     // record: { id: selectedRowKeys.value[0], category: 1 },
+  //     isUpdate: true,
+  //     showFooter: false,
+  //   });
+  // }
   // 选择开单客户
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
@@ -299,7 +319,9 @@
       // 获取客户往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
         byDeliverId({ custId: selectRows[0].id }).then((res) => {
-          formData.hisDebtAmount = res.deliverDebtAmount;
+          if (res) {
+            formData.hisDebtAmount = res.deliverDebtAmount;
+          }
         });
       }
       formData.custId = selectRows[0].id;

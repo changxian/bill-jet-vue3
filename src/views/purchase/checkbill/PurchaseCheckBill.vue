@@ -110,8 +110,6 @@
 
   const debtAmountTotal = ref(0);
 
-  const hisDebtAmountTotal = ref(0);
-
   // 总计：重量
   const weightTotal = ref(0);
   // 总计：面积
@@ -171,28 +169,9 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam, fastDateParam);
       },
-      afterFetch: async (resultItems) => {
+      afterFetch: async (resultItems, extraInfo) => {
         hasPan.value = resultItems.length > 0;
-        weightTotal.value = 0;
-        areaTotal.value = 0;
-        volumeTotal.value = 0;
-        countTotal.value = 0;
-        amountTotal.value = 0;
-        paymentAmountTotal.value = 0;
-        discountAmountTotal.value = 0;
-        debtAmountTotal.value = 0;
-        hisDebtAmountTotal.value = 0;
-        if (hasPan.value) {
-          weightTotal.value = resultItems[0].weightTotal;
-          areaTotal.value = resultItems[0].areaTotal;
-          volumeTotal.value = resultItems[0].volumeTotal;
-          countTotal.value = resultItems[0].countTotal;
-          amountTotal.value = resultItems[0].costAmountTotal;
-          paymentAmountTotal.value = resultItems[0].paymentAmountTotal;
-          discountAmountTotal.value = resultItems[0].discountAmountTotal;
-          debtAmountTotal.value = resultItems[0].debtAmountTotal;
-          hisDebtAmountTotal.value = resultItems[0].hisDebtAmountTotal;
-        }
+        listTotalCount(extraInfo);
       },
     },
     exportConfig: {
@@ -242,6 +221,25 @@
     sm: 19,
   });
 
+  /**
+   * 列表合计
+   */
+  function listTotalCount(extraInfo) {
+    countTotal.value = extraInfo.count || 0;
+    if (showWeightCol.value) {
+      weightTotal.value = extraInfo.weight || 0;
+    }
+    if (showAreaCol.value) {
+      areaTotal.value = extraInfo.area || 0;
+    }
+    if (showVolumeCol.value) {
+      volumeTotal.value = extraInfo.volume || 0;
+    }
+    amountTotal.value = extraInfo.amount || 0;
+    paymentAmountTotal.value = extraInfo.paymentAmount || 0;
+    discountAmountTotal.value = extraInfo.discountAmount || 0;
+    debtAmountTotal.value = extraInfo.debtAmount || 0;
+  }
   /**
    * 打印预览
    */

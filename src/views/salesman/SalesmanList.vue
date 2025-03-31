@@ -6,19 +6,21 @@
         <a-row :gutter="24">
           <a-col :lg="6">
             <a-form-item name="name">
-              <template #label><span title="商品单位">商品单位</span></template>
-              <j-input placeholder="请输入商品单位" v-model:value="queryParam.name" allow-clear></j-input>
+              <template #label><span title="姓名">姓名</span></template>
+              <a-input placeholder="请输入姓名" v-model:value="queryParam.name" allow-clear></a-input>
             </a-form-item>
           </a-col>
-          <a-col :lg="7">
+          <a-col :lg="6">
+            <a-form-item name="cellPhone">
+              <template #label><span title="手机号">手机号</span></template>
+              <a-input placeholder="请输入手机号" v-model:value="queryParam.cellPhone" allow-clear></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
                 <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <!-- <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>-->
               </a-col>
             </span>
           </a-col>
@@ -29,25 +31,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'units:jxc_goods_units:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <!--<a-button type="primary" v-auth="'units:jxc_goods_units:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'units:jxc_goods_units:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>-->
-        <a-dropdown v-if="false">
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button v-auth="'units:jxc_goods_units:deleteBatch'">批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
-        </a-dropdown>
-        <!-- 高级查询
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
-         -->
+        <a-button type="primary" v-auth="'salesman:jxc_salesman:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -57,33 +41,35 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <GoodsUnitsModal ref="registerModal" @success="handleSuccess"></GoodsUnitsModal>
+    <SalesmanModal ref="registerModal" @success="handleSuccess"></SalesmanModal>
   </div>
 </template>
 
-<script lang="ts" name="units-goodsUnits" setup>
+<script lang="ts" name="salesman-salesman" setup>
   import { ref, reactive } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns } from './GoodsUnits.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './GoodsUnits.api';
-  import GoodsUnitsModal from './components/GoodsUnitsModal.vue';
-  import JInput from '@/components/Form/src/jeecg/components/JInput.vue';
+  import { columns } from './Salesman.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Salesman.api';
+  import SalesmanModal from './components/SalesmanModal.vue';
+  import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
+  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
+  const userStore = useUserStore();
   //注册table数据
   const { tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '商品单位管理',
+      title: '业务员',
       api: list,
       columns,
       canResize: false,
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 280,
+        width: 220,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
@@ -91,7 +77,7 @@
       },
     },
     exportConfig: {
-      name: '商品单位管理',
+      name: '业务员',
       url: getExportUrl,
       params: queryParam,
     },
@@ -102,28 +88,15 @@
   });
   const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
-    xs:24,
-    sm:4,
-    xl:6,
-    xxl:4
+    xs: 24,
+    sm: 4,
+    xl: 6,
+    xxl: 4,
   });
   const wrapperCol = reactive({
     xs: 24,
     sm: 20,
   });
-
-  // 高级查询配置
-  // const superQueryConfig = reactive(superQuerySchema);
-
-  /**
-   * 高级查询事件
-   */
-  // function handleSuperQuery(params) {
-  //   Object.keys(params).map((k) => {
-  //     queryParam[k] = params[k];
-  //   });
-  //   searchQuery();
-  // }
 
   /**
    * 新增事件
@@ -132,7 +105,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.add();
   }
-  
+
   /**
    * 编辑事件
    */
@@ -140,7 +113,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 详情
    */
@@ -148,28 +121,27 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
+
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
+
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
   /**
    * 操作栏
    */
@@ -178,7 +150,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'units:jxc_goods_units:edit'
+        auth: 'salesman:jxc_salesman:edit',
       },
       {
         label: '详情',
@@ -191,7 +163,7 @@
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'units:jxc_goods_units:delete',
+        auth: 'salesman:jxc_salesman:delete',
       },
     ];
   }
@@ -204,16 +176,17 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'units:jxc_goods_units:delete'
-      }
-    ]
+        auth: 'salesman:jxc_salesman:delete',
+      },
+    ];
   }
 
   /**
@@ -222,7 +195,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -232,10 +205,6 @@
     //刷新数据
     reload();
   }
-  
-
-
-
 </script>
 
 <style lang="less" scoped>

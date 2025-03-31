@@ -2,7 +2,7 @@
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="1200px">
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button v-if="selectedRowKeys.length>0" preIcon="ant-design:delete-outlined" type="primary" @click="handleLeaveBatch" style="margin-right: 5px">批量请离</a-button>
+        <a-button v-if="false" preIcon="ant-design:delete-outlined" type="primary" @click="handleLeaveBatch" style="margin-right: 5px">批量请离</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />
@@ -66,10 +66,10 @@
 
   function getActions(record) {
     return [
-      {
-        label: '移除',
-        onClick: handleLeave.bind(null, record.id),
-      },
+      // {
+      //   label: '移除',
+      //   onClick: handleLeave.bind(null, record.id),
+      // },
     ];
   }
 

@@ -83,7 +83,7 @@
   //表单验证
   const validatorRules = reactive({
     customerName: [{ required: true, message: '请输入企业名称!' }],
-    name: [{ required: true, message: '请输入模板名称!' }],
+    name: [{ required: true, message: '请选择模板名称!' }],
     customizedDate: [{ required: true, message: '请输入定制日期!' }],
     customizedPrice: [{ required: true, message: '请输入定制价格!' }],
   });

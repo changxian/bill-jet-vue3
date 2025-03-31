@@ -5,7 +5,7 @@
         <a-tab-pane key="1" tab="数据清理">
           <DataClearForm :loading="loading" class="enter-y" :formBpm="false"></DataClearForm>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="数据备份">
+        <a-tab-pane key="2" tab="数据备份" v-if="ifshow">
           <DataBackupForm :loading="loading" class="enter-y" :formBpm="false"></DataBackupForm>
         </a-tab-pane>
       </a-tabs>
@@ -13,12 +13,25 @@
   </PageWrapper>
 </template>
 <script setup>
-  import { ref } from 'vue';
+  import { defineProps, ref, computed } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import DataClearForm from './components/DataClearForm.vue';
   import DataBackupForm from './components/DataBackupForm.vue';
+  import { useUserStore } from '@/store/modules/user';
   const activeKey = ref('1');
   const loading = ref(true);
+  const userStore = useUserStore();
+
+  const props = defineProps({
+    showTab: { type: Boolean, default: false },
+  });
+  // 套餐(单/云)
+  const ifshow = computed(() => {
+    if (userStore.getTenantPack.packCategory === '1') {
+      return props.showTab;
+    }
+    return props.showTab !== false;
+  });
 </script>
 
 <style lang="less">

@@ -4,7 +4,7 @@
       <template #detail>
         <a-divider orientation="left"> 系统 </a-divider>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="SystemSettingForm">
-          <a-row>
+          <a-row v-if="false">
 						<a-col :span="24">
 							<a-form-item v-bind="validateInfos.autoLogin" id="SystemSettingForm-autoLogin" name="autoLogin">
                 <a-checkbox type="checkbox" v-model:checked="formData.autoLogin"> 启动软件时自动登录</a-checkbox>
