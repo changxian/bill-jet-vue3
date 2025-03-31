@@ -2,10 +2,12 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined">打印</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport">导出模板</a-button>
+      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport"
+        >导出模板</a-button
+      >
       <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
@@ -23,6 +25,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JUploadButton from '@/components/Button/src/JUploadButton.vue';
+  import printData from "@/views/template/components/print-data";
   const { createMessage } = useMessage();
 
   export default {
@@ -140,20 +143,36 @@
         this.scaleValue = scaleValue;
       },
       print() {
-        this.waitShowPrinter = true;
-        this.hiprintTemplate.print(
-          this.printData,
-          {},
-          {
-            callback: () => {
-              console.log('callback');
-              this.waitShowPrinter = false;
-            },
-          }
-        );
+        this.doOperationWhenClientConnected(() => {
+          const printerList = hiprintTemplate.getPrinterList();
+          console.log(printerList);
+          hiprintTemplate.print2(printData, { printer: '', title: 'hiprint测试打印' });
+        });
+        //
+        // this.waitShowPrinter = true;
+        // this.hiprintTemplate.print(
+        //   this.printData,
+        //   {},
+        //   {
+        //     callback: () => {
+        //       console.log('callback');
+        //       this.waitShowPrinter = false;
+        //     },
+        //   }
+        // );
+      },
+      doOperationWhenClientConnected(operation) {
+        if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
+          operation?.();
+          return;
+        }
+        createMessage.error({
+          content: '客户端未连接',
+          duration: 2,
+        });
       },
       toPdf() {
-        this.hiprintTemplate.toPdf({}, '打印预览');
+        this.hiprintTemplate.toPdf(this.printData, '打印预览');
       },
       onExport() {
         // 传选中的模板id
