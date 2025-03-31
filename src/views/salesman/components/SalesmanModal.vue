@@ -1,20 +1,18 @@
 <template>
   <j-modal :title="title" :width="width" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel" cancelText="关闭">
-    <TemplateCustomizedForm ref="registerForm" @ok="submitCallback" :tenantCustomerId="tenantCustomerId" :tenantCustomerName="tenantCustomerName" :formDisabled="disableSubmit" :formBpm="false"></TemplateCustomizedForm>
+    <SalesmanForm ref="registerForm" @ok="submitCallback" :formDisabled="disableSubmit" :formBpm="false"></SalesmanForm>
   </j-modal>
 </template>
 
 <script lang="ts" setup>
   import { ref, nextTick, defineExpose } from 'vue';
-  import TemplateCustomizedForm from './TemplateCustomizedForm.vue';
+  import SalesmanForm from './SalesmanForm.vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
 
   const title = ref<string>('');
   const width = ref<number>(800);
   const visible = ref<boolean>(false);
   const disableSubmit = ref<boolean>(false);
-  const tenantCustomerId = ref<string>('');
-  const tenantCustomerName = ref<string>('');
   const registerForm = ref();
   const emit = defineEmits(['register', 'success']);
 
@@ -22,7 +20,7 @@
    * 新增
    */
   function add() {
-    title.value = '新增定制模板';
+    title.value = '新增';
     visible.value = true;
     nextTick(() => {
       registerForm.value.add();
@@ -67,8 +65,6 @@
     add,
     edit,
     disableSubmit,
-    tenantCustomerId,
-    tenantCustomerName,
   });
 </script>
 

@@ -372,6 +372,7 @@ export default defineComponent({
         getShowPagination,
         setCacheColumnsByField,
         expandAll,
+        formActions,
         collapseAll,
         getSize: () => {
           return unref(getBindValues).size as SizeType;

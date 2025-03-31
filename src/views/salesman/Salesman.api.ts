@@ -1,18 +1,19 @@
 import { defHttp } from '/@/utils/http/axios';
-import { useMessage } from '/@/hooks/web/useMessage';
+import { useMessage } from "/@/hooks/web/useMessage";
 
 const { createConfirm } = useMessage();
 
 enum Api {
-  list = '/setting/quickInfo/list',
-  save = '/setting/quickInfo/add',
-  edit = '/setting/quickInfo/edit',
-  deleteOne = '/setting/quickInfo/delete',
-  deleteBatch = '/setting/quickInfo/deleteBatch',
-  importExcel = '/setting/quickInfo/importExcel',
-  exportXls = '/setting/quickInfo/exportXls',
-  listAll = '/setting/quickInfo/listAll',
+  list = '/salesman/salesman/list',
+  save='/salesman/salesman/add',
+  edit='/salesman/salesman/edit',
+  deleteOne = '/salesman/salesman/delete',
+  deleteBatch = '/salesman/salesman/deleteBatch',
+  importExcel = '/salesman/salesman/importExcel',
+  exportXls = '/salesman/salesman/exportXls',
+  getAllSalesmanList = '/salesman/salesman/allList',
 }
+export const allSalesmanList = Api.getAllSalesmanList;
 
 /**
  * 导出api
@@ -30,9 +31,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
-
-export const listAll = () => defHttp.get({ url: Api.listAll });
-
+/**
+ * 列表接口
+ * @param params
+ */
+export const getAllSalesmanList = (params) => defHttp.get({ url: Api.getAllSalesmanList, params });
 /**
  * 删除单个
  * @param params
@@ -42,7 +45,7 @@ export const deleteOne = (params,handleSuccess) => {
   return defHttp.delete({url: Api.deleteOne, params}, {joinParamsToUrl: true}).then(() => {
     handleSuccess();
   });
-};
+}
 
 /**
  * 批量删除
@@ -60,9 +63,9 @@ export const batchDelete = (params, handleSuccess) => {
       return defHttp.delete({url: Api.deleteBatch, data: params}, {joinParamsToUrl: true}).then(() => {
         handleSuccess();
       });
-    },
+    }
   });
-};
+}
 
 /**
  * 保存或者更新
@@ -72,4 +75,4 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
-};
+}

@@ -56,10 +56,10 @@
 						</a-col>
 						<a-col :span="12">
 							<a-form-item label="业务员" v-bind="validateInfos.userId" id="CustomerForm-userName" name="userId">
-								<j-dict-select-tag v-model:value="formData.userId" :url="listTenantUser" label-field="realname" value-field="id" placeholder="请选择业务员"  allow-clear />
+								<j-dict-select-tag v-model:value="formData.userId" :url="allSalesmanList" label-field="name" value-field="id" placeholder="请选择业务员" allow-clear />
 							</a-form-item>
 						</a-col>
-						<a-col :span="12">
+						<a-col :span="24">
 							<a-form-item label="备注" v-bind="validateInfos.remark" id="CustomerForm-remark" name="remark">
 								<a-textarea v-model:value="formData.remark" :rows="2" placeholder="请输入备注" />
 							</a-form-item>
@@ -87,26 +87,23 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  reactive,
-  defineExpose,
-  nextTick,
-  defineProps,
-  computed,
-  onMounted,
-  watch
-} from "vue";
-  import { defHttp } from '/@/utils/http/axios';
+  import {
+    ref,
+    reactive,
+    defineExpose,
+    nextTick,
+    defineProps,
+    computed,
+    watch
+  } from "vue";
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../Customer.api';
-  import { listTenantUser } from '@/views/system/user/user.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-import {useUserStore} from "@/store/modules/user";
-const userStore = useUserStore();
+  import { useUserStore } from '@/store/modules/user';
+  import { allSalesmanList } from '@/views/salesman/Salesman.api';
+  const userStore = useUserStore();
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
     formData: { type: Object, default: () => ({})},
@@ -115,7 +112,7 @@ const userStore = useUserStore();
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
-  const dynamicFields= userStore.getDynamicCols['jxc_customer'];
+  const dynamicFields = userStore.getDynamicCols['jxc_customer'];
   const formData = reactive<Record<string, any>>({
     id: '',
     orgName: '',

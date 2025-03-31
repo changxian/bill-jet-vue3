@@ -78,7 +78,7 @@
   let row = {
     id: '',
   };
-  function show(type, data){
+  function show(type, data) {
     title.value = titleObj[type];
     modifyType.value = type;
     billNo.value = data.billNo;

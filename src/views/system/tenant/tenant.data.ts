@@ -417,10 +417,16 @@ export const packColumns: BasicColumn[] = [
 //企业套餐管理列表搜索表单
 export const packFormSchema: FormSchema[] = [
   {
+    field: 'tenantName',
+    label: '企业名称',
+    component: 'JInput',
+    colProps: {xxl: 5},
+  },
+  {
     field: 'packName',
     label: '套餐名称',
     component: 'JInput',
-    colProps: {xxl: 8},
+    colProps: {xxl: 5},
   },
 ];
 

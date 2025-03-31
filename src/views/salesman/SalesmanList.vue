@@ -4,31 +4,16 @@
     <div class="jeecg-basic-table-form-container">
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
-          <a-col :lg="4">
-            <a-form-item label="类别" name="packCategory">
-              <a-select v-model:value="queryParam.packCategory" allow-clear>
-                <a-select-option value="">所有</a-select-option>
-                <a-select-option value="1">单机版</a-select-option>
-                <a-select-option value="2">云端版</a-select-option>
-              </a-select>
+          <a-col :lg="6">
+            <a-form-item name="name">
+              <template #label><span title="姓名">姓名</span></template>
+              <a-input placeholder="请输入姓名" v-model:value="queryParam.name" allow-clear></a-input>
             </a-form-item>
           </a-col>
-          <a-col :lg="5">
-            <a-form-item label="类型" name="packType">
-              <a-select v-model:value="queryParam.packType" allow-clear>
-                <a-select-option value="">所有</a-select-option>
-                <a-select-option value="1">送货单版</a-select-option>
-                <a-select-option value="2">进销存版</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :lg="5">
-            <a-form-item label="状态" name="status">
-              <a-select v-model:value="queryParam.status" allow-clear>
-                <a-select-option value="">所有</a-select-option>
-                <a-select-option value="1">未激活</a-select-option>
-                <a-select-option value="2">已激活</a-select-option>
-              </a-select>
+          <a-col :lg="6">
+            <a-form-item name="cellPhone">
+              <template #label><span title="手机号">手机号</span></template>
+              <a-input placeholder="请输入手机号" v-model:value="queryParam.cellPhone" allow-clear></a-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -36,10 +21,6 @@
               <a-col :lg="6">
                 <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
                 <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <!--<a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>-->
               </a-col>
             </span>
           </a-col>
@@ -50,53 +31,45 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'activate:jxc_activate_code:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" v-auth="'activate:jxc_activate_code:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button v-auth="'activate:jxc_activate_code:deleteBatch'">批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
-        </a-dropdown>
+        <a-button type="primary" v-auth="'salesman:jxc_salesman:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+      </template>
+      <!--操作栏-->
+      <template #action="{ record }">
+        <TableAction :actions="getTableAction(record)" />
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <ActivateCodeModal ref="registerModal" @success="handleSuccess"></ActivateCodeModal>
+    <SalesmanModal ref="registerModal" @success="handleSuccess"></SalesmanModal>
   </div>
 </template>
 
-<script lang="ts" name="activate-activateCode" setup>
+<script lang="ts" name="salesman-salesman" setup>
   import { ref, reactive } from 'vue';
-  import { BasicTable } from '/@/components/Table';
+  import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns } from './ActivateCode.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './ActivateCode.api';
-  import ActivateCodeModal from './components/ActivateCodeModal.vue';
+  import { columns } from './Salesman.data';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './Salesman.api';
+  import SalesmanModal from './components/SalesmanModal.vue';
+  import { useUserStore } from '/@/store/modules/user';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
+  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
+  const userStore = useUserStore();
   //注册table数据
-  const { tableContext, onExportXls } = useListPage({
+  const { tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '激活码',
+      title: '业务员',
       api: list,
       columns,
-      showActionColumn: false,
       canResize: false,
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 120,
+        width: 220,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
@@ -104,7 +77,7 @@
       },
     },
     exportConfig: {
-      name: '激活码',
+      name: '业务员',
       url: getExportUrl,
       params: queryParam,
     },
@@ -169,7 +142,6 @@
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-
   /**
    * 操作栏
    */
@@ -178,7 +150,20 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: 'activate:jxc_activate_code:edit',
+        auth: 'salesman:jxc_salesman:edit',
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+          placement: 'topLeft',
+        },
+        auth: 'salesman:jxc_salesman:delete',
       },
     ];
   }
@@ -191,14 +176,15 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
           placement: 'topLeft',
         },
-        auth: 'activate:jxc_activate_code:delete',
+        auth: 'salesman:jxc_salesman:delete',
       },
     ];
   }
