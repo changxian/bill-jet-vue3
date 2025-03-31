@@ -25,7 +25,7 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
-    tenantName.value=data?.record?.name
+    tenantName.value = data?.record?.name
     if (unref(isUpdate)) {
       // 编辑模式下禁用id字段
       updateSchema({ field: 'id', dynamicDisabled: true });

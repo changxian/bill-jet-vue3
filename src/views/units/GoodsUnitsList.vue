@@ -32,7 +32,7 @@
         <a-button type="primary" v-auth="'units:jxc_goods_units:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <!--<a-button type="primary" v-auth="'units:jxc_goods_units:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'units:jxc_goods_units:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>-->
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
@@ -51,7 +51,7 @@
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
+        <TableAction :actions="getTableAction(record)" />
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
@@ -68,16 +68,13 @@
   import { columns } from './GoodsUnits.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './GoodsUnits.api';
   import GoodsUnitsModal from './components/GoodsUnitsModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
   import JInput from '@/components/Form/src/jeecg/components/JInput.vue';
 
   const formRef = ref();
   const queryParam = reactive<any>({});
-  const toggleSearchStatus = ref<boolean>(false);
   const registerModal = ref();
-  const userStore = useUserStore();
   //注册table数据
-  const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
+  const { tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
       title: '商品单位管理',
       api: list,
@@ -86,7 +83,7 @@
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 120,
+        width: 280,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
@@ -183,9 +180,22 @@
         onClick: handleEdit.bind(null, record),
         auth: 'units:jxc_goods_units:edit'
       },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+          placement: 'topLeft',
+        },
+        auth: 'units:jxc_goods_units:delete',
+      },
     ];
   }
-   
+
   /**
    * 下拉操作栏
    */

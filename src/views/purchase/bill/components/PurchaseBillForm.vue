@@ -6,12 +6,12 @@
           <a-row>
             <a-col :span="span">
               <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="PurchaseBillForm-companyId" name="companyId">
-                <j-select-company v-model:value="formData.companyId" @change="changeCompany" allow-clear />
+                <j-select-company v-model:value="formData.companyId" @change="changeCompany" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="供应商名称" v-bind="validateInfos.supplierId" id="PurchaseBillForm-supplierId" name="supplierId">
-                <j-select-supplier v-model:value="formData.supplierId" @change="changeSupplier" allow-clear />
+                <j-select-supplier v-model:value="formData.supplierId" @change="changeSupplier" />
               </a-form-item>
             </a-col>
             <a-col :span="span">

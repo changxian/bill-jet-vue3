@@ -114,7 +114,7 @@
           registerCustomizedModal.value.tenantCustomerName = tenantCustomerName.value;
           registerCustomizedModal.value.add();
         } else {
-          createMessage.warn('该企业没有可以添加的定制模板');
+          createMessage.warn('没有定制模板可以选择，请先去创建该企业需要的定制模板');
         }
       });
     } else {

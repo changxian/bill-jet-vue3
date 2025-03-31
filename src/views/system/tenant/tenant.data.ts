@@ -30,28 +30,28 @@ export const columns: BasicColumn[] = [
       return render.renderImage({ text });
     },
   },
-  {
-    title: '支付宝收款码',
-    dataIndex: 'zfbPaymentCode',
-    width: 120,
-    customRender: ({ text }) => {
-      if (!text) {
-        return text;
-      }
-      return render.renderImage({ text });
-    },
-  },
-  {
-    title: '微信收款码',
-    dataIndex: 'wxPaymentCode',
-    width: 120,
-    customRender: ({ text }) => {
-      if (!text) {
-        return text;
-      }
-      return render.renderImage({ text });
-    },
-  },
+  // {
+  //   title: '支付宝收款码',
+  //   dataIndex: 'zfbPaymentCode',
+  //   width: 120,
+  //   customRender: ({ text }) => {
+  //     if (!text) {
+  //       return text;
+  //     }
+  //     return render.renderImage({ text });
+  //   },
+  // },
+  // {
+  //   title: '微信收款码',
+  //   dataIndex: 'wxPaymentCode',
+  //   width: 120,
+  //   customRender: ({ text }) => {
+  //     if (!text) {
+  //       return text;
+  //     }
+  //     return render.renderImage({ text });
+  //   },
+  // },
   {
     title: '客服二维码',
     dataIndex: 'customerServiceQrcode',
@@ -225,15 +225,15 @@ export const formSchema: FormSchema[] = [
   //     getPopupContainer: getAutoScrollContainer,
   //   },
   // },
-  {
-    field: 'houseNumber',
-    label: '门牌号',
-    component: 'Input',
-    dynamicDisabled: true,
-    ifShow: ({ values }) => {
-      return values.id != null;
-    },
-  },
+  // {
+  //   field: 'houseNumber',
+  //   label: '门牌号',
+  //   component: 'Input',
+  //   dynamicDisabled: true,
+  //   ifShow: ({ values }) => {
+  //     return values.id != null;
+  //   },
+  // },
   /*{
     field: 'position',
     label: '职级',

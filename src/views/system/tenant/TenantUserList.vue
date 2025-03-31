@@ -7,7 +7,7 @@
         <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
         <!--<JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
         <a-button type="primary" @click="openQuitModal(true, {})" preIcon="ant-design:user-delete-outlined">离职信息</a-button>-->
-        <div style="margin-left: 10px;margin-top: 5px"> 当前登录企业: <span class="tenant-name">{{loginTenantName}}</span> </div>
+        <div style="margin-left: 10px; margin-top: 5px"> 当前登录企业: <span class="tenant-name">{{loginTenantName}}</span> </div>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -167,9 +167,14 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
-      },{
+      },
+      {
         label: '授权',
         onClick: handlePerssion.bind(null, record),
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
       },
     ];
   }
@@ -178,10 +183,10 @@
    */
   function getDropDownAction(record): ActionItem[] {
     return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      },
+      // {
+      //   label: '详情',
+      //   onClick: handleDetail.bind(null, record),
+      // },
       // {
       //   label: '离职',
       //   //update-begin---author:wangshuai---date:2023-10-25---for:【QQYUN-6822】9.离职交接人选的是自己，完成之后数据没了---

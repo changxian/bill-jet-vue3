@@ -6,7 +6,7 @@
           <a-row>
             <a-col :span="6">
               <a-form-item label="公司名称" v-bind="validateInfos.companyId" id="DeliverBillForm-companyId" name="companyId">
-                <j-select-company v-model:value="formData.companyId" @change="changeCompany" allow-clear />
+                <j-select-company v-model:value="formData.companyId" @change="changeCompany" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -15,7 +15,7 @@
                 <a-button type="primary" @click="selectCustomer">选择</a-button>
               </a-form-item>-->
               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
-                <j-select-customer v-model:value="formData.custId" @change="changeCustomer" allow-clear />
+                <j-select-customer v-model:value="formData.custId" @change="changeCustomer" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
