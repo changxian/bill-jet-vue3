@@ -25,7 +25,7 @@
 							</a-form-item>
 						</a-col>
             <a-col :span="span">
-              <a-form-item label="供应商联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
+              <a-form-item label="联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
                 <a-input v-model:value="formData.supplierContact" placeholder="请输入供应商联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
@@ -70,8 +70,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="已付款金额" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
-                <a-input-number @change="changeMoney" v-model:value="formData.paymentAmount" placeholder="请输入已付款金额" style="width: 100%" />
+              <a-form-item label="已付款" v-bind="validateInfos.paymentAmount" id="PurchaseBillForm-paymentAmount" name="paymentAmount">
+                <a-input-number @change="changeMoney" v-model:value="formData.paymentAmount" placeholder="请输入已付款" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -80,18 +80,24 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="未付款金额" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
-                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款金额" style="width: 100%" />
+              <a-form-item label="未付款" v-bind="validateInfos.debtAmount" id="PurchaseBillForm-debtAmount" name="debtAmount">
+                <a-input-number disabled v-model:value="formData.debtAmount" placeholder="请输入未付款" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="往期欠款金额" id="PurchaseBillForm-hisDebtAmount" name="hisDebtAmount">
-                <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款金额" style="width: 100%" />
+              <a-form-item label="往期欠款" id="PurchaseBillForm-hisDebtAmount" name="hisDebtAmount">
+                <a-input-number v-model:value="formData.hisDebtAmount" placeholder="请输入往期欠款" style="width: 100%" />
               </a-form-item>
             </a-col>
-            <a-col :span="8">
-              <a-form-item label="备注" id="PurchaseBillForm-remark" name="remark" >
-                <a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>
+            <a-col :span="span">
+              <a-form-item label="制单人" v-bind="validateInfos.operatorName" id="PurchaseBillForm-operatorName" name="operatorName">
+                <a-input v-model:value="formData.operatorName" placeholder="请输入制单人" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="备注" id="PurchaseBillForm-remark" name="remark">
+                <SelectInput v-model="formData.remark" style="width: 100%" />
+                <!--<a-textarea v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-textarea>-->
               </a-form-item>
             </a-col>
           </a-row>
@@ -134,11 +140,12 @@
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import { byPurchaseId } from '@/views/purchase/debt/PurchaseDebt.api';
   import { useUserStore } from '@/store/modules/user';
+  import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
 
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
-  const span = 8;
+  const span = 6;
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
   const typeOptions = ref([

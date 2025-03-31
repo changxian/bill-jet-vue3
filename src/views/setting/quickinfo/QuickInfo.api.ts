@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/setting/quickInfo/deleteBatch',
   importExcel = '/setting/quickInfo/importExcel',
   exportXls = '/setting/quickInfo/exportXls',
+  listAll = '/setting/quickInfo/listAll',
 }
 
 /**
@@ -29,6 +30,8 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+export const listAll = () => defHttp.get({ url: Api.listAll });
 
 /**
  * 删除单个
