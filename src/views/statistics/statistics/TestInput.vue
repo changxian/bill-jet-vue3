@@ -8,7 +8,7 @@
       @search="onSearch"
       placeholder="请输入关键字"
       @select="onSelect"/>
-    <a-button @click="getVal">获取输入值</a-button>
+<!--    <a-button @click="getVal">获取输入值</a-button>-->
   </div>
 
 </template>
@@ -48,8 +48,7 @@ function queryFn(){
   console.log('queryFn======',props.modelValue)
   const value = props.modelValue
   lastTime = new Date().getTime()
-  // debounce(queryFn,2000)()
-
+   debounce(queryFn,2000)()
     options.value.push({
       value: value+"bbb",
       text: value+"bbb",

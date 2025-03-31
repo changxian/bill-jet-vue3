@@ -110,7 +110,8 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
-                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
+<!--                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>-->
+                <TestInput v-model="formData.remark"   />
               </a-form-item>
             </a-col>
             <!--<a-col :span="8">
@@ -167,6 +168,7 @@
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
   import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
+  import TestInput from "@/views/statistics/statistics/TestInput.vue";
 
   // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
