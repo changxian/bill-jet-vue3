@@ -146,7 +146,7 @@
         this.doOperationWhenClientConnected(() => {
           const printerList = hiprintTemplate.getPrinterList();
           console.log(printerList);
-          hiprintTemplate.print2(printData, { printer: '', title: 'hiprint测试打印' });
+          hiprintTemplate.print2(this.printData, { printer: '', title: 'hiprint测试打印' });
         });
         //
         // this.waitShowPrinter = true;
