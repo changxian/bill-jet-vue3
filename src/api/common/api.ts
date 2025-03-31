@@ -6,7 +6,7 @@ const baseUploadUrl = globSetting.uploadUrl;
 enum Api {
   positionList = '/sys/position/list',
   userList = '/sys/user/list',
-  salesmanList= '/salesman/salesman/list',
+  salesmanList = '/salesman/salesman/list',
   roleList = '/sys/role/list',
   queryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
   queryTreeList = '/sys/sysDepart/queryTreeList',

@@ -50,7 +50,7 @@
       },
       //update-begin---author:wangshuai ---date:20230703  for：【QQYUN-5685】5、离职人员可以选自己------------
       //排除用户id的集合
-      excludeSalesmanIdList:{
+      excludeSalesmanIdList: {
         type: Array,
         default: () => [],
       },

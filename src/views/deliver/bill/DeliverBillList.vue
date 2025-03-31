@@ -335,23 +335,29 @@
   }
   // 增加合计行
   function summaryFunc(resultItems) {
-    return [
-      {
-        _row: '合计',
-        _index: '合计',
-        count: totalCount.value,
-        weight: weightTotal.value,
-        area: areaTotal.value,
-        volume: volumeTotal.value,
-        amount: totalAmount.value,
-        paymentAmount: totalPaymentAmount.value,
-        discountAmount: totalDiscountAmount.value,
-        debtAmount: totalDebtAmount.value,
-        costAmount: totalCostAmount.value,
-        hisDebtAmount: totalHisDebtAmount.value,
-        profitAmount: totalProfitAmount.value,
-      },
-    ];
+    let toCount = {
+      _row: '合计',
+      _index: '合计',
+      count: totalCount.value,
+      amount: totalAmount.value,
+      paymentAmount: totalPaymentAmount.value,
+      discountAmount: totalDiscountAmount.value,
+      debtAmount: totalDebtAmount.value,
+      costAmount: totalCostAmount.value,
+      hisDebtAmount: totalHisDebtAmount.value,
+      profitAmount: totalProfitAmount.value,
+    };
+    debugger;
+    if (showAreaCol.value) {
+      toCount.area = areaTotal.value;
+    }
+    if (showWeightCol.value) {
+      toCount.weight = weightTotal.value;
+    }
+    if (showVolumeCol.value) {
+      toCount.volume = volumeTotal.value;
+    }
+    return [toCount];
   }
 
   /**
@@ -359,9 +365,15 @@
    */
   function listTotalCount(extraInfo) {
     totalCount.value = extraInfo.count || 0;
-    weightTotal.value = extraInfo.weight || 0;
-    areaTotal.value = extraInfo.area || 0;
-    volumeTotal.value = extraInfo.volume || 0;
+    if (showWeightCol.value) {
+      weightTotal.value = extraInfo.weight || 0;
+    }
+    if (showAreaCol.value) {
+      areaTotal.value = extraInfo.area || 0;
+    }
+    if (showVolumeCol.value) {
+      volumeTotal.value = extraInfo.volume || 0;
+    }
     totalAmount.value = extraInfo.amount || 0;
     totalPaymentAmount.value = extraInfo.paymentAmount || 0;
     totalDiscountAmount.value = extraInfo.discountAmount || 0;

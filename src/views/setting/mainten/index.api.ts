@@ -1,5 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
-
+import { useMessage } from "/@/hooks/web/useMessage";
+const { createConfirm,createMessage } = useMessage();
 enum Api {
   getDataBackupParam = '/setting/mainten/getData',
   addDataBackupParam = '/setting/mainten/add',
@@ -51,7 +52,21 @@ export const execDataRestore = (params) => {
  * @param params
  */
 export const delBillsByCycle = (params) => {
-  return defHttp.post({ url: Api.delBillsByCycle, params }, { isTransformResponse: false });
+  createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '是否清除数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.delBillsByCycle, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
+    }
+  });
 };
 
 /**
@@ -59,7 +74,22 @@ export const delBillsByCycle = (params) => {
  * @param params
  */
 export const delCustomer = (params) => {
-  return defHttp.post({ url: Api.delCustomer, params }, { isTransformResponse: false });
+  createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '是否清除数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.delCustomer, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      })
+    }
+  });
+
 };
 
 /**
@@ -67,7 +97,22 @@ export const delCustomer = (params) => {
  * @param params
  */
 export const delGoods = (params) => {
-  return defHttp.post({ url: Api.delGoods, params }, { isTransformResponse: false });
+  createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '是否清除数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.delGoods, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
+    }
+  });
+
 };
 
 /**
@@ -75,7 +120,22 @@ export const delGoods = (params) => {
  * @param params
  */
 export const delStock = (params) => {
-  return defHttp.post({ url: Api.delStock, params }, { isTransformResponse: false });
+  createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '是否清除数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.delStock, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
+    }
+  });
+
 };
 
 /**
@@ -83,5 +143,20 @@ export const delStock = (params) => {
  * @param params
  */
 export const delSupplier = (params) => {
-  return defHttp.post({ url: Api.delSupplier, params }, { isTransformResponse: false });
+  createConfirm({
+    iconType: 'warning',
+    title: '确认删除',
+    content: '是否清除数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.delSupplier, params }, { isTransformResponse: false }).then((res) => {
+        if (res.success) {
+          createMessage.warning(res.message);
+        }
+      }).finally(() => {
+      });
+    }
+  });
+
 };

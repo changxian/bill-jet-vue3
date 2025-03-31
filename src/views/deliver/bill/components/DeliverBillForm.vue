@@ -10,6 +10,10 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
+              <!--<a-form-item label="客户名称" v-bind="validateInfos.custName" id="DeliverBillForm-custName" name="custName">
+                <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custName" placeholder="请输入客户名称" allow-clear></a-input>
+                <a-button type="primary" @click="selectCustomer">选择</a-button>
+              </a-form-item>-->
               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
                 <j-select-customer v-model:value="formData.custId" @change="changeCustomer" allow-clear />
               </a-form-item>
@@ -106,7 +110,8 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="备注" v-bind="validateInfos.operatorName" id="DeliverBillForm-remark" name="remark">
-                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>
+<!--                <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear></a-input>-->
+                <TestInput v-model="formData.remark"   />
               </a-form-item>
             </a-col>
             <!--<a-col :span="8">
@@ -139,6 +144,9 @@
       </template>
     </JFormContainer>
   </a-spin>
+  <!-- 选择客户窗口
+  <CustomerSelectModal @register="registerCustomerSelectModal" @success="handleSuccess" />
+  -->
 </template>
 
 <script lang="ts" setup>
@@ -151,16 +159,18 @@
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
+  // import CustomerSelectModal from '@/components/Form/src/jeecg/components/modal/CustomerSelectModal.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
   import { defaultCom, queryNewNo, billDetail, getCustPrices } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
-  import JSelectUserId from '@/components/Form/src/jeecg/components/JSelectUserId.vue';
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
-  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
+  import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
+  import TestInput from "@/views/statistics/statistics/TestInput.vue";
 
+  // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
@@ -291,6 +301,14 @@
   }
   // 传递给商品选择页面的参数
   const customerId = ref<string>('');
+  // function selectCustomer() {
+  //   openCustomerSelectModal(true, {
+  //     record: formData,
+  //     // record: { id: selectedRowKeys.value[0], category: 1 },
+  //     isUpdate: true,
+  //     showFooter: false,
+  //   });
+  // }
   // 选择开单客户
   function changeCustomer(val, selectRows) {
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
@@ -300,7 +318,9 @@
       // 获取客户往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
         byDeliverId({ custId: selectRows[0].id }).then((res) => {
-          formData.hisDebtAmount = res.deliverDebtAmount;
+          if (res) {
+            formData.hisDebtAmount = res.deliverDebtAmount;
+          }
         });
       }
       formData.custId = selectRows[0].id;

@@ -246,13 +246,18 @@
       formData.companyName = selectRows[0].compName;
     }
   }
+  const supplierId = ref<string>('');
   function changeSupplier(val, selectRows) {
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
+      supplierId.value = selectRows[0].id;
+      debugger;
       // 获取供应商往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
         byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
-          formData.hisDebtAmount = res.purchaseDebtAmount;
+          if (res) {
+            formData.hisDebtAmount = res.purchaseDebtAmount;
+          }
         });
       }
       formData.supplierId = selectRows[0].id;
@@ -265,6 +270,9 @@
   }
   let amount: number = 0.0;
   function changeGoods(goods) {
+    debugger;
+    // 先将金额置为0
+    amount = 0.0;
     // let num = 0.0;
     goods.forEach((item) => {
       // 计算重量、面积、体积小计
@@ -293,7 +301,8 @@
   }
   function calcDebtAmount() {
     if (amount && (formData.paymentAmount || formData.paymentAmount == 0) && (formData.discountAmount || formData.discountAmount == 0)) {
-      formData.debtAmount = amount - formData.paymentAmount - formData.discountAmount;
+      let debtAmount = (amount - formData.paymentAmount - formData.discountAmount).toFixed(decimalPlaces);
+      formData.debtAmount = parseFloat(debtAmount);
     }
   }
   /**
