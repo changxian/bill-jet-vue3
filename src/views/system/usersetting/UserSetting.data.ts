@@ -43,6 +43,15 @@ export const settingList = [
     img1: anquan1,
     img2: anquan2,
   },
+  {
+    key: '4',
+    name: '套餐续费',
+    component: 'RenewSetting',
+    icon: 'ant-design:transaction-outlined',
+    img1: anquan1,
+    img2: anquan2,
+    show: false,
+  },
   // {
   //   key: '4',
   //   name: '第三方APP',
@@ -81,7 +90,7 @@ export const formSchema: FormSchema[] = [
     component: 'RadioGroup',
     label: '性别',
     colProps: { span: 24 },
-    componentProps:{
+    componentProps: {
       options: [
         {
           label: '男',

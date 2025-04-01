@@ -38,10 +38,8 @@
               <div class="flex-flow">
                 <div class="content-des-text">企&nbsp;业&nbsp;LOGO</div>
                 <div style="font-size: 13px">
-                  <CropperAvatar
-                    :uploadApi="uploadImg"
-                    :showBtn="false"
-                    :value="companyLogo"
+                  <JImageUpload
+                    v-model:value="companyLogo"
                     :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
                     @change="updateTenantAvatar"
                     width="80"
@@ -51,11 +49,8 @@
               <div v-if="tenantInfo.category > 0" class="flex-flow">
                 <div class="content-des-text">客&nbsp;服&nbsp;微&nbsp;信</div>
                 <div style="font-size: 13px">
-                  <!-- 参考企业管理-添加企业信息页面 <JImageUpload v-model:value="tenantInfo.customerServiceQrcode"></JImageUpload>-->
-                  <CropperAvatar
-                    :uploadApi="uploadImg"
-                    :showBtn="false"
-                    :value="customerServiceQrcode"
+                  <JImageUpload
+                    v-model:value="customerServiceQrcode"
                     :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
                     @change="updateTenantServiceQrcode"
                     width="80"
@@ -65,10 +60,8 @@
               <div v-if="tenantInfo.category > 0" class="flex-flow">
                 <div class="content-des-text">支付宝收款码</div>
                 <div style="font-size: 13px">
-                  <CropperAvatar
-                    :uploadApi="uploadImg"
-                    :showBtn="false"
-                    :value="zfbPaymentCode"
+                  <JImageUpload
+                    v-model:value="zfbPaymentCode"
                     :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
                     @change="updateTenantZfbPaymentCode"
                     width="80"
@@ -78,10 +71,8 @@
               <div v-if="tenantInfo.category > 0" class="flex-flow">
                 <div class="content-des-text">微信收款码</div>
                 <div style="font-size: 13px">
-                  <CropperAvatar
-                    :uploadApi="uploadImg"
-                    :showBtn="false"
-                    :value="wxPaymentCode"
+                  <JImageUpload
+                    v-model:value="wxPaymentCode"
                     :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
                     @change="updateTenantWxPaymentCode"
                     width="80"
@@ -244,7 +235,7 @@
   import { router } from '/@/router';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { uploadImg } from '@/api/sys/upload';
-  import { CropperAvatar } from '@/components/Cropper';
+  import { CropperAvatar, CropperImage } from '@/components/Cropper';
   import JImageUpload from '@/components/Form/src/jeecg/components/JImageUpload.vue';
 
   const { prefixCls } = useDesign('j-user-tenant-setting-container');

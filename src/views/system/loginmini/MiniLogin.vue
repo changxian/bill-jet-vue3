@@ -139,7 +139,7 @@
                 <div class="aui-flex" :class="`${prefixCls}-sign-in-way`">
                   <div class="aui-flex-box">
                     <div class="aui-third-login">
-                      <a title="送货单版" @click="demoLogin('1')">送货单版</a>
+                      <a title="销售单版" @click="demoLogin('1')">销售单版</a>
                     </div>
                   </div>
                   <div class="aui-flex-box">

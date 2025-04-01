@@ -9,50 +9,73 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
 
-  import { activateCodeSave, myActivateCodeList } from '@/views/activate/ActivateCode.api';
+  import { activateCodeSave } from '@/views/activate/ActivateCode.api';
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const isDetail = ref(false);
 
+  const packType = ref(0);
+  const packCategory = ref('0');
+
   //表单数据
   const formSchema: FormSchema[] = [
     {
+      label: '套餐名',
+      field: 'packName',
+      component: 'Input',
+      dynamicDisabled: true,
+    },
+    {
+      field: 'accountNum',
+      label: '支持账号数',
+      dynamicDisabled: true,
+      component: 'InputNumber',
+    },
+    {
+      field: 'orgNum',
+      label: '支持机构数',
+      dynamicDisabled: true,
+      component: 'InputNumber',
+    },
+    {
+      field: 'goodsNum',
+      label: '支持商品数',
+      dynamicDisabled: true,
+      component: 'InputNumber',
+    },
+    {
+      label: '续费周期',
+      field: 'packNum',
+      component: 'InputNumber',
+      dynamicDisabled: true,
+    },
+    {
+      label: '周期单位',
+      field: 'packUnit',
+      component: 'JDictSelectTag',
+      dynamicDisabled: true,
+      componentProps: {
+        dictCode: '',
+        options: [{ value: "1", label: "月"}, {value: "2", label: "年" }]
+      },
+    },
+    {
       label: '激活码',
       field: 'activateCode',
-      component: 'ApiSelect',
+      dynamicDisabled: true,
+      component: 'InputTextArea',
+    },
+    {
+      label: '续费价格',
+      field: 'price',
+      dynamicDisabled: !isUpdate,
+      component: 'InputNumber',
       required: true,
       componentProps: {
-        api: myActivateCodeList,
-        params: {
-          'status': '1'
-        },
-        resultField: 'list',
-        // use name as label
-        labelField: 'activateCodeName',
-        // use id as value
-        valueField: 'activateCode',
-        // not request untill to select
-        immediate: false,
-        onChange: (e) => {
-          console.log('selected:', e);
-        },
-        // atfer request callback
-        onOptionsChange: (options) => {
-          console.log('get options', options.length, options);
-        },
+        min: 0,
       },
-      colProps: {
-        span: 24,
-      },
-      defaultValue: '',
     },
-    /*
-    {
-      field: 'price',
-      label: '续费价格',
-      component: 'InputNumber',
-    },*/
     {
       label: '备注',
       field: 'remark',
@@ -76,7 +99,14 @@
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     isUpdate.value = !!data?.isUpdate;
     isDetail.value = !!data?.showFooter;
+    debugger;
     if (unref(isUpdate)) {
+      packType.value = data.record.packType;
+      packCategory.value = data.record.packCategory;
+      data.record.remarks = '';
+      data.record.packNum = 1;
+      data.record.packUnit = '2';
+      data.record.actTenantId = data.actTenantId;
       formData.value = data.record;
       //表单赋值
       await setFieldsValue({
@@ -87,7 +117,7 @@
     setProps({ disabled: !data?.showFooter });
   });
   //设置标题
-  const title = '企业套餐续费';//computed(() => (!unref(isUpdate) ? '续费' : !unref(isDetail) ? '详情' : '编辑'));
+  const title = '企业套餐续费';
   //表单提交事件
   async function handleSubmit(v) {
     try {

@@ -19,16 +19,16 @@
         <TableAction :actions="getActions(record)" />
       </template>
     </BasicTable>
-    <!--  绑定套餐  -->
+    <!--  绑定激活套餐  -->
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess" />
     <!--套餐菜单授权抽屉-->
     <PackPermissionDrawer @register="packPermissionDrawer" />
-    <!-- 续费 -->
+    <!-- 套餐续费 -->
     <TenantPackReNewModel @register="registerRenewModal" />
-    <!-- 激活或续费 -->
-    <TenantPackReNewByCodeModel @register="registerRenewByCodeModal"  @success="handleSuccess"/>
+    <!-- 激活或续费--未使用 -->
+    <TenantPackReNewByCodeModel @register="registerRenewByCodeModal" @success="handleSuccess" />
     <!--  套餐记录 -->
-    <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" @success="handleSuccess"/>
+    <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" @success="handleSuccess" />
     <!--  套餐扩容 -->
     <ModifyTenantPackModal @register="registerModifyTenantPackModal" @success="handleSuccess" />
   </div>
@@ -51,6 +51,7 @@
   import TenantPackReNewModel from '../components/TenantPackReNewModal.vue';
   import TenantPackReNewByCodeModel from '../components/TenantPackReNewByCodeModal.vue';
   import SysTenantPackRecordListModal from '@/views/system/tenant/pack/SysTenantPackRecordListModal.vue';
+  import { myActivateCodeList } from "@/views/activate/ActivateCode.api";
 
   const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
 
@@ -187,25 +188,40 @@
     });
   }
 
-  // 套餐激活或续费
+  // 套餐续费
   function renewByCode() {
     if (selectedRowKeys.value.length != 1) {
       return createMessage.warning('请先选择一条数据');
     }
     const record = selectedRows.value[0];
-
-    const data = {
-      tenantPackId: record.id,
-      actTenantId: record.tenantId,
-      actTenantName: record.tenantName,
-    };
-    renewByCodeModal(true, {
-      record: data,
-      tenantPackId: record.id,
-      actTenantId: record.tenantId,
-      isUpdate: true,
-      showFooter: true,
+    myActivateCodeList({
+      status: '1',
+      packType: record.packType,
+      packCategory: record.packCategory,
+    }).then((res) => {
+      debugger;
+      let catCode = res[0].activateCode;
+      record.activateCode = catCode;
+      renewByCodeModal(true, {
+        record: record,
+        tenantPackId: record.id,
+        actTenantId: record.tenantId,
+        isUpdate: true,
+        showFooter: true,
+      });
     });
+    // const data = {
+    //   tenantPackId: record.id,
+    //   actTenantId: record.tenantId,
+    //   actTenantName: record.tenantName,
+    // };
+    // renewByCodeModal(true, {
+    //   record: record,
+    //   tenantPackId: record.id,
+    //   actTenantId: record.tenantId,
+    //   isUpdate: true,
+    //   showFooter: true,
+    // });
   }
   // 修改企业套餐扩容信息
   function handleModify() {
