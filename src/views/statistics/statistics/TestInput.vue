@@ -1,5 +1,4 @@
 <template>
-
   <div class="main">
     <AutoComplete
       style="width:300px"

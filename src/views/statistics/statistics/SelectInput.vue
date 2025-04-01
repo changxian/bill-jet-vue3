@@ -4,7 +4,7 @@
       style="width: 100%"
       :value="modelValue"
       :options="options"
-      @focus="queryFn"
+      @search="onSelect"
       placeholder="请输入"
       @select="onSelect"/>
   </div>
@@ -24,7 +24,7 @@
 
   // const queryValue = ref('');
   const options = ref<any>([]);
-  async function queryFn() {
+  function onSearch() {
     listAll().then((res) => {
       options.value = [];
       console.log('res', res);
@@ -36,7 +36,7 @@
       });
     });
   }
-
+  onSearch();
   function onSelect(value) {
     console.log('查询参数value: ', value);
     emits('update:modelValue', value);
