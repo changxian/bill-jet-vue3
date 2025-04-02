@@ -77,7 +77,7 @@
           <a-row>
             <a-col :span="24">
               <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                <a-button type="primary" html-type="submit"  @click="submitForm">保存</a-button>
+                <a-button type="primary" html-type="submit" class="internal-fixed-btn" @click="submitForm">保存</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -195,6 +195,9 @@
 <style lang="less" scoped>
   .antd-modal-form {
     padding: 14px;
+    /*position: relative;
+    max-height: 80vh;
+    overflow-y: auto;*/
   }
   .label-p {
     margin-top: 20px;
@@ -211,5 +214,12 @@
     outline: none; /* 移除点击输入框时的默认轮廓 */
     margin-left: 10px;
     width: 40%;
+  }
+  .internal-fixed-btn {
+    position: fixed;
+    right: 80px;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 1000;
   }
 </style>
