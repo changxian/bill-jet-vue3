@@ -31,6 +31,7 @@
   import BaseSetting from './BaseSetting.vue';
   import AccountSetting from './AccountSetting.vue';
   import TenantSetting from './TenantSetting.vue';
+  import RenewSetting from '@/views/system/usersetting/RenewSetting.vue';
   // import WeChatDingSetting from './WeChatDingSetting.vue';
   import { useRouter } from 'vue-router';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -44,6 +45,7 @@
       BaseSetting,
       AccountSetting,
       TenantSetting,
+      RenewSetting,
       // WeChatDingSetting,
     },
     props: {

@@ -13,6 +13,7 @@ enum Api {
   exportXls = '/activate/activateCode/exportXls',
   activateCodeUrl = '/activate/activateCode/activate',
   myActivateCodeList = '/activate/activateCode/myActivateCodeList',
+  limitActivateCodeList = '/activate/activateCode/limitActivateCodeList',
 }
 
 /**
@@ -36,6 +37,12 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * @param params
  */
 export const myActivateCodeList = (params) => defHttp.get({ url: Api.myActivateCodeList, params });
+
+/**
+ * 列表接口
+ * @param params
+ */
+export const limitActivateCodeList = (params) => defHttp.get({ url: Api.limitActivateCodeList, params });
 
 /**
  * 删除单个
