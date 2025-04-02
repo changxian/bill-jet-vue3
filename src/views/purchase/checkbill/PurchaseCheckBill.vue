@@ -173,6 +173,7 @@
         hasPan.value = resultItems.length > 0;
         listTotalCount(extraInfo);
       },
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
       name: '进货对账单',
