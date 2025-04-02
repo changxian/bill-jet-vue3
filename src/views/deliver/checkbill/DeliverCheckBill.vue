@@ -83,6 +83,9 @@
         <span class="total_span">未付款：{{ debtAmountTotal }}</span>
       </p>
     </div>
+    <!-- 预览 -->
+    <div id="PrintElementOptionSetting" style="display: none"></div>
+    <PrintPreview ref="preView" />
   </div>
 </template>
 
@@ -96,6 +99,10 @@
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
   import { useUserStore } from '@/store/modules/user';
+  import PrintPreview from '@/views/template/components/TemplatePreview.vue';
+  import printData from '@/views/template/components/print-data';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
@@ -131,6 +138,70 @@
   // 显示体积列【合计 和 列表皆显示】
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
+
+  // vuePluginHiprint.disAutoConnect();
+  var hiprint, defaultElementTypeProvider;
+  let hiprintTemplate;
+
+  function init() {
+    hiprint.init({
+      providers: [new defaultElementTypeProvider()],
+      lang: 'cn',
+    });
+    // 还原配置
+    hiprint.setConfig();
+
+    // this.form = {
+    //   ...this.formData,
+    // };
+    // this.form.customized = this.form.type === 1;
+    let panels;
+    // if (this.form && this.form.data) {
+    //   panels = JSON.parse(this.form.data);
+    // } else {
+    //   panels = panel;
+    // }
+    hiprintTemplate = new hiprint.PrintTemplate({
+      template: panels,
+      // 图片选择功能
+      onImageChooseClick: (target) => {
+        // 测试 3秒后修改图片地址值
+        setTimeout(() => {
+          target.refresh(
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAIIAQMAAAB99EudAAAABlBMVEUmf8vG2O41LStnAAABD0lEQVR42u3XQQqCQBSAYcWFS4/QUTpaHa2jdISWLUJjjMpclJoPGvq+1WsYfiJCZ4oCAAAAAAAAAAAAAAAAAHin6pL9c6H/fOzHbRrP0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0u/SY9LS0tLS0tLS0tLS0n+edm+UlpaWlpaWlpaWlpaW/tl0Ndyzbno7/+tPTJdd1wal69dNa6abx+Lq6TSeYtK7BX/Diek0XULSZZrakPRtV0i6Hu/KIt30q4fM0pvBqvR9mvsQkZaW9gyJT+f5lsnzjR54xAk8mAUeJyMPwYFH98ALx5Jr0kRLLndT7b64UX9QR/0eAAAAAAAAAAAAAAAAAAD/4gpryzr/bja4QgAAAABJRU5ErkJggg==',
+            {
+              real: true, // 根据图片实际尺寸调整(转pt)
+            }
+          );
+        }, 1000);
+      },
+      // 自定义可选字体
+      // 或者使用 hiprintTemplate.setFontList([])
+      // 或元素中 options.fontList: []
+      fontList: [
+        { title: '微软雅黑', value: 'Microsoft YaHei' },
+        { title: '黑体', value: 'STHeitiSC-Light' },
+        { title: '思源黑体', value: 'SourceHanSansCN-Normal' },
+        { title: '王羲之书法体', value: '王羲之书法体' },
+        { title: '宋体', value: 'SimSun' },
+        { title: '华为楷体', value: 'STKaiti' },
+        { title: 'cursive', value: 'cursive' },
+      ],
+      dataMode: 1, // 1:getJson 其他：getJsonTid 默认1
+      history: true, // 是否需要 撤销重做功能
+      willOutOfBounds: false, // 是否允许组件内的控件超出范围
+      qtDesigner: true, // 是否开启类似QT Designer的唯一field生成模式
+      onDataChanged: (type, json) => {
+        console.log(type); // 新增、移动、删除、修改(参数调整)、大小、旋转
+        console.log(json); // 返回 template
+      },
+      onUpdateError: (e) => {
+        console.log(e);
+      },
+      settingContainer: '#PrintElementOptionSetting',
+      paginationContainer: '.hiprint-printPagination',
+    });
+  }
 
   function changeCompany(val, selectRows) {
     if (selectRows?.length > 0) {
@@ -243,12 +314,26 @@
   function printPreview() {
 
   }
+
+  function doOperationWhenClientConnected(operation) {
+    if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
+      operation?.();
+      return;
+    }
+    createMessage.error({
+      content: '客户端未连接',
+      duration: 2,
+    });
+  }
   /**
    * 打印
    */
   function print() {
-
-  }
+    doOperationWhenClientConnected(() => {
+      const printerList = hiprintTemplate.getPrinterList();
+      console.log(printerList);
+      hiprintTemplate.print2(printData, { printer: '', title: 'hiprint测试打印' });
+    });
   /**
    * 查询
    */

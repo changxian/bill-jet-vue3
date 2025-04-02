@@ -29,7 +29,7 @@
   const { createMessage } = useMessage();
 
   export default {
-    name: 'PrintPreview',
+    name: 'PrintView',
     components: { JUploadButton },
     props: {
       printSetting: {
