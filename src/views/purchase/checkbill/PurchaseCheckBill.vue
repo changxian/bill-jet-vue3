@@ -60,7 +60,7 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :columns="columns">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
@@ -161,7 +161,6 @@
       showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
-      rowSelection: { type: 'radio' },
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       actionColumn: {
         width: 120,
