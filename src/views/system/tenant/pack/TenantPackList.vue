@@ -3,7 +3,7 @@
               width="1200px" :showCancelBtn="false" :showOkBtn="false">
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px" v-if="showPackAddAndEdit">选择套餐进行绑定</a-button>
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px" v-if="showPackAddAndEdit">绑定并激活企业套餐</a-button>
         <!--        <a-button
                   v-if="selectedRowKeys.length > 0"
                   preIcon="ant-design:delete-outlined"
@@ -18,6 +18,7 @@
       </template>
     </BasicTable>
   </BasicModal>
+  <!-- 选定套餐进行绑定、续费？？？ -->
   <TenantPackMenuModal @register="registerPackMenu" @success="success" />
   <TenantPackUserModal @register="registerPackUser" @success="success" />
   <!-- 套餐记录 -->
@@ -182,7 +183,7 @@
   async function handleDelete(record) {
     //update-begin---author:wangshuai ---date:20230222  for：系统默认套餐不允许删除------------
     if (packCode.indexOf(record.packCode) != -1) {
-      createMessage.warning("默认系统套餐不允许删除");
+      createMessage.warning('默认系统套餐不允许删除');
       return;
     }
     //update-end---author:wangshuai ---date:20230222  for：系统默认套餐不允许删除------------

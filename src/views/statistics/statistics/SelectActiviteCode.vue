@@ -13,6 +13,7 @@
   import { AutoComplete } from 'ant-design-vue';
   import { defineEmits, defineProps, ref } from 'vue';
   import { listAll } from '@/views/setting/quickinfo/QuickInfo.api';
+  import { myActivateCodeList } from '@/views/activate/ActivateCode.api';
 
   const props = defineProps({
     modelValue: {
@@ -25,7 +26,7 @@
   // const queryValue = ref('');
   const options = ref<any>([]);
   function onSearch() {
-    listAll().then((res) => {
+    myActivateCodeList().then((res) => {
       options.value = [];
       console.log('res', res);
       res.forEach((item) => {

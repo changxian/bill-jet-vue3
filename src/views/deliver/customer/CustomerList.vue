@@ -142,6 +142,7 @@
       dynamicCols: userStore.getDynamicCols['jxc_customer'], // 添加扩展列信息
       canResize: false,
       useSearchForm: false,
+      clickToRowSelect: true,
       showIndexColumn: true,
       actionColumn: {
         width: 120,
@@ -150,6 +151,7 @@
       beforeFetch: async (params) => {
         return Object.assign(params, queryParam);
       },
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
       name: '客户管理',

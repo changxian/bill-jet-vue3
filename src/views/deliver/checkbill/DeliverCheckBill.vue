@@ -241,6 +241,7 @@
         hasPan.value = resultItems.length > 0;
         listTotalCount(extraInfo);
       },
+      rowSelection: { type: 'radio' },
     },
     exportConfig: {
       name: '送货对账单',

@@ -26,7 +26,7 @@
         <span v-if="1 == record.customizedTemp" style="color: red">需要</span><span v-else>不需要</span>
       </template>
     </BasicTable>
-    <!--  租户信息编辑页面  -->
+    <!--  租户信息添加、编辑页面  -->
     <TenantModal @register="registerModal" @success="reload" />
     <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk" />
     <TenantUserModal @register="registerTenUserModal" />
