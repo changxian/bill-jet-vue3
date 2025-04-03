@@ -158,6 +158,7 @@
       showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
+      rowSelection: { type: 'radio' },
       dynamicCols: userStore.getDynamicCols['jxc_billing'], // 添加扩展列信息
       actionColumn: {
         width: 120,
