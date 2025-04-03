@@ -60,7 +60,7 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :columns="columns">
+    <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
