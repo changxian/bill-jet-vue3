@@ -70,7 +70,7 @@ export const columns: BasicColumn[] = [
   },
   {
     dataIndex: 'companySize_dictText',
-    title: '公司规模',
+    title: '企业规模',
     width: 100,
   },
   {
@@ -174,7 +174,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'companyLogo',
-    label: '组织LOGO',
+    label: '企业LOGO',
     component: 'JImageUpload',
     componentProps: {
       text: 'logo',
@@ -190,7 +190,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'companySize',
-    label: '公司规模',
+    label: '企业规模',
     component: 'JDictSelectTag',
     componentProps: {
       dictCode: 'company_size',
@@ -198,10 +198,10 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'companyAddress',
-    label: '公司地址',
+    label: '企业地址',
     component: 'InputTextArea',
     componentProps: {
-      placeholder: '请输入公司地址',
+      placeholder: '请输入企业地址',
       rows: 4,
     },
   },
@@ -264,7 +264,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'category',
-    label: '客户类型',
+    label: '企业类型',
     component: 'RadioButtonGroup',
     defaultValue: 0,
     componentProps: {

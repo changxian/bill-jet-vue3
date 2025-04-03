@@ -12,7 +12,7 @@
       </a-col>
       <BasicModal v-bind="$attrs" @register="register" title="商品搜索" :width="'1400px'" @ok="handleOk">
         <div style="width: 98%">
-          <GoodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></GoodsSelectList>
+          <GoodsSelectList @get-select="getSelect" :billType="billType" :customerId="customerId" :goodsIds="goodsIds" :goodsName="goodsName" @db-ok="handleOk" :key="refreshKey"></GoodsSelectList>
         </div>
       </BasicModal>
     </a-row>
@@ -377,11 +377,18 @@
 
   const props = defineProps({
     customerId: { type: String, default: '' },
+    goodsIds: { type: String, default: '' },
   });
   // 客户id
   const customerId = computed(() => {
     if (props.customerId != '') {
       return props.customerId;
+    }
+  });
+  // 选择过的商品id
+  const goodsIds = computed(() => {
+    if (props.goodsIds != '') {
+      return props.goodsIds;
     }
   });
 
@@ -577,6 +584,7 @@
     goodsName,
     billType,
     customerId,
+    goodsIds,
   });
 </script>
 

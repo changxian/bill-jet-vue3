@@ -16,7 +16,7 @@
       <div class="aui-content">
         <div class="aui-container">
           <div class="aui-form">
-            <div class="aui-image" style="padding: 20px; position: relative;">
+            <div class="aui-image" style="padding: 20px; position: relative">
               <div style="display: flex; flex-direction: column; justify-content: space-between">
                 <div class="" style="display: flex; flex-direction: row; justify-content: inherit; align-items: center; flex: 2"><div><img src="/src/assets/images/logo.png" height="100" width="100" /></div>
                   <div style="display: flex; justify-content: center; align-items: center; text-align: center; font-weight: 800; font-size: 45px; padding-right: 28%; color: white">鑫 泓 软 件</div>

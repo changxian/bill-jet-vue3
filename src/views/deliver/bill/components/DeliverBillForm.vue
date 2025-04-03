@@ -71,7 +71,7 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <BillGoodsList ref="goodsRef" :customerId="customerId" @change-goods="changeGoods"></BillGoodsList>
+          <BillGoodsList ref="goodsRef" :customerId="customerId" :goodsIds="goodsIds" @change-goods="changeGoods"></BillGoodsList>
           <a-row>
             <a-col :span="span">
               <a-form-item label="开单类型" v-bind="validateInfos.type" id="DeliverBillForm-type" name="type">
@@ -173,8 +173,6 @@
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
-  const tipsShowPrice = userStore.getSystemSetting.tipsShowPrice;
-  console.log('////////////////////////////////////////////////////////////////////////////////////////////', tipsShowPrice);
 
   // 启用一客一价
   const singleCustPrice = userStore.getBillSetting.singleCustPrice;
@@ -302,6 +300,8 @@
   }
   // 传递给商品选择页面的参数
   const customerId = ref<string>('');
+  // 用于商品列表过滤这部分已经选中了商品
+  const goodsIds = ref<string>('');
   // function selectCustomer() {
   //   openCustomerSelectModal(true, {
   //     record: formData,
@@ -340,6 +340,7 @@
         const goods = goodsRef.value.getData().details;
         let goodsIds = '';
         if (goods.length > 0) {
+          debugger;
           goods.forEach((item) => {
             if (item.goodsId) {
               goodsIds += item.goodsId + ',';
@@ -369,7 +370,14 @@
     amount = 0.0;
     // 成本金额
     let cost = 0.0;
+    let ids = '';
     goods.forEach((item) => {
+      // 开单过滤已添加商品
+      debugger;
+      if (userStore.getSystemSetting.billIgnoreAddedGoods == true) {
+        ids += item.id + ',';
+      }
+      console.log('ids ', ids);
       // 计算重量、面积、体积小计
       item.weightSubtotal = 0;
       if (item.weight) {
@@ -389,6 +397,8 @@
         cost = parseFloat(cost) + parseFloat(item.costAmount);
       }
     });
+    goodsIds.value = ids;
+    console.log('goodsIds ', goodsIds.value);
     // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
     formData.discountAmount = (parseFloat(amount) * (10 - formData.discount) * 0.1).toFixed(decimalPlaces);
@@ -608,6 +618,7 @@
     clickSave,
     submitForm,
     customerId,
+    goodsIds,
   });
 </script>
 
