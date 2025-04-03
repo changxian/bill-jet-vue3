@@ -199,7 +199,7 @@
       packType: record.packType,
       packCategory: record.packCategory,
     }).then((res) => {
-      debugger;
+      // debugger;
       let catCode = res[0].activateCode;
       record.activateCode = catCode;
       renewByCodeModal(true, {

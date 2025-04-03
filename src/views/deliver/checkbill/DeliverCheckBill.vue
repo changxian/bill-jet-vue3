@@ -6,7 +6,7 @@
           <FastDate v-model:modelValue="fastDateParam" />
           <a-col :lg="6">
             <a-form-item label="单类型" name="type">
-              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
+              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择">
                 <a-select-option value="">所有</a-select-option>
                 <a-select-option value="3">送货开单</a-select-option>
                 <a-select-option value="2">退货开单</a-select-option>
@@ -35,12 +35,12 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="手机" id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户手机" allow-clear></a-input>
+                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户手机" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item label="联系人" id="DeliverBillForm-custContact" name="custContact">
-                <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
+                <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -63,20 +63,42 @@
     <BasicTable @register="registerTable" :columns="columns">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
-        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined">打印</a-button>
-        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">导出</a-button>
+        <a-button
+          type="primary"
+          v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'"
+          @click="printPreview"
+          preIcon="ant-design:printer-outlined"
+          >打印预览</a-button
+        >
+        <a-button type="primary" v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"
+          >打印</a-button
+        >
+        <a-button
+          type="primary"
+          v-auth="'deliver.checkBill:jxc_deliver_checkBill:exportXls'"
+          @click="onExportXls"
+          preIcon="ant-design:export-outlined"
+          >导出</a-button
+        >
       </template>
       <template #type_dictText="{ record }">
-        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else >{{ record.type_dictText }}</span>
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span
+        ><span v-else>{{ record.type_dictText }}</span>
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{'p_san': hasPan}" >总计
+      <p :class="{ p_san: hasPan }"
+        >总计
         <span class="total_span">数量：{{ countTotal }}</span>
-        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
-        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
+        <span class="total_span" v-if="showWeightCol"
+          >重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span
+        >
+        <span class="total_span" v-if="showAreaCol"
+          >面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span
+        >
+        <span class="total_span" v-if="showVolumeCol"
+          >体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span
+        >
         <span class="total_span">金额：{{ amountTotal }}</span>
         <span class="total_span">已付款：{{ paymentAmountTotal }}</span>
         <span class="total_span">优惠：{{ discountAmountTotal }}</span>
@@ -84,7 +106,6 @@
       </p>
     </div>
     <!-- 预览 -->
-    <div id="PrintElementOptionSetting" style="display: none"></div>
     <PrintPreview ref="preView" />
   </div>
 </template>
@@ -100,13 +121,15 @@
   import { getExportUrl, list } from '@/views/deliver/checkbill/DeliverCheckBill.api';
   import { useUserStore } from '@/store/modules/user';
   import PrintPreview from '@/views/template/components/TemplatePreview.vue';
-  import printData from '@/views/template/components/print-data';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
+  import { getTemplateData2, roil } from '@/views/template/view/index.api';
+  import * as vuePluginHiprint from '@/views/template/components';
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
+  const preView = ref();
 
   const userStore = useUserStore();
   // 总计：数量
@@ -138,70 +161,6 @@
   // 显示体积列【合计 和 列表皆显示】
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
-
-  // vuePluginHiprint.disAutoConnect();
-  var hiprint, defaultElementTypeProvider;
-  let hiprintTemplate;
-
-  function init() {
-    hiprint.init({
-      providers: [new defaultElementTypeProvider()],
-      lang: 'cn',
-    });
-    // 还原配置
-    hiprint.setConfig();
-
-    // this.form = {
-    //   ...this.formData,
-    // };
-    // this.form.customized = this.form.type === 1;
-    let panels;
-    // if (this.form && this.form.data) {
-    //   panels = JSON.parse(this.form.data);
-    // } else {
-    //   panels = panel;
-    // }
-    hiprintTemplate = new hiprint.PrintTemplate({
-      template: panels,
-      // 图片选择功能
-      onImageChooseClick: (target) => {
-        // 测试 3秒后修改图片地址值
-        setTimeout(() => {
-          target.refresh(
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAIIAQMAAAB99EudAAAABlBMVEUmf8vG2O41LStnAAABD0lEQVR42u3XQQqCQBSAYcWFS4/QUTpaHa2jdISWLUJjjMpclJoPGvq+1WsYfiJCZ4oCAAAAAAAAAAAAAAAAAHin6pL9c6H/fOzHbRrP0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0u/SY9LS0tLS0tLS0tLS0n+edm+UlpaWlpaWlpaWlpaW/tl0Ndyzbno7/+tPTJdd1wal69dNa6abx+Lq6TSeYtK7BX/Diek0XULSZZrakPRtV0i6Hu/KIt30q4fM0pvBqvR9mvsQkZaW9gyJT+f5lsnzjR54xAk8mAUeJyMPwYFH98ALx5Jr0kRLLndT7b64UX9QR/0eAAAAAAAAAAAAAAAAAAD/4gpryzr/bja4QgAAAABJRU5ErkJggg==',
-            {
-              real: true, // 根据图片实际尺寸调整(转pt)
-            }
-          );
-        }, 1000);
-      },
-      // 自定义可选字体
-      // 或者使用 hiprintTemplate.setFontList([])
-      // 或元素中 options.fontList: []
-      fontList: [
-        { title: '微软雅黑', value: 'Microsoft YaHei' },
-        { title: '黑体', value: 'STHeitiSC-Light' },
-        { title: '思源黑体', value: 'SourceHanSansCN-Normal' },
-        { title: '王羲之书法体', value: '王羲之书法体' },
-        { title: '宋体', value: 'SimSun' },
-        { title: '华为楷体', value: 'STKaiti' },
-        { title: 'cursive', value: 'cursive' },
-      ],
-      dataMode: 1, // 1:getJson 其他：getJsonTid 默认1
-      history: true, // 是否需要 撤销重做功能
-      willOutOfBounds: false, // 是否允许组件内的控件超出范围
-      qtDesigner: true, // 是否开启类似QT Designer的唯一field生成模式
-      onDataChanged: (type, json) => {
-        console.log(type); // 新增、移动、删除、修改(参数调整)、大小、旋转
-        console.log(json); // 返回 template
-      },
-      onUpdateError: (e) => {
-        console.log(e);
-      },
-      settingContainer: '#PrintElementOptionSetting',
-      paginationContainer: '.hiprint-printPagination',
-    });
-  }
 
   function changeCompany(val, selectRows) {
     if (selectRows?.length > 0) {
@@ -309,12 +268,12 @@
     discountAmountTotal.value = extraInfo.discountAmount || 0;
     debtAmountTotal.value = extraInfo.debtAmount || 0;
   }
-  /**
-   * 打印预览
-   */
-  function printPreview() {
 
-  }
+  // vuePluginHiprint.disAutoConnect();
+  var hiprint, defaultElementTypeProvider;
+  let printTemplate;
+  const printData = ref();
+  const tempData = ref();
 
   function doOperationWhenClientConnected(operation) {
     if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
@@ -326,15 +285,76 @@
       duration: 2,
     });
   }
+  async function init(tempData) {
+    hiprint = vuePluginHiprint.hiprint;
+    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
+    hiprint.init({
+      providers: [new defaultElementTypeProvider()],
+      lang: 'cn',
+    });
+    // 还原配置
+    hiprint.setConfig();
+    let panels = {
+      ...tempData,
+    };
+
+    printTemplate = new hiprint.PrintTemplate({
+      template: panels,
+    });
+  }
+
+  async function initPrint() {
+    // 获取模板信息 和 获取打印预览的数据信息
+    const loadData = await getTemplateData2({ category: 1 });
+    let template = loadData['template'];
+    printData.value = loadData['printData'];
+
+    if (null != template) {
+      tempData.value = template['data'];
+      if ('string' == typeof tempData.value) {
+        tempData.value = JSON.parse(tempData.value);
+      }
+
+      // 处理表格信息：多个表的列名不同，但取值为同一属性，对这些数据进行处理。多属性配置在 roil.config.ts 中
+      if (printData.value['table']) {
+        roil(printData.value['table']['table'], 1);
+        // 初始化打印预览插件
+        await init(tempData.value);
+      }
+    }
+  }
+
+  /**
+   * 打印预览
+   */
+  async function printPreview() {
+    await initPrint();
+    preView.value.show(printTemplate, printData.value);
+  }
+
   /**
    * 打印
    */
-  function print() {
+  async function print() {
+    if (null == printTemplate) {
+      await initPrint();
+    }
+
     doOperationWhenClientConnected(() => {
-      const printerList = hiprintTemplate.getPrinterList();
+      const printerList = printTemplate.getPrinterList();
       console.log(printerList);
-      hiprintTemplate.print2(printData, { printer: '', title: 'hiprint测试打印' });
+      if (0 == printerList) {
+        console.log('未连接上打印机');
+        createMessage.error({
+          content: '未连接上打印机',
+          duration: 5,
+        });
+        return;
+      }
+      printTemplate.print2(printData.value, { printer: '', title: '测试打印' });
     });
+  }
   /**
    * 查询
    */
@@ -354,10 +374,7 @@
     reload();
   }
 
-  defineExpose({
-
-  })
-
+  defineExpose({});
 </script>
 
 <style lang="less" scoped>

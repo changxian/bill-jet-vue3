@@ -25,7 +25,6 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JUploadButton from '@/components/Button/src/JUploadButton.vue';
-  import printData from "@/views/template/components/print-data";
   const { createMessage } = useMessage();
 
   export default {

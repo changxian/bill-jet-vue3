@@ -99,7 +99,7 @@
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     isUpdate.value = !!data?.isUpdate;
     isDetail.value = !!data?.showFooter;
-    debugger;
+    // debugger;
     if (unref(isUpdate)) {
       packType.value = data.record.packType;
       packCategory.value = data.record.packCategory;

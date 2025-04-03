@@ -347,7 +347,7 @@
       hisDebtAmount: totalHisDebtAmount.value,
       profitAmount: totalProfitAmount.value,
     };
-    debugger;
+    // debugger;
     if (showAreaCol.value) {
       toCount.area = areaTotal.value;
     }

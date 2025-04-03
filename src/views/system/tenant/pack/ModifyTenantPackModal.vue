@@ -81,7 +81,7 @@
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
-    debugger;
+    // debugger;
     setModalProps({ confirmLoading: true });
     values.id = unref(tenantPackId);
     if (unref(isUpdate)) {

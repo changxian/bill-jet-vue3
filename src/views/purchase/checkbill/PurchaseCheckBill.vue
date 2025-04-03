@@ -83,6 +83,8 @@
         <span class="total_span">未付款：{{ debtAmountTotal }}</span>
       </p>
     </div>
+    <!-- 预览 -->
+    <PrintPreview ref="preView" />
   </div>
 </template>
 
@@ -96,6 +98,11 @@
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
   import { getExportUrl, list } from '@/views/purchase/checkbill/PurchaseCheckBill.api';
   import { useUserStore } from '@/store/modules/user';
+  import PrintPreview from '@/views/template/components/TemplatePreview.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
+  import { getTemplateData2, roil } from '@/views/template/view/index.api';
+  import * as vuePluginHiprint from '@/views/template/components';
 
   const userStore = useUserStore();
   const hasPan = ref(true);
@@ -132,6 +139,7 @@
   const queryParam = reactive<any>({ companyId: '', companyName: ''});
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
+  const preView = ref();
 
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);
@@ -241,17 +249,91 @@
     discountAmountTotal.value = extraInfo.discountAmount || 0;
     debtAmountTotal.value = extraInfo.debtAmount || 0;
   }
+
+  // vuePluginHiprint.disAutoConnect();
+  var hiprint, defaultElementTypeProvider;
+  let printTemplate;
+  const printData = ref();
+  const tempData = ref();
+
+  function doOperationWhenClientConnected(operation) {
+    if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
+      operation?.();
+      return;
+    }
+    createMessage.error({
+      content: '客户端未连接',
+      duration: 2,
+    });
+  }
+  async function init(tempData) {
+    hiprint = vuePluginHiprint.hiprint;
+    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
+    hiprint.init({
+      providers: [new defaultElementTypeProvider()],
+      lang: 'cn',
+    });
+    // 还原配置
+    hiprint.setConfig();
+    let panels = {
+      ...tempData,
+    };
+
+    printTemplate = new hiprint.PrintTemplate({
+      template: panels,
+    });
+  }
+
+  async function initPrint() {
+    // 获取模板信息 和 获取打印预览的数据信息
+    const loadData = await getTemplateData2({ category: 2 });
+    let template = loadData['template'];
+    printData.value = loadData['printData'];
+
+    if (null != template) {
+      tempData.value = template['data'];
+      if ('string' == typeof tempData.value) {
+        tempData.value = JSON.parse(tempData.value);
+      }
+
+      // 处理表格信息：多个表的列名不同，但取值为同一属性，对这些数据进行处理。多属性配置在 roil.config.ts 中
+      if (printData.value['table']) {
+        roil(printData.value['table']['table'], 1);
+        // 初始化打印预览插件
+        await init(tempData.value);
+      }
+    }
+  }
+
   /**
    * 打印预览
    */
-  function printPreview() {
-
+  async function printPreview() {
+    await initPrint();
+    preView.value.show(printTemplate, printData.value);
   }
   /**
    * 打印
    */
-  function print() {
+  async function print() {
+    if (null == printTemplate) {
+      await initPrint();
+    }
 
+    doOperationWhenClientConnected(() => {
+      const printerList = printTemplate.getPrinterList();
+      console.log(printerList);
+      if (0 == printerList) {
+        console.log('未连接上打印机');
+        createMessage.error({
+          content: '未连接上打印机',
+          duration: 5,
+        });
+        return;
+      }
+      printTemplate.print2(printData.value, { printer: '', title: '测试打印' });
+    });
   }
   /**
    * 查询
@@ -259,7 +341,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -273,7 +355,7 @@
   }
 
     defineExpose({
-       
+
     })
 
 </script>

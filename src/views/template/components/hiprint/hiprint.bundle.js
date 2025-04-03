@@ -10830,8 +10830,8 @@ var hiprint = function (t) {
         var i = $.extend({}, n || {});
         i.imgToBase64 = i.imgToBase64 ?? false;
         i.pageSize = {
-          height: this.editingPanel.height * 1000,
-          width: this.editingPanel.width * 1000
+          height: this.printPanels[0].height * 1000,
+          width: this.printPanels[0].width * 1000
         }
         if (i.printByFragments) {
           // 分批打印
