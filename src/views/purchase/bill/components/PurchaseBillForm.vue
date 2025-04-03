@@ -188,9 +188,11 @@
     status: 1,
     invoiceStatus: 1,
     userName: '',
+    operatorId: userStore.getUserInfo.id,
+    operatorName: userStore.getUserInfo.realname,
+    createName: userStore.getUserInfo.realname,
     remark: '',
     version: 0,
-    createName: '',
     dynamicSupFields: undefined,
     dynamicFields: undefined,
   });
