@@ -159,7 +159,7 @@
   const { createMessage } = useMessage();
   //表单提交事件
   async function handleSubmit(v) {
-    debugger;
+    // debugger;
     const values = await validate();
     if (values.activateCode == null) {
       createMessage.warning('当前类型套餐的激活码已使用完，请先获取激活码后再来给企业激活');

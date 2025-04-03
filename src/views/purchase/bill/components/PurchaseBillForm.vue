@@ -260,7 +260,7 @@
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
       supplierId.value = selectRows[0].id;
-      debugger;
+      // debugger;
       // 获取供应商往期欠款金额
       if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
         byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
@@ -279,7 +279,7 @@
   }
   let amount: number = 0.0;
   function changeGoods(goods) {
-    debugger;
+    // debugger;
     // 先将金额置为0
     amount = 0.0;
     // let num = 0.0;
