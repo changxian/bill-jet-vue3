@@ -69,13 +69,13 @@
                          allow-clear></a-input>
               </a-form-item>
             </a-col>
-            <a-col :span="12">
+            <!--<a-col :span="12">
               <a-form-item label="折扣率" v-bind="validateInfos.discount" id="SupplierForm-discount"
                            name="discount">
                 <a-input-number v-model:value="formData.discount" placeholder="请输入折扣率"
                                 style="width: 100%"/>
               </a-form-item>
-            </a-col>
+            </a-col>-->
             <a-col :span="24">
               <a-form-item label="备注" v-bind="validateInfos.remark" id="CustomerForm-remark"
                            name="remark">

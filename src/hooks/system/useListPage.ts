@@ -82,6 +82,8 @@ export function addDynamicCols(oriColumns, dynamicCols) {
         key: fieldName,
         value: fieldName,
         dataIndex: fieldName,
+        width: 120,
+        resizable: true,
         slots: { customRender: fieldName },
         customRender: ({ text, record }) => {
           if (!record) {
