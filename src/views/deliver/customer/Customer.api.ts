@@ -7,6 +7,7 @@ enum Api {
   list = '/deliver/customer/customer/list',
   save = '/deliver/customer/customer/add',
   edit = '/deliver/customer/customer/edit',
+  customerNum = '/deliver/customer/customer/customerNum',
   deleteOne = '/deliver/customer/customer/delete',
   deleteBatch = '/deliver/customer/customer/deleteBatch',
   importExcel = '/deliver/customer/customer/importExcel',
@@ -29,6 +30,11 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+/**
+ * 获取租户总客户数接口
+ */
+export const customerNum = () => defHttp.get({ url: Api.customerNum });
 
 /**
  * 删除单个
