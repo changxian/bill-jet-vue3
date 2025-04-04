@@ -39,9 +39,14 @@
 								<a-input v-model:value="formData.webSite" placeholder="请输入网站" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+            <a-col :span="24">
+              <a-form-item label="联系人" v-bind="validateInfos.contact" id="TenantCompanyForm-phone" name="phone">
+                <a-input v-model:value="formData.contact" placeholder="请输入联系人" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
 						<a-col :span="24">
-							<a-form-item label="电话" v-bind="validateInfos.phone" id="TenantCompanyForm-phone" name="phone">
-								<a-input v-model:value="formData.phone" placeholder="请输入电话" allow-clear ></a-input>
+							<a-form-item label="联系人电话" v-bind="validateInfos.phone" id="TenantCompanyForm-phone" name="phone">
+								<a-input v-model:value="formData.phone" placeholder="请输入联系人电话" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -109,6 +114,7 @@
     wechat: '',
     email: '',
     isDefault: '0',
+    contact: '',
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
