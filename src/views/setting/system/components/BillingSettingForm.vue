@@ -206,13 +206,13 @@
           <a-row>
             <a-col :span="12">
               <a-form-item label="商品库存预警阈值" v-bind="validateInfos.stockWarningThreshold" id="BillingSettingForm-stockWarningThreshold" name="stockWarningThreshold">
-                <a-input-number v-model:value="formData.stockWarningThreshold" placeholder="请输入商品库存预警阈值" min="0" max="200" :precision="0" style="width: 100%" class="underLine-text" />
+                <a-input-number v-model:value="formData.stockWarningThreshold" placeholder="请输入商品库存预警阈值" min="0" :precision="0" style="width: 100%" class="underLine-text" />
               </a-form-item>
             </a-col>
           </a-row>
           <a-row>
             <a-col :span="24">
-              <p style="margin-bottom: 20px; color: red">提示：预警阈值最大为200，设置后对所有商品库存生效，单个商品库存低于预警阈值就会发系统消息进行提醒。</p>
+              <p style="margin-bottom: 20px; color: red">提示：根据自己行业来合理设定库存预警阈值，阈值设置后对所有商品库存生效。</p>
             </a-col>
           </a-row>
           <a-row>

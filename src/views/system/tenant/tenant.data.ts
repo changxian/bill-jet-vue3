@@ -7,22 +7,38 @@ export const columns: BasicColumn[] = [
     title: '企业名称',
     dataIndex: 'name',
     width: 200,
+    resizable: true,
     align: 'left',
   },
   {
     title: '企业编号',
     dataIndex: 'id',
-    width: 150,
+    width: 100,
+    resizable: true,
   },
   {
     title: '企业类别',
     dataIndex: 'category_dictText',
-    width: 120,
+    width: 100,
+    resizable: true,
+  },
+  {
+    title: '企业联系人',
+    dataIndex: 'contact',
+    width: 100,
+    resizable: true,
+  },
+  {
+    title: '联系方式',
+    dataIndex: 'contactMethod',
+    width: 180,
+    resizable: true,
   },
   {
     title: '企业LOGO',
     dataIndex: 'companyLogo',
     width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       if (!text) {
         return text;
@@ -56,6 +72,7 @@ export const columns: BasicColumn[] = [
     title: '客服二维码',
     dataIndex: 'customerServiceQrcode',
     width: 120,
+    resizable: true,
     customRender: ({ text }) => {
       if (!text) {
         return text;
@@ -67,17 +84,18 @@ export const columns: BasicColumn[] = [
     dataIndex: 'trade_dictText',
     title: '所属行业',
     width: 150,
+    resizable: true,
   },
-  {
-    dataIndex: 'companySize_dictText',
-    title: '企业规模',
-    width: 100,
-  },
-  {
-    dataIndex: 'houseNumber',
-    title: '门牌号',
-    width: 100,
-  },
+  // {
+  //   dataIndex: 'companySize_dictText',
+  //   title: '企业规模',
+  //   width: 100,
+  // },
+  // {
+  //   dataIndex: 'houseNumber',
+  //   title: '门牌号',
+  //   width: 100,
+  // },
   /*{
     dataIndex: 'position_dictText',
     title: '职级',
@@ -92,6 +110,7 @@ export const columns: BasicColumn[] = [
     title: '定制模板',
     dataIndex: 'customizedTemp',
     width: 100,
+    resizable: true,
     slots: { customRender: 'customizedTemp_dictText' },
     /*customRender: ({text}) => {
       if (text === 0) {
@@ -103,12 +122,14 @@ export const columns: BasicColumn[] = [
   {
     dataIndex: 'createBy_dictText',
     title: '创建者',
-    width: 150,
+    width: 120,
+    resizable: true,
   },
   {
     title: '状态',
     dataIndex: 'status_dictText',
-    width: 100,
+    width: 80,
+    resizable: true,
   },
 ];
 
@@ -188,21 +209,35 @@ export const formSchema: FormSchema[] = [
       dictCode: 'trade',
     },
   },
-  {
-    field: 'companySize',
-    label: '企业规模',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'company_size',
-    },
-  },
+  // {
+  //   field: 'companySize',
+  //   label: '企业规模',
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'company_size',
+  //   },
+  // },
   {
     field: 'companyAddress',
     label: '企业地址',
     component: 'InputTextArea',
     componentProps: {
       placeholder: '请输入企业地址',
-      rows: 4,
+      rows: 1,
+    },
+  },
+  {
+    field: 'contact',
+    label: '企业联系人',
+    component: 'Input',
+  },
+  {
+    field: 'contactMethod',
+    label: '联系方式',
+    component: 'InputTextArea',
+    componentProps: {
+      placeholder: '请输入手机号、微信号等联系方式',
+      rows: 2,
     },
   },
   //  {
@@ -332,22 +367,26 @@ export const packColumns: BasicColumn[] = [
   {
     title: '企业名称',
     dataIndex: 'tenantIdName',
-    width: 100,
+    width: 200,
+    resizable: true,
   },
   {
     title: '企业编号',
     dataIndex: 'tenantId',
-    width: 100,
+    width: 80,
+    resizable: true,
   },
   {
     title: '套餐名称',
     dataIndex: 'packName',
-    width: 100,
+    width: 120,
+    resizable: true,
   },
   {
     title: '套餐类型',
     dataIndex: 'packType',
-    width: 150,
+    width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       if (text === 1) {
         return '送货单版';
@@ -359,7 +398,8 @@ export const packColumns: BasicColumn[] = [
   {
     title: '套餐类别',
     dataIndex: 'packCategory',
-    width: 150,
+    width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       if (text === 1) {
         return '单机版';
@@ -371,44 +411,52 @@ export const packColumns: BasicColumn[] = [
   {
     title: '价格',
     dataIndex: 'price',
-    width: 120,
+    width: 80,
+    resizable: true,
   },
   {
     title: '支持机构数',
     dataIndex: 'orgNum',
-    width: 120,
+    width: 100,
+    resizable: true,
   },
   {
     title: '支持客户数',
     dataIndex: 'customerNum',
-    width: 120,
+    width: 100,
+    resizable: true,
   },
   {
     title: '支持用户数',
     dataIndex: 'accountNum',
-    width: 120,
+    width: 100,
+    resizable: true,
   },
   {
     title: '支持商品数',
     dataIndex: 'goodsNum',
-    width: 120,
+    width: 100,
+    resizable: true,
   },
   {
     title: '开始时间',
     dataIndex: 'beginDate',
-    sorter: true,
-    width: 180,
+    // sorter: true,
+    width: 150,
+    resizable: true,
   },
   {
     title: '到期时间',
     dataIndex: 'endDate',
-    sorter: true,
-    width: 180,
+    // sorter: true,
+    width: 150,
+    resizable: true,
   },
   {
     title: '状态',
     dataIndex: 'status',
-    width: 100,
+    width: 60,
+    resizable: true,
     customRender: ({ text }) => {
       if (text === '1') {
         return '开启';
@@ -420,7 +468,8 @@ export const packColumns: BasicColumn[] = [
   {
     title: '备注',
     dataIndex: 'remarks',
-    width: 150,
+    width: 120,
+    resizable: true,
   },
 ];
 

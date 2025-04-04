@@ -49,7 +49,7 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item name="goodsNum">
-                <template #label><span title="支持商品数量()">支持商品</span></template>
+                <template #label><span title="支持商品数量">支持商品</span></template>
                 <a-input-number placeholder="请输入支持商品数量" v-model:value="queryParam.goodsNum"></a-input-number>
               </a-form-item>
             </a-col>
@@ -90,6 +90,9 @@
       <!--操作栏-->
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
+      </template>
+      <template #packType_dictText="{ record }">
+        <span v-if="3 == record.packType" style="color: red">{{ record.packType_dictText }}</span><span v-else>{{ record.packType_dictText }}</span>
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
