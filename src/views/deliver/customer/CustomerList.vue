@@ -219,7 +219,7 @@
         categoryId: categoryId.value,
       });
     } else {
-      createMessage.warning('公司数量已达上限！如果还想添加更多公司，请联系运营商扩容！');
+      createMessage.warning('客户数量已达上限！如果还想添加更多客户，请联系运营商扩容！');
     }
   }
   /**
