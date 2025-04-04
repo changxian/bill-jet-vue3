@@ -131,6 +131,16 @@ export const columns: BasicColumn[] = [
     dataIndex: 'contractCode',
   },
   {
+    title: '送货人姓名',
+    align: 'center',
+    dataIndex: 'deliveryBy',
+  },
+  {
+    title: '送货人电话',
+    align: 'center',
+    dataIndex: 'deliveryTel',
+  },
+  {
     title: '状态',
     align: 'center',
     dataIndex: 'status_dictText',

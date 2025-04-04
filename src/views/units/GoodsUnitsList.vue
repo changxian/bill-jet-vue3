@@ -83,7 +83,7 @@
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 280,
+        width: 580,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
