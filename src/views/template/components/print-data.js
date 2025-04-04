@@ -5,11 +5,11 @@ export default {
   address2: '贵州省贵阳市观山湖区金融城XXX银行', // 分店地址
   tel: '18888888899', // 电话 销售热线
   tel2: '1888888899', // 电话 销售热线
-  fax: '666666', // 传真
+  fax: '6666-668888', // 传真
   bankNum: '666666', // 银行账号
   bankAccount: '贵阳市XXX科技有限公司', // 银行账户
-  remark: '一些注意事项信息、一些注意事项信息、一些注意事项信息、一些注意事项信息、', // 注 備註
-  desc: '一些注意事项信息、一些注意事项信息、一些注意事项信息、一些注意事项信息、', // 说明
+  remark: '注意事项信息', // 注 備註
+  desc: '注意事项信息', // 说明
   total: '195234.89', // 本单金额
   payment: '195234.89', // 已收，付款金额
   discount: '216.87', // 本单优惠金额
@@ -25,6 +25,7 @@ export default {
   billDate: '2024/10/06', // 开单日期
   billBy: '刘开票人', // 开票人员
   createBy: '刘制单员', // 制单人员
+  createName: '刘制单员', // 制单人员
   createDate: '2024/10/06', // 制单时间
   createTime: '2024/10/06 12:12:12', // 制单时间
   authBy: '张审核人', // 审核人
@@ -50,8 +51,8 @@ export default {
   // 客户
   company_1: 'XXXXXX某某某有限公司', // 客户名称
   address_1: '北京市贵阳市观山湖区金融城XXX银行', // 地址
-  tel_1: '188888888/199999999', //  客户电话
-  fax_1: '666666', // 客户传真
+  tel_1: '18888888888', //  客户电话
+  fax_1: '6666-6688888', // 客户传真
   contact_1: '张某某', // 联系人
   contactTel_1: '18899889988', // 联系人电话
   signer: '王五王五', // 签收人 收货人
@@ -65,7 +66,7 @@ export default {
   table: [
     {
       orderNo: 'CS001',
-      code: '1',
+      code: '1123',
       seq: 1,
       spec: '规格1',
       spec2: '剂型1',
@@ -85,7 +86,7 @@ export default {
     },
     {
       orderNo: 'CS002',
-      code: '2',
+      code: '2334',
       seq: 2,
       spec: '规格2',
       spec2: '剂型1',
@@ -105,7 +106,7 @@ export default {
     },
     {
       orderNo: 'CS003',
-      code: '3',
+      code: '3222',
       seq: 3,
       spec: '规格3',
       spec2: '剂型1',
@@ -125,7 +126,7 @@ export default {
     },
     {
       orderNo: 'CS004',
-      code: '4',
+      code: '4666',
       seq: 4,
       spec: '规格4',
       spec2: '剂型1',
@@ -145,7 +146,7 @@ export default {
     },
     {
       orderNo: 'CS005',
-      code: '5',
+      code: '5333',
       seq: 5,
       spec: '规格5',
       spec2: '剂型1',
@@ -165,7 +166,7 @@ export default {
     },
     {
       orderNo: 'CS006',
-      code: '6',
+      code: '6111',
       seq: 6,
       spec: '规格6',
       spec2: '剂型1',
@@ -185,7 +186,7 @@ export default {
     },
     {
       orderNo: 'CS007',
-      code: '7',
+      code: '7122',
       seq: 7,
       spec: '规格6',
       spec2: '剂型1',
@@ -205,7 +206,7 @@ export default {
     },
     {
       orderNo: 'CS008',
-      code: '8',
+      code: '8222',
       seq: 8,
       spec: '规格6',
       spec2: '剂型1',

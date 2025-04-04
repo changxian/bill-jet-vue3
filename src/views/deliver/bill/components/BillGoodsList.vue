@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row>
-      <a-col :span="8" style="position: relative">
+      <a-col :span="6" style="position: relative">
         <a-form-item label="商品搜索" id="DeliverBillForm-companyId" name="goodsName">
           <div style="display: flex">
             <a-input v-model:value="goodsName" placeholder="条码/编号/名称/规格" />

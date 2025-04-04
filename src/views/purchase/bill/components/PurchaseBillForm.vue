@@ -15,8 +15,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="供应商电话" v-bind="validateInfos.supplierPhone" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
-                <a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商电话" allow-clear></a-input>
+              <a-form-item label="供应商地址" v-bind="validateInfos.supplierAddress" id="PurchaseBillForm-supplierAddress" name="supplierAddress">
+                <a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商地址" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -24,14 +24,16 @@
 								<a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
-              <a-form-item label="联系人" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
+              <a-form-item label="联系人名" v-bind="validateInfos.supplierContact" id="PurchaseBillForm-supplierContact" name="supplierContact">
                 <a-input v-model:value="formData.supplierContact" placeholder="请输入供应商联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="供应商地址" v-bind="validateInfos.supplierAddress" id="PurchaseBillForm-supplierAddress" name="supplierAddress">
-                <a-input v-model:value="formData.supplierAddress" placeholder="请输入供应商地址" allow-clear></a-input>
+              <a-form-item label="联系人电话" v-bind="validateInfos.supplierPhone" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
+                <a-input v-model:value="formData.supplierPhone" placeholder="请输入供应商电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -39,9 +41,21 @@
                 <a-date-picker placeholder="请选择开单日期" v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" allow-clear />
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
               <a-form-item label="送货车号" v-bind="validateInfos.careNo" id="PurchaseBillForm-careNo" name="careNo">
                 <a-input v-model:value="formData.careNo" placeholder="请输入送货车号" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人姓名" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryBy" placeholder="请输入送货人姓名" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人电话" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryTel" placeholder="请输入送货人电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -184,6 +198,8 @@
     debtAmount: 0.0,
     hisDebtAmount: 0,
     careNo: '',
+    deliveryBy: '',
+    deliveryTel: '',
     contractCode: '',
     status: 1,
     invoiceStatus: 1,
@@ -405,6 +421,8 @@
     formData.status = '';
     formData.invoiceStatus = undefined;
     formData.careNo = '';
+    formData.deliveryBy = '';
+    formData.deliveryTel = '';
     formData.contractCode = '';
     formData.remark = '';
     formData.createName = '';

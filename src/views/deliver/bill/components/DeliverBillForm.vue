@@ -19,8 +19,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="联系电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="formData.custPhone" placeholder="请输入联系电话" allow-clear></a-input>
+              <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
+                <a-input v-model:value="formData.custAddress" placeholder="请输入客户地址" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -28,14 +28,16 @@
                 <a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
-              <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
-                <a-input v-model:value="formData.custAddress" placeholder="请输入客户地址" allow-clear ></a-input>
+              <a-form-item label="联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
+                <a-input v-model:value="formData.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
+              <a-form-item label="联系电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
+                <a-input v-model:value="formData.custPhone" placeholder="请输入联系电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -44,13 +46,25 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
-                <a-input v-model:value="formData.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
+              <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
+                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
               <a-form-item label="送货车号" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
                 <a-input v-model:value="formData.careNo" placeholder="请输入送货车号" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人姓名" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryBy" placeholder="请输入送货人姓名" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人电话" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryTel" placeholder="请输入送货人电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -217,6 +231,8 @@
     debtAmount: 0,
     hisDebtAmount: 0,
     careNo: '',
+    deliveryBy: '',
+    deliveryTel: '',
     contractCode: '',
     status: undefined,
     invoiceStatus: undefined,
@@ -524,6 +540,8 @@
     formData.status = '';
     formData.invoiceStatus = undefined;
     formData.careNo = '';
+    formData.deliveryBy = '';
+    formData.deliveryTel = '';
     formData.contractCode = '';
     formData.remark = '';
     formData.userId = '';
