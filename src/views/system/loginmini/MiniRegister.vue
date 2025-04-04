@@ -195,10 +195,10 @@
       createMessage.warn(t('sys.login.mobilePlaceholder'));
       return;
     }
-    if (!formData.email) {
-      createMessage.warn(t('sys.login.emailPlaceholder'));
-      return;
-    }
+    // if (!formData.email) {
+    //   createMessage.warn(t('sys.login.emailPlaceholder'));
+    //   return;
+    // }
     if (!formData.smscode) {
       createMessage.warn(t('sys.login.smsPlaceholder'));
       return;

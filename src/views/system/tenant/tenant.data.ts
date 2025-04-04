@@ -335,6 +335,11 @@ export const packColumns: BasicColumn[] = [
     width: 100,
   },
   {
+    title: '企业编号',
+    dataIndex: 'tenantId',
+    width: 100,
+  },
+  {
     title: '套餐名称',
     dataIndex: 'packName',
     width: 100,
