@@ -374,17 +374,22 @@ export const packColumns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '机构数',
+    title: '支持机构数',
     dataIndex: 'orgNum',
     width: 120,
   },
   {
-    title: '用户数',
+    title: '支持客户数',
+    dataIndex: 'customerNum',
+    width: 120,
+  },
+  {
+    title: '支持用户数',
     dataIndex: 'accountNum',
     width: 120,
   },
   {
-    title: '商品数',
+    title: '支持商品数',
     dataIndex: 'goodsNum',
     width: 120,
   },
@@ -395,7 +400,7 @@ export const packColumns: BasicColumn[] = [
     width: 180,
   },
   {
-    title: '结束时间',
+    title: '到期时间',
     dataIndex: 'endDate',
     sorter: true,
     width: 180,

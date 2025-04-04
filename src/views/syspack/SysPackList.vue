@@ -36,6 +36,12 @@
               </a-form-item>
             </a-col>
             <a-col :lg="6">
+              <a-form-item name="customerNum">
+                <template #label><span title="支持客户数">支持客户</span></template>
+                <a-input-number placeholder="请输入支持客户数" v-model:value="queryParam.customerNum"></a-input-number>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="6">
               <a-form-item name="accountNum">
                 <template #label><span title="支持账号数">支持账号</span></template>
                 <a-input-number placeholder="请输入支持账号数" v-model:value="queryParam.accountNum"></a-input-number>
@@ -47,42 +53,6 @@
                 <a-input-number placeholder="请输入支持商品数量" v-model:value="queryParam.goodsNum"></a-input-number>
               </a-form-item>
             </a-col>
-            <!--<a-col :lg="6">
-              <a-form-item name="price">
-                <template #label><span title="产品标准价格">产品标准</span></template>
-                <a-input-number placeholder="请输入产品标准价格" v-model:value="queryParam.price"></a-input-number>           
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item name="discounted">
-                <template #label><span title="产品折扣">产品折扣</span></template>
-                <a-input-number placeholder="请输入产品折扣" v-model:value="queryParam.discounted"></a-input-number>           
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item name="discountedPrice">
-                <template #label><span title="产品折扣价">产品折扣</span></template>
-                <a-input-number placeholder="请输入产品折扣价" v-model:value="queryParam.discountedPrice"></a-input-number>           
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item name="specification">
-                <template #label><span title="规格">规格</span></template>
-                <a-input-number placeholder="请输入规格" v-model:value="queryParam.specification"></a-input-number>           
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item name="specificationUnit">
-                <template #label><span title="规格单位">规格单位</span></template>
-                <a-input placeholder="请输入规格单位" v-model:value="queryParam.specificationUnit" allow-clear ></a-input>
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item name="status">
-                <template #label><span title="产品启用状态(1 启用, 0 停用)">产品启用</span></template>
-                <a-input placeholder="请输入产品启用状态(1 启用, 0 停用)" v-model:value="queryParam.status" allow-clear ></a-input>
-              </a-form-item>
-            </a-col>-->
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">

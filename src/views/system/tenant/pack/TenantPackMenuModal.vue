@@ -60,6 +60,12 @@
       component: 'InputNumber',
     },
     {
+      field: 'customerNum',
+      label: '客户数',
+      dynamicDisabled: true,
+      component: 'InputNumber',
+    },
+    {
       field: 'goodsNum',
       label: '商品数',
       dynamicDisabled: true,

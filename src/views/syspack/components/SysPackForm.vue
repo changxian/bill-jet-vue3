@@ -25,6 +25,11 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
+							<a-form-item label="支持客户数" v-bind="validateInfos.customerNum" id="SysPackForm-customerNum" name="customerNum">
+								<a-input-number v-model:value="formData.customerNum" placeholder="请输入支持客户数" style="width: 100%" />
+							</a-form-item>
+						</a-col>
+						<a-col :span="12">
 							<a-form-item label="支持账号数" v-bind="validateInfos.accountNum" id="SysPackForm-accountNum" name="accountNum">
 								<a-input-number v-model:value="formData.accountNum" placeholder="请输入支持账号数" style="width: 100%" />
 							</a-form-item>
@@ -103,6 +108,7 @@
     category: '',
     packType: '',
     orgNum: undefined,
+    customerNum: undefined,
     accountNum: undefined,
     goodsNum: undefined,
     price: undefined,

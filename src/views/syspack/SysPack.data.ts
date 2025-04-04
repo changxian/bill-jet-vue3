@@ -18,9 +18,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'packType_dictText',
   },
   {
-    title: '支持企业数',
+    title: '支持机构数',
     align: 'center',
     dataIndex: 'orgNum',
+  },
+  {
+    title: '支持客户数',
+    align: 'center',
+    dataIndex: 'customerNum',
   },
   {
     title: '支持账号数',
