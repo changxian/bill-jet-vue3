@@ -196,7 +196,7 @@
 
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
-  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
+  import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   const [registerModal, { openModal }] = useModal();
 
   const route = useRoute();
