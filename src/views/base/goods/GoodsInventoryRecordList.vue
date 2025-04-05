@@ -137,7 +137,7 @@
     console.log(record);
     // 只能撤销非开单库存记录
     if (record.billId != null) {
-      return createMessage.warning('送货开单、进货开单的库存明细请到单据管理里面进行删除操作！');
+      return createMessage.warning('销售开单、进货开单的库存明细请到单据管理里面进行删除操作！');
     }
     await rollBack({ id: record.id }).then((data) => {
       createMessage.success(data);

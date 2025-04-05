@@ -21,7 +21,7 @@
                   <a-form-item label="类型" name="type">
                     <a-select v-model:value="queryParam.type">
                       <a-select-option value="">所有</a-select-option>
-                      <a-select-option value="3">送货还款</a-select-option>
+                      <a-select-option value="3">销售还款</a-select-option>
                       <a-select-option value="2">退货还款</a-select-option>
                     </a-select>
                   </a-form-item>

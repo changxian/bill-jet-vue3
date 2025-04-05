@@ -6,7 +6,7 @@
         <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 16px">套餐资料</div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">套餐类型</span>
-          <span class="gray-3">{{ packInfo?.packCategory == 1 ? '单机版' : '云端版' }} {{ packInfo?.packType == 1 ? '送货单' : '进销存' }}</span>
+          <span class="gray-3">{{ packInfo?.packCategory == 1 ? '单机版' : '云端版' }} {{ packInfo?.packType == 1 ? '销售单' : '进销存' }}</span>
         </div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">套餐价格</span>

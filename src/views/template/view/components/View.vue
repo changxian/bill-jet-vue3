@@ -3,8 +3,8 @@
     <!--查询区域-->
     <div class="jcx-card">
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为送货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为送货退货模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为销售模板</a-button>
+      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为销售退货模板</a-button>
       <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport"
         >导出模板</a-button
       >

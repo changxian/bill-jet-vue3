@@ -5,8 +5,8 @@
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="DeliverDebtForm">
           <a-row>
 						<a-col :span="24">
-							<a-form-item label="欠款类型（1：送货欠款,2： 退货欠款）" v-bind="validateInfos.type" id="DeliverDebtForm-type" name="type">
-								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择欠款类型（1：送货欠款,2： 退货欠款）"  allow-clear />
+							<a-form-item label="欠款类型（1：销售欠款,2： 退货欠款）" v-bind="validateInfos.type" id="DeliverDebtForm-type" name="type">
+								<j-dict-select-tag v-model:value="formData.type" dictCode="" placeholder="请选择欠款类型（1：销售欠款,2： 退货欠款）"  allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -35,8 +35,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="送货欠款金额" v-bind="validateInfos.deliverDebtAmount" id="DeliverDebtForm-deliverDebtAmount" name="deliverDebtAmount">
-								<a-input-number v-model:value="formData.deliverDebtAmount" placeholder="请输入送货欠款金额" style="width: 100%" />
+							<a-form-item label="销售欠款金额" v-bind="validateInfos.deliverDebtAmount" id="DeliverDebtForm-deliverDebtAmount" name="deliverDebtAmount">
+								<a-input-number v-model:value="formData.deliverDebtAmount" placeholder="请输入销售欠款金额" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -95,7 +95,7 @@
     custName: [{ required: true, message: '请输入客户名!'},],
     custPhone: [{ required: true, message: '请输入客户手机!'},],
     custContact: [{ required: true, message: '请输入客户联系人!'},],
-    deliverDebtAmount: [{ required: true, message: '请输入送货欠款金额!'},],
+    deliverDebtAmount: [{ required: true, message: '请输入销售欠款金额!'},],
     returnDebtAmount: [{ required: true, message: '请输入退货欠款金额!'},],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });

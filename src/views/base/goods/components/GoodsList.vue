@@ -116,7 +116,7 @@
     customerId: { type: String, default: '' },
     goodsIds: { type: String, default: '' },
   });
-  // 开单类型【送货开单：deliver，进货开单：purchase】
+  // 开单类型【销售开单：deliver，进货开单：purchase】
   const billType = computed(() => props?.billType);
   // 搜索框内容
   const goodsName = computed(() => props?.goodsName);

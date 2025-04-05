@@ -11,7 +11,7 @@
                 <template #label><span title="类型">类型</span></template>
                 <a-select v-model:value="queryParam.type">
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="3">送货欠款</a-select-option>
+                  <a-select-option value="3">销售欠款</a-select-option>
                   <a-select-option value="2">退货欠款</a-select-option>
                 </a-select>
               </a-form-item>

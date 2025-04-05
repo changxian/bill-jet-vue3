@@ -92,10 +92,10 @@ const total={
     title: { text: '进货退货数据', left: 'center' },
   };
     const deliverDateTypeOption = {
-    title: { text: '送货数据', left: 'center' },
+    title: { text: '销售数据', left: 'center' },
   };
     const deliverReturnDateTypeOption = {
-    title: { text: '送货退货数据', left: 'center' },
+    title: { text: '销售退货数据', left: 'center' },
   };
 
 const purchaseDateTypeData = ref([])

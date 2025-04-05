@@ -42,8 +42,8 @@ export default {
   deliverStore: '发某某', // 发货仓库
   deliverDate: '2024/10/07', // 出库仓库
 
-  deliveryNo: 'B0933jjsd', // 送货车号
-  deliveryDate: '2024/10/07', // 送货日期
+  deliveryNo: 'B0933jjsd', // 销售车号
+  deliveryDate: '2024/10/07', // 销售日期
   deliveryBy: '宋某某', // 送货人
   deliveryTel: '宋某某', // 送货人
   deliveryCompany: '宋某某******公司', // 送货人物流公司

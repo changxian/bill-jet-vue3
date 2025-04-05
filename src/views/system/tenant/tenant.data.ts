@@ -389,9 +389,9 @@ export const packColumns: BasicColumn[] = [
     resizable: true,
     customRender: ({ text }) => {
       if (text === 1) {
-        return '送货单版';
+        return '销售单';
       } else {
-        return '进销存版';
+        return '进销存';
       }
     },
   },

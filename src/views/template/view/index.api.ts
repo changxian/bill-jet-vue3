@@ -24,11 +24,11 @@ enum Api {
  */
 export const tempList = (params) => defHttp.get({ url: Api.tempList, params });
 /**
- * 根据送货单id，获取打印数据
+ * 根据销售单id，获取打印数据
  */
 export const getPrintData = (params) => defHttp.get({ url: Api.printData, params });
 /**
- * 根据送货单id，获取打印数据
+ * 根据销售单id，获取打印数据
  */
 export const getTemplateData = (params) => defHttp.get({ url: Api.templateData, params });
 export const getTemplateData2 = (params) => defHttp.get({ url: Api.templateData2, params });

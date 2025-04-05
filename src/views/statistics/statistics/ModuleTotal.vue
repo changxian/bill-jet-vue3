@@ -13,13 +13,13 @@
             </div>
             <div class="part-main">
                 <div class="deliver">
-                    <CardItem title="送货金额" path="/deliver/bill/deliverBillList" :num="deliver.amount" color="#c44e52" :timeType="queryTime" :imgSrc="imgSrc1"/>
-                    <CardItem title="送货欠款" path="/deliver/bill/deliverBillList" :num="deliver.debtAmount" color="#8172b3" :timeType="queryTime" :imgSrc="imgSrc2"/>
-                    <CardItem title="送货数量" path="/deliver/bill/deliverBillList" :num="deliver.count" color="#55a868" :timeType="queryTime" :imgSrc="imgSrc3"/>
-                    <CardItem title="送货重量" path="/deliver/bill/deliverBillList" :num="deliver.weight" color="#8c6245" :timeType="queryTime" :imgSrc="imgSrc4"/>
-                    <CardItem title="送货面积" path="/deliver/bill/deliverBillList" :num="deliver.area" color="#d5bb67" :timeType="queryTime" :imgSrc="imgSrc5"/>
-                    <CardItem title="送货体积" path="/deliver/bill/deliverBillList" :num="deliver.volume" color="#4878d0" :timeType="queryTime" :imgSrc="imgSrc6"/>
-                    <CardItem title="送货退款" path="/deliver/bill/deliverBillList" :num="deliver.amountReturn" color="#e58128" :timeType="queryTime" :imgSrc="imgSrc7"/>
+                    <CardItem title="销售金额" path="/deliver/bill/deliverBillList" :num="deliver.amount" color="#c44e52" :timeType="queryTime" :imgSrc="imgSrc1"/>
+                    <CardItem title="销售欠款" path="/deliver/bill/deliverBillList" :num="deliver.debtAmount" color="#8172b3" :timeType="queryTime" :imgSrc="imgSrc2"/>
+                    <CardItem title="销售数量" path="/deliver/bill/deliverBillList" :num="deliver.count" color="#55a868" :timeType="queryTime" :imgSrc="imgSrc3"/>
+                    <CardItem title="销售重量" path="/deliver/bill/deliverBillList" :num="deliver.weight" color="#8c6245" :timeType="queryTime" :imgSrc="imgSrc4"/>
+                    <CardItem title="销售面积" path="/deliver/bill/deliverBillList" :num="deliver.area" color="#d5bb67" :timeType="queryTime" :imgSrc="imgSrc5"/>
+                    <CardItem title="销售体积" path="/deliver/bill/deliverBillList" :num="deliver.volume" color="#4878d0" :timeType="queryTime" :imgSrc="imgSrc6"/>
+                    <CardItem title="销售退款" path="/deliver/bill/deliverBillList" :num="deliver.amountReturn" color="#e58128" :timeType="queryTime" :imgSrc="imgSrc7"/>
 
                 </div>
                 <div class="purchase">

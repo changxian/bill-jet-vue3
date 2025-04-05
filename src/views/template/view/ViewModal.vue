@@ -195,7 +195,7 @@
     // registerForm.value.submitForm();
   }
 
-  // 设置为送单模板/设置为送货退货单模板
+  // 设置为送单模板/设置为销售退货单模板
   async function setting(d, name) {
     emit('success', d, name);
     closeModal();
