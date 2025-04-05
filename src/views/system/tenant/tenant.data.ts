@@ -562,11 +562,30 @@ export const tenantPackUserColumns: BasicColumn[] = [
  */
 export const tenantUserSchema: FormSchema[] = [
   { field: 'id', label: 'id', component: 'Input', show: false },
-  { field: 'username', label: '用户账号', component: 'Input', show: true },
+  {
+    field: 'username',
+    label: '用户账号',
+    component: 'Input',
+    dynamicRules: ({ model, schema}) => {
+      if (model.id) {
+        return [];
+      }
+      return [{ ...rules.username(true)[0] }, { ...rules.duplicateCheckRule('sys_user', 'username', model, schema, false)[0] }];
+    },
+    dynamicDisabled: ({ values}) => {
+      return !!values.id;
+    },
+  },
   {
     field: 'realname',
     label: '姓名',
     component: 'Input',
+    dynamicRules: ({ model, schema}) => {
+      if (model.id) {
+        return [];
+      }
+      return [{ ...rules.realname(true)[0] }, { ...rules.duplicateCheckRule('sys_user', 'realname', model, schema, false)[0] }];
+    },
     dynamicDisabled: ({ values }) => {
       return !!values.id;
     },

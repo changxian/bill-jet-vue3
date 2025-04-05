@@ -14,7 +14,7 @@
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
     </BasicTable>
-    <!--用户抽屉-->
+    <!--用户添加修改抽屉-->
     <TenantUserDrawer @register="registerDrawer" @success="handleSuccess" />
     <!-- 离职受理人弹窗 -->
     <!--用户菜单授权抽屉-->
