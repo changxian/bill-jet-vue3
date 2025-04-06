@@ -295,7 +295,6 @@
   }
   let amount: number = 0.0;
   function changeGoods(goods) {
-    // debugger;
     // 先将金额置为0
     amount = 0.0;
     // let num = 0.0;

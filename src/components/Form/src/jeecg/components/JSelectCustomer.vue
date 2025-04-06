@@ -1,7 +1,7 @@
 <!--公司选择组件-->
 <template>
   <div class="JselectCustomer">
-    <JSelectBiz @change="handleSelectChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
+    <JSelectBiz @change="handleSelectChange" @handleOpen="handleOpen" :readOnly="readOnly" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
     <a-form-item>
       <CustomerSelectModal
         :rowKey="rowKey"
@@ -39,6 +39,7 @@
         type: String,
         default: 'orgName',
       },
+      readOnly:propTypes.bool.def(true),
       rowKey: {
         type: String,
         default: 'id',
@@ -79,7 +80,6 @@
 
       const tag = ref(false);
       const attrs = useAttrs();
-
       /**
        * 监听组件值
        */

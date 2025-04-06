@@ -41,7 +41,7 @@ export const getCustomerList = (params) => defHttp.get({ url: Api.customerList, 
 /**
  * 上传父路径
  */
-export const uploadUrl = `${baseUploadUrl}/bill/sys/common/upload`;
+export const uploadUrl = `${baseUploadUrl}/sys/common/upload`;
 
 /**
  * 职务列表
