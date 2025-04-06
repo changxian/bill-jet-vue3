@@ -10,7 +10,7 @@ enum Api {
   deleteOne = '/system/goodsInventoryRecord/delete',
   rollBack = '/system/goodsInventoryRecord/rollBackStock',
   deleteBatch = '/system/goodsInventoryRecord/deleteBatch',
-  importExcel = '/system/goodsInventoryRecord/importExcel',
+  importExcel = '/bill/system/goodsInventoryRecord/importExcel',
   exportXls = '/system/goodsInventoryRecord/exportXls',
 }
 /**

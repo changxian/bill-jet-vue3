@@ -9,7 +9,7 @@ enum Api {
   edit='/syspack/sysPack/edit',
   deleteOne = '/syspack/sysPack/delete',
   deleteBatch = '/syspack/sysPack/deleteBatch',
-  importExcel = '/syspack/sysPack/importExcel',
+  importExcel = '/bill/syspack/sysPack/importExcel',
   exportXls = '/syspack/sysPack/exportXls',
   queryDataRule = '/sys/role/datarule',
   queryTreeListForRole = '/sys/role/queryTreeList',

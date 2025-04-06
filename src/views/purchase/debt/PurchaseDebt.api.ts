@@ -11,7 +11,7 @@ enum Api {
   edit = '/purchase/debt/purchaseDebt/edit',
   deleteOne = '/purchase/debt/purchaseDebt/delete',
   deleteBatch = '/purchase/debt/purchaseDebt/deleteBatch',
-  importExcel = '/purchase/debt/purchaseDebt/importExcel',
+  importExcel = '/bill/purchase/debt/purchaseDebt/importExcel',
   exportXls = '/purchase/debt/purchaseDebt/exportXls',
   repay = '/purchase/repay/purchaseRepay/repay',
   repayEdit = '/purchase/repay/purchaseRepay/repayEdit',

@@ -5,11 +5,11 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/purchase/supplier/supplier/list',
-  save='/purchase/supplier/supplier/add',
-  edit='/purchase/supplier/supplier/edit',
+  save = '/purchase/supplier/supplier/add',
+  edit = '/purchase/supplier/supplier/edit',
   deleteOne = '/purchase/supplier/supplier/delete',
   deleteBatch = '/purchase/supplier/supplier/deleteBatch',
-  importExcel = '/purchase/supplier/supplier/importExcel',
+  importExcel = '/bill/purchase/supplier/supplier/importExcel',
   exportXls = '/purchase/supplier/supplier/exportXls',
 }
 

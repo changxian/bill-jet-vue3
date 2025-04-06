@@ -7,7 +7,7 @@ enum Api {
   duplicateCheck = '/sys/duplicate/check',
   deleteDict = '/sys/dict/delete',
   deleteBatch = '/sys/dict/deleteBatch',
-  importExcel = '/sys/dict/importExcel',
+  importExcel = '/bill/sys/dict/importExcel',
   exportXls = '/sys/dict/exportXls',
   recycleBinList = '/sys/dict/deleteList',
   putRecycleBin = '/sys/dict/back',

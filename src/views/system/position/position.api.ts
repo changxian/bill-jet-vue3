@@ -7,7 +7,7 @@ enum Api {
   edit = '/sys/position/edit',
   get = '/sys/position/queryById',
   delete = '/sys/position/delete',
-  importExcel = '/sys/position/importExcel',
+  importExcel = '/bill/sys/position/importExcel',
   exportXls = '/sys/position/exportXls',
   deleteBatch = '/sys/position/deleteBatch',
 }

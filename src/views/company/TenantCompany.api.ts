@@ -10,7 +10,7 @@ enum Api {
   queryDefault = '/company/tenantCompany/queryDefault',
   deleteOne = '/company/tenantCompany/delete',
   deleteBatch = '/company/tenantCompany/deleteBatch',
-  importExcel = '/company/tenantCompany/importExcel',
+  importExcel = '/bill/company/tenantCompany/importExcel',
   exportXls = '/company/tenantCompany/exportXls',
   tenantCompanyNum = '/company/tenantCompany/tenantCompanyNum',
 }
