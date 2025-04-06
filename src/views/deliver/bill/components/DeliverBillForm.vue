@@ -14,9 +14,12 @@
                 <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custName" placeholder="请输入客户名称" allow-clear></a-input>
                 <a-button type="primary" @click="selectCustomer">选择</a-button>
               </a-form-item>-->
-              <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
+<!--              <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
                 <j-select-customer v-model:value="formData.custId" @change="changeCustomer" />
-              </a-form-item>
+              </a-form-item>-->
+               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
+                <JSelectInputCustomer v-model:value="formData.custId" @change="changeCustomer" />
+               </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
@@ -172,7 +175,7 @@
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import JSelectCustomer from '@/components/Form/src/jeecg/components/JSelectCustomer.vue';
+  import JSelectInputCustomer from '@/components/Form/src/jeecg/components/JSelectInputCustomer.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
   import { defaultCom, queryNewNo, billDetail, getCustPrices } from '@/views/deliver/bill/DeliverBill.api';
