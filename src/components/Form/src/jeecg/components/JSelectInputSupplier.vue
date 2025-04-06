@@ -1,7 +1,7 @@
 <!--公司选择组件-->
 <template>
   <div class="JselectUser">
-    <JSelectBiz @change="handleSelectChange" @inputChange="inputChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
+    <JSelectInputBiz @change="handleSelectChange" @inputChange="inputChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectInputBiz>
     <!-- update-begin--author:liaozhiyang---date:20240515---for：【QQYUN-9260】必填模式下会影响到弹窗内antd组件的样式 -->
     <a-form-item>
       <SupplierSelectModal
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { unref } from 'vue';
 import SupplierSelectModal from './modal/SupplierSelectModal.vue';
-import JSelectBiz from './base/JSelectBiz2.vue';
+import JSelectInputBiz from './base/JSelectInputBiz.vue';
 import { defineComponent, ref, reactive, watchEffect, watch, provide } from 'vue';
 import { useModal } from '/@/components/Modal';
 import { propTypes } from '/@/utils/propTypes';
