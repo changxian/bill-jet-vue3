@@ -74,9 +74,9 @@
         </div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">支付宝收款码</span>
-          <template v-if="serverTenant?.wxPaymentCode || serverTenant?.zfbPaymentCode">
+          <template v-if="serverTenant?.zfbPaymentCode || serverTenant?.zfbPaymentCode">
             <a-image-preview-group>
-              <img v-if="serverTenant?.zfbPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.wxPaymentCode)" alt="支付宝收款码" style="margin-left: 10px;" />
+              <img v-if="serverTenant?.zfbPaymentCode" :width="120" :src="getFileAccessHttpUrl(serverTenant?.zfbPaymentCode)" alt="支付宝收款码" style="margin-left: 10px;" />
             </a-image-preview-group>
           </template>
           <span class="gray-3" v-else>未设置收款码</span>

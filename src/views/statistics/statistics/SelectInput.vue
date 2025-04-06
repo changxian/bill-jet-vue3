@@ -13,6 +13,7 @@
   import { AutoComplete } from 'ant-design-vue';
   import { defineEmits, defineProps, ref } from 'vue';
   import { listAll } from '@/views/setting/quickinfo/QuickInfo.api';
+  import { useUserStore } from '@/store/modules/user';
 
   const props = defineProps({
     modelValue: {
@@ -22,19 +23,29 @@
   });
   const emits = defineEmits(['update:modelValue']);
 
+  const userStore = useUserStore();
+  // 系统开单设置
+  const systemSetting = userStore.getSystemSetting;
+  const noQuickInfoPrompts = ref(false);
+  if (systemSetting) {
+    noQuickInfoPrompts.value = !!systemSetting.noQuickInfoPrompts;
+  }
   // const queryValue = ref('');
   const options = ref<any>([]);
   function onSearch() {
-    listAll().then((res) => {
-      options.value = [];
-      console.log('res', res);
-      res.forEach((item) => {
-        options.value.push({
-          value: item.info,
-          text: item.info,
+    if (noQuickInfoPrompts.value !== true) {
+      // 启用快捷信息提示
+      listAll().then((res) => {
+        options.value = [];
+        console.log('res', res);
+        res.forEach((item) => {
+          options.value.push({
+            value: item.info,
+            text: item.info,
+          });
         });
       });
-    });
+    }
   }
   onSearch();
   function onSelect(value) {
