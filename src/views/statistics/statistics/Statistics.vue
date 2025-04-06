@@ -8,9 +8,9 @@
     <!--        <TestInput v-model="formData.remark3"   />-->
     <!--      </form>-->
     <!--      <button @click="aaa">button</button>-->
-    <ModuleTotal/>
-    <ModuleDateTotal/>
-    <HotGoods/>
+    <ModuleTotal />
+    <ModuleDateTotal />
+    <HotGoods />
   </div>
 </template>
 

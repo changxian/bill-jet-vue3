@@ -21,20 +21,26 @@
   //表单数据
   const formSchema: FormSchema[] = [
     {
-      label: '套餐名',
+      label: '续费套餐名',
       field: 'packName',
       component: 'Input',
       dynamicDisabled: true,
     },
     {
-      field: 'accountNum',
-      label: '支持账号数',
+      field: 'orgNum',
+      label: '支持机构数',
       dynamicDisabled: true,
       component: 'InputNumber',
     },
     {
-      field: 'orgNum',
-      label: '支持机构数',
+      field: 'customerNum',
+      label: '支持客户数',
+      dynamicDisabled: true,
+      component: 'InputNumber',
+    },
+    {
+      field: 'accountNum',
+      label: '支持账号数',
       dynamicDisabled: true,
       component: 'InputNumber',
     },
@@ -99,7 +105,7 @@
     setModalProps({ confirmLoading: false, showCancelBtn:!!data?.showFooter, showOkBtn:!!data?.showFooter });
     isUpdate.value = !!data?.isUpdate;
     isDetail.value = !!data?.showFooter;
-    debugger;
+    // debugger;
     if (unref(isUpdate)) {
       packType.value = data.record.packType;
       packCategory.value = data.record.packCategory;

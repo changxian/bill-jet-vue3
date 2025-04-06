@@ -318,7 +318,7 @@
   // 系统开单设置
   const billSetting = userStore.getBillSetting;
   if (billSetting) {
-    debugger;
+    // debugger;
     showWeightCol.value = !!billSetting.showWeightCol;
     showAreaCol.value = !!billSetting.showAreaCol;
     showVolumeCol.value = !!billSetting.showVolumeCol;

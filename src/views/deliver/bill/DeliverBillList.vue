@@ -45,7 +45,7 @@
               <a-form-item label="单类型" name="type">
                 <a-select v-model:value="queryParam.type" allow-clear>
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="3">送货开单</a-select-option>
+                  <a-select-option value="3">销售开单</a-select-option>
                   <a-select-option value="2">退货开单</a-select-option>
                 </a-select>
               </a-form-item>
@@ -196,7 +196,7 @@
 
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
-  import JSelectSalesman from "@/components/Form/src/jeecg/components/JSelectSalesman.vue";
+  import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   const [registerModal, { openModal }] = useModal();
 
   const route = useRoute();
@@ -254,7 +254,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '送货开单',
+      title: '销售开单',
       api: list,
       columns,
       canResize: false,
@@ -277,7 +277,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货开单',
+      name: '销售开单',
       url: getExportUrl,
       params: (params) => {
         return Object.assign(params,queryParam, fastDateParam);
@@ -347,7 +347,7 @@
       hisDebtAmount: totalHisDebtAmount.value,
       profitAmount: totalProfitAmount.value,
     };
-    debugger;
+    // debugger;
     if (showAreaCol.value) {
       toCount.area = areaTotal.value;
     }
@@ -589,7 +589,7 @@
   }
 
   /**
-   * 送货单详情列表
+   * 销售单详情列表
    */
   const dataSourceDetail: any = ref([]);
   const { tableContext: tableContextDetail } = useListPage({

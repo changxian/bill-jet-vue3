@@ -46,8 +46,8 @@
                 <template #label><span title="套餐类型">套餐类型</span></template>
                 <a-select v-model:value="queryParam.packType" allow-clear>
                   <a-select-option value="">所有</a-select-option>
-                  <a-select-option value="1">送货单版</a-select-option>
-                  <a-select-option value="2">进销存版</a-select-option>
+                  <a-select-option value="1">销售单</a-select-option>
+                  <a-select-option value="2">进销存</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -148,7 +148,7 @@
       useSearchForm: false,
       showIndexColumn: true,
       actionColumn: {
-        width: 120,
+        width: 150,
         fixed: 'right',
       },
       beforeFetch: async (params) => {

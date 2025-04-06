@@ -113,9 +113,9 @@
       <a-space style="margin-bottom: 10px">
         <!--<div>模板类型<span style="color: red"> *</span>：</div>-->
         <!--<a-select v-model:value="form.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">-->
-        <!--  <a-select-option :value="10" label="送货开单"> &nbsp;&nbsp;送货开单</a-select-option>-->
+        <!--  <a-select-option :value="10" label="销售开单"> &nbsp;&nbsp;销售开单</a-select-option>-->
         <!--  <a-select-option :value="20" label="进货开单"> &nbsp;&nbsp;进货开单</a-select-option>-->
-        <!--  <a-select-option :value="60" label="送货退货开单"> &nbsp;&nbsp;送货退货开单</a-select-option>-->
+        <!--  <a-select-option :value="60" label="销售退货开单"> &nbsp;&nbsp;销售退货开单</a-select-option>-->
         <!--  <a-select-option :value="70" label="进货退货开单"> &nbsp;&nbsp;进货退货开单</a-select-option>-->
         <!--</a-select>-->
         <div>模板类别：</div>
@@ -573,10 +573,6 @@
         });
       },
       submitForm() {
-        if (!this.form.category) {
-          createMessage.error(`模板类型不能为空`);
-          return;
-        }
         if (!this.form.name) {
           createMessage.error(`模板名称不能为空`);
           return;

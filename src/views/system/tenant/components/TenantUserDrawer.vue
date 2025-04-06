@@ -8,7 +8,6 @@
   import { defineComponent, ref, unref, computed } from 'vue';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { getUserDepartList } from '../../user/user.api';
   import { tenantUserSchema } from '../tenant.data';
   import { saveOrUpdateTenantUser } from '../tenant.api';
 

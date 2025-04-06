@@ -106,7 +106,14 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './Customer.data';
-  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list } from './Customer.api';
+  import {
+    batchDelete,
+    customerNum,
+    deleteOne,
+    getExportUrl,
+    getImportUrl,
+    list
+  } from "./Customer.api";
   import CustPriceList from './custprice/GoodsCustPriceList.vue';
   import JInput from '/@/components/Form/src/jeecg/components/JInput.vue';
   import CustomerModal from './components/CustomerModal.vue';
@@ -121,7 +128,8 @@
   const toggleSearchStatus = ref<boolean>(false);
   const [registerModal, { openModal }] = useModal();
   const userStore = useUserStore();
-
+  // 客户个数
+  const total = ref(0);
   const props = defineProps({
     data: {
       type: Object,
@@ -194,18 +202,25 @@
     searchQuery();
   }*/
 
+  // 租户套餐信息
+  const tenantPack = userStore.getTenantPack;
   /**
    * 新增事件
    */
   function handleAdd() {
-    // let record = {
-    //   dynamicFields: userStore.getDynamicCols['jxc_customer'],
-    // };
-    openModal(true, {
-      isUpdate: false,
-      showFooter: true,
-      categoryId: categoryId.value,
+    customerNum().then((res) => {
+      total.value = res.total;
     });
+    // 如果公司数量小于套餐内规定数量，则可以继续添加
+    if (tenantPack.customerNum == null || tenantPack.customerNum > total.value) {
+      openModal(true, {
+        isUpdate: false,
+        showFooter: true,
+        categoryId: categoryId.value,
+      });
+    } else {
+      createMessage.warning('客户数量已达上限！如果还想添加更多客户，请联系运营商扩容！');
+    }
   }
   /**
    * 编辑事件

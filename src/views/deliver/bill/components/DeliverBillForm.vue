@@ -19,8 +19,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="联系电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="formData.custPhone" placeholder="请输入联系电话" allow-clear></a-input>
+              <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
+                <a-input v-model:value="formData.custAddress" placeholder="请输入客户地址" allow-clear ></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -28,14 +28,16 @@
                 <a-input :disabled="true" v-model:value="formData.billNo" placeholder="请输入单号" allow-clear ></a-input>
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
-              <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
-                <a-input v-model:value="formData.custAddress" placeholder="请输入客户地址" allow-clear ></a-input>
+              <a-form-item label="联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
+                <a-input v-model:value="formData.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
-                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
+              <a-form-item label="联系电话" v-bind="validateInfos.custPhone" id="DeliverBillForm-custPhone" name="custPhone">
+                <a-input v-model:value="formData.custPhone" placeholder="请输入联系电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -44,13 +46,25 @@
               </a-form-item>
             </a-col>
             <a-col :span="span">
-              <a-form-item label="联系人" v-bind="validateInfos.custContact" id="DeliverBillForm-custContact" name="custContact">
-                <a-input v-model:value="formData.custContact" placeholder="请输入客户联系人" allow-clear></a-input>
+              <a-form-item label="业务员" v-bind="validateInfos.userId" id="DeliverBillForm-userId" name="userId">
+                <j-select-salesman v-model:value="formData.userId" @change="changeUser" allow-clear />
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
             <a-col :span="span">
               <a-form-item label="送货车号" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
                 <a-input v-model:value="formData.careNo" placeholder="请输入送货车号" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人姓名" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryBy" placeholder="请输入送货人姓名" allow-clear></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="span">
+              <a-form-item label="送货人电话" v-bind="validateInfos.careNo" id="DeliverBillForm-careNo" name="careNo">
+                <a-input v-model:value="formData.deliveryTel" placeholder="请输入送货人电话" allow-clear></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -71,7 +85,7 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <BillGoodsList ref="goodsRef" :customerId="customerId" @change-goods="changeGoods"></BillGoodsList>
+          <BillGoodsList ref="goodsRef" :customerId="customerId" :goodsIds="goodsIds" @change-goods="changeGoods"></BillGoodsList>
           <a-row>
             <a-col :span="span">
               <a-form-item label="开单类型" v-bind="validateInfos.type" id="DeliverBillForm-type" name="type">
@@ -173,8 +187,6 @@
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
-  const tipsShowPrice = userStore.getSystemSetting.tipsShowPrice;
-  console.log('////////////////////////////////////////////////////////////////////////////////////////////', tipsShowPrice);
 
   // 启用一客一价
   const singleCustPrice = userStore.getBillSetting.singleCustPrice;
@@ -183,7 +195,7 @@
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
   const typeOptions = ref([
-    { value: 3, label: '送货开单' },
+    { value: 3, label: '销售开单' },
     { value: 2, label: '退货开单' },
   ]);
 
@@ -219,6 +231,8 @@
     debtAmount: 0,
     hisDebtAmount: 0,
     careNo: '',
+    deliveryBy: '',
+    deliveryTel: '',
     contractCode: '',
     status: undefined,
     invoiceStatus: undefined,
@@ -302,6 +316,8 @@
   }
   // 传递给商品选择页面的参数
   const customerId = ref<string>('');
+  // 用于商品列表过滤这部分已经选中了商品
+  const goodsIds = ref<string>('');
   // function selectCustomer() {
   //   openCustomerSelectModal(true, {
   //     record: formData,
@@ -340,6 +356,7 @@
         const goods = goodsRef.value.getData().details;
         let goodsIds = '';
         if (goods.length > 0) {
+          debugger;
           goods.forEach((item) => {
             if (item.goodsId) {
               goodsIds += item.goodsId + ',';
@@ -369,7 +386,14 @@
     amount = 0.0;
     // 成本金额
     let cost = 0.0;
+    let ids = '';
     goods.forEach((item) => {
+      // 开单过滤已添加商品
+      debugger;
+      if (userStore.getSystemSetting.billIgnoreAddedGoods == true) {
+        ids += item.id + ',';
+      }
+      console.log('ids ', ids);
       // 计算重量、面积、体积小计
       item.weightSubtotal = 0;
       if (item.weight) {
@@ -389,6 +413,8 @@
         cost = parseFloat(cost) + parseFloat(item.costAmount);
       }
     });
+    goodsIds.value = ids;
+    console.log('goodsIds ', goodsIds.value);
     // amount = (num + '').toFixed(decimalPlaces);
     formData.costAmount = cost;
     formData.discountAmount = (parseFloat(amount) * (10 - formData.discount) * 0.1).toFixed(decimalPlaces);
@@ -514,6 +540,8 @@
     formData.status = '';
     formData.invoiceStatus = undefined;
     formData.careNo = '';
+    formData.deliveryBy = '';
+    formData.deliveryTel = '';
     formData.contractCode = '';
     formData.remark = '';
     formData.userId = '';
@@ -608,6 +636,7 @@
     clickSave,
     submitForm,
     customerId,
+    goodsIds,
   });
 </script>
 

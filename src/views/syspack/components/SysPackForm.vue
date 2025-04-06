@@ -5,23 +5,28 @@
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="SysPackForm">
           <a-row>
 						<a-col :span="12">
-							<a-form-item label="产品名称" v-bind="validateInfos.packName" id="SysPackForm-packName" name="packName">
-								<a-input v-model:value="formData.packName" placeholder="请输入产品名称"  allow-clear ></a-input>
+							<a-form-item label="套餐名称" v-bind="validateInfos.packName" id="SysPackForm-packName" name="packName">
+								<a-input v-model:value="formData.packName" placeholder="请输入套餐名称"  allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品类别" v-bind="validateInfos.category" id="SysPackForm-category" name="category">
-								<j-dict-select-tag v-model:value="formData.category" dictCode="sys_pack_category" placeholder="请选择产品类别" allow-clear />
+							<a-form-item label="套餐类别" v-bind="validateInfos.category" id="SysPackForm-category" name="category">
+								<j-dict-select-tag v-model:value="formData.category" dictCode="sys_pack_category" placeholder="请选择套餐类别" allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品类型" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
-								<j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
+							<a-form-item label="套餐类型" v-bind="validateInfos.packType" id="SysPackForm-packType" name="packType">
+								<j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择套餐类型" allow-clear />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="支持企业数" v-bind="validateInfos.orgNum" id="SysPackForm-orgNum" name="orgNum">
-								<a-input-number v-model:value="formData.orgNum" placeholder="请输入支持企业数" style="width: 100%" />
+							<a-form-item label="支持公司数" v-bind="validateInfos.orgNum" id="SysPackForm-orgNum" name="orgNum">
+								<a-input-number v-model:value="formData.orgNum" placeholder="请输入支持公司数" style="width: 100%" />
+							</a-form-item>
+						</a-col>
+						<a-col :span="12">
+							<a-form-item label="支持客户数" v-bind="validateInfos.customerNum" id="SysPackForm-customerNum" name="customerNum">
+								<a-input-number v-model:value="formData.customerNum" placeholder="请输入支持客户数" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -35,8 +40,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="产品价格" v-bind="validateInfos.price" id="SysPackForm-price" name="price">
-								<a-input-number v-model:value="formData.price" placeholder="请输入产品价格" style="width: 100%" />
+							<a-form-item label="套餐价格" v-bind="validateInfos.price" id="SysPackForm-price" name="price">
+								<a-input-number v-model:value="formData.price" placeholder="请输入套餐价格" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 <!--						<a-col :span="12">
@@ -64,6 +69,8 @@
                 <j-dict-select-tag v-model:value="formData.status" dictCode="jxc_status" placeholder="请选择启用状态" allow-clear />
               </a-form-item>
             </a-col>
+          </a-row>
+          <a-row>
 						<a-col :span="12">
 							<a-form-item label="产品描述" v-bind="validateInfos.description" id="SysPackForm-description" name="description">
 								<a-textarea v-model:value="formData.description" :rows="4" placeholder="请输入产品描述" />
@@ -103,6 +110,7 @@
     category: '',
     packType: '',
     orgNum: undefined,
+    customerNum: undefined,
     accountNum: undefined,
     goodsNum: undefined,
     price: undefined,

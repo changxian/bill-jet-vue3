@@ -16,11 +16,17 @@ export const columns: BasicColumn[] = [
     title: '产品类型',
     align: 'center',
     dataIndex: 'packType_dictText',
+    slots: { customRender: 'packType_dictText' },
   },
   {
-    title: '支持企业数',
+    title: '支持机构数',
     align: 'center',
     dataIndex: 'orgNum',
+  },
+  {
+    title: '支持客户数',
+    align: 'center',
+    dataIndex: 'customerNum',
   },
   {
     title: '支持账号数',

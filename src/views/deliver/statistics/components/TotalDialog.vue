@@ -12,7 +12,7 @@
                 <a-form-item label="类型" name="type">
                   <a-select v-model:value="queryParam.type">
                     <a-select-option value="">所有</a-select-option>
-                    <a-select-option value="3">送货开单</a-select-option>
+                    <a-select-option value="3">销售开单</a-select-option>
                     <a-select-option value="2">退货开单</a-select-option>
                   </a-select>
                 </a-form-item>
@@ -119,13 +119,13 @@
   const fastDateParam = reactive<any>({ startDate: '', endDate: '' });
   const formRef = ref();
 
-  const title = ref('送货统计明细-汇总');
+  const title = ref('销售统计明细-汇总');
   const columnList = ref(totalColumns);
   const toggleSearchStatus = ref<boolean>(false);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '送货开单',
+      title: '销售开单',
       api: totalList,
       canResize: false,
       useSearchForm: false,
@@ -161,7 +161,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货合计',
+      name: '销售合计',
       url: getExportUrl,
       params: queryParam,
     },

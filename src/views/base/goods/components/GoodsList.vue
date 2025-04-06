@@ -114,14 +114,17 @@
     billType: { type: String, default: '' },
     goodsName: { type: String, default: '' },
     customerId: { type: String, default: '' },
+    goodsIds: { type: String, default: '' },
   });
-  // 开单类型【送货开单：deliver，进货开单：purchase】
+  // 开单类型【销售开单：deliver，进货开单：purchase】
   const billType = computed(() => props?.billType);
   // 搜索框内容
   const goodsName = computed(() => props?.goodsName);
   queryParam.goodsName = goodsName.value;
   // 开单时选择的客户
   const customerId = computed(() => props?.customerId);
+  // 已经添加过的商品Id
+  const goodsIds = computed(() => props?.goodsIds);
   // 当前选中的类别ID，可能会为空，代表未选择类别
   const categoryId = computed(() => props.data?.id);
   console.log('billType is:' + billType.value, '   customerId is:' + customerId.value, '   goodsName is:' + goodsName.value);
@@ -158,6 +161,7 @@
         params['categoryId'] = categoryId.value;
         params['billType'] = billType.value;
         params['custId'] = customerId.value;
+        params['id'] = goodsIds.value;
         params['goodsName'] = goodsName.value;
         return Object.assign(params, queryParam);
       },

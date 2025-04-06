@@ -23,7 +23,7 @@ export function uploadApi(params: UploadFileParams, onUploadProgress: (progressE
 export function uploadImg(params: UploadFileParams, onUploadProgress: (progressEvent: ProgressEvent) => void) {
   return defHttp.uploadFile<UploadApiResult>(
     {
-      url: `${uploadUrl}/sys/common/upload`,
+      url: `${uploadUrl}/bill/sys/common/upload`,
       onUploadProgress,
     },
     params,

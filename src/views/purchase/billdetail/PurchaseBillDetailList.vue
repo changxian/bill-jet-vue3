@@ -27,8 +27,6 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-        <!-- 高级查询 -->
-        <super-query :config="superQueryConfig" @search="handleSuperQuery" />
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -46,7 +44,7 @@
   import { ref, reactive } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { columns, superQuerySchema } from './PurchaseBillDetail.data';
+  import { columns } from './PurchaseBillDetail.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './PurchaseBillDetail.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import PurchaseBillDetailModal from './components/PurchaseBillDetailModal.vue'
@@ -74,7 +72,7 @@
       },
     },
     exportConfig: {
-      name: "进货开单明细",
+      name: '进货开单明细',
       url: getExportUrl,
       params: queryParam,
     },
@@ -94,19 +92,6 @@
     xs: 24,
     sm: 20,
   });
-
-  // 高级查询配置
-  const superQueryConfig = reactive(superQuerySchema);
-
-  /**
-   * 高级查询事件
-   */
-  function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
-  }
 
   /**
    * 新增事件

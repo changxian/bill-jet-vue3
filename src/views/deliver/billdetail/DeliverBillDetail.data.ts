@@ -43,7 +43,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'doogsUnit',
   },
   {
-    title: '送货价',
+    title: '销售价',
     align: 'center',
     dataIndex: 'costAmount',
   },

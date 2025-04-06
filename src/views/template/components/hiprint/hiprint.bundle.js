@@ -7775,6 +7775,8 @@ var hiprint = function (t) {
     },
     send: function send(t) {
       try {
+        console.info(t);
+        // debugger;
         this.socket.emit("news", t);
       } catch (e) {
         console.log("send data error:" + (t || "") + JSON.stringify(e));
@@ -10827,6 +10829,10 @@ var hiprint = function (t) {
         e || (e = {});
         var i = $.extend({}, n || {});
         i.imgToBase64 = i.imgToBase64 ?? false;
+        i.pageSize = {
+          height: this.printPanels[0].height * 1000,
+          width: this.printPanels[0].width * 1000
+        }
         if (i.printByFragments) {
           // 分批打印
           this.getHtmlAsync(e, i)
@@ -10835,6 +10841,7 @@ var hiprint = function (t) {
               i.id = s.a.instance.guid(), i.html = o, i.templateId = this.id, hiwebSocket.sendByFragments(i, n);
             })
         } else {
+          // debugger
           // 同步打印
           var o = t + this.getHtml(e, i)[0].outerHTML;
           i.id = s.a.instance.guid(), i.html = o, i.templateId = this.id, hiwebSocket.send(i);

@@ -11,7 +11,7 @@
                 <a-form-item label="单类型" name="type">
                   <a-select v-model:value="queryParam.type">
                     <a-select-option value="">所有</a-select-option>
-                    <a-select-option value="3">送货开单</a-select-option>
+                    <a-select-option value="3">销售开单</a-select-option>
                     <a-select-option value="2">退货开单</a-select-option>
                   </a-select>
                 </a-form-item>
@@ -120,19 +120,19 @@
   const fastDateParam = reactive<any>({ timeType: '', startDate: '', endDate: '' });
   const formRef = ref();
   const titleObj = {
-    goodsCountColumns: '送货统计明细-商品',
-    typeCountColumns: '送货统计明细-类别',
-    custCountColumns: '送货统计明细-客户',
-    userNameCountColumns: '送货统计明细-业务员',
-    operatorCountColumns: '送货统计明细-用户',
-    careNoCountColumns: '送货统计明细-车号',
+    goodsCountColumns: '销售统计明细-商品',
+    typeCountColumns: '销售统计明细-类别',
+    custCountColumns: '销售统计明细-客户',
+    userNameCountColumns: '销售统计明细-业务员',
+    operatorCountColumns: '销售统计明细-用户',
+    careNoCountColumns: '销售统计明细-车号',
   };
   const title = ref('');
   const columnList = ref(columns);
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '送货开单',
+      title: '销售开单',
       api: detailsList,
       canResize: false,
       cols: userStore.getCols, // 添加列备注信息
@@ -170,7 +170,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货明细',
+      name: '销售明细',
       url: getExportUrl,
       params: queryParam,
     },

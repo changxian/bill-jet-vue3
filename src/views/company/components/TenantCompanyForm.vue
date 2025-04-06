@@ -39,9 +39,14 @@
 								<a-input v-model:value="formData.webSite" placeholder="请输入网站" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+            <a-col :span="24">
+              <a-form-item label="联系人" v-bind="validateInfos.contact" id="TenantCompanyForm-phone" name="phone">
+                <a-input v-model:value="formData.contact" placeholder="请输入联系人" allow-clear ></a-input>
+              </a-form-item>
+            </a-col>
 						<a-col :span="24">
-							<a-form-item label="电话" v-bind="validateInfos.phone" id="TenantCompanyForm-phone" name="phone">
-								<a-input v-model:value="formData.phone" placeholder="请输入电话" allow-clear ></a-input>
+							<a-form-item label="联系人电话" v-bind="validateInfos.phone" id="TenantCompanyForm-phone" name="phone">
+								<a-input v-model:value="formData.phone" placeholder="请输入联系人电话" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -64,6 +69,22 @@
 								<a-input v-model:value="formData.email" placeholder="请输入邮箱" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
+
+            <a-col
+              v-for="(item, index) in formData.dynamicFields"
+              :key="item.id"
+              :span="24"
+            >
+              <a-form-item
+                v-if="item.fieldTitle"
+                :label="item.fieldTitle"
+                :id="'GoodsForm-' + item.fieldName"
+                :name="'dynamicFields.' + item.fieldName"
+              >
+                <a-input v-model:value="formData.dynamicFields[index].fieldValue" :placeholder="'请输入' + item.fieldTitle" allow-clear />
+              </a-form-item>
+            </a-col>
+
 						<a-col :span="24">
 							<a-form-item label="默认公司" v-bind="validateInfos.isDefault" id="TenantCompanyForm-isDefault" name="isDefault">
                 <a-radio-group v-model:value="formData.isDefault" button-style="solid">
@@ -80,7 +101,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
+import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch } from "vue";
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../TenantCompany.api';
@@ -109,13 +130,17 @@
     wechat: '',
     email: '',
     isDefault: '0',
+    contact: '',
+    dynamicFields: undefined,
   });
+
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
+    compName: [{ required: true, message: '请输入企业全称!'},],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
@@ -178,17 +203,7 @@
     if (model.id) {
       isUpdate.value = true;
     }
-    //循环数据
-    for (let data in model) {
-      //如果该数据是数组并且是字符串类型
-      if (model[data] instanceof Array) {
-        let valueType = getValueType(formRef.value.getProps, data);
-        //如果是字符串类型的需要变成以逗号分割的字符串
-        if (valueType === 'string') {
-          model[data] = model[data].join(',');
-        }
-      }
-    }
+
     await saveOrUpdate(model, isUpdate.value)
       .then((res) => {
         if (res.success) {

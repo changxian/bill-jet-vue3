@@ -16,13 +16,18 @@
   //系统首次给企业绑定套餐表单数据项
   const packModifyFormSchema: FormSchema[] = [
     {
+      field: 'orgNum',
+      label: '支持机构数',
+      component: 'InputNumber',
+    },
+    {
       field: 'accountNum',
       label: '支持账号数',
       component: 'InputNumber',
     },
     {
-      field: 'orgNum',
-      label: '支持机构数',
+      field: 'customerNum',
+      label: '支持客户数',
       component: 'InputNumber',
     },
     {
@@ -77,11 +82,11 @@
     setProps({ disabled: !data?.showFooter, schemas: packModifyFormSchema });
   });
   //设置标题
-  const title = computed(() => (unref(isUpdate) ? '企业套餐扩容' : '新增企业套餐'));
+  const title = '企业套餐扩容';
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
-    debugger;
+    // debugger;
     setModalProps({ confirmLoading: true });
     values.id = unref(tenantPackId);
     if (unref(isUpdate)) {

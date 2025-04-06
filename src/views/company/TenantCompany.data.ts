@@ -1,12 +1,9 @@
 import { BasicColumn } from '/@/components/Table';
-// import { FormSchema } from '/@/components/Table';
-// import { rules} from '/@/utils/helper/validator';
-// import { render } from '/@/utils/common/renderUtils';
-// import { getWeekMonthQuarterYear } from '/@/utils';
+
 //列表数据
 export const columns: BasicColumn[] = [
   {
-    title: '企业全称',
+    title: '公司全称',
     align: 'center',
     dataIndex: 'compName',
   },
@@ -25,12 +22,11 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'bankAccount',
   },
-
-
   {
     title: '默认公司',
     align: 'center',
     dataIndex: 'isDefault_dictText',
+    slots: { customRender: 'isDefault_dictText' },
   },
   {
     title: '英文名称',

@@ -22,21 +22,21 @@ enum Api {
 }
 
 /**
- * 修改送货单状态api
+ * 修改销售单状态api
  * @param params
  */
 export const editStatus = (params) => {
   return defHttp.post({ url: Api.editStatus, params }, { isTransformResponse: false });
 };
 /**
- * 修改送货单开票状态api
+ * 修改销售单开票状态api
  * @param params
  */
 export const editInvoiceStatus = (params) => {
   return defHttp.post({ url: Api.editInvoiceStatus, params }, { isTransformResponse: false });
 };
 /**
- * 修改送货单信息api
+ * 修改销售单信息api
  * @param params
  */
 export const editInfo = (params) => {
@@ -62,7 +62,7 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
 
 
 /**
- * 送货单详情接口
+ * 销售单详情接口
  * @param params
  */
 export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params });
@@ -73,7 +73,7 @@ export const billDetail = (params) => defHttp.get({ url: Api.billDetail, params 
 export const defaultCom = () => defHttp.get({ url: Api.defaultCompany });
 
 /**
- * 送货开单查询新单号接口
+ * 销售开单查询新单号接口
  * @param params
  */
 export const queryNewNo = (params) => defHttp.get({ url: Api.queryNewNo, params });

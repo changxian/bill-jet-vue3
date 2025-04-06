@@ -26,7 +26,7 @@
         <p style="margin: 40px 0 10px 10px">
           <span style="text-align: center; display: inline-block; width: 50%">
             <a-popconfirm
-              title="确认将选定商品的成本价更新到已开送货单据吗？"
+              title="确认将选定商品的成本价更新到已开销售单据吗？"
               :visible="visible"
               ok-text="确认"
               cancel-text="取消"
@@ -38,7 +38,7 @@
           </span>
           <span>
             <a-popconfirm
-              title="确认将所有商品的成本价更新到已开送货单据吗？"
+              title="确认将所有商品的成本价更新到已开销售单据吗？"
               :visible="visible"
               ok-text="确认"
               cancel-text="取消"
@@ -157,7 +157,7 @@
   }
 
   /**
-   * 更新选中商品所有已开送货单的成本价
+   * 更新选中商品所有已开销售单的成本价
    */
   async function handleUpdateCheckedBillCost() {
     if (row.id) {
@@ -170,7 +170,7 @@
   }
 
   /**
-   * 更新所有商品所有已开送货单的成本价
+   * 更新所有商品所有已开销售单的成本价
    */
   async function handleUpdateAllBillCost() {
     await updateAllBillCost();

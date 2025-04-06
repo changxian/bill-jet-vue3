@@ -23,9 +23,9 @@
     <TenantPackMenuModal @register="registerPackMenuModal" @success="handleSuccess" />
     <!--套餐菜单授权抽屉-->
     <PackPermissionDrawer @register="packPermissionDrawer" />
-    <!-- 套餐续费 -->
+    <!-- 套餐续费--未使用 -->
     <TenantPackReNewModel @register="registerRenewModal" />
-    <!-- 激活或续费--未使用 -->
+    <!-- 激活或续费 -->
     <TenantPackReNewByCodeModel @register="registerRenewByCodeModal" @success="handleSuccess" />
     <!--  套餐记录 -->
     <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" @success="handleSuccess" />
@@ -51,7 +51,7 @@
   import TenantPackReNewModel from '../components/TenantPackReNewModal.vue';
   import TenantPackReNewByCodeModel from '../components/TenantPackReNewByCodeModal.vue';
   import SysTenantPackRecordListModal from '@/views/system/tenant/pack/SysTenantPackRecordListModal.vue';
-  import { myActivateCodeList } from "@/views/activate/ActivateCode.api";
+  import { myActivateCodeList } from '@/views/activate/ActivateCode.api';
 
   const [packPermissionDrawer, { openDrawer: openPackPermissionDrawer }] = useDrawer();
 
@@ -199,7 +199,7 @@
       packType: record.packType,
       packCategory: record.packCategory,
     }).then((res) => {
-      debugger;
+      // debugger;
       let catCode = res[0].activateCode;
       record.activateCode = catCode;
       renewByCodeModal(true, {

@@ -19,6 +19,9 @@
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
+      <template #isDefault_dictText="{ record }">
+        <span v-if="1 == record.isDefault" style="color: red">{{ record.isDefault_dictText }}</span><span v-else>{{ record.isDefault_dictText }}</span>
+      </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
     </BasicTable>

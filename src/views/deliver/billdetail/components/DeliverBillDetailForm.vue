@@ -45,8 +45,8 @@
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
-							<a-form-item label="送货价" v-bind="validateInfos.costAmount" id="DeliverBillDetailForm-costAmount" name="costAmount">
-								<a-input-number v-model:value="formData.costAmount" placeholder="请输入送货价" style="width: 100%" />
+							<a-form-item label="销售价" v-bind="validateInfos.costAmount" id="DeliverBillDetailForm-costAmount" name="costAmount">
+								<a-input-number v-model:value="formData.costAmount" placeholder="请输入销售价" style="width: 100%" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">

@@ -5,6 +5,7 @@ enum Api {
   tempList = '/bill/template/pre/list',
   printData = '/bill/template/print/data',
   templateData = '/bill/template/data',
+  templateData2 = '/bill/template/check/data',
 
   treeList = '/bill/goods/queryGoodsTreeList',
   searchBy = '/bill/goods/category/searchBy',
@@ -23,13 +24,14 @@ enum Api {
  */
 export const tempList = (params) => defHttp.get({ url: Api.tempList, params });
 /**
- * 根据送货单id，获取打印数据
+ * 根据销售单id，获取打印数据
  */
 export const getPrintData = (params) => defHttp.get({ url: Api.printData, params });
 /**
- * 根据送货单id，获取打印数据
+ * 根据销售单id，获取打印数据
  */
 export const getTemplateData = (params) => defHttp.get({ url: Api.templateData, params });
+export const getTemplateData2 = (params) => defHttp.get({ url: Api.templateData2, params });
 
 /**
  * 导出api

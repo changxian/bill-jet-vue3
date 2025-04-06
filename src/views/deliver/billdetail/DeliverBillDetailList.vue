@@ -61,7 +61,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '送货开单明细',
+      title: '销售开单明细',
       api: list,
       columns,
       canResize:false,
@@ -75,7 +75,7 @@
       },
     },
     exportConfig: {
-      name: "送货开单明细",
+      name: '销售开单明细',
       url: getExportUrl,
       params: queryParam,
     },
