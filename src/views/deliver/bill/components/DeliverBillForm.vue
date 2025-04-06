@@ -195,7 +195,7 @@
   // 1未打印、2已打印、3签回、4过账、5审核、6已开票、9作废
   const statusOptions = ref(statusList);
   const typeOptions = ref([
-    { value: 3, label: '送货开单' },
+    { value: 3, label: '销售开单' },
     { value: 2, label: '退货开单' },
   ]);
 

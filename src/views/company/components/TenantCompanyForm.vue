@@ -140,6 +140,7 @@ import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch } f
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
+    compName: [{ required: true, message: '请输入企业全称!'},],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 

@@ -8,7 +8,7 @@
             <a-form-item label="单类型" name="type">
               <a-select v-model:value="queryParam.type" allow-clear>
                 <a-select-option value="">所有</a-select-option>
-                <a-select-option value="3">送货开单</a-select-option>
+                <a-select-option value="3">销售开单</a-select-option>
                 <a-select-option value="2">退货开单</a-select-option>
               </a-select>
             </a-form-item>
@@ -138,7 +138,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls } = useListPage({
     tableProps: {
-      title: '送货开单',
+      title: '销售开单',
       api: list,
       // columns: typeCountColumns,
       // cols: uStore.getCols, // 添加列备注信息
@@ -167,7 +167,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货统计',
+      name: '销售统计',
       url: getExportUrl,
       params: () => {
         return Object.assign(queryParam, fastDateParam);

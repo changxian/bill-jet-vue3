@@ -6,7 +6,7 @@
           <a-row>
 						<a-col :span="24">
 							<a-form-item label="商品单位" v-bind="validateInfos.name" id="GoodsUnitsForm-name" name="name">
-                <a-input placeholder="必填" v-model:value="formData.name" allow-clear></a-input>
+                <a-input placeholder="请输入商品单位" v-model:value="formData.name" allow-clear></a-input>
 							</a-form-item>
 						</a-col>
           </a-row>
@@ -42,6 +42,7 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
+    name: [{ required: true, message: '请输入商品单位!'},],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
@@ -124,7 +125,6 @@
         confirmLoading.value = false;
       });
   }
-
 
   defineExpose({
     add,

@@ -8,7 +8,7 @@
             <a-form-item label="单类型" name="type">
               <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择">
                 <a-select-option value="">所有</a-select-option>
-                <a-select-option value="3">送货开单</a-select-option>
+                <a-select-option value="3">销售开单</a-select-option>
                 <a-select-option value="2">退货开单</a-select-option>
               </a-select>
             </a-form-item>
@@ -180,7 +180,7 @@
   //注册table数据
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     tableProps: {
-      title: '送货对账单',
+      title: '销售对账单',
       api: list,
       canResize: false,
       columns,
@@ -203,7 +203,7 @@
       rowSelection: { type: 'radio' },
     },
     exportConfig: {
-      name: '送货对账单',
+      name: '销售对账单',
       url: getExportUrl,
       params: () => {
         return Object.assign(queryParam, fastDateParam);

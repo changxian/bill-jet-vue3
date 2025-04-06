@@ -6,6 +6,8 @@ export const columns: BasicColumn[] = [
     title: '客户名称',
     align: 'center',
     dataIndex: 'payerName',
+    width: 200,
+    resizable: true,
   },
   {
     title: '交易类别',

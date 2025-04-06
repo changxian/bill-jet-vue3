@@ -3,12 +3,46 @@ import { duplicateCheck } from '/@/views/system/user/user.api';
 
 export const rules = {
   rule(type, required) {
+    if (type === 'username') {
+      return this.username(required);
+    }
+    if (type === 'realname') {
+      return this.realname(required);
+    }
     if (type === 'email') {
       return this.email(required);
     }
     if (type === 'phone') {
       return this.phone(required);
     }
+  },
+  username(required) {
+    return [
+      {
+        required: required ? required : false,
+        validator: async (_rule, value) => {
+          if (required == true && !value) {
+            return Promise.reject('请输入用户账号!');
+          }
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ] as ArrayRule;
+  },
+  realname(required) {
+    return [
+      {
+        required: required ? required : false,
+        validator: async (_rule, value) => {
+          if (required == true && !value) {
+            return Promise.reject('请输入用户姓名!');
+          }
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ] as ArrayRule;
   },
   email(required) {
     return [

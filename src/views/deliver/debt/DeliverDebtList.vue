@@ -58,7 +58,7 @@
   const queryParam = reactive<any>({});
   const registerModal = ref();
 
-  // 送货总欠款
+  // 销售总欠款
   const debtTotalAmount = ref(0);
   // 退货总欠款
   const backDebtTotalAmount = ref(0);

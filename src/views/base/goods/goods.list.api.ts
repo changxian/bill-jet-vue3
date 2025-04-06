@@ -34,11 +34,11 @@ export const addStockRecord = (params) => {
 };
 
 /**
- * 更新指定商品送货单的成本价
+ * 更新指定商品销售单的成本价
  */
 export const updateBillCostByGoodsId = (params) => defHttp.get({ url: Api.updateBillCostByGoodsId, params });
 
 /**
- * 更新所有送货单的成本价
+ * 更新所有销售单的成本价
  */
 export const updateAllBillCost = () => defHttp.get({ url: Api.updateAllBillCost });

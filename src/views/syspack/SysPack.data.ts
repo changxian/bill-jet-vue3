@@ -16,6 +16,7 @@ export const columns: BasicColumn[] = [
     title: '产品类型',
     align: 'center',
     dataIndex: 'packType_dictText',
+    slots: { customRender: 'packType_dictText' },
   },
   {
     title: '支持机构数',

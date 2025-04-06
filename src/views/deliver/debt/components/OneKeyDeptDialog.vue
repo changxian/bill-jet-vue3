@@ -1,5 +1,5 @@
 <template>
-  <j-modal title="送货欠款还款"  :width="700" :maxHeight="400" :visible="visible" @ok="handleOk"
+  <j-modal title="销售欠款还款" :width="700" :maxHeight="400" :visible="visible" @ok="handleOk"
            @cancel="handleCancel"
            cancelText="关闭">
     <div style="padding:20px 30px">
@@ -35,7 +35,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="24">
-              <a-form-item label="送货欠款" v-bind="validateInfos.deliverDebtAmount"
+              <a-form-item label="销售欠款" v-bind="validateInfos.deliverDebtAmount"
                            id="DeliverDebtForm-deliverDebtAmount" name="deliverDebtAmount">
                 <a-input :disabled="true" v-model:value="formData.deliverDebtAmount"
                                 placeholder="请输入需还款总额" style="width: 100%"/>

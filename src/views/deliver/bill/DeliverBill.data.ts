@@ -41,7 +41,7 @@ export const billStatusList = [
   { value: '4', label: '无信息' },
   { value: '9', label: '其他' },
 ];
-//送货单列表数据
+//销售单列表数据
 export const columns: BasicColumn[] = [
   {
     title: '日期',

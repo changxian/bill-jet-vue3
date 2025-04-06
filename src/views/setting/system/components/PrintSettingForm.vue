@@ -20,8 +20,8 @@
           </a-row>-->
           <a-row>
             <a-col :span="12">
-              <a-form-item label="送货单模板" v-bind="validateInfos.deliveryBillTemp" id="PrintSettingForm-deliveryBillTemp" name="deliveryBillTemp">
-                <a-input v-model:value="formData.deliveryBillTemp" class="full-input" placeholder="请选择送货单模板" :bordered="false" disabled />
+              <a-form-item label="销售单模板" v-bind="validateInfos.deliveryBillTemp" id="PrintSettingForm-deliveryBillTemp" name="deliveryBillTemp">
+                <a-input v-model:value="formData.deliveryBillTemp" class="full-input" placeholder="请选择销售单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -31,12 +31,12 @@
           <a-row>
             <a-col :span="12">
               <a-form-item
-                label="送货退货单模板"
+                label="销售退货单模板"
                 v-bind="validateInfos.deliveryReturnTemp"
                 id="PrintSettingForm-deliveryReturnTemp"
                 name="deliveryReturnTemp"
               >
-                <a-input v-model:value="formData.deliveryReturnTemp" class="full-input" placeholder="请选择送货退货单模板" :bordered="false" disabled />
+                <a-input v-model:value="formData.deliveryReturnTemp" class="full-input" placeholder="请选择销售退货单模板" :bordered="false" disabled />
               </a-form-item>
             </a-col>
             <a-col :span="12">

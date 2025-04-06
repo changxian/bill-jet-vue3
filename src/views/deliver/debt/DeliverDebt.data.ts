@@ -8,7 +8,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'custName',
   },
   {
-    title: '送货欠款金额',
+    title: '销售欠款金额',
     align: 'center',
     dataIndex: 'deliverDebtAmount',
   },
