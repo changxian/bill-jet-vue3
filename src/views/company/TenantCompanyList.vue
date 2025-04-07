@@ -13,7 +13,7 @@
       <template #tableTitle>
         <a-button type="primary" v-auth="'company:sys_tenant_company:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
         <a-button type="primary" v-auth="'company:sys_tenant_company:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" v-auth="'company:sys_tenant_company:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <j-upload-button v-if="false" type="primary" v-auth="'company:sys_tenant_company:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
       </template>
       <!--操作栏-->
       <template #action="{ record }">

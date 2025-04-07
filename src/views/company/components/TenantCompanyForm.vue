@@ -5,8 +5,8 @@
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="TenantCompanyForm">
           <a-row>
 						<a-col :span="24">
-							<a-form-item label="企业全称" v-bind="validateInfos.compName" id="TenantCompanyForm-compName" name="compName">
-								<a-input v-model:value="formData.compName" placeholder="请输入企业全称" allow-clear ></a-input>
+							<a-form-item label="公司全称" v-bind="validateInfos.compName" id="TenantCompanyForm-compName" name="compName">
+								<a-input v-model:value="formData.compName" placeholder="请输入公司全称" allow-clear ></a-input>
 							</a-form-item>
 						</a-col>
 						<a-col :span="24">
@@ -101,9 +101,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch } from "vue";
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed, watch } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../TenantCompany.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
