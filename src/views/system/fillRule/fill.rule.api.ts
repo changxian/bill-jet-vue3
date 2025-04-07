@@ -9,7 +9,7 @@ enum Api {
   delete = '/sys/fillRule/delete',
   deleteBatch = '/sys/fillRule/deleteBatch',
   exportXls = '/sys/fillRule/exportXls',
-  importExcel = '/sys/fillRule/importExcel',
+  importExcel = '/bill/sys/fillRule/importExcel',
 }
 
 /**

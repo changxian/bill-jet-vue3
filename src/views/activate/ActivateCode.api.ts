@@ -9,7 +9,7 @@ enum Api {
   edit = '/activate/activateCode/edit',
   deleteOne = '/activate/activateCode/delete',
   deleteBatch = '/activate/activateCode/deleteBatch',
-  importExcel = '/activate/activateCode/importExcel',
+  importExcel = '/bill/activate/activateCode/importExcel',
   exportXls = '/activate/activateCode/exportXls',
   activateCodeUrl = '/activate/activateCode/activate',
   myActivateCodeList = '/activate/activateCode/myActivateCodeList',

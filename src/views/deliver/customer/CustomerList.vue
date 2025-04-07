@@ -72,6 +72,7 @@
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:debt'" :disabled="selectedRowKeys.length != 1" @click="handleAdd" preIcon="ant-design:switcher-outlined"> 还款明细</a-button>
         <a-button type="primary" v-auth="'deliver.customer:jxc_customer:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'deliver.customer:jxc_customer:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls"> 导入</j-upload-button>
+        <a-button type="link" preIcon="ant-design:export-outlined" target="_blank" style="margin-left: 20px; padding-top: 5px" @click="onTemplateXls"> 客户信息导入模板下载</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -188,19 +189,22 @@
     () => reload()
   );
 
-
-  // 高级查询配置
-  // const superQueryConfig = reactive(superQuerySchema);
-
   /**
-   * 高级查询事件
+   * 客户信息导入模板下载事件
    */
-  /*function handleSuperQuery(params) {
-    Object.keys(params).map((k) => {
-      queryParam[k] = params[k];
-    });
-    searchQuery();
-  }*/
+  function onTemplateXls() {
+    // 创建隐藏的下载链接
+    const link = document.createElement('a');
+    link.href = '/templates/customerTemplate.xls?t=${Date.now()}'; // 文件路径
+    link.download = '客户信息导入模板.xlsx'; // 自定义下载文件名
+    link.style.display = 'none';
+
+    // 触发点击下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    createMessage.success('模板文件正在下载中！');
+  }
 
   // 租户套餐信息
   const tenantPack = userStore.getTenantPack;

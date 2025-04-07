@@ -71,6 +71,7 @@
         <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:repayment_detail'"  @click="handleAdd" preIcon="ant-design:plus-outlined"> 还款明细</a-button>
         <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'purchase.supplier:jxc_supplier:importExcel'"  preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="link" preIcon="ant-design:export-outlined" target="_blank" style="margin-left: 20px; padding-top: 5px" @click="onTemplateXls"> 供应商信息导入模板下载</a-button>
         <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
@@ -107,7 +108,9 @@
   import { useUserStore } from '/@/store/modules/user';
   import { cloneDeep } from 'lodash-es';
   import { JInput } from '@/components/Form';
+  import { useMessage } from '@/hooks/web/useMessage';
 
+  const { createMessage } = useMessage();
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -155,18 +158,22 @@
     sm: 20,
   });
 
-  // // 高级查询配置
-  // const superQueryConfig = reactive(superQuerySchema);
-  //
-  // /**
-  //  * 高级查询事件
-  //  */
-  // function handleSuperQuery(params) {
-  //   Object.keys(params).map((k) => {
-  //     queryParam[k] = params[k];
-  //   });
-  //   searchQuery();
-  // }
+  /**
+   * 供应商信息导入模板下载事件
+   */
+  function onTemplateXls() {
+    // 创建隐藏的下载链接
+    const link = document.createElement('a');
+    link.href = '/templates/supplierTemplate.xls?t=${Date.now()}'; // 文件路径
+    link.download = '供应商信息导入模板.xlsx'; // 自定义下载文件名
+    link.style.display = 'none';
+
+    // 触发点击下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    createMessage.success('模板文件正在下载中！');
+  }
 
   /**
    * 新增事件

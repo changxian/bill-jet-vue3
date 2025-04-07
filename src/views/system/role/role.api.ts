@@ -9,7 +9,7 @@ enum Api {
   deleteRole = '/sys/role/delete',
   deleteBatch = '/sys/role/deleteBatch',
   exportXls = '/sys/role/exportXls',
-  importExcel = '/sys/role/importExcel',
+  importExcel = '/bill/sys/role/importExcel',
   isRoleExist = '/sys/role/checkRoleCode',
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryRolePermission',

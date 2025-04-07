@@ -9,7 +9,7 @@ enum Api {
   edit = '/setting/quickInfo/edit',
   deleteOne = '/setting/quickInfo/delete',
   deleteBatch = '/setting/quickInfo/deleteBatch',
-  importExcel = '/setting/quickInfo/importExcel',
+  importExcel = '/bill/setting/quickInfo/importExcel',
   exportXls = '/setting/quickInfo/exportXls',
   listAll = '/setting/quickInfo/listAll',
 }
