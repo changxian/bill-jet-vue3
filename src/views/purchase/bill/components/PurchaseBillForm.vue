@@ -11,7 +11,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="供应商名称" v-bind="validateInfos.supplierId" id="PurchaseBillForm-supplierId" name="supplierId">
-                <j-select-supplier v-model:value="formData.supplierId" @change="changeSupplier" />
+                <j-select-input-supplier v-model:value="formData.supplierId" @change="changeSupplier" />
               </a-form-item>
             </a-col>
             <a-col :span="span">
@@ -142,7 +142,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import JSelectCompany from '/@/components/Form/src/jeecg/components/JSelectCompany.vue';
-  import JSelectSupplier from '/@/components/Form/src/jeecg/components/JSelectSupplier.vue';
+  import JSelectInputSupplier from '/@/components/Form/src/jeecg/components/JSelectInputSupplier.vue';
   import goods from './goods.vue';
   import { getValueType } from '/@/utils';
   import { billDetail, saveOrUpdate } from '../PurchaseBill.api';
