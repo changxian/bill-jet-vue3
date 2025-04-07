@@ -581,6 +581,9 @@
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
+      actionColumn: {
+        ifShow: false,
+      },
     },
   });
 

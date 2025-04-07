@@ -40,7 +40,7 @@
           <p class="gray-3" style="text-indent: 2em">套餐需要续费时，请添加右侧微信客服，扫右侧收款码后，将支付信息和上面的套餐资料信息一起发给客服完成续费。</p>
         </div>
       </div>
-      <!-- 我的运营商（分销商）联系信息 -->
+      <!-- 我的运营商（代理商）联系信息 -->
       <div class="account-info">
         <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 16px">服务商信息</div>
         <div class="margin-bottom-10 font-size-13">
@@ -157,7 +157,7 @@
     });
   }
   /**
-   * 获取我的运营商（分销商）信息
+   * 获取我的运营商（代理商）信息
    */
   function getServerTenantDetail() {
     getCurrentUserServerTenant().then((async res => {
@@ -173,7 +173,7 @@
   }
 
   /**
-   * 获取我的运营商（分销商）信息
+   * 获取我的运营商（代理商）信息
    */
   function getMyTenantDetail() {
     getCurrentUserTenant().then((res) => {

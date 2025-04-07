@@ -194,6 +194,18 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
+    field: 'category',
+    label: '企业类型',
+    component: 'RadioButtonGroup',
+    defaultValue: 0,
+    componentProps: {
+      options: [
+        { label: '代理商', value: 5 },
+        { label: '客户', value: 0 },
+      ],
+    },
+  },
+  {
     field: 'companyLogo',
     label: '企业LOGO',
     component: 'JImageUpload',
@@ -294,18 +306,6 @@ export const formSchema: FormSchema[] = [
       options: [
         { label: '需要', value: 1 },
         { label: '不需要', value: 0 },
-      ],
-    },
-  },
-  {
-    field: 'category',
-    label: '企业类型',
-    component: 'RadioButtonGroup',
-    defaultValue: 0,
-    componentProps: {
-      options: [
-        { label: '分销商', value: 5 },
-        { label: '客户', value: 0 },
       ],
     },
   },
