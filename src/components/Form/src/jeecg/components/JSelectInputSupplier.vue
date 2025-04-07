@@ -28,11 +28,12 @@ import { useRuleFormItem } from '/@/hooks/component/useFormItem';
 import { useAttrs } from '/@/hooks/core/useAttrs';
 import { SelectValue } from 'ant-design-vue/es/select';
 import { cloneDeep } from 'lodash-es';
+import JSelectInputBiz from "@/components/Form/src/jeecg/components/base/JSelectInputBiz.vue";
 export default defineComponent({
-  name: 'JSelectSupplier',
+  name: 'JSelectInputSupplier',
   components: {
+    JSelectInputBiz,
     SupplierSelectModal,
-    JSelectBiz,
   },
   inheritAttrs: false,
   props: {
