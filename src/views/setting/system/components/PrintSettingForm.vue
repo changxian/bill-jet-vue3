@@ -136,6 +136,7 @@
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
   import { useUserStore } from '@/store/modules/user';
+  import * as vuePluginHiprint from '@/views/template/components';
   const [registerModal, { openModal }] = useModal();
   const { createMessage } = useMessage();
 
@@ -266,26 +267,40 @@
       });
   }
 
-  function fetchPrintSettingData() {
-    confirmLoading.value = true;
-    getMyPrintSetting()
-      .then((res) => {
-        formData.value = {
-          ...res,
-        };
-      })
-      .finally(() => {
-        confirmLoading.value = false;
-        // 重新获取用户信息和菜单
-        userStore.getUserInfoAction();
-      });
-    listPrinters().then((res) => {
-      res.forEach((item) => {
-        if (item) {
-          printerOptions.value.push({ label: item, value: `${item}` });
-        }
-      });
+  var defaultElementTypeProvider;
+
+  function init() {
+    let hiprint = vuePluginHiprint.hiprint;
+    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
+    hiprint.init({
+      providers: [new defaultElementTypeProvider()],
+      lang: 'cn',
     });
+    // 还原配置
+    hiprint.setConfig();
+
+    return new hiprint.PrintTemplate({
+      template: {},
+    });
+  }
+
+  function fetchPrintSettingData() {
+    let printTemplate = init();
+    let timer = setInterval(function () {
+      const printerList1 = printTemplate.getPrinterList();
+
+      console.log('尝试获取打印机列表');
+      if (0 != printerList1) {
+        console.info(printerList1);
+        window.clearInterval(timer);
+        printerList1.forEach((item: any) => {
+          if (item) {
+            printerOptions.value.push({ label: item.name, value: item.name });
+          }
+        });
+      }
+    }, 10);
   }
 
   onMounted(fetchPrintSettingData);

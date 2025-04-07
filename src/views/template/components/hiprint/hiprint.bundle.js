@@ -10833,6 +10833,10 @@ var hiprint = function (t) {
           height: this.printPanels[0].height * 1000,
           width: this.printPanels[0].width * 1000
         }
+
+        console.log('打印配置信息');
+        console.info(i);
+
         if (i.printByFragments) {
           // 分批打印
           this.getHtmlAsync(e, i)

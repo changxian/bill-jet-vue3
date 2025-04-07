@@ -269,7 +269,6 @@
     debtAmountTotal.value = extraInfo.debtAmount || 0;
   }
 
-  // vuePluginHiprint.disAutoConnect();
   var hiprint, defaultElementTypeProvider;
   let printTemplate;
   const printData = ref();

@@ -26,6 +26,8 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import JUploadButton from '@/components/Button/src/JUploadButton.vue';
   const { createMessage } = useMessage();
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
 
   export default {
     name: 'PrintView',
@@ -145,7 +147,20 @@
         this.doOperationWhenClientConnected(() => {
           const printerList = this.hiprintTemplate.getPrinterList();
           console.log(printerList);
-          this.hiprintTemplate.print2(this.printData, { printer: '', title: 'hiprint测试打印' });
+
+          let printer,
+            printSetting = userStore.getPrintSetting;
+
+          if (null != printSetting) {
+            printer = printSetting.printer;
+          }
+
+          this.hiprintTemplate.print2(this.printData, {
+            printer: {
+              name: printer || '',
+            },
+            title: 'print打印',
+          });
         });
         //
         // this.waitShowPrinter = true;

@@ -131,9 +131,6 @@
             <a-col :span="24" class="rect-printElement-types hiprintEpContainer">
               <a-row class="drag_item_title">拖拽组件列表</a-row>
               <hr />
-              <!--<div style="height: 21vh; width: 180px; overflow: auto">-->
-              <!--  <TemplateTableProvider />-->
-              <!--</div>-->
               <a-row class="drag_item_title">基础组件</a-row>
               <a-row style="height: 80px">
                 <a-col :span="8" class="drag_item_box">
@@ -263,11 +260,13 @@
   import panel from './panel.empty';
   import printData from './print-data';
   import printPreview from './TemplatePreview.vue';
-  import TemplateTableProvider from './TemplateTableProvider.vue';
   import jsonView from './json-view.vue';
   import { saveOrUpdate } from '../Template.api';
   import { useMessage } from '/@/hooks/web/useMessage';
+
   const { createMessage } = useMessage();
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
 
   // vuePluginHiprint.disAutoConnect();
   var hiprint, defaultElementTypeProvider;
@@ -275,7 +274,7 @@
 
   export default {
     name: 'TemplateDesignForm',
-    components: { printPreview, jsonView, TemplateTableProvider },
+    components: { printPreview, jsonView },
     props: {
       formData: {
         type: Object,
@@ -474,11 +473,11 @@
       setPaper(type, value) {
         try {
           if (Object.keys(this.paperTypes).includes(type)) {
-            this.curPaper = { type: type, width: value.width, height: value.height };
-            hiprintTemplate.setPaper(value.width, value.height);
+            this.curPaper = { type: type, width: value['width'], height: value['height'] };
+            hiprintTemplate.setPaper(value['width'], value['height']);
           } else {
-            this.curPaper = { type: 'other', width: value.width, height: value.height };
-            hiprintTemplate.setPaper(value.width, value.height);
+            this.curPaper = { type: 'other', width: value['width'], height: value['height'] };
+            hiprintTemplate.setPaper(value['width'], value['height']);
           }
         } catch (error) {
           createMessage.error(`操作失败: ${error}`);
@@ -559,7 +558,20 @@
         this.doOperationWhenClientConnected(() => {
           const printerList = hiprintTemplate.getPrinterList();
           console.log(printerList);
-          hiprintTemplate.print2(printData, { printer: '', title: 'hiprint测试打印' });
+
+          let printer,
+            printSetting = userStore.getPrintSetting;
+
+          if (null != printSetting) {
+            printer = printSetting.printer;
+          }
+
+          hiprintTemplate.print2(printData, {
+            printer: {
+              name: printer || '',
+            },
+            title: 'print测试打印',
+          });
         });
       },
       doOperationWhenClientConnected(operation) {

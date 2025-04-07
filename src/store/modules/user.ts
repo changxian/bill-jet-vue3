@@ -18,6 +18,7 @@ import {
   BILL_SETTING_DATA,
   DEFAULT_COMPANY_DATA,
   TENANT_PACK_DATA,
+  PRINT_SETTING_DATA,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
@@ -41,10 +42,11 @@ interface UserState {
   dictItems?: dictType | null;
   cols: Object[];
   dynamicCols?: Object | null;
-  systemSetting?:Object | null;
-  billSetting?:Object | null;
-  defaultCompany?:Object | null;
-  tenantPack?:Object | null;
+  printSetting?: Object | null;
+  systemSetting?: Object | null;
+  billSetting?: Object | null;
+  defaultCompany?: Object | null;
+  tenantPack?: Object | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
@@ -110,6 +112,12 @@ export const useUserStore = defineStore({
         return this.dynamicCols;
       }
       return getAuthCache(DYNAMIC_COLS_DATA);
+    },
+    getPrintSetting() {
+      if (null != this.printSetting) {
+        return this.printSetting;
+      }
+      return getAuthCache(PRINT_SETTING_DATA);
     },
 
     getSystemSetting() {
@@ -183,6 +191,10 @@ export const useUserStore = defineStore({
     setDynamicCols(dynamicCols) {
       this.dynamicCols = dynamicCols;
       setAuthCache(DYNAMIC_COLS_DATA, dynamicCols);
+    },
+    setPrintSetting(pringSetting) {
+      this.printSetting = pringSetting;
+      setAuthCache(PRINT_SETTING_DATA, pringSetting);
     },
     setSystemSetting(systemSetting) {
       this.systemSetting = systemSetting;
@@ -356,7 +368,8 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems, cols, dynamicCols, systemSetting, billSetting, defaultCompany, tenantPack } = await getUserInfo();
+      const { userInfo, sysAllDictItems, cols, dynamicCols, printSetting, systemSetting, billSetting, defaultCompany, tenantPack } =
+        await getUserInfo();
 
       if (userInfo) {
         const { roles = [] } = userInfo;
@@ -386,6 +399,10 @@ export const useUserStore = defineStore({
         this.setDynamicCols(dynamicCols);
       }
 
+      // 添加系统设置信息到缓存
+      if (printSetting) {
+        this.setPrintSetting(printSetting);
+      }
       // 添加系统设置信息到缓存
       if (systemSetting) {
         this.setSystemSetting(systemSetting);
