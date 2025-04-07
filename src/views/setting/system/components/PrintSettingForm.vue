@@ -286,6 +286,19 @@
   }
 
   function fetchPrintSettingData() {
+    confirmLoading.value = true;
+    getMyPrintSetting()
+      .then((res) => {
+        formData.value = {
+          ...res,
+        };
+      })
+      .finally(() => {
+        confirmLoading.value = false;
+        // 重新获取用户信息和菜单
+        userStore.getUserInfoAction();
+      });
+
     let printTemplate = init();
     let timer = setInterval(function () {
       const printerList1 = printTemplate.getPrinterList();
