@@ -24,11 +24,9 @@ import JSelectInputBiz from './base/JSelectInputBiz.vue';
 import { defineComponent, ref, reactive, watchEffect, watch, provide } from 'vue';
 import { useModal } from '/@/components/Modal';
 import { propTypes } from '/@/utils/propTypes';
-import { useRuleFormItem } from '/@/hooks/component/useFormItem';
 import { useAttrs } from '/@/hooks/core/useAttrs';
 import { SelectValue } from 'ant-design-vue/es/select';
 import { cloneDeep } from 'lodash-es';
-import JSelectInputBiz from "@/components/Form/src/jeecg/components/base/JSelectInputBiz.vue";
 export default defineComponent({
   name: 'JSelectInputSupplier',
   components: {
