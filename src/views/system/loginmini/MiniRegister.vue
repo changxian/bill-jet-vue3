@@ -78,7 +78,9 @@
                       <div class="aui-flex-box">
                         <div class="aui-choice">
                           <a-checkbox v-model:checked="formData.policy" />
-                          <span style="color: #1b90ff; margin-left: 4px">{{ t('sys.login.policy') }}</span>
+                          <span style="color: #1b90ff; margin-left: 4px">
+                            <a-button type="link" target="_blank" @click="openProtocol">{{ t('sys.login.policy') }}</a-button>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -106,6 +108,7 @@
   </div>
   <!-- 图片验证码弹窗 -->
   <CaptchaModal @register="captchaRegisterModal" @ok="getLoginCode" />
+  <ProtocolModel @register="registerProtocolModel" />
 </template>
 
 <script lang="ts" setup name="mini-register">
@@ -119,6 +122,7 @@
   import CaptchaModal from '@/components/jeecg/captcha/CaptchaModal.vue';
   import { useModal } from '@/components/Modal';
   import { ExceptionEnum } from '@/enums/exceptionEnum';
+  import ProtocolModel from '@/views/system/protocol/ProtocolModal.vue';
 
   const { t } = useI18n();
   const { notification, createMessage } = useMessage();
@@ -144,6 +148,21 @@
   //确认密码眼睛打开关闭
   const confirmPwdIndex = ref<string>('close');
   const [captchaRegisterModal, { openModal: openCaptchaModal }] = useModal();
+  const [registerProtocolModel, { openModal: openProtocolModel }] = useModal();
+
+  /**
+   * 查看用户协议
+   */
+  function openProtocol() {
+    openProtocolModel(true, {});
+  }
+
+  /**
+   * 同意隐私政策
+   */
+  function policyChecked() {
+    formData.policy = true;
+  }
 
   /**
    * 返回
