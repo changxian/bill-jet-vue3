@@ -27,6 +27,10 @@
         <template #tableTitle>
           <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'purchase.bill:jxc_purchase_bill:add'">插入行</a-button>
           <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'purchase.bill:jxc_purchase_bill:add'">删除</a-button>
+          <a-button type="primary" preIcon="ant-design:delete-outlined" @click="handlePaste" v-auth="'purchase.bill:jxc_purchase_bill:add'">粘贴Excel数据</a-button>
+          <p style="font-size: 12px; margin-left: 10px; padding-top: 10px">
+            <span style="font-weight: bold">请注意：为了数据能正确粘贴到下面的表格里，请将Excel表格按照下表各列来准备，然后先复制Excel表格里的数据，再点击【粘贴Excel数据】按钮才能将数据正确粘贴进来。</span>
+          </p>
           <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">剪切</a-button>
             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">复制</a-button>
             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'purchase.bill:jxc_purchase_bill:add'">粘贴</a-button> -->
@@ -93,7 +97,7 @@
   const goodsId = ref('');
   const goodsName = ref('');
 
-  const refreshKey:any = ref(new Date().getTime())
+  const refreshKey: any = ref(new Date().getTime());
   const [register, { closeModal, openModal }] = useModal();
   const showModal = () => {
     openModal();
@@ -101,10 +105,118 @@
   };
 
   let selectedGoods: any = [];
-  function getSelect(rows, ids) {
+  function getSelect(rows) {
     selectedGoods = [...rows];
   }
 
+  /**
+   * 粘贴数据到列表上：核心粘贴处理方法
+   */
+  const handlePaste = async () => {
+    try {
+      // 1. 获取剪贴板数据
+      const clipboardData = await navigator.clipboard.readText();
+      if (!clipboardData) {
+        // createMessage.warning('剪贴板中没有检测到数据');
+        return;
+      }
+      console.log('clipboardData : ', clipboardData);
+      // 2. 数据预处理
+      const parsedData = clipboardData
+        .trim()
+        .split(/\r\n|\n/)
+        .filter((row) => row.trim().length > 0)
+        .map((row) =>
+          row.split('\t').map((cell) => {
+            const val = cell.replace(/^"(.*)"$/, '$1').trim();
+            return val === 'null' ? null : val;
+          })
+        );
+      if (parsedData.length === 0) {
+        // createMessage.error('没有可解析的数据');
+        return;
+      }
+      console.log('parsedData : ', parsedData);
+      // 3. 获取列定义
+      const cols = columns.filter(column => column.ifShow !== false);
+      // const columnKeys = cols.map((col) => col.dataIndex);
+      // 4. 自动列匹配（支持带标题行的情况）
+      let dataStartRow = 0;
+      if (cols.some((col) => parsedData.includes(col.title))) {
+        dataStartRow = 1;
+        createMessage.info('检测到标题行，已自动跳过');
+      }
+      // 5. 数据转换
+      const convertedData = parsedData.slice(dataStartRow).map((row, rowIndex) => {
+        const item = {};
+        cols.forEach((col, colIndex) => {
+          let value = row[colIndex] || null;
+
+          // 类型转换
+          if (col.type === 'number') {
+            value = Number(value) || 0;
+          }
+
+          // 必填校验
+          if (col.required && !value) {
+            throw new Error(`第${rowIndex + 1}行 ${col.title} 不能为空`);
+          }
+
+          item[col.dataIndex] = value;
+        });
+        return item;
+      });
+      // 6. 二次确认
+      createConfirm({
+        iconType: 'warning',
+        title: '确认导入',
+        content: `检测到 ${convertedData.length} 条数据，是否继续？`,
+        onOk: () => {
+          console.log('convertedData : ', convertedData);
+          // 7. 更新表格数据
+          getSelect([...convertedData]);
+          // convertedData.forEach((item) => {
+          //   selectedGoods.push(item);
+          // });
+          pasteDataOk();
+          createMessage.success(`成功粘贴 ${convertedData.length} 条数据`);
+        },
+      });
+    } catch (e) {
+      createMessage.error('粘贴失败，请检查数据格式');
+    }
+  };
+
+  // 数据粘贴完成
+  function pasteDataOk() {
+    selectedGoods.forEach((item) => {
+      // 重量小计
+      if (item.weight != undefined) {
+        item.weightSubtotal = item.weight;
+      }
+      // 面积小计
+      if (item.area != undefined) {
+        item.areaSubtotal = item.area;
+      }
+      // 体积小计
+      if (item.volume != undefined) {
+        item.volumeSubtotal = item.volume;
+      }
+      item.count = 1;
+      item.costAmount = item.cost;
+    });
+    if (goodsNameRepeat.value) {
+      selectedGoods = removedExistGoods(selectedGoods);
+    }
+    if (dataSource.value.length) {
+      dataSource.value = [...dataSource.value, ...selectedGoods];
+    } else {
+      dataSource.value = [...selectedGoods];
+    }
+    emit('change-goods', [...dataSource.value]);
+  }
+
+  // 表格列定义
   const columns: BasicColumn[] = [
     {
       title: '编号(条码)',
