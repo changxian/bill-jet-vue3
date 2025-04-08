@@ -72,7 +72,7 @@
         <a-button type="primary" v-auth="'purchase.supplier:jxc_supplier:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" v-auth="'purchase.supplier:jxc_supplier:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-button type="link" preIcon="ant-design:export-outlined" target="_blank" style="margin-left: 10px; padding-top: 5px" @click="onTemplateXls"> 供应商信息导入模板下载</a-button>
-        <p style="font-size: 14px">为了数据导入顺利，请在正式导入数据之前先下载模板，然后再从准备好的excel表格里把信息复制到下载的模板里，再点击导入选择有数据的模板文件将数据导进来。<br/>
+        <p style="font-size: 15px">为了数据导入顺利，请在正式导入数据之前先下载模板，然后再从准备好的excel表格里把信息复制到下载的模板里，再点击导入选择有数据的模板文件将数据导进来。<br/>
           <span style="font-weight: bold">请注意：模板第一行标题请不要修改，模板列只能删除不能增加、不能修改。</span>
         </p>
         <a-dropdown v-if="false">

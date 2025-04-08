@@ -22,8 +22,8 @@
           <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
           <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
           <a-button type="primary" preIcon="ant-design:delete-outlined" @click="handlePaste" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴Excel数据</a-button>
-          <p style="font-size: 12px; margin-left: 10px; padding-top: 10px">
-            <span style="font-weight: bold">请注意：为了数据能正确粘贴到下面的表格里，请将Excel表格按照下表各列来准备，然后先复制Excel表格里的数据，再点击【粘贴Excel数据】按钮才能将数据正确粘贴进来。</span>
+          <p style="font-size: 15px; margin-left: 10px; padding-top: 10px">
+            <span style="">请注意：为了数据能正确粘贴到下面的表格里，请将Excel表格按照下表各列来准备，然后先复制Excel表格里的数据，再点击【粘贴Excel数据】按钮才能将数据正确粘贴进来。</span>
           </p>
           <!-- <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">剪切</a-button>
             <a-button type="primary" preIcon="ant-design:delete-outlined" v-auth="'deliver.bill:jxc_deliver_bill:add'">复制</a-button>
