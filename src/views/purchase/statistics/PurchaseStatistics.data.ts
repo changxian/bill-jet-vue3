@@ -99,21 +99,21 @@ const countTotalCol = {
 // 按商品统计
 export const goodsCountColumns: BasicColumn[] = [
   {
-    title: '名称',
+    title: '名称' + (goodsNameTitle.value ? '(' + goodsNameTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsName',
     width: 100,
     resizable: true,
   },
   {
-    title: '编号',
+    title: '编号' + (goodsCodeTitle.value ? '(' + goodsCodeTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsCode',
     width: 100,
     resizable: true,
   },
   {
-    title: '规格',
+    title: '规格' + (goodsTypeTitle.value ? '(' + goodsTypeTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsType',
     width: 100,
