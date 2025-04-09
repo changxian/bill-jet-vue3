@@ -28,10 +28,6 @@
   user-select: none;
   overflow-x: hidden;
   overflow: hidden;
-  /* margin:0 auto; */
-  transform: scale(0.47);
-  transform-origin: left top 0;
-
 }
 
 .hiprint-printPaper .hiprint-printPaper-content {

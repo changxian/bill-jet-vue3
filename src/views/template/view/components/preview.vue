@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { getTemplateInto } from '/@/api/common/api';
 import { printLimit } from '../index.api';
 import { useMessage } from '/@/hooks/web/useMessage';
 import JUploadButton from '@/components/Button/src/JUploadButton.vue';
@@ -37,22 +38,35 @@ export default {
       template: {},
     };
   },
-  computed: {
-  },
+  computed: {},
   watch: {},
-  created() {
-  },
+  created() {},
   mounted() {
-
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const templateId = urlParams.get('templateId');
-console.log(templateId,"模板id"); // 输出: 123
-
-    this.init(tempData);
-    this.show(printData, tempData);
+    // this.init(tempData);
+    // this.show(printData, tempData);
+    // console.log(tempData, "模板",printData)
+    this.templateGet()
   },
   methods: {
+    templateGet() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const templateId = urlParams.get('templateId');
+      console.log(templateId, '模板id'); // 输出: 123
+      // { templateId:"1842101630761099265" }
+      
+      getTemplateInto({ templateId:templateId}).then(res => {
+					//设置列表数据
+          // console.log(res)
+					// if (res.success) {
+						this.template = JSON.parse(res.data)
+						console.log(this.template, "模板",printData)
+             this.init(this.template);
+             this.show(printData,this.template);
+					// }
+
+				}).catch(() => {})
+    },
     init(_tempData) {
       hiprint = vuePluginHiprint.hiprint;
       defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
@@ -89,14 +103,15 @@ console.log(templateId,"模板id"); // 输出: 123
 </script>
 
 <style lang="less" scoped>
-:deep(.ant-card-body){
-  padding:0!important;
+:deep(.ant-card-body) {
+  padding: 0 !important;
+}
+:deep(.hiprint-printPaper) {
+  transform: scale(0.47);
+  transform-origin: left top 0;
 }
 .jcx-card {
-  box-shadow:
-    0 1px 2px 0 rgba(0, 0, 0, 0.03),
-    0 1px 6px -1px rgba(0, 0, 0, 0.02),
-    0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
   box-sizing: border-box;
   margin: 0;
   padding: 5px;
@@ -104,20 +119,8 @@ console.log(templateId,"模板id"); // 输出: 123
   font-size: 14px;
   line-height: 1.5714285714285714;
   list-style: none;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    PingFang SC,
-    Hiragino Sans GB,
-    Microsoft YaHei,
-    Helvetica Neue,
-    Helvetica,
-    Arial,
-    sans-serif,
-    Apple Color Emoji,
-    Segoe UI Emoji,
-    Segoe UI Symbol;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   position: relative;
   background: #ffffff;
   border-radius: 4px;

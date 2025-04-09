@@ -18,6 +18,7 @@ enum Api {
   companyList = '/company/tenantCompany/list',
   supplierList = '/purchase/supplier/supplier/list',
   customerList = '/deliver/customer/customer/list',
+  templateInto='/bill/template/info'
 }
 
 /**
@@ -173,3 +174,9 @@ export const getFileblob = (url, parameter) => {
 export const uploadMyFile = (url, data) => {
   return defHttp.uploadMyFile(url, data);
 };
+
+/**
+ * 模板接口
+ * @param params
+ */
+export const getTemplateInto = (params) => defHttp.get({ url: Api.templateInto, params },{withToken:false,joinTime:false});
