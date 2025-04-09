@@ -135,7 +135,8 @@
       title: '销售开单',
       api: detailsList,
       canResize: false,
-      cols: userStore.getCols, // 添加列备注信息
+      // cols: userStore.getCols, // 添加列备注信息
+      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       useSearchForm: false,
       showActionColumn: false,
       showIndexColumn: true,
