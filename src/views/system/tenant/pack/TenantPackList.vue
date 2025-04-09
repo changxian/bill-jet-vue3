@@ -44,6 +44,7 @@
   const [registerPackMenu, { openModal }] = useModal();
   const [registerPackUser, { openModal: packUserOpenModal }] = useModal();
   const tenantId = ref<number>(0);
+  const tenantCategory = ref<number>(0);
   const tenantName = ref<string>('0');
 
   const [registerSysTenantPackRecordListModal, { openModal: sysTenantPackRecordListModal }] = useModal();
@@ -82,14 +83,15 @@
       },
     },
   });
-  const [registerTable, {reload}, {rowSelection, selectedRowKeys, selectedRows}] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   // Emits声明
   const emit = defineEmits(['register', 'success']);
 
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     tenantId.value = data.tenantId;
     tenantName.value = data.tenantName;
+    tenantCategory.value = data.tenantCategory;
     showPackAddAndEdit.value = data.showPackAddAndEdit;
     success();
   });
@@ -223,6 +225,7 @@
       isUpdate: false,
       tenantId: unref(tenantId),
       tenantName: unref(tenantName),
+      tenantCategory: unref(tenantCategory),
       showFooter: true,
     });
   }

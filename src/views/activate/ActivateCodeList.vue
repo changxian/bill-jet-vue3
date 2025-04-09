@@ -51,8 +51,11 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" v-auth="'activate:jxc_activate_code:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" v-auth="'activate:jxc_activate_code:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <!--<a-button type="primary" v-auth="'activate:jxc_activate_code:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+        <p style="font-size: 14px; margin-left: 10px; padding-top: 10px">
+          <span style="">请注意：激活码请勿随意进行传播，激活码消耗完之前请及时联系运营商进行购买。</span>
+        </p>
+        <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">

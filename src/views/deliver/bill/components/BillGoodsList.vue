@@ -470,7 +470,7 @@
       title: '商品详情',
       columns: columns,
       cols: userStore.getCols, // 添加列备注信息
-      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
+      dynamicEditCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowKey: 'id',
       pagination: false,
       actionColumn: {

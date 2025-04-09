@@ -92,7 +92,7 @@
         <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
       </template>
       <template #packType_dictText="{ record }">
-        <span v-if="3 == record.packType" style="color: red">{{ record.packType_dictText }}</span><span v-else>{{ record.packType_dictText }}</span>
+        <span v-if="3 == record.packType" style="color: red"><b>{{ record.packType_dictText }}</b></span><span v-else>{{ record.packType_dictText }}</span>
       </template>
       <template v-slot:bodyCell="{ column, record, index, text }">
       </template>
@@ -167,7 +167,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.add();
   }
-  
+
   /**
    * 编辑事件
    */
@@ -175,7 +175,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 详情
    */
@@ -183,28 +183,28 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
+
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
+
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
+
   /**
    * 操作栏
    */
@@ -220,7 +220,7 @@
       },
     ];
   }
-      /**
+  /**
    * 套餐授权弹窗
    */
   function handlePerssion(record) {
@@ -253,7 +253,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -263,10 +263,6 @@
     //刷新数据
     reload();
   }
-  
-
-
-
 </script>
 
 <style lang="less" scoped>

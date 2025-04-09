@@ -80,9 +80,9 @@ export function addDynamicCols(oriColumns, dynamicCols) {
         title: dynamicCol.fieldTitle,
         align: 'center',
         key: fieldName,
-        value: fieldName,
+        value: dynamicCol.fieldValue,
         dataIndex: fieldName,
-        width: 120,
+        width: 80,
         resizable: true,
         slots: { customRender: fieldName },
         customRender: ({ text, record }) => {
@@ -101,6 +101,59 @@ export function addDynamicCols(oriColumns, dynamicCols) {
   }
   return [...oriColumns, ...dynamicColumns];
 }
+// 添加可编辑动态列
+export function addDynamicEditCols(oriColumns, dynamicEditCols) {
+  const dynamicColumns = [];
+  if (!dynamicEditCols) {
+    dynamicEditCols = [];
+  }
+  if (!oriColumns) {
+    oriColumns = [];
+  }
+  function find(arr: any, dataIndex: any) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]['key'] == dataIndex) {
+        return arr[i]['value'];
+      }
+    }
+    return null;
+  }
+  if (dynamicEditCols && 0 < dynamicEditCols.length && 0 < dynamicEditCols.length && oriColumns) {
+    for (let i = 0; i < dynamicEditCols.length; i++) {
+      const dynamicEditCol = dynamicEditCols[i];
+      const fieldName = dynamicEditCol.fieldName;
+      if (!dynamicEditCol.fieldTitle || null != find(oriColumns, fieldName)) {
+        continue;
+      }
+      const col = {
+        title: dynamicEditCol.fieldTitle,
+        align: 'center',
+        key: fieldName,
+        value: dynamicEditCol.fieldValue,
+        dataIndex: fieldName,
+        width: 80,
+        resizable: true,
+        editable: false,
+        edit: true,
+        editComponent: 'Input',
+        slots: { customRender: fieldName },
+        customRender: ({ text, record }) => {
+          if (!record) {
+            return '';
+          }
+          if (!record.dynamicField) {
+            return '';
+          }
+          return record?.dynamicField[fieldName];
+        },
+      };
+      // @ts-ignore
+      dynamicColumns.push(col);
+    }
+  }
+  return [...oriColumns, ...dynamicColumns];
+}
+
 /**
  * listPage页面公共方法
  *
@@ -402,35 +455,11 @@ export function useListTable(tableProps: TableProps): [
     if (dynamicCols && 0 < dynamicCols.length && 0 < dynamicCols.length && tableProps.columns) {
       tableProps.columns = addDynamicCols(tableProps.columns, dynamicCols);
     }
-    // if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
-    //   for (let i = 0; i < dynamicCols.length; i++) {
-    //     const dynamicCol = dynamicCols[i];
-    //     const fieldName = dynamicCol.fieldName;
-    //     if (!dynamicCol.fieldTitle || null != find(tableProps.columns, fieldName)) {
-    //       continue;
-    //     }
-    //     const col = {
-    //       title: dynamicCol.fieldTitle,
-    //       align: 'center',
-    //       key: fieldName,
-    //       value: fieldName,
-    //       dataIndex: fieldName,
-    //       slots: { customRender: fieldName },
-    //       customRender: ({ text ,record}) => {
-    //         if(!record){
-    //           return "";
-    //         }
-    //         if(!record.dynamicField){
-    //           return "";
-    //         }
-    //         return record?.dynamicField[fieldName];
-    //       },
-    //     };
-    //     tableProps.columns.push(col);
-    //   }
-    // }
-    //update-end---author:wangshuai---date:2024-04-28---for:【issues/6180】前端代码配置表变查询条件显示列不生效---
-    // merge 方法可深度合并对象
+    // 列添加可编辑列扩展
+    const dynamicEditCols = tableProps.dynamicEditCols;
+    if (dynamicEditCols && 0 < dynamicEditCols.length && 0 < dynamicEditCols.length && tableProps.columns) {
+      tableProps.columns = addDynamicEditCols(tableProps.columns, dynamicEditCols);
+    }
     merge(defaultTableProps, tableProps);
   }
 

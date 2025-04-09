@@ -21,7 +21,7 @@
             </a-col>
             <a-col :span="24">
               <a-form-item label="产品类型" v-bind="validateInfos.packType" id="ActivateCodeForm-packType" name="packType">
-                <j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" placeholder="请选择产品类型" allow-clear />
+                <j-dict-select-tag v-model:value="formData.packType" dictCode="sys_pack_pack_type" @change="validPackType" placeholder="请选择产品类型" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="24">
@@ -88,7 +88,11 @@
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   //表单验证
-  const validatorRules = reactive({});
+  const validatorRules = reactive({
+    belongTenantId: [{ required: true, message: '请输入需要购买激活码的运营商或代理商!' }],
+    packType: [{ required: true, message: '请输入需要购买激活码的产品类型!' }],
+    packCategory: [{ required: true, message: '请输入需要购买激活码的产品类别!' }],
+  });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
 
   // 表单禁用
@@ -102,6 +106,13 @@
   // 修改单价时计算总金额
   function changeAmount() {
     formData.amount = (formData.price * formData.actNum).toFixed(2);
+  }
+
+  // 修改单价时计算总金额
+  function validPackType() {
+    if (formData.packType == 3) {
+      createMessage.warning('运营商版套餐不需要购买激活码，请重新选择！');
+    }
   }
 
   /**
@@ -148,6 +159,12 @@
     const isUpdate = ref<boolean>(false);
     //时间格式化
     let model = formData;
+    if (formData.packType == 3) {
+      createMessage.warning('运营商版套餐不需要购买激活码，请重新选择！');
+      confirmLoading.value = false;
+      return;
+    }
+    debugger;
     if (model.id) {
       isUpdate.value = true;
     }

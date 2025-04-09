@@ -12,7 +12,7 @@
             <div class="vip-message" v-if="tenantInfo.category > 0">
               <div class="item-house" @click.stop="copyClick(item.id)">
                 <span>
-                  企业邀请码：{{ item.id }}
+                  客户邀请码：{{ item.id }}
                   <Icon icon="ant-design:copy-outlined" style="font-size: 13px; margin-left: 2px" />
                 </span>
               </div>
@@ -29,12 +29,12 @@
                   {{ userDetail.realname }}
                 </div>
               </div>
-              <div class="flex-flow">
+              <!--<div class="flex-flow">
                 <div class="content-des-text" style="line-height: 40px">企业标识码</div>
                 <div style="font-size: 13px; color: #000000; line-height: 40px">
                   {{ tenantInfo.id }}
                 </div>
-              </div>
+              </div>-->
               <div class="flex-flow">
                 <div class="content-des-text">企&nbsp;业&nbsp;LOGO</div>
                 <div style="font-size: 13px">
