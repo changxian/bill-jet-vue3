@@ -175,7 +175,7 @@ export const columns: BasicColumn[] = [
 
 export const detailColumns: BasicColumn[] = [
   {
-    title: '编号(条码)',
+    title: '编号',
     align: 'center',
     dataIndex: 'goodsCode',
     width: 100,

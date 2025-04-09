@@ -74,14 +74,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import GoodsModal from './GoodsModal.vue';
   import { getGoodsColumns } from './goods.data';
-  import {
-    batchDelete,
-    deleteOne,
-    getExportUrl,
-    getImportUrl,
-    list,
-    tenantGoodsNum
-  } from "./goods.api";
+  import { batchDelete, deleteOne, getExportUrl, getImportUrl, list, tenantGoodsNum } from './goods.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '@/hooks/web/useMessage';
   import CustPriceList from './CustPriceList.vue';

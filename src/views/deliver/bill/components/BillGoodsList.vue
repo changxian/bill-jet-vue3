@@ -274,7 +274,7 @@
   // 表格列定义
   const columns: BasicColumn[] = [
     {
-      title: '编号(条码)',
+      title: '编号',
       align: 'center',
       dataIndex: 'goodsCode',
       width: 100,
@@ -470,7 +470,7 @@
       title: '商品详情',
       columns: columns,
       cols: userStore.getCols, // 添加列备注信息
-      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
+      dynamicEditCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowKey: 'id',
       pagination: false,
       actionColumn: {
@@ -511,11 +511,13 @@
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach((item) => {
-      debugger;
+      if(!item.dynamicFields){
+        item['dynamicFields']=userStore.getDynamicCols['jxc_goods'];
+      }
       item.goodsId = item.id;
-      item.goodsName = item.name;
-      item.goodsCode = item.code;
-      item.goodsType = item.type;
+      // item.goodsName = item.name;
+      // item.goodsCode = item.code;
+      // item.goodsType = item.type;
       item.goodsUnit = item.unit;
       // 重量小计
       if (item.weight != undefined) {
@@ -609,7 +611,7 @@
       price: '',
       amount: '',
       costAmount: '',
-      dynamicFields: undefined,
+      dynamicFields: userStore.getDynamicCols['jxc_goods'],
       remark: '',
     };
     dataSource.value.push(row);

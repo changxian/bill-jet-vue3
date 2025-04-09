@@ -83,6 +83,14 @@
         </div>
       </div>
     </div>
+    <div class="account-data" v-if="myTenant?.category == 5">
+      <div class="renew-detail">
+        <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 120px">套餐续费</div>
+        <div class="margin-bottom-10 font-size-13">
+          <span class="gray-3">您是运营代理商，账号不涉及续费问题，请放心使用！</span>
+        </div>
+      </div>
+    </div>
     <div class="account-data" v-else>
       <div class="renew-detail">
         <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 120px">套餐续费</div>

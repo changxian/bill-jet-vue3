@@ -15,8 +15,8 @@
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item label="商品名称" v-bind="validateInfos.name" id="GoodsForm-name" name="name">
-                <a-input v-model:value="formData.name" placeholder="请输入商品名称" allow-clear />
+              <a-form-item label="商品名称" v-bind="validateInfos.goodsName" id="GoodsForm-goodsName" name="goodsName">
+                <a-input v-model:value="formData.goodsName" placeholder="请输入商品名称" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -38,13 +38,13 @@
           </a-row>
           <a-row>
             <a-col :span="8">
-              <a-form-item label="编号条码" v-bind="validateInfos.code" id="GoodsForm-code" name="code">
-                <a-input v-model:value="formData.code" placeholder="请输入商品编号" allow-clear />
+              <a-form-item label="编号条码" v-bind="validateInfos.goodsCode" id="GoodsForm-goodsCode" name="goodsCode">
+                <a-input v-model:value="formData.goodsCode" placeholder="请输入商品编号" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item label="规格型号" v-bind="validateInfos.type" id="GoodsForm-type" name="type">
-                <a-input v-model:value="formData.type" placeholder="请输入规格型号" allow-clear />
+              <a-form-item label="规格型号" v-bind="validateInfos.goodsType" id="GoodsForm-goodsType" name="goodsType">
+                <a-input v-model:value="formData.goodsType" placeholder="请输入规格型号" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -206,9 +206,9 @@
   const formData = reactive<Record<string, any>>({
     id: '',
     categoryId: '',
-    code: '',
-    name: '',
-    type: '',
+    goodsCode: '',
+    goodsName: '',
+    goodsType: '',
     unit: '',
     cost: 0,
     price: 0,
@@ -255,9 +255,9 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
-    code: [{ required: true, message: '请输入商品编号!' }],
-    name: [{ required: true, message: '请输入商品名称!' }],
-    type: [{ required: true, message: '请输入规格型号!' }],
+    goodsCode: [{ required: true, message: '请输入商品编号!' }],
+    goodsName: [{ required: true, message: '请输入商品名称!' }],
+    goodsType: [{ required: true, message: '请输入规格型号!' }],
     unit: [{ required: true, message: '请输入单位!' }],
     cost: [{ required: true, message: '请输入进价（成本）!' }],
     price: [{ required: true, message: '请输入售价!' }],
@@ -309,7 +309,7 @@
     try {
       // 商品名称重复判断
       if (billSetting.goodsNameRepeat) {
-        await tenantGoodsNameNum({ goodsName: formData.name }).then((res) => {
+        await tenantGoodsNameNum({ goodsName: formData.goodsName }).then((res) => {
           total.value = res.total;
         });
       }

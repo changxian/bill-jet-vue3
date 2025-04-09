@@ -70,7 +70,7 @@ export const goodsCountColumns: BasicColumn[] = [
     dataIndex: 'goodsName',
   },
   {
-    title: '编号(条码)',
+    title: '编号',
     align: 'center',
     dataIndex: 'goodsCode',
   },

@@ -3,11 +3,26 @@ import { useUserStore } from '@/store/modules/user';
 import { ref } from 'vue';
 const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
+const goodsCodeTitle = ref('');
+const goodsNameTitle = ref('');
+const goodsTypeTitle = ref('');
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
 if (billSetting.dynaFieldsGroup['1']) {
   billSetting.dynaFieldsGroup['1'].forEach((item) => {
+    // 商品编号
+    if (item.fieldName === 'goodsCode') {
+      goodsCodeTitle.value = item.fieldTitle;
+    }
+    // 商品名称
+    if (item.fieldName === 'goodsName') {
+      goodsNameTitle.value = item.fieldTitle;
+    }
+    // 商品类型
+    if (item.fieldName === 'goodsType') {
+      goodsTypeTitle.value = item.fieldTitle;
+    }
     // 重量小计
     if (item.fieldName === 'weightSubtotal') {
       weightColTitle.value = item.fieldTitle;
@@ -27,74 +42,92 @@ const numCountCol = {
   title: '数量合计',
   align: 'center',
   dataIndex: 'countSubtotal',
+  width: 100,
+  resizable: true,
 };
 const amountCol = {
   title: '金额合计',
   align: 'center',
   dataIndex: 'amountSubtotal',
+  width: 100,
+  resizable: true,
 };
 const weightCol = {
-  title: '重量合计(' + (weightColTitle.value == null ? '' : weightColTitle.value) + ')',
+  title: '重量合计' + (weightColTitle.value ? '(' + weightColTitle.value + ')' : '' ),
   align: 'center',
   dataIndex: 'weightSubtotal',
+  width: 100,
+  resizable: true,
   ifShow: billSetting.showWeightCol || false,
 };
 const areaCol = {
-  title: '面积合计(' + (areaColTitle.value == null ? '' : areaColTitle.value) + ')',
+  title: '面积合计' + (areaColTitle.value ? '(' + areaColTitle.value + ')' : '' ),
   align: 'center',
   dataIndex: 'areaSubtotal',
+  width: 100,
+  resizable: true,
   ifShow: billSetting.showAreaCol || false,
 };
 const volumeCol = {
-  title: '体积合计(' + (volumeColTitle.value == null ? '' : volumeColTitle.value) + ')',
+  title: '体积合计' + (volumeColTitle.value ? '(' + volumeColTitle.value + ')' : '' ),
   align: 'center',
   dataIndex: 'volumeSubtotal',
+  width: 100,
+  resizable: true,
   ifShow: billSetting.showVolumeCol || false,
 };
 const costAmountCol = {
   title: '成本合计',
   align: 'center',
   dataIndex: 'costSubtotal',
+  width: 100,
+  resizable: true,
 };
 const profitAmountCol = {
   title: '利润合计',
   align: 'center',
   dataIndex: 'profitSubtotal',
+  width: 100,
+  resizable: true,
 };
 const detailCol = {
   title: '明细',
   align: 'center',
   dataIndex: 'id',
   slots: { customRender: 'detail' },
+  width: 80,
+  resizable: true,
 };
 const countTotalCol = {
   title: '合计',
   align: 'center',
   slots: { customRender: 'count' },
   dataIndex: 'countTotal',
+  width: 80,
+  resizable: true,
 };
 
 // 按商品统计
 export const goodsCountColumns: BasicColumn[] = [
   {
-    title: '名称',
+    title: '名称' + (goodsNameTitle.value ? '(' + goodsNameTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsName',
-    width: 200,
+    width: 100,
     resizable: true,
   },
   {
-    title: '编号(条码)',
+    title: '编号' + (goodsCodeTitle.value ? '(' + goodsCodeTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsCode',
-    width: 200,
+    width: 100,
     resizable: true,
   },
   {
-    title: '规格',
+    title: '规格' + (goodsTypeTitle.value ? '(' + goodsTypeTitle.value + ')' : '' ),
     align: 'center',
     dataIndex: 'goodsType',
-    width: 150,
+    width: 100,
     resizable: true,
   },
   {
@@ -120,7 +153,7 @@ export const typeCountColumns: BasicColumn[] = [
     title: '类别',
     align: 'center',
     dataIndex: 'name',
-    width: 150,
+    width: 80,
     resizable: true,
   },
   numCountCol,
@@ -140,6 +173,8 @@ export const custCountColumns: BasicColumn[] = [
     title: '客户',
     align: 'center',
     dataIndex: 'name',
+    width: 150,
+    resizable: true,
   },
   numCountCol,
   weightCol,
@@ -158,6 +193,8 @@ export const userNameCountColumns: BasicColumn[] = [
     title: '业务员',
     align: 'center',
     dataIndex: 'name',
+    width: 100,
+    resizable: true,
   },
   numCountCol,
   weightCol,
@@ -176,6 +213,8 @@ export const operatorCountColumns: BasicColumn[] = [
     title: '用户',
     align: 'center',
     dataIndex: 'name',
+    width: 100,
+    resizable: true,
   },
   numCountCol,
   weightCol,
@@ -194,6 +233,8 @@ export const careNoCountColumns: BasicColumn[] = [
     title: '车号',
     align: 'center',
     dataIndex: 'name',
+    width: 100,
+    resizable: true,
   },
   numCountCol,
   weightCol,

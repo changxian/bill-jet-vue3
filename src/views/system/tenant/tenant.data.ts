@@ -1,6 +1,7 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { render } from '/@/utils/common/renderUtils';
 import { rules } from '/@/utils/helper/validator';
+import { getTenantId } from '@/utils/auth';
 
 export const columns: BasicColumn[] = [
   {
@@ -18,9 +19,10 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '企业类别',
-    dataIndex: 'category_dictText',
+    dataIndex: 'category',
     width: 100,
     resizable: true,
+    slots: { customRender: 'category_dictText' },
   },
   {
     title: '企业联系人',
@@ -203,6 +205,9 @@ export const formSchema: FormSchema[] = [
         { label: '代理商', value: 5 },
         { label: '客户', value: 0 },
       ],
+    },
+    ifShow: () => {
+      return getTenantId() == '1000';
     },
   },
   {
@@ -390,8 +395,10 @@ export const packColumns: BasicColumn[] = [
     customRender: ({ text }) => {
       if (text === 1) {
         return '销售单';
+      } else if (text === 2) {
+        return '销售单';
       } else {
-        return '进销存';
+        return '运营商';
       }
     },
   },

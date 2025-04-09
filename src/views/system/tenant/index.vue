@@ -22,6 +22,9 @@
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />
       </template>
+      <template #category_dictText="{ record }">
+        <span v-if="9 == record.category" style="color: red"><b>运营商</b></span><span v-else-if="5 == record.category" style="color: red">代理商</span><span v-else>客户</span>
+      </template>
       <template #customizedTemp_dictText="{ record }">
         <span v-if="1 == record.customizedTemp" style="color: red">需要</span><span v-else>不需要</span>
       </template>
@@ -53,6 +56,7 @@
   import TenantPackList from './pack/TenantPackList.vue';
   import TenantRecycleBinModal from './components/TenantRecycleBinModal.vue';
   import TemplateCustomizedList from '@/views/system/tenant/customized/TemplateCustomizedList.vue';
+  // import { getTenantId } from '@/utils/auth';
 
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
@@ -115,6 +119,7 @@
   function handleAdd() {
     openModal(true, {
       isUpdate: false,
+      // tenantId: getTenantId(),
     });
   }
 
@@ -188,6 +193,7 @@
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
       tenantName: unref(selectedRows.value[0].name),
+      tenantCategory: unref(selectedRows.value[0].category),
       //我的企业显示新增和编辑套餐
       showPackAddAndEdit: true,
     });

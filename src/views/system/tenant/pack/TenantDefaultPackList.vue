@@ -194,6 +194,10 @@
       return createMessage.warning('请先选择一条数据');
     }
     const record = selectedRows.value[0];
+    // 判断是否代理商套餐
+    if (record.packType == 3) {
+      return createMessage.warning('代理商企业套餐不需要续费！');
+    }
     myActivateCodeList({
       status: '1',
       packType: record.packType,

@@ -12,6 +12,8 @@
   // Emits声明
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
+  // 当前登录企业的ID
+  // const tenantId = ref('');
   const tenantName = ref('');
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
@@ -25,6 +27,9 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
+    // 当前登录企业的ID
+    // tenantId.value = data?.tenantId;
+    // 选中的企业名称
     tenantName.value = data?.record?.name;
     if (unref(isUpdate)) {
       // 编辑模式下禁用id字段

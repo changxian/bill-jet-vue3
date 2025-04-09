@@ -219,7 +219,7 @@
   // 表格列定义
   const columns: BasicColumn[] = [
     {
-      title: '编号(条码)',
+      title: '编号',
       align: 'center',
       dataIndex: 'goodsCode',
       width: 80,
@@ -407,9 +407,13 @@
     tableProps: {
       title: '商品详情',
       columns: columns,
-      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
+      cols: userStore.getCols, // 添加列备注信息
+      dynamicEditCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowkey: 'id',
       pagination: false,
+      actionColumn: {
+        ifShow: false,
+      },
       //定义rowSelection的类型，默认是checkbox多选，可以设置成radio单选
       rowSelection: {
         type: 'checkbox',
@@ -447,9 +451,9 @@
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach((item) => {
       item.goodsId = item.id;
-      item.goodsName = item.name;
-      item.goodsCode = item.code;
-      item.goodsType = item.type;
+      // item.goodsName = item.name;
+      // item.goodsCode = item.code;
+      // item.goodsType = item.type;
       item.goodsUnit = item.unit;
       // 重量小计
       if (item.weight != undefined) {
@@ -525,10 +529,10 @@
   function addRow() {
     const row = {
       id: new Date().getTime(),
-      goodsCode: '',
+      code: '',
       goodsId: '',
-      goodsName: '',
-      goodsType: '',
+      name: '',
+      type: '',
       goodsUnit: '',
       count: 0,
       weight: 0,
