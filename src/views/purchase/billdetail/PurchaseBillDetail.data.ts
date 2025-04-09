@@ -10,7 +10,7 @@ export const columns: BasicColumn[] = [
   {
     title: '供应商id',
     align: 'center',
-    dataIndex: 'supplierId_dictText'
+    dataIndex: 'supplierId_dictText',
   },
   {
     title: '商品类型',

@@ -274,7 +274,7 @@
   // 表格列定义
   const columns: BasicColumn[] = [
     {
-      title: '编号(条码)',
+      title: '编号',
       align: 'center',
       dataIndex: 'goodsCode',
       width: 100,
@@ -513,9 +513,9 @@
     selectedGoods.forEach((item) => {
       debugger;
       item.goodsId = item.id;
-      item.goodsName = item.name;
-      item.goodsCode = item.code;
-      item.goodsType = item.type;
+      // item.goodsName = item.name;
+      // item.goodsCode = item.code;
+      // item.goodsType = item.type;
       item.goodsUnit = item.unit;
       // 重量小计
       if (item.weight != undefined) {

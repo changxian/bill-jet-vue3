@@ -204,7 +204,7 @@
       },
     },
   });
-  const [registerTable, { reload }, {rowSelection, selectedRows, selectedRowKeys}] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
   const labelCol = reactive({
     xs: 24,
     sm: 4,
