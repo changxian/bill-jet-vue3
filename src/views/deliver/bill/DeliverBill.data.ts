@@ -3,11 +3,16 @@ import { useUserStore } from '@/store/modules/user';
 import { ref } from 'vue';
 const userStore = useUserStore();
 const billSetting = userStore.getBillSetting;
+const countColTitle = ref('');
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
 if (billSetting.dynaFieldsGroup['1']) {
   billSetting.dynaFieldsGroup['1'].forEach((item) => {
+    // 重量小计
+    if (item.fieldName === 'count') {
+      countColTitle.value = item.fieldTitle || '';
+    }
     // 重量小计
     if (item.fieldName === 'weightSubtotal') {
       weightColTitle.value = item.fieldTitle || '';
@@ -80,7 +85,7 @@ export const columns: BasicColumn[] = [
     resizable: true,
   },
   {
-    title: '本单数量',
+    title: '数量合计' + (countColTitle.value ? '(' + countColTitle.value + ')' : ''),
     align: 'center',
     dataIndex: 'count',
     width: 100,
@@ -122,7 +127,7 @@ export const columns: BasicColumn[] = [
     resizable: true,
   },
   {
-    title: '重量合计(' + weightColTitle.value + ')',
+    title: '重量合计' + (weightColTitle.value ? '(' + weightColTitle.value + ')' : ''),
     align: 'center',
     dataIndex: 'weight',
     defaultHidden: !billSetting.showWeightCol,
@@ -131,7 +136,7 @@ export const columns: BasicColumn[] = [
     resizable: true,
   },
   {
-    title: '面积合计(' + areaColTitle.value + ')',
+    title: '面积合计' + (areaColTitle.value ? '(' + areaColTitle.value + ')' : ''),
     align: 'center',
     dataIndex: 'area',
     defaultHidden: !billSetting.showAreaCol,
@@ -140,7 +145,7 @@ export const columns: BasicColumn[] = [
     resizable: true,
   },
   {
-    title: '体积合计(' + volumeColTitle.value + ')',
+    title: '体积合计' + (volumeColTitle.value ? '(' + volumeColTitle.value + ')' : ''),
     align: 'center',
     dataIndex: 'volume',
     defaultHidden: !billSetting.showVolumeCol,

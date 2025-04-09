@@ -6,6 +6,7 @@ const billSetting = userStore.getBillSetting;
 const goodsCodeTitle = ref('');
 const goodsNameTitle = ref('');
 const goodsTypeTitle = ref('');
+const countColTitle = ref('');
 const weightColTitle = ref('');
 const areaColTitle = ref('');
 const volumeColTitle = ref('');
@@ -23,6 +24,10 @@ if (billSetting.dynaFieldsGroup['1']) {
     if (item.fieldName === 'goodsType') {
       goodsTypeTitle.value = item.fieldTitle;
     }
+    // 数量合计
+    if (item.fieldName === 'count') {
+      countColTitle.value = item.fieldTitle;
+    }
     // 重量小计
     if (item.fieldName === 'weightSubtotal') {
       weightColTitle.value = item.fieldTitle;
@@ -39,7 +44,7 @@ if (billSetting.dynaFieldsGroup['1']) {
 }
 
 const numCountCol = {
-  title: '数量合计',
+  title: '数量合计' + (countColTitle.value?('(' + countColTitle.value + ')'):''),
   align: 'center',
   dataIndex: 'countSubtotal',
   width: 100,

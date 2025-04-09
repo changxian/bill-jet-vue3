@@ -169,6 +169,7 @@
       showActionColumn: false,
       clickToRowSelect: true,
       showIndexColumn: true,
+      cols: userStore.getCols,
       dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       actionColumn: {
         width: 120,

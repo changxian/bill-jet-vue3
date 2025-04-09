@@ -126,7 +126,6 @@
       api: list,
       columns,
       canResize: false,
-      cols: userStore.getCols, // 添加列备注信息
       dynamicCols: userStore.getDynamicCols['jxc_supplier'], // 添加扩展列信息
       useSearchForm: false,
       actionColumn: {
