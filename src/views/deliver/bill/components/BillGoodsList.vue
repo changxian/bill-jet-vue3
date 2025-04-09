@@ -511,7 +511,9 @@
   //选择商品后点击确定按钮
   const handleOk = (e: MouseEvent) => {
     selectedGoods.forEach((item) => {
-      debugger;
+      if(!item.dynamicFields){
+        item['dynamicFields']=userStore.getDynamicCols['jxc_goods'];
+      }
       item.goodsId = item.id;
       // item.goodsName = item.name;
       // item.goodsCode = item.code;
@@ -609,7 +611,7 @@
       price: '',
       amount: '',
       costAmount: '',
-      dynamicFields: undefined,
+      dynamicFields: userStore.getDynamicCols['jxc_goods'],
       remark: '',
     };
     dataSource.value.push(row);
