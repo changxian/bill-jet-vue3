@@ -43,6 +43,12 @@ export default {
   created() {
   },
   mounted() {
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const templateId = urlParams.get('templateId');
+console.log(templateId,"模板id"); // 输出: 123
+
     this.init(tempData);
     this.show(printData, tempData);
   },
@@ -83,6 +89,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+:deep(.ant-card-body){
+  padding:0!important;
+}
 .jcx-card {
   box-shadow:
     0 1px 2px 0 rgba(0, 0, 0, 0.03),
