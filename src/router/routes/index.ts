@@ -38,6 +38,15 @@ export const LoginRoute: AppRouteRecordRaw = {
     title: t('routes.basic.login'),
   },
 };
+export const PreviewRoute: AppRouteRecordRaw = {
+  path: '/template/view/components/preview',
+  name: 'Preview',
+  component: () => import('/@/views/template/view/components/preview.vue'),
+  meta: {
+    title: '预览',
+    ignoreAuth: true,
+  },
+};
 
 //update-begin---author:wangshuai ---date:20220629  for：auth2登录页面路由------------
 export const Oauth2LoginRoute: AppRouteRecordRaw = {
@@ -65,4 +74,13 @@ export const TokenLoginRoute: AppRouteRecordRaw = {
   },
 };
 // Basic routing without permission
-export const basicRoutes = [LoginRoute, RootRoute, ...mainOutRoutes, REDIRECT_ROUTE, PAGE_NOT_FOUND_ROUTE, TokenLoginRoute, Oauth2LoginRoute];
+export const basicRoutes = [
+  LoginRoute,
+  PreviewRoute,
+  RootRoute,
+  ...mainOutRoutes,
+  REDIRECT_ROUTE,
+  PAGE_NOT_FOUND_ROUTE,
+  TokenLoginRoute,
+  Oauth2LoginRoute,
+];
