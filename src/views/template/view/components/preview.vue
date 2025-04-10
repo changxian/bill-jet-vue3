@@ -52,18 +52,17 @@ export default {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       const templateId = urlParams.get('templateId');
-      console.log(templateId, '模板id'); // 输出: 123
+      const id = urlParams.get('id')||'';
+      const category = urlParams.get('category')||'';
+      console.log(templateId, id,category); // 输出: 123
       // { templateId:"1842101630761099265" }
       
-      getTemplateInto({ templateId:templateId}).then(res => {
-					//设置列表数据
-          // console.log(res)
-					// if (res.success) {
+      getTemplateInto({ templateId:templateId,id:id,category:category}).then(res => {
+					//设置列表数据   
 						this.template = JSON.parse(res.data)
 						console.log(this.template, "模板",printData)
              this.init(this.template);
              this.show(printData,this.template);
-					// }
 
 				}).catch(() => {})
     },
@@ -107,7 +106,8 @@ export default {
   padding: 0 !important;
 }
 :deep(.hiprint-printPaper) {
-  transform: scale(0.47);
+  margin-top:30px;
+  transform: scale(0.43);
   transform-origin: left top 0;
 }
 .jcx-card {
