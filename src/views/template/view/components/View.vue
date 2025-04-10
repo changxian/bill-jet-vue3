@@ -181,8 +181,8 @@
           return;
         }
         createMessage.error({
-          content: '客户端未连接',
-          duration: 2,
+          content: '请先安装连接打印客户端。（下载位置：信息分享->打印客户端，选择电脑对应的文件下载）',
+          duration: 20,
         });
       },
       toPdf() {

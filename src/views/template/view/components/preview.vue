@@ -1,6 +1,6 @@
 <template>
-  <div style="overflow: hidden; height: 730px">
-    <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
+  <div style="overflow: hidden; height: 100%">
+    <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
   </div>
@@ -39,23 +39,19 @@
     watch: {},
     created() {},
     mounted() {
-      // this.init(tempData);
-      // this.show(printData, tempData);
-      // console.log(tempData, "模板",printData)
+      window.autoConnect = false;
       this.templateGet();
     },
     methods: {
       // 获取模板数据和打印预览数据
-      async loadPrintInfo(params) {
+      loadPrintInfo(params) {
         this.printData = printData;
-        await getPrintInfo(params)
+        getPrintInfo(params)
           .then((res) => {
-            console.log(this.template, '模板', printData);
+            console.log('预览数据', res);
 
             this.template = JSON.parse(res.template.data);
             this.printData = res.printData || printData;
-
-            this.template = JSON.parse(res.data);
 
             this.init(this.template);
             this.show(this.printData, this.template);
@@ -69,17 +65,17 @@
         const urlParams = new URLSearchParams(queryString);
         const templateId = urlParams.get('templateId');
         const category = urlParams.get('category');
-        const billId = urlParams.get('billId');
+        const id = urlParams.get('id');
 
         console.log(templateId, '模板id'); // 输出: 123
         console.log(category, '类型（1：送货单，2：进货单'); // 输出: 123
-        console.log(billId, '开单id'); // 输出: 123
+        console.log(id, '业务id'); // 输出: 123
 
         if (!templateId) {
           return createMessage.warning('模板id不能为空！');
         }
 
-        this.loadPrintInfo({ templateId: templateId, category: category, billId: billId });
+        this.loadPrintInfo({ templateId: templateId, category: category, id: id });
       },
       init(_tempData) {
         hiprint = vuePluginHiprint.hiprint;
