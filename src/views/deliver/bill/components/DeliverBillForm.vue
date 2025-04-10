@@ -185,6 +185,7 @@
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
   import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
+  import {forEach} from "lodash-es";
 
   // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
@@ -569,6 +570,17 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    if(params.details){
+      params.details.forEach(obj => {
+        if (obj.cancelCbs){
+          delete obj.age;
+        }
+        if (obj.editValueRefs){
+          delete obj.editValueRefs;
+        }
+      });
+
+    }
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

@@ -117,7 +117,7 @@
     padding: 0 !important;
   }
   :deep(.hiprint-printPaper) {
-    transform: scale(0.47);
+    transform: scale(0.42);
     transform-origin: left top 0;
   }
   .jcx-card {
