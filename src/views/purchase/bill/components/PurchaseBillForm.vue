@@ -442,6 +442,16 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    if(params.details){
+      params.details.forEach(obj => {
+        if (obj.cancelCbs){
+          delete obj.age;
+        }
+        if (obj.editValueRefs){
+          delete obj.editValueRefs;
+        }
+      });
+    }
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

@@ -18,7 +18,7 @@ enum Api {
   companyList = '/company/tenantCompany/list',
   supplierList = '/purchase/supplier/supplier/list',
   customerList = '/deliver/customer/customer/list',
-  templateInto='/bill/template/info'
+  printInto = '/bill/template/print/info',
 }
 
 /**
@@ -138,8 +138,8 @@ export const downloadFile = (url, fileName?, parameter?) => {
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
       window.navigator.msSaveBlob(new Blob([data]), fileName);
     } else {
-      let url = window.URL.createObjectURL(new Blob([data]));
-      let link = document.createElement('a');
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement('a');
       link.style.display = 'none';
       link.href = url;
       link.setAttribute('download', fileName);
@@ -179,4 +179,4 @@ export const uploadMyFile = (url, data) => {
  * 模板接口
  * @param params
  */
-export const getTemplateInto = (params) => defHttp.get({ url: Api.templateInto, params },{withToken:false,joinTime:false});
+export const getPrintInfo = (params) => defHttp.get({ url: Api.printInto, params }, { withToken: false, joinTime: false });
