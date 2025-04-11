@@ -76,7 +76,7 @@
         <p style="font-size: 15px">为了数据导入顺利，请在正式导入数据之前先下载模板，然后再从准备好的excel表格里把信息复制到下载的模板里，再点击导入选择有数据的模板文件将数据导进来。<br/>
           <span style="font-weight: bold">请注意：模板第一行标题请不要修改，模板列只能删除不能增加、不能修改。</span>
         </p>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-dropdown v-if="false">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">

@@ -346,13 +346,15 @@
       }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
-      if (formData.discount == 10) {
+      if (selectRows[0].discount) {
         formData.discount = selectRows[0].discount;
       }
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
-      formData.dynamicCustFields = selectRows[0].dynamicFields;
+      if (selectRows[0].dynamicFields) {
+        formData.dynamicCustFields = selectRows[0].dynamicFields;
+      }
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
       // 是否启用一客一价
       if (singleCustPrice) {
