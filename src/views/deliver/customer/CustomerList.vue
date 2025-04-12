@@ -217,17 +217,17 @@
   function handleAdd() {
     customerNum().then((res) => {
       total.value = res.total;
+      // 如果公司数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.customerNum == null || tenantPack.customerNum > total.value) {
+        openModal(true, {
+          isUpdate: false,
+          showFooter: true,
+          categoryId: categoryId.value,
+        });
+      } else {
+        createMessage.warning('客户数量已达上限！如果还想添加更多客户，请联系运营商扩容！');
+      }
     });
-    // 如果公司数量小于套餐内规定数量，则可以继续添加
-    if (tenantPack.customerNum == null || tenantPack.customerNum > total.value) {
-      openModal(true, {
-        isUpdate: false,
-        showFooter: true,
-        categoryId: categoryId.value,
-      });
-    } else {
-      createMessage.warning('客户数量已达上限！如果还想添加更多客户，请联系运营商扩容！');
-    }
   }
   /**
    * 编辑事件

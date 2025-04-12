@@ -93,17 +93,17 @@
   function handleCreate() {
     tenantUserNum().then((res) => {
       total.value = res.total;
+      // 如果用户数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.accountNum == null || tenantPack.accountNum > total.value) {
+        openDrawer(true, {
+          isUpdate: false,
+          showFooter: true,
+          tenantSaas: true,
+        });
+      } else {
+        createMessage.warning('用户数量已达上限！如果还想添加更多用户，请联系运营商扩容！');
+      }
     });
-    // 如果用户数量小于套餐内规定数量，则可以继续添加
-    if (tenantPack.accountNum == null || tenantPack.accountNum > total.value) {
-      openDrawer(true, {
-        isUpdate: false,
-        showFooter: true,
-        tenantSaas: true,
-      });
-    } else {
-      createMessage.warning('用户数量已达上限！如果还想添加更多用户，请联系运营商扩容！');
-    }
   }
   /**
    * 编辑事件
