@@ -80,7 +80,7 @@
   import { ref, defineExpose, reactive } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { BasicTable } from '/@/components/Table';
-  import { useListPage } from '/@/hooks/system/useListPage';
+  import { addDynamicCols, useListPage } from "/@/hooks/system/useListPage";
   import { columns, userCol, careNoCol } from './DetailDialog.data';
   import { detailsExportXls } from '../PurchaseStatistics.api';
   import { JInput } from '@/components/Form';
@@ -250,6 +250,7 @@
     } else {
       columnList.value = columns;
     }
+    columnList.value = addDynamicCols(columnList.value, userStore.getDynamicCols['jxc_goods']);
     visible.value = true;
     reload();
   }

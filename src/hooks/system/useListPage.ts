@@ -450,15 +450,14 @@ export function useListTable(tableProps: TableProps): [
         }
       }
     }
-
     // 列添加列扩展
     const dynamicCols = tableProps.dynamicCols;
-    if (dynamicCols && 0 < dynamicCols.length && 0 < dynamicCols.length && tableProps.columns) {
+    if (dynamicCols && 0 < dynamicCols.length && tableProps.columns) {
       tableProps.columns = addDynamicCols(tableProps.columns, dynamicCols);
     }
     // 列添加可编辑列扩展
     const dynamicEditCols = tableProps.dynamicEditCols;
-    if (dynamicEditCols && 0 < dynamicEditCols.length && 0 < dynamicEditCols.length && tableProps.columns) {
+    if (dynamicEditCols && 0 < dynamicEditCols.length && tableProps.columns) {
       tableProps.columns = addDynamicEditCols(tableProps.columns, dynamicEditCols);
     }
     merge(defaultTableProps, tableProps);
