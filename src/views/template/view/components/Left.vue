@@ -80,6 +80,8 @@
     () => {
       if (0 < props.data.templateList.length) {
         treeData.value = props.data.templateList;
+      } else {
+        treeData.value = [];
       }
       if ('' != props.data.templateId) {
         templateId.value = props.data.templateId;
@@ -88,6 +90,8 @@
           templateId.value,
           treeData.value.find((item) => item.id === templateId.value)
         );
+      } else {
+        templateId.value = '';
       }
     },
     {

@@ -115,7 +115,7 @@
         <a-select v-model:value="form.category" mode="combobox" style="width: 140px" placeholder="请选择模板类型" option-label-prop="label">
           <a-select-option :value="10" label="销售开单"> &nbsp;&nbsp;销售开单</a-select-option>
           <a-select-option :value="20" label="销售退货单"> &nbsp;&nbsp;销售退货单</a-select-option>
-          <a-select-option :value="30" label="送货对账单"> &nbsp;&nbsp;送货对账单</a-select-option>
+          <a-select-option :value="30" label="销售对账单"> &nbsp;&nbsp;销售对账单</a-select-option>
           <a-select-option :value="40" label="进货单"> &nbsp;&nbsp;进货单</a-select-option>
           <a-select-option :value="50" label="进货退货单"> &nbsp;&nbsp;进货退货单</a-select-option>
           <a-select-option :value="60" label="进货对账单"> &nbsp;&nbsp;进货对账单</a-select-option>

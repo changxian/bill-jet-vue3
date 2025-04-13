@@ -177,10 +177,10 @@ export default {
     n: 1,
     arr: ['口径'],
   },
-  // dynamic04: {
-  //   n: 1,
-  //   arr: [''],
-  // },
+  g_dynamic04: {
+    n: 1,
+    arr: ['颜色'],
+  },
   // dynamic05: {
   //   n: 1,
   //   arr: [''],

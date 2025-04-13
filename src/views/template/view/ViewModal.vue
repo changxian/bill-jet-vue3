@@ -7,7 +7,7 @@
         </a-card>
       </a-col>
       <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
-        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" @paperConfig="paperConfig"/>
+        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" @paperConfig="paperConfig" />
       </a-col>
     </a-row>
   </BasicModal>
@@ -131,6 +131,11 @@
     // 从设置进来 只传 templateId(可能为空) 和 name
     form.value.templateId = newVal.templateId;
     form.value.name = newVal.name;
+
+    data.value.templateList = [];
+    data.value.templateId = '';
+    data.value.printData = {};
+    data.value.printSetting = {};
 
     // 获取模板信息 和 获取打印预览的数据信息
     const loadData = await getTemplateData(form.value);

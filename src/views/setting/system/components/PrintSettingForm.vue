@@ -11,13 +11,6 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <!--<a-row>
-            <a-col :span="12">
-              <a-form-item label="打印份数" v-bind="validateInfos.num" id="PrintSettingForm-num" name="num">
-                <j-dict-select-tag v-model:value="formData.num" dictCode="" :options="numOptions" placeholder="请选择打印份数" />
-              </a-form-item>
-            </a-col>
-          </a-row>-->
           <a-row>
             <a-col :span="12">
               <a-form-item label="销售单模板" v-bind="validateInfos.deliveryBillTemp" id="PrintSettingForm-deliveryBillTemp" name="deliveryBillTemp">
@@ -25,7 +18,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryBillTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryBillTemp', 10)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -40,7 +33,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryReturnTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('deliveryReturnTemp', 10)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -50,7 +43,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('accountTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('accountTemp', 30)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -65,7 +58,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('repayReceiptTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('repayReceiptTemp', 70)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -75,7 +68,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockBillTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockBillTemp', 40)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -85,7 +78,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockReturnTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockReturnTemp', 50)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -100,7 +93,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockAccountTemp')">选模板</a-button>
+              <a-button :icon="h(SearchOutlined)" type="dashed" @click="selectTemplate('stockAccountTemp', 60)">选模板</a-button>
             </a-col>
           </a-row>
           <a-row>
@@ -128,7 +121,7 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, h, onMounted } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import { getMyPrintSetting, listPrinters, saveOrUpdatePrint } from "../index.api";
+  import { getMyPrintSetting, saveOrUpdatePrint } from '../index.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import { SearchOutlined } from '@ant-design/icons-vue';
@@ -169,18 +162,8 @@
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
-  const numOptions = ref([
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 5, label: '5' },
-    { value: 10, label: '10' },
-  ]);
+
   const printerOptions = ref<Recordable[]>([]);
-  // 给开单类型设置默认值1
-  // if (formData.value.num == undefined && numOptions.value.length > 0) {
-  //   formData.value.num = numOptions.value[0].value;
-  // }
   // 表单禁用
   const disabled = computed(() => {
     if (props.formBpm === true) {
@@ -192,10 +175,10 @@
   /**
    * 新增
    */
-  function selectTemplate(name) {
+  function selectTemplate(name, category) {
     openModal(true, {
       // record: formData,
-      record: { templateId: formData.value[name + 'Id'], name: name },
+      record: { templateId: formData.value[name + 'Id'], name: name, category: category },
       isUpdate: true,
       showFooter: true,
     });
