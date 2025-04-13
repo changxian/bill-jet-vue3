@@ -100,7 +100,7 @@ export default {
     arr: ['体积(m³)'],
   },
   count: {
-    n: 3,
+    n: 4,
     arr: ['数量', '數量', 'QTY', '柱数'],
   },
   weight: {
@@ -165,15 +165,15 @@ export default {
     n: 1,
     arr: ['生产厂商上市许可持有人'],
   },
-  dynamic01: {
+  g_dynamic01: {
     n: 1,
     arr: ['组数'],
   },
-  dynamic02: {
+  g_dynamic02: {
     n: 1,
     arr: ['壁厚'],
   },
-  dynamic03: {
+  g_dynamic03: {
     n: 1,
     arr: ['口径'],
   },
