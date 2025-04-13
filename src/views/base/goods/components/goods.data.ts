@@ -255,6 +255,8 @@ export function getGoodsColumns(billType){
       title: '面积',
       align: 'center',
       dataIndex: 'area',
+      width: 100,
+      resizable: true,
       ifShow: billSetting.showAreaCol || false,
     },
     {

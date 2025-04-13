@@ -313,7 +313,7 @@
           }
         });
       }
-    }, 10);
+    }, 500);
   }
 
   onMounted(fetchPrintSettingData);

@@ -185,6 +185,7 @@
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
   import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
+  import {forEach} from "lodash-es";
 
   // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
@@ -345,13 +346,15 @@
       }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
-      if (formData.discount == 10) {
+      if (selectRows[0].discount) {
         formData.discount = selectRows[0].discount;
       }
       formData.custPhone = selectRows[0].phone;
       formData.custContact = selectRows[0].contact;
       formData.custAddress = selectRows[0].address;
-      formData.dynamicCustFields = selectRows[0].dynamicFields;
+      if (selectRows[0].dynamicFields) {
+        formData.dynamicCustFields = selectRows[0].dynamicFields;
+      }
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
       // 是否启用一客一价
       if (singleCustPrice) {
@@ -569,6 +572,17 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    if(params.details){
+      params.details.forEach(obj => {
+        if (obj.cancelCbs){
+          delete obj.age;
+        }
+        if (obj.editValueRefs){
+          delete obj.editValueRefs;
+        }
+      });
+
+    }
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

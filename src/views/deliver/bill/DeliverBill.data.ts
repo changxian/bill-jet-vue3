@@ -59,14 +59,14 @@ export const columns: BasicColumn[] = [
     title: '公司',
     align: 'center',
     dataIndex: 'companyName',
-    width: 120,
+    width: 150,
     resizable: true,
   },
   {
     title: '客户',
     align: 'center',
     dataIndex: 'custName',
-    width: 120,
+    width: 150,
     resizable: true,
   },
   {
@@ -238,13 +238,13 @@ export const columns: BasicColumn[] = [
     width: 150,
     resizable: true,
   },
-  {
+  /*{
     title: '往期欠款金额',
     align: 'center',
     dataIndex: 'hisDebtAmount',
     width: 100,
     resizable: true,
-  },
+  },*/
   {
     title: '成本',
     align: 'center',

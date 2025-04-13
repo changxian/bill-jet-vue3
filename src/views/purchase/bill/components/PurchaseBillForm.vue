@@ -290,7 +290,9 @@
       formData.supplierPhone = selectRows[0].phone;
       formData.supplierContact = selectRows[0].contact;
       formData.supplierAddress = selectRows[0].address;
-      formData.dynamicSupFields = selectRows[0].dynamicFields;
+      if (selectRows[0].dynamicFields) {
+        formData.dynamicSupFields = selectRows[0].dynamicFields;
+      }
     }
   }
   let amount: number = 0.0;
@@ -442,6 +444,16 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
+    if(params.details){
+      params.details.forEach(obj => {
+        if (obj.cancelCbs){
+          delete obj.age;
+        }
+        if (obj.editValueRefs){
+          delete obj.editValueRefs;
+        }
+      });
+    }
     confirmLoading.value = true;
     saveOrUpdate(params)
       .then((res) => {

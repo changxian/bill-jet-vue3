@@ -80,7 +80,7 @@
   import { ref, defineExpose, reactive } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { BasicTable } from '/@/components/Table';
-  import { useListPage } from '/@/hooks/system/useListPage';
+  import { addDynamicCols, useListPage } from '/@/hooks/system/useListPage';
   import { columns, userCol, careNoCol, custCol, operatorCol, categoryCol } from './DetailDialog.data';
   import { detailsList, getExportUrl } from '../DeliverStatistics.api';
   import { JInput } from '@/components/Form';
@@ -135,8 +135,8 @@
       title: '销售开单',
       api: detailsList,
       canResize: false,
-      // cols: userStore.getCols, // 添加列备注信息
-      dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
+      cols: userStore.getCols, // 添加列备注信息
+      // dynamicCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       useSearchForm: false,
       showActionColumn: false,
       showIndexColumn: true,
@@ -156,7 +156,7 @@
         areaTotal.value = 0;
         volumeTotal.value = 0;
         amountTotal.value = 0;
-        costAmountTotal.value =0;
+        costAmountTotal.value = 0;
         profitAmountTotal.value = 0;
         if (hasPan.value) {
           countTotal.value = resultItems[0].countTotal;
@@ -280,6 +280,8 @@
     } else {
       columnList.value = columns;
     }
+    columnList.value = addDynamicCols(columnList.value, userStore.getDynamicCols['jxc_goods']);
+
     visible.value = true;
     reload();
   }

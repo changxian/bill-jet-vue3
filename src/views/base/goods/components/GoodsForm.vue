@@ -9,7 +9,7 @@
                 <JDictSelectTag
                   v-model:value="formData.categoryId"
                   placeholder="请选择商品类别"
-                  dictCode="jxc_goods_category,name,id,status=1 order by sort desc"
+                  dictCode="jxc_goods_category,name,id,status=1 and del_flag=0 order by sort desc"
                   :showChooseOption="false"
                 />
               </a-form-item>
