@@ -89,12 +89,15 @@
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
   const templates = ref([]);
-  onMounted(async () => {
+  async function loadCustomizedTemp() {
     await allCustomizedTemp({ tenantCustomerId: tenantCustomerId.value }).then((res) => {
       if (res && res.length > 0) {
         templates.value = res;
       }
     });
+  }
+  onMounted(async () => {
+    await loadCustomizedTemp();
   });
   // 表单禁用
   const disabled = computed(() => {
@@ -108,6 +111,7 @@
    * 新增
    */
   function add() {
+    loadCustomizedTemp();
     edit({});
   }
 
@@ -115,6 +119,7 @@
    * 编辑
    */
   function edit(record) {
+    loadCustomizedTemp();
     nextTick(() => {
       resetFields();
       const tmpData = {};
