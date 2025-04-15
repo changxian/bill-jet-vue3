@@ -438,7 +438,7 @@
 
     openModal(true, {
       // record: formData,
-      record: { id: selectedRowKeys.value[0], category: 10 },
+      record: { id: selectedRowKeys.value[0], category: 40 },
       isUpdate: true,
       showFooter: true,
     });
