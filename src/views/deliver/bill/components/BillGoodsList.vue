@@ -472,6 +472,7 @@
       cols: userStore.getCols, // 添加列备注信息
       dynamicEditCols: userStore.getDynamicCols['jxc_goods'], // 添加扩展列信息
       rowKey: 'id',
+      showTableSetting: true,
       pagination: false,
       actionColumn: {
         ifShow: false,
@@ -488,7 +489,7 @@
   });
 
   /**BasicTable绑定注册 ，返回reload 刷新方法、rowSelection行选择属性、
-  selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
+   selectedRows选中的行信息、selectedRowKeys 选中的行rowkey */
   const [registerTable, { reload }, { rowSelection }] = tableContext;
 
   const props = defineProps({

@@ -185,9 +185,7 @@
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
   import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
-  import {forEach} from "lodash-es";
 
-  // const [registerCustomerSelectModal, { openModal: openCustomerSelectModal }] = useModal();
   const userStore = useUserStore();
   // 小数位数
   const decimalPlaces = userStore.getBillSetting.decimalPlaces;
@@ -362,7 +360,6 @@
         const goods = goodsRef.value.getData().details;
         let goodsIds = '';
         if (goods.length > 0) {
-          debugger;
           goods.forEach((item) => {
             if (item.goodsId) {
               goodsIds += item.goodsId + ',';
@@ -395,7 +392,6 @@
     let ids = '';
     goods.forEach((item) => {
       // 开单过滤已添加商品
-      debugger;
       if (userStore.getSystemSetting.billIgnoreAddedGoods == true) {
         ids += item.id + ',';
       }
@@ -581,7 +577,6 @@
           delete obj.editValueRefs;
         }
       });
-
     }
     confirmLoading.value = true;
     saveOrUpdate(params)
