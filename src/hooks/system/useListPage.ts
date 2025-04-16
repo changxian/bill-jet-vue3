@@ -69,7 +69,7 @@ export function addDynamicCols(oriColumns, dynamicCols) {
     }
     return null;
   }
-  if (dynamicCols && 0 < dynamicCols.length && 0 < dynamicCols.length && oriColumns) {
+  if (dynamicCols && 0 < dynamicCols.length && oriColumns) {
     for (let i = 0; i < dynamicCols.length; i++) {
       const dynamicCol = dynamicCols[i];
       const fieldName = dynamicCol.fieldName;
@@ -118,7 +118,7 @@ export function addDynamicEditCols(oriColumns, dynamicEditCols) {
     }
     return null;
   }
-  if (dynamicEditCols && 0 < dynamicEditCols.length && 0 < dynamicEditCols.length && oriColumns) {
+  if (dynamicEditCols && 0 < dynamicEditCols.length && oriColumns) {
     for (let i = 0; i < dynamicEditCols.length; i++) {
       const dynamicEditCol = dynamicEditCols[i];
       const fieldName = dynamicEditCol.fieldName;
@@ -126,6 +126,28 @@ export function addDynamicEditCols(oriColumns, dynamicEditCols) {
         continue;
       }
       const col = {
+        title: dynamicEditCol.fieldTitle,
+        align: 'center',
+        dataIndex: fieldName,
+        edit: true,
+        editComponent: 'Input',
+        resizable: true,
+        editable: false,
+        width: 80,
+        // key: fieldName,
+        // value: fieldName,
+        // slots: { customRender: fieldName },
+        // customRender: ({ text, record }) => {
+        //   if (!record) {
+        //     return '';
+        //   }
+        //   if (!record.dynamicField) {
+        //     return '';
+        //   }
+        //   return record?.dynamicField[fieldName];
+        // },
+      };
+      /*const col = {
         title: dynamicEditCol.fieldTitle,
         align: 'center',
         key: fieldName,
@@ -147,12 +169,14 @@ export function addDynamicEditCols(oriColumns, dynamicEditCols) {
           }
           return record?.dynamicField[fieldName];
         },
-      };
+      };*/
       // @ts-ignore
-      dynamicColumns.push(col);
+      // dynamicColumns.push(col);
+      oriColumns.splice(3, 0, col);
     }
   }
-  return [...oriColumns, ...dynamicColumns];
+  // return [...oriColumns, ...dynamicColumns];
+  return [...oriColumns];
 }
 
 /**
