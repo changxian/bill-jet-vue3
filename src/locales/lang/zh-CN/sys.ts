@@ -100,6 +100,7 @@ export default {
     email: '邮箱',
     smsCode: '短信验证码',
     mobile: '手机号码',
+    invite: '邀请码（选填）',
 
     subTitleText: '{0}秒后返回登录页面',
 

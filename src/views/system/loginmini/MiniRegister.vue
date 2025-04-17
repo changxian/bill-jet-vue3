@@ -73,6 +73,12 @@
                       </div>
                     </div>
                   </a-form-item>
+                  <a-form-item>
+                    <div class="aui-input-line">
+                      <Icon class="aui-icon" icon="ant-design:user-add-outlined" />
+                      <a-input class="fix-auto-fill" type="number" :placeholder="t('sys.login.invite')" v-model:value="formData.invite" />
+                    </div>
+                  </a-form-item>
                   <a-form-item name="policy">
                     <div class="aui-flex">
                       <div class="aui-flex-box">
@@ -132,6 +138,7 @@
     username: '',
     email: '',
     mobile: '',
+    invite: '',
     smscode: '',
     password: '',
     confirmPassword: '',
@@ -251,6 +258,7 @@
           username: formData.username,
           password: formData.password,
           phone: formData.mobile,
+          invite: formData.invite.trim(),
           email: formData.email,
           smscode: formData.smscode,
         })
@@ -282,7 +290,7 @@
    * 初始化表单
    */
   function initForm() {
-    Object.assign(formData,{username: '', email: '',  mobile: '', smscode: '', password: '', confirmPassword: '', policy: false})
+    Object.assign(formData,{username: '', email: '', invite: '', mobile: '', smscode: '', password: '', confirmPassword: '', policy: false})
     if (!unref(timer)) {
       showInterval.value = true;
       clearInterval(unref(timer));
