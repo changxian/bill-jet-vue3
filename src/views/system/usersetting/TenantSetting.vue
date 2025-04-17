@@ -234,8 +234,6 @@
   import UserSelect from '/@/components/Form/src/jeecg/components/userSelect/index.vue';
   import { router } from '/@/router';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { uploadImg } from '@/api/sys/upload';
-  import { CropperAvatar, CropperImage } from '@/components/Cropper';
   import JImageUpload from '@/components/Form/src/jeecg/components/JImageUpload.vue';
 
   const { prefixCls } = useDesign('j-user-tenant-setting-container');
@@ -263,9 +261,6 @@
    */
   async function initDataSource() {
     //获取用户数据
-    //update-begin---author:wangshuai ---date:20230109  for: [QQYUN-3645]个人设置我的企业查询审核中和正常的------------
-    //update-begin---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息-----------
-    // getTenantListByUserId({ userTenantStatus: '1,3,5' }).then((res) => {
     getCurrentUserTenant().then((res) => {
       if (res.success) {
         if (res.result.list && res.result.list.length>0) {
@@ -275,11 +270,6 @@
           //存放受邀的信息
           let invited: any = [];
           for (let i = 0; i < result.length; i++) {
-            // let status = result[i].userTenantStatus;
-            //状态为邀请的放入invited数组中
-            // if(status === '5'){
-            //   invited.push(result[i]);
-            // }
             normal.push(result[i]);
           }
           dataSource.value = normal;
@@ -293,10 +283,8 @@
         }
       } else {
         setInitedValue();
-        //update-end---author:wangshuai ---date:202307049  for：[QQYUN-5608]用户导入后，邀请后,被导入人同意即可,新增被邀信息------------
       }
     });
-    //update-end---author:wangshuai ---date:20230109  for：[QQYUN-3645]个人设置我的企业查询审核中和正常的------------
   }
   function setInitedValue() {
     dataSource.value = [];

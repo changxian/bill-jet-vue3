@@ -148,6 +148,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'goodsCode',
     width: 100,
     resizable: true,
+    ifShow: billSetting.showGoodsCodeCol || false,
   },
   {
     title: '名称' + (goodsNameTitle.value ? '(' + goodsNameTitle.value + ')' : ''),
@@ -301,6 +302,7 @@ export const totalColumns: BasicColumn[] = [
     dataIndex: 'goodsCode',
     width: 100,
     resizable: true,
+    ifShow: billSetting.showGoodsCodeCol || false,
   },
   {
     title: '商品名称' + (goodsNameTitle.value ? '(' + goodsNameTitle.value + ')' : '' ),

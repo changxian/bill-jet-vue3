@@ -168,6 +168,7 @@ export function getGoodsColumns(billType){
       dataIndex: 'goodsCode',
       width: 150,
       resizable: true,
+      ifShow: billSetting.showGoodsCodeCol || false,
     },
     {
       title: '名称',

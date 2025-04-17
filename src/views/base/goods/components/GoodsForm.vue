@@ -37,8 +37,8 @@
             </a-col>
           </a-row>
           <a-row>
-            <a-col :span="8">
-              <a-form-item label="编号条码" v-bind="validateInfos.goodsCode" id="GoodsForm-goodsCode" name="goodsCode">
+            <a-col :span="8" v-if="billSetting.showGoodsCodeCol">
+              <a-form-item label="编号" v-bind="validateInfos.goodsCode" id="GoodsForm-goodsCode" name="goodsCode">
                 <a-input v-model:value="formData.goodsCode" placeholder="请输入商品编号" allow-clear />
               </a-form-item>
             </a-col>

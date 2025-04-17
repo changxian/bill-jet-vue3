@@ -111,6 +111,7 @@ export const goodsCountColumns: BasicColumn[] = [
     dataIndex: 'goodsCode',
     width: 100,
     resizable: true,
+    ifShow: billSetting.showGoodsCodeCol || false,
   },
   {
     title: '规格' + (goodsTypeTitle.value ? '(' + goodsTypeTitle.value + ')' : '' ),

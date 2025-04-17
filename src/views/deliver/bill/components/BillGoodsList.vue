@@ -282,6 +282,7 @@
       editable: false,
       edit: true,
       editComponent: 'Input',
+      ifShow: billSetting.showGoodsCodeCol || false,
     },
     {
       title: '名称',
@@ -345,7 +346,7 @@
       ifShow: billSetting.showWeightCol || false,
     },
     {
-      title: '重量小计(' + weightColTitle.value + ')',
+      title: '重量小计' + (weightColTitle.value ? '(' + weightColTitle.value + ')' : ''),
       align: 'center',
       dataIndex: 'weightSubtotal',
       width: 100,
@@ -400,7 +401,7 @@
       ifShow: billSetting.showAreaCol || false,
     },
     {
-      title: '面积小计(' + areaColTitle.value + ')',
+      title: '面积小计' + (areaColTitle.value ? '(' + areaColTitle.value + ')' : ''),
       align: 'center',
       dataIndex: 'areaSubtotal',
       width: 100,
@@ -422,7 +423,7 @@
       ifShow: billSetting.showVolumeCol || false,
     },
     {
-      title: '体积小计(' + volumeColTitle.value + ')',
+      title: '体积小计' + (volumeColTitle.value ? '(' + volumeColTitle.value + ')' : ''),
       align: 'center',
       dataIndex: 'volumeSubtotal',
       width: 100,

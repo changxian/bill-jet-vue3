@@ -233,6 +233,7 @@ export const detailColumns: BasicColumn[] = [
     dataIndex: 'goodsCode',
     width: 100,
     resizable: true,
+    ifShow: billSetting.showGoodsCodeCol || false,
   },
   {
     title: '名称',

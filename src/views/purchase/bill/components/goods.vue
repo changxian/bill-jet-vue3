@@ -227,6 +227,7 @@
       editable: false,
       edit: true,
       editComponent: 'Input',
+      ifShow: billSetting.showGoodsCodeCol || false,
     },
     {
       title: '名称',

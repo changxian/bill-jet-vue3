@@ -371,7 +371,7 @@ export const userSearchFormSchema: FormSchema[] = [
 export const packColumns: BasicColumn[] = [
   {
     title: '企业名称',
-    dataIndex: 'tenantIdName',
+    dataIndex: 'tenantName',
     width: 200,
     resizable: true,
   },
