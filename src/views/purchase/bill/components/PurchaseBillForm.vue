@@ -155,6 +155,7 @@
   import { byPurchaseId } from '@/views/purchase/debt/PurchaseDebt.api';
   import { useUserStore } from '@/store/modules/user';
   import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
+  import { tenantGoodsNum } from '@/views/base/goods/components/goods.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -229,6 +230,7 @@
   const confirmLoading = ref<boolean>(false);
   const goodsRef = ref(null);
   const hasInit = ref(false);
+  const totalGoodsNum = ref(0);
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
@@ -260,6 +262,9 @@
         formData.companyId = res.id;
         formData.companyName = res.compName;
       }
+    });
+    tenantGoodsNum().then((res) => {
+      totalGoodsNum.value = res.total;
     });
   }
   init();
@@ -434,6 +439,8 @@
     hasInit.value = false;
     init();
   }
+  // 租户套餐信息
+  const tenantPack = userStore.getTenantPack;
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
     if (!validateForm()) {
@@ -444,15 +451,25 @@
       ...formData,
       ...goodsRef.value.getData(),
     };
-    if(params.details){
-      params.details.forEach(obj => {
-        if (obj.cancelCbs){
-          delete obj.age;
+    if (params.details) {
+      let gNum = 0;
+      params.details.forEach((obj) => {
+        // 判断新增商品数判断
+        if (!obj.goodsId) {
+          gNum += 1;
+        }
+        if (obj.cancelCbs) {
+          delete obj.cancelCbs;
         }
         if (obj.editValueRefs){
           delete obj.editValueRefs;
         }
       });
+      // 如果公司数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum) {
+        createMessage.warning('商品数量已达上限！如果还想添加更多商品，请联系运营商扩容！');
+        return;
+      }
     }
     confirmLoading.value = true;
     saveOrUpdate(params)

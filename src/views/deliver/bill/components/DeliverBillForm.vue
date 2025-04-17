@@ -14,12 +14,12 @@
                 <a-input style="width: 70%; margin-right: 8px" v-model:value="formData.custName" placeholder="请输入客户名称" allow-clear></a-input>
                 <a-button type="primary" @click="selectCustomer">选择</a-button>
               </a-form-item>-->
-<!--              <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
+              <!--<a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
                 <j-select-customer v-model:value="formData.custId" @change="changeCustomer" />
               </a-form-item>-->
-               <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
+              <a-form-item label="客户名称" v-bind="validateInfos.custId" id="DeliverBillForm-custId" name="custId">
                 <JSelectInputCustomer v-model:value="formData.custId" @change="changeCustomer" />
-               </a-form-item>
+              </a-form-item>
             </a-col>
             <a-col :span="span">
               <a-form-item label="客户地址" v-bind="validateInfos.custAddress" id="DeliverBillForm-custAddress" name="custAddress">
@@ -185,6 +185,8 @@
   import { byDeliverId } from '@/views/deliver/debt/DeliverDebt.api';
   import JSelectSalesman from '@/components/Form/src/jeecg/components/JSelectSalesman.vue';
   import SelectInput from '@/views/statistics/statistics/SelectInput.vue';
+  import { customerNum } from '@/views/deliver/customer/Customer.api';
+  import { tenantGoodsNum } from '@/views/base/goods/components/goods.api';
 
   const userStore = useUserStore();
   // 小数位数
@@ -268,6 +270,8 @@
   const wrapperCol = ref<any>({ xs: { span: 24 }, sm: { span: 16 } });
   const confirmLoading = ref<boolean>(false);
   const goodsRef = ref(null);
+  const totalCustsNum = ref(0);
+  const totalGoodsNum = ref(0);
   //表单验证
   const validatorRules = reactive({});
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
@@ -297,6 +301,12 @@
         formData.companyId = res.id;
         formData.companyName = res.compName;
       }
+    });
+    customerNum().then((res) => {
+      totalCustsNum.value = res.total;
+    });
+    tenantGoodsNum().then((res) => {
+      totalGoodsNum.value = res.total;
     });
   }
   init();
@@ -557,6 +567,8 @@
     hasInit.value = false;
     init();
   }
+  // 租户套餐信息
+  const tenantPack = userStore.getTenantPack;
   // 保存【编辑确认】按钮点击事件
   function clickSave() {
     // console.log('goodsRef:', goodsRef.value.getData());
@@ -564,19 +576,39 @@
       return;
     }
     console.log('formData:', formData);
+    // 判断新增客户判断
+    if (formData.custId) {
+      if (formData.custId == '0') {
+        // 如果公司数量小于套餐内规定数量，则可以继续添加
+        if (tenantPack.customerNum != null && tenantPack.customerNum < totalCustsNum.value + 1) {
+          createMessage.warning('客户数量已达上限！如果还想添加更多客户，请联系运营商扩容！');
+          return;
+        }
+      }
+    }
     const params = {
       ...formData,
       ...goodsRef.value.getData(),
     };
-    if(params.details){
-      params.details.forEach(obj => {
-        if (obj.cancelCbs){
-          delete obj.age;
+    if (params.details) {
+      let gNum = 0;
+      params.details.forEach((obj) => {
+        // 判断新增商品数判断
+        if (!obj.goodsId) {
+          gNum += 1;
         }
-        if (obj.editValueRefs){
+        if (obj.cancelCbs) {
+          delete obj.cancelCbs;
+        }
+        if (obj.editValueRefs) {
           delete obj.editValueRefs;
         }
       });
+      // 如果公司数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum) {
+        createMessage.warning('商品数量已达上限！如果还想添加更多商品，请联系运营商扩容！');
+        return;
+      }
     }
     confirmLoading.value = true;
     saveOrUpdate(params)
