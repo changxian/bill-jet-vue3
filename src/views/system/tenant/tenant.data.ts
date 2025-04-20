@@ -37,6 +37,25 @@ export const columns: BasicColumn[] = [
     resizable: true,
   },
   {
+    title: '销售渠道',
+    dataIndex: 'channel',
+    width: 100,
+    resizable: true,
+  },
+  {
+    title: '定制模板',
+    dataIndex: 'customizedTemp',
+    width: 100,
+    resizable: true,
+    slots: { customRender: 'customizedTemp_dictText' },
+    /*customRender: ({text}) => {
+      if (text === 0) {
+        return '不需要';
+      }
+      return '需要';
+    },*/
+  },
+  {
     title: '企业LOGO',
     dataIndex: 'companyLogo',
     width: 100,
@@ -70,18 +89,18 @@ export const columns: BasicColumn[] = [
   //     return render.renderImage({ text });
   //   },
   // },
-  {
-    title: '客服二维码',
-    dataIndex: 'customerServiceQrcode',
-    width: 120,
-    resizable: true,
-    customRender: ({ text }) => {
-      if (!text) {
-        return text;
-      }
-      return render.renderImage({ text });
-    },
-  },
+  // {
+  //   title: '客服二维码',
+  //   dataIndex: 'customerServiceQrcode',
+  //   width: 120,
+  //   resizable: true,
+  //   customRender: ({ text }) => {
+  //     if (!text) {
+  //       return text;
+  //     }
+  //     return render.renderImage({ text });
+  //   },
+  // },
   {
     dataIndex: 'trade_dictText',
     title: '所属行业',
@@ -109,19 +128,6 @@ export const columns: BasicColumn[] = [
     width: 150,
   },*/
   {
-    title: '定制模板',
-    dataIndex: 'customizedTemp',
-    width: 100,
-    resizable: true,
-    slots: { customRender: 'customizedTemp_dictText' },
-    /*customRender: ({text}) => {
-      if (text === 0) {
-        return '不需要';
-      }
-      return '需要';
-    },*/
-  },
-  {
     dataIndex: 'createBy_dictText',
     title: '创建者',
     width: 120,
@@ -138,9 +144,9 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '企业名称',
+    label: '企业名',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
   {
     field: 'customizedTemp',
@@ -152,7 +158,7 @@ export const searchFormSchema: FormSchema[] = [
         { label: '不需要', value: 0 },
       ],
     },
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
   {
     field: 'status',
@@ -164,7 +170,13 @@ export const searchFormSchema: FormSchema[] = [
         { label: '冻结', value: 0 },
       ],
     },
-    colProps: { span: 6 },
+    colProps: { span: 3 },
+  },
+  {
+    field: 'channel',
+    label: '销售渠道',
+    component: 'Input',
+    colProps: { span: 5 },
   },
   // {
   //   field: 'fieldTime',
@@ -256,6 +268,11 @@ export const formSchema: FormSchema[] = [
       placeholder: '请输入手机号、微信号等联系方式',
       rows: 2,
     },
+  },
+  {
+    field: 'channel',
+    label: '销售渠道',
+    component: 'Input',
   },
   //  {
   //   field: 'beginDate',
