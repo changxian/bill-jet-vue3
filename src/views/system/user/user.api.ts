@@ -32,6 +32,7 @@ enum Api {
   updateUserTenantStatus = '/sys/tenant/updateUserTenantStatus',
   getUserTenantPageList = '/sys/tenant/getUserTenantPageList',
   tenantUserNum = '/sys/tenant/tenantUserNum',
+  deleteUserAccount = '/sys/tenant/deleteUserAccount',
 }
 /**
  * 导出api
@@ -260,4 +261,12 @@ export const getUserTenantPageList = (params) => {
  */
 export const updateUserTenantStatus = (params) => {
   return defHttp.put({ url: Api.updateUserTenantStatus, params }, { joinParamsToUrl: true, isTransformResponse: false });
+};
+
+/**
+ * 删除企业用户
+ * @param params
+ */
+export const deleteUserAccount = (params) => {
+  return defHttp.put({ url: Api.deleteUserAccount, params }, { joinParamsToUrl: true, isTransformResponse: false });
 };

@@ -37,7 +37,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getUserTenantPageList, updateUserTenantStatus, tenantUserNum } from '../user/user.api';
+  import { getUserTenantPageList, updateUserTenantStatus, tenantUserNum, deleteUserAccount } from '../user/user.api';
   import { userTenantColumns, userTenantFormSchema } from '../user/user.data';
   import { useUserStore } from '/@/store/modules/user';
   import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
@@ -176,6 +176,13 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除该用户',
+          confirm: deleteUser.bind(null, record),
+        },
+      },
     ];
   }
   /**
@@ -236,6 +243,30 @@
   }
 
   /**
+   * 删除用户
+   * @param record
+   */
+  function deleteUser(record) {
+    // console.log(record);
+    if (record && record.id) {
+      if (record.type < 8) {
+        createMessage.warning('管理员账号不能删除！');
+        return;
+      }
+      deleteUserAccount({ userId: record.id })
+        .then((res) => {
+          if (res.success) {
+            handleSuccess();
+          }
+        })
+        .catch((e) => {
+          createMessage.warning(e.message);
+        });
+    }
+    handleSuccess();
+  }
+
+  /**
    * 更新用户企业状态
    * @param id
    * @param status
@@ -260,7 +291,7 @@
   //离职代理人model
   const [registerUserModal, { openModal: openUserModal }] = useModal();
   const handOverUserName = ref<string>('');
-  
+
   /**
    * 人员交接
    */
@@ -269,7 +300,7 @@
     excludeUserIdList.value = [record.id];
     //记录一下当前需要交接的用户名
     handOverUserName.value = record.createBy;
-    openUserModal(true)
+    openUserModal(true);
   }
 
   /**
@@ -279,21 +310,21 @@
    */
   function selectResult(options,values) {
     console.log(values)
-    if(values && values.length>0){
+    if (values && values.length>0) {
       let userId = values[0];
-      changeOwenUserTenant({ userId:userId, tenantId:unref(tenantId) }).then((res) =>{
-        if(res.success){
-          createMessage.success("交接成功");
+      changeOwenUserTenant({ userId: userId, tenantId: unref(tenantId) }).then((res) => {
+        if (res.success){
+          createMessage.success('交接成功');
           let username = userStore.getUserInfo?.username;
-          if(username == handOverUserName.value){
+          if (username == handOverUserName.value) {
             userStore.logout(true);
-          }else{
+          } else {
             reload();
           }
         } else {
           createMessage.warning(res.message);
         }
-      })
+      });
     }
   }
   //============================================  企业离职交接  ============================================
