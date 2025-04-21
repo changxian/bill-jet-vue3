@@ -39,8 +39,8 @@
 
       const getSetting = computed((): TableSetting => {
         return {
-          redo: true,
-          size: true,
+          redo: false,
+          size: false,
           setting: true,
           fullScreen: false,
           ...props.setting,
