@@ -23,7 +23,13 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns } from './TemplateCustomized.data';
-  import { list, deleteOne, getImportUrl, getExportUrl } from './TemplateCustomized.api';
+  import {
+    list,
+    deleteOne,
+    getImportUrl,
+    getExportUrl,
+    recycleOne
+  } from "./TemplateCustomized.api";
   import TemplateCustomizedModal from '../components/TemplateCustomizedModal.vue';
   import { useUserStore } from '/@/store/modules/user';
   import { BasicModal, useModalInner } from '@/components/Modal';
@@ -52,15 +58,15 @@
       showIndexColumn: true,
       rowSelection: { type: 'radio' },
       actionColumn: {
-        width: 120,
+        width: 180,
         fixed: 'right',
       },
       beforeFetch: async (params) => {
         return Object.assign(params, { tenantCustomerId: unref(tenantCustomerId), tenantCustomerName: unref(tenantCustomerName) });
       },
-      afterFetch: async (resultItems) => {
-        showTemplateAddAndEdit.value = resultItems.length <= 0;
-      },
+      // afterFetch: async (resultItems) => {
+      //   showTemplateAddAndEdit.value = resultItems.length <= 0;
+      // },
     },
     exportConfig: {
       name: '模板定制记录表',
@@ -106,6 +112,7 @@
   function handleAdd() {
     if (customizedTemp.value === 1) {
       allCustomizedTemp({ tenantCustomerId: tenantCustomerId.value }).then((res) => {
+        debugger;
         if (res && res.length > 0) {
           registerCustomizedModal.value.disableSubmit = false;
           // 客户租户标识
@@ -147,6 +154,13 @@
   }
 
   /**
+   * 收回定制模板事件
+   */
+  async function handleRecycleOne(record) {
+    await recycleOne({ id: record.id, templateId: record.templateId }, handleSuccess);
+  }
+
+  /**
    * 删除事件
    */
   async function handleDelete(record) {
@@ -181,6 +195,15 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
+      {
+        label: '收回',
+        popConfirm: {
+          title: '是否确认收回该模板？',
+          confirm: handleRecycleOne.bind(null, record),
+          // placement: 'topLeft',
+        },
+        // auth: 'org.jeecg.modules.system:jxc_template_customized:delete',
+      },
     ];
   }
 
@@ -189,15 +212,15 @@
    */
   function getDropDownAction(record) {
     return [
-      {
-        label: '删除',
-        popConfirm: {
-          title: '是否确认删除',
-          confirm: handleDelete.bind(null, record),
-          placement: 'topLeft',
-        },
-        auth: 'org.jeecg.modules.system:jxc_template_customized:delete',
-      },
+      // {
+      //   label: '删除',
+      //   popConfirm: {
+      //     title: '是否确认删除',
+      //     confirm: handleDelete.bind(null, record),
+      //     placement: 'topLeft',
+      //   },
+      //   auth: 'org.jeecg.modules.system:jxc_template_customized:delete',
+      // },
     ];
   }
 

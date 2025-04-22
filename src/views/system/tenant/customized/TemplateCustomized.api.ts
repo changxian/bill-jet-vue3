@@ -7,6 +7,7 @@ enum Api {
   list = '/templateCustomized/list',
   save = '/templateCustomized/add',
   edit = '/templateCustomized/edit',
+  recycleOne = '/templateCustomized/recycleOne',
   deleteOne = '/templateCustomized/delete',
   deleteBatch = '/templateCustomized/deleteBatch',
   importExcel = '/bill/templateCustomized/importExcel',
@@ -37,6 +38,17 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  */
 export const deleteOne = (params,handleSuccess) => {
   return defHttp.delete({url: Api.deleteOne, params}, {joinParamsToUrl: true}).then(() => {
+    handleSuccess();
+  });
+}
+
+/**
+ * 收回单个模板
+ * @param params
+ * @param handleSuccess
+ */
+export const recycleOne = (params,handleSuccess) => {
+  return defHttp.post({url: Api.recycleOne, params}, {joinParamsToUrl: true}).then(() => {
     handleSuccess();
   });
 }
