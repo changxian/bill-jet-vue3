@@ -38,7 +38,7 @@
           </a-row>
           <a-row>
             <a-col :span="8" v-if="billSetting.showGoodsCodeCol">
-              <a-form-item label="编号" v-bind="validateInfos.goodsCode" id="GoodsForm-goodsCode" name="goodsCode">
+              <a-form-item label="编号" id="GoodsForm-goodsCode" name="goodsCode">
                 <a-input v-model:value="formData.goodsCode" placeholder="请输入商品编号" allow-clear />
               </a-form-item>
             </a-col>
@@ -255,7 +255,6 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = reactive({
-    goodsCode: [{ required: true, message: '请输入商品编号!' }],
     goodsName: [{ required: true, message: '请输入商品名称!' }],
     goodsType: [{ required: true, message: '请输入规格型号!' }],
     unit: [{ required: true, message: '请输入单位!' }],
