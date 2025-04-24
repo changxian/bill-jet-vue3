@@ -128,6 +128,11 @@
                   <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" href="javascript:void(0);" @click="registerHandleClick">{{ t('sys.login.registerButton') }}</a>
                   </div>
+                  <div class="aui-flex">
+                    <span style="color: grey; font-size: 12px; margin-left: 4px">
+                      登录即代表已阅读并同意我们的<a-button type="link" style="color: #1b90ff; margin: 0 3px" target="_blank" @click="openProtocol">购买须知及使用协议</a-button>，请知悉。
+                    </span>
+                  </div>
                 </div>
               </div>
               <!-- 体验一下 -->
@@ -190,6 +195,7 @@
     </a-modal>
     <!-- 图片验证码弹窗 -->
     <CaptchaModal @register="captchaRegisterModal" @ok="getLoginCode" />
+    <ProtocolModel @register="registerProtocolModel" />
   </div>
 </template>
 <script lang="ts" setup name="login-mini">
@@ -213,6 +219,7 @@
   import { useModal } from '@/components/Modal';
   import { ExceptionEnum } from '@/enums/exceptionEnum';
   import { activateCodeSave } from '@/views/activate/ActivateCode.api';
+  import ProtocolModel from '@/views/system/protocol/ProtocolModal.vue';
 
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
@@ -292,6 +299,7 @@
   const loginLoading = ref<boolean>(false);
   const { getIsMobile } = useAppInject();
   const [captchaRegisterModal, { openModal: openCaptchaModal }] = useModal();
+  const [registerProtocolModel, { openModal: openProtocolModel }] = useModal();
   defineProps({
     sessionTimeout: {
       type: Boolean,
@@ -309,6 +317,13 @@
       randCodeData.randCodeImage = res;
       randCodeData.requestCodeSuccess = true;
     });
+  }
+
+  /**
+   * 查看用户协议
+   */
+  function openProtocol() {
+    openProtocolModel(true, {});
   }
 
   /**

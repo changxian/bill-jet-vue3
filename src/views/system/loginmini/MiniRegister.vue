@@ -92,6 +92,17 @@
                       </div>
                     </div>
                   </a-form-item>
+                  <a-form-item name="policy">
+                    <div class="aui-flex">
+                      <div class="aui-flex-box">
+                        <div class="aui-choice">
+                          <span style="color: grey; margin-left: 4px">
+                            注册即代表已阅读并同意我们的<a-button type="link" style="color: #1b90ff; margin: 0 3px" target="_blank" @click="openProtocol">购买须知及使用协议</a-button>，请知悉。
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-form-item>
                 </div>
               </div>
               <div class="aui-formButton">
