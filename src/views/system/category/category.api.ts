@@ -7,7 +7,7 @@ enum Api {
   edit = '/sys/category/edit',
   deleteCategory = '/sys/category/delete',
   deleteBatch = '/sys/category/deleteBatch',
-  importExcel = '/bill/sys/category/importExcel',
+  importExcel = '/sys/category/importExcel',
   exportXls = '/sys/category/exportXls',
   loadTreeData = '/sys/category/loadTreeRoot',
   getChildList = '/sys/category/childList',

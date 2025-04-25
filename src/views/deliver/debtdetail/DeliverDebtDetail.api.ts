@@ -10,7 +10,7 @@ enum Api {
   edit = '/deliver/debtdetail/deliverDebtDetail/edit',
   deleteOne = '/deliver/debtdetail/deliverDebtDetail/delete',
   deleteBatch = '/deliver/debtdetail/deliverDebtDetail/deleteBatch',
-  importExcel = '/bill/deliver/debtdetail/deliverDebtDetail/importExcel',
+  importExcel = '/deliver/debtdetail/deliverDebtDetail/importExcel',
   exportXls = '/deliver/debtdetail/deliverDebtDetail/exportXls',
 }
 

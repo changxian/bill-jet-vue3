@@ -10,7 +10,7 @@ enum Api {
   recycleOne = '/templateCustomized/recycleOne',
   deleteOne = '/templateCustomized/delete',
   deleteBatch = '/templateCustomized/deleteBatch',
-  importExcel = '/bill/templateCustomized/importExcel',
+  importExcel = '/templateCustomized/importExcel',
   exportXls = '/templateCustomized/exportXls',
 }
 

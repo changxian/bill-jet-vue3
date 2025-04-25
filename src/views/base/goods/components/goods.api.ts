@@ -9,7 +9,7 @@ enum Api {
   edit = '/bill/goods/edit',
   deleteOne = '/bill/goods/delete',
   deleteBatch = '/bill/goods/deleteBatch',
-  importExcel = '/bill/bill/goods/importExcel',
+  importExcel = '/bill/goods/importExcel',
   exportXls = '/bill/goods/exportXls',
   tenantGoodsNum = '/bill/goods/tenantGoodsNum',
   tenantGoodsNameNum = '/bill/goods/tenantGoodsNameNum',

@@ -9,7 +9,7 @@ enum Api {
   edit = '/salesman/salesman/edit',
   deleteOne = '/salesman/salesman/delete',
   deleteBatch = '/salesman/salesman/deleteBatch',
-  importExcel = '/bill/salesman/salesman/importExcel',
+  importExcel = '/salesman/salesman/importExcel',
   exportXls = '/salesman/salesman/exportXls',
   getAllSalesmanList = '/salesman/salesman/allList',
 }

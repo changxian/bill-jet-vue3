@@ -13,7 +13,7 @@ enum Api {
   duplicateCheck = '/sys/duplicate/check',
   deleteUser = '/sys/user/delete',
   deleteBatch = '/sys/user/deleteBatch',
-  importExcel = '/bill/sys/user/importExcel',
+  importExcel = '/sys/user/importExcel',
   exportXls = '/sys/user/exportXls',
   recycleBinList = '/sys/user/recycleBin',
   putRecycleBin = '/sys/user/putRecycleBin',

@@ -9,7 +9,7 @@ enum Api {
   edit = '/deliver/bill/deliverBill/edit',
   deleteOne = '/deliver/bill/deliverBill/delete',
   deleteBatch = '/deliver/bill/deliverBill/deleteBatch',
-  importExcel = '/bill/deliver/bill/deliverBill/importExcel',
+  importExcel = '/deliver/bill/deliverBill/importExcel',
   exportXls = '/deliver/bill/deliverBill/exportXls',
   billDetail = '/deliver/bill/deliverBill/billDetail',
   editStatus = '/deliver/bill/deliverBill/editStatus',

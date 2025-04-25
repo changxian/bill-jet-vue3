@@ -9,7 +9,7 @@ enum Api {
   edit = '/trading/tradingLedger/edit',
   deleteOne = '/trading/tradingLedger/delete',
   deleteBatch = '/trading/tradingLedger/deleteBatch',
-  importExcel = '/bill/trading/tradingLedger/importExcel',
+  importExcel = '/trading/tradingLedger/importExcel',
   exportXls = '/trading/tradingLedger/exportXls',
 }
 

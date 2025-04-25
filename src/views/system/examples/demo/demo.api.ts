@@ -9,7 +9,7 @@ enum Api {
   delete = '/test/jeecgDemo/delete',
   deleteBatch = '/test/jeecgDemo/deleteBatch',
   exportXls = '/test/jeecgDemo/exportXls',
-  importExcel = '/bill/test/jeecgDemo/importExcel',
+  importExcel = '/test/jeecgDemo/importExcel',
 }
 /**
  * 导出api

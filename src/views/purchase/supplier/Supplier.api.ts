@@ -9,7 +9,7 @@ enum Api {
   edit = '/purchase/supplier/supplier/edit',
   deleteOne = '/purchase/supplier/supplier/delete',
   deleteBatch = '/purchase/supplier/supplier/deleteBatch',
-  importExcel = '/bill/purchase/supplier/supplier/importExcel',
+  importExcel = '/purchase/supplier/supplier/importExcel',
   exportXls = '/purchase/supplier/supplier/exportXls',
 }
 

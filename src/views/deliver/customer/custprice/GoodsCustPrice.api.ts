@@ -11,7 +11,7 @@ enum Api {
   updatePrice = '/deliver/custprice/goodsCustPrice/updatePrice',
   deleteOne = '/deliver/custprice/goodsCustPrice/delete',
   deleteBatch = '/deliver/custprice/goodsCustPrice/deleteBatch',
-  importExcel = '/bill/deliver/custprice/goodsCustPrice/importExcel',
+  importExcel = '/deliver/custprice/goodsCustPrice/importExcel',
   exportXls = '/deliver/custprice/goodsCustPrice/exportXls',
 }
 

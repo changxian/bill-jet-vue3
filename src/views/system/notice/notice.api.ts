@@ -7,7 +7,7 @@ enum Api {
   delete = '/sys/annountCement/delete',
   deleteBatch = '/sys/annountCement/deleteBatch',
   exportXls = '/sys/annountCement/exportXls',
-  importExcel = '/bill/sys/annountCement/importExcel',
+  importExcel = '/sys/annountCement/importExcel',
   releaseData = '/sys/annountCement/doReleaseData',
   reovkeData = '/sys/annountCement/doReovkeData',
 }

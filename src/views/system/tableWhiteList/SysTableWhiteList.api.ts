@@ -7,7 +7,7 @@ enum Api {
   edit = '/sys/tableWhiteList/edit',
   deleteOne = '/sys/tableWhiteList/delete',
   deleteBatch = '/sys/tableWhiteList/deleteBatch',
-  importExcel = '/bill/sys/tableWhiteList/importExcel',
+  importExcel = '/sys/tableWhiteList/importExcel',
   exportXls = '/sys/tableWhiteList/exportXls',
 }
 
