@@ -36,7 +36,7 @@
           <span class="gray-75 item-label">有效期止</span>
           <span class="gray-3">{{ packInfo?.endDate }}</span>
         </div>
-        <div class="margin-bottom-10 font-size-13" style="margin-top: 50px; font-weight: 500; width: 50%; color: #0a8fe9">
+        <div v-if="packInfo?.packCategory == 2" class="margin-bottom-10 font-size-13" style="margin-top: 50px; font-weight: 500; width: 50%; color: #0a8fe9">
           <p class="gray-3" style="text-indent: 2em">套餐需要续费时，请添加右侧微信客服，扫右侧收款码后，将支付信息和上面的套餐资料信息一起发给客服完成续费。</p>
         </div>
       </div>
@@ -91,7 +91,7 @@
         </div>
       </div>
     </div>
-    <div class="account-data" v-else>
+    <div class="account-data" v-if="myTenant?.category == 9">
       <div class="renew-detail">
         <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 120px">套餐续费</div>
         <div class="margin-bottom-10 font-size-13">

@@ -24,17 +24,17 @@
             <div class="content-name"></div>
             <div class="content-desc">
               <div class="flex-flow">
-                <div class="content-des-text" style="line-height: 40px">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</div>
+                <div class="content-des-text" style="line-height: 40px">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</div>
                 <div style="font-size: 13px; color: #000000; line-height: 40px">
                   {{ userDetail.realname }}
                 </div>
               </div>
-              <!--<div class="flex-flow">
-                <div class="content-des-text" style="line-height: 40px">企业标识码</div>
+              <div class="flex-flow">
+                <div class="content-des-text" style="line-height: 40px">企&nbsp;业&nbsp;编&nbsp;号</div>
                 <div style="font-size: 13px; color: #000000; line-height: 40px">
                   {{ tenantInfo.id }}
                 </div>
-              </div>-->
+              </div>
               <div class="flex-flow">
                 <div class="content-des-text">企&nbsp;业&nbsp;LOGO</div>
                 <div style="font-size: 13px">
@@ -199,17 +199,17 @@
         </a-row>
       </div>
   </a-modal>
-  
+
   <!-- begin 我的受邀信息 -->
   <a-modal title="我的受邀信息" v-model:open="invitedVisible" :footer="null">
-      <a-row :span="24" class="invited-row">
-        <a-col :span="16">
-          组织
-        </a-col>
-        <a-col :span="8">
-          操作
-        </a-col>
-      </a-row>
+    <a-row :span="24" class="invited-row">
+      <a-col :span="16">
+        组织
+      </a-col>
+      <a-col :span="8">
+        操作
+      </a-col>
+    </a-row>
     <a-row :span="24" class="invited-row-list" v-for="item in invitedList">
       <a-col :span="16">
         {{item.name}}

@@ -425,7 +425,7 @@ export const packColumns: BasicColumn[] = [
     width: 100,
     resizable: true,
     customRender: ({ text }) => {
-      if (text === 1) {
+      if (text === '1') {
         return '单机版';
       } else {
         return '云端版';

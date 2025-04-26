@@ -17,6 +17,8 @@
 
   //企业ID
   const tenantId = ref<number>();
+  //套餐类别
+  const packCategory = ref<string>('');
   //企业类别
   const tenantCategory = ref<number>(0);
   //表单赋值
@@ -60,7 +62,8 @@
             console.log('res', res);
             res.forEach((item) => {
               if (item.id === e) {
-                debugger;
+                // debugger;
+                packCategory.value = item.category;
                 // 代理商分配运营版套餐
                 if ((item.packType == 3 && tenantCategory.value == 5) || (item.packType != 3 && tenantCategory.value == 0)) {
                   setFieldsValue({ ...item });
@@ -179,10 +182,16 @@
   //表单提交事件
   async function handleSubmit(v) {
     const values = await validate();
+    // debugger;
+    // console.log(packCategory);
     if (values.activateCode == null) {
-      if (tenantCategory.value != 5) {
-        createMessage.warning('当前类型套餐的激活码已使用完，请先获取激活码后再来给企业激活');
-        return;
+      if (packCategory.value == '2') {
+        if (tenantCategory.value != 5) {
+          createMessage.warning('当前类型套餐的激活码已使用完，请先获取激活码后再来给企业激活');
+          return;
+        }
+      } else {
+        values.packNum = 99;
       }
     }
     setModalProps({ confirmLoading: true });

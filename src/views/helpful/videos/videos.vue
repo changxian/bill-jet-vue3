@@ -45,7 +45,7 @@
     return [
       { id: 1, videosName: '01.添加企业信息.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/0810d9dde928c7abac499499bee4dbaf.mp4' },
       { id: 2, videosName: '02.销售开单.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/d624d3f872070f3fe1a4d3bfec2cfe0a.mp4' },
-      { id: 3, videosName: '03.销售统计、销售队长单、进货统计和进货对账单.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/14c96a130ce8f8eaacb2af9c91ba699a.mp4' },
+      { id: 3, videosName: '03.销售统计、销售对账单、进货统计和进货对账单.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/14c96a130ce8f8eaacb2af9c91ba699a.mp4' },
       { id: 4, videosName: '04.统计分析操作方法.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/ee5316793875d49154f4d658fb948682.mp4' },
       { id: 5, videosName: '05.导入客户信息和商品信息.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/1b44c52c660a66464a146484feeb3f1b.mp4' },
       { id: 6, videosName: '06.打印客户端安装.mp4', src: 'https://www.xinhsoft.com/sys/common/static/video/81c4b4604d269bcd34b629585ed52963.mp4' },
