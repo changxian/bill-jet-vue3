@@ -41,7 +41,7 @@
     mounted() {
       window.autoConnect = false;
       this.templateGet();
-      this.enableZoom()
+      this.enableZoom();
     },
     methods: {
       // 获取模板数据和打印预览数据
@@ -110,17 +110,16 @@
         }, 10);
       },
       enableZoom() {
-    const viewport = document.querySelector('meta[name="viewport"]');
-    if (viewport) {
-        viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes');
-    } else {
-        const meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-    }
-}
-
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes');
+        } else {
+          const meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes';
+          document.getElementsByTagName('head')[0].appendChild(meta);
+        }
+      },
     },
   };
 </script>
