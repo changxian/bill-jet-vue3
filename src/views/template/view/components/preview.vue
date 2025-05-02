@@ -15,6 +15,7 @@
 
   import * as vuePluginHiprint from '@/views/template/components';
   import printData from '../print-data';
+  import { roil } from '@/views/template/view/index.api';
 
   let hiprint, defaultElementTypeProvider;
 
@@ -57,6 +58,7 @@
             this.printData = res.printData || printData;
 
             this.init(this.template);
+            roil(this.printData['table'], 1);
             this.show(this.printData, this.template);
           })
           .catch((e) => {
