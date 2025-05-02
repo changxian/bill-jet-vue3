@@ -10,6 +10,8 @@
   import { getPrintInfo } from '/@/api/common/api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
 
   import * as vuePluginHiprint from '@/views/template/components';
   import printData from '../print-data';
@@ -67,7 +69,9 @@
         const templateId = urlParams.get('templateId');
         const category = urlParams.get('category');
         const id = urlParams.get('id');
+        const tenantId = urlParams.get('txId');
 
+        userStore.setTenant(tenantId);
         console.log(templateId, '模板id'); // 输出: 123
         console.log(category, '类型（1：送货单，2：进货单'); // 输出: 123
         console.log(id, '业务id'); // 输出: 123

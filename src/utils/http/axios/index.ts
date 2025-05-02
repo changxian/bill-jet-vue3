@@ -208,6 +208,9 @@ const transform: AxiosTransform = {
       // ========================================================================================
 
     }
+    if (tenantId) {
+      config.headers[ConfigEnum.TENANT_ID] = tenantId;
+    }
     return config;
   },
 
