@@ -1,6 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { unref } from 'vue';
 import { useWebSocket, WebSocketResult } from '@vueuse/core';
 import { getToken } from '/@/utils/auth';
 
@@ -17,13 +16,13 @@ export function connectWebSocket(url: string) {
   result = useWebSocket(url, {
     // 自动重连 (遇到错误最多重复连接10次)
     autoReconnect: {
-      retries : 10,
-      delay : 5000
+      retries: 10,
+      delay: 5000,
     },
     // 心跳检测
     heartbeat: {
-      message: "ping",
-      interval: 55000
+      message: 'ping',
+      interval: 55000,
     },
     protocols: [token],
     // update-begin--author:liaozhiyang---date:20240726---for：[issues/6662] 演示系统socket总断，换一个写法
@@ -93,7 +92,7 @@ function onMessage(e) {
   console.debug('[WebSocket] -----接收消息-------', e.data);
   try {
     //update-begin---author:wangshuai---date:2024-05-07---for:【issues/1161】前端websocket因心跳导致监听不起作用---
-    if(e==='ping'){
+    if (e === 'ping') {
       return;
     }
     //update-end---author:wangshuai---date:2024-05-07---for:【issues/1161】前端websocket因心跳导致监听不起作用---
@@ -110,12 +109,12 @@ function onMessage(e) {
   }
 }
 
-
 /**
  * 添加 WebSocket 消息监听
  * @param callback
  */
 export function onWebSocket(callback: (data: object) => any) {
+  console.debug('[WebSocket] 添加 WebSocket 消息监听......................');
   if (!listeners.has(callback)) {
     if (typeof callback === 'function') {
       listeners.set(callback, null);

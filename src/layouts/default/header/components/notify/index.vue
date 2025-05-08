@@ -26,9 +26,14 @@
   import { connectWebSocket, onWebSocket } from '/@/hooks/web/useWebSocket';
   import { readAllMsg } from '/@/views/monitor/mynews/mynews.api';
   import { getToken } from '/@/utils/auth';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import md5 from 'crypto-js/md5';
 
-  import SysMessageModal from '/@/views/system/message/components/SysMessageModal.vue'
+  import SysMessageModal from '/@/views/system/message/components/SysMessageModal.vue';
+  import * as vuePluginHiprint from '@/views/template/components';
+  import { roil } from '@/views/template/view/index.api';
+
+  const { createMessage } = useMessage();
 
   export default defineComponent({
     components: {
@@ -64,12 +69,12 @@
         for (let i = 0; i < listData.value.length; i++) {
           listData.value[i].count = 0;
         }
-        openMessageModal(true, {})
+        openMessageModal(true, {});
       }
 
       const popoverVisible = ref<boolean>(false);
       onMounted(() => {
-       initWebSocket();
+        initWebSocket();
       });
 
       function mapAnnouncement(item) {
@@ -130,14 +135,77 @@
         onWebSocket(onWebSocketMessage);
       }
 
+      function doOperationWhenClientConnected(operation) {
+        if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
+          operation?.();
+          return;
+        }
+        createMessage.error({
+          content: '请先安装连接打印客户端。（下载位置：信息分享->打印客户端，选择电脑对应的文件下载）',
+          duration: 20,
+        });
+      }
+
+      let hiprintTemplate, hiprint, defaultElementTypeProvider;
+      function init(tempData) {
+        hiprint = vuePluginHiprint.hiprint;
+        defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
+        hiprint.init({
+          providers: [new defaultElementTypeProvider()],
+          lang: 'cn',
+        });
+        // 还原配置
+        hiprint.setConfig();
+
+        hiprintTemplate = new hiprint.PrintTemplate({
+          template: {
+            ...tempData,
+          },
+        });
+      }
+      function print(data) {
+        const printData = data.printData;
+        roil(printData['table'], 1);
+
+        if (null == hiprintTemplate) {
+          init(data['tempData']);
+        }
+
+        doOperationWhenClientConnected(() => {
+          const printerList = hiprintTemplate.getPrinterList();
+          console.log(printerList);
+
+          let printer,
+            printSetting = userStore.getPrintSetting;
+
+          if (null != printSetting) {
+            printer = printSetting.printer;
+          }
+
+          hiprintTemplate.print2(printData, {
+            printer: {
+              name: printer || '',
+            },
+            title: '票据打印' + (data['id'] || ''),
+          });
+        });
+      }
+
       function onWebSocketMessage(data) {
         if (data.cmd === 'topic' || data.cmd === 'user') {
           //update-begin-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
           //后台保存数据太慢 前端延迟刷新消息
-          setTimeout(()=>{
+          setTimeout(() => {
             loadData();
-          }, 1000)
+          }, 1000);
           //update-end-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
+        } else if (data.cmd === 'print') {
+          // 小程序发起打印请求
+          console.error('小程序发起打印请求。。。。。。。。。。。。。。。。');
+          console.info(data);
+          // 打印数据
+          print(data);
         }
       }
 
