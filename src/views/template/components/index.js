@@ -74,6 +74,11 @@ let hiPrintPlugin = {
   },
 };
 
+hiprint.init({
+  providers: [new defaultElementTypeProvider()],
+  lang: 'cn',
+});
+
 hiprint.version = version;
 
 window.hiprint = hiprint;

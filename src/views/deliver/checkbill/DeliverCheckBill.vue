@@ -124,7 +124,6 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
   import { getTemplateData2, roil } from '@/views/template/view/index.api';
-  import * as vuePluginHiprint from '@/views/template/components';
 
   const queryParam = reactive<any>({ companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
@@ -270,8 +269,6 @@
     debtAmountTotal.value = extraInfo.debtAmount || 0;
   }
 
-  var hiprint, defaultElementTypeProvider;
-  let printTemplate;
   const printData = ref();
   const tempData = ref();
 
@@ -285,22 +282,15 @@
       duration: 2,
     });
   }
-  async function init(tempData) {
-    hiprint = vuePluginHiprint.hiprint;
-    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
 
-    hiprint.init({
-      providers: [new defaultElementTypeProvider()],
-      lang: 'cn',
-    });
-    // 还原配置
-    hiprint.setConfig();
-    let panels = {
-      ...tempData,
-    };
+  let printTemplate;
+  async function init(tempData) {
+    window.hiprint.setConfig();
 
     printTemplate = new hiprint.PrintTemplate({
-      template: panels,
+      template: {
+        ...tempData,
+      },
     });
   }
 

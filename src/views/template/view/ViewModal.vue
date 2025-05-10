@@ -3,11 +3,11 @@
     <a-row :class="['p-4']" :gutter="10" style="overflow: hidden; background-color: rgb(236 236 236); width: 1192px">
       <a-col :xl="6" :lg="8" :md="10" :sm="24" style="flex: 1">
         <a-card :bordered="false" style="height: 100%">
-          <Left @select="onTreeSelect" @jxcLimit="jxcLimit" :data="data" />
+          <Left @select="onTreeSelect" @jxc-limit="jxcLimit" :data="data" />
         </a-card>
       </a-col>
       <a-col :xl="18" :lg="16" :md="14" :sm="24" style="flex: 1" class="goods-tbl-wrap">
-        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" @paperConfig="paperConfig" />
+        <Preview ref="preView" :printSetting="data.printSetting" @setting="setting" @paper-config="paperConfig" />
       </a-col>
     </a-row>
   </BasicModal>
@@ -25,14 +25,10 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { getTemplateData, roil } from '@/views/template/view/index.api';
   import printData from '@/views/template/view/print-data';
-  import * as vuePluginHiprint from '@/views/template/components';
   import Left from '@/views/template/view/components/Left.vue';
   import Preview from '@/views/template/view/components/View.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
-
-  let hiprint, defaultElementTypeProvider;
-  let hiprintTemplate;
 
   // Emits声明
   const emit = defineEmits(['register', 'success']);
@@ -69,6 +65,7 @@
     curTemplate.value = {};
   }
 
+  let hiprintTemplate;
   function view() {
     if (null != preView.value) {
       preView.value.show(hiprintTemplate, data.value.printData, curTemplate.value);
@@ -83,27 +80,16 @@
   }
 
   async function init(tempData) {
-    hiprint = vuePluginHiprint.hiprint;
-    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+    window.hiprint.setConfig();
 
-    hiprint.init({
-      providers: [new defaultElementTypeProvider()],
-      lang: 'cn',
-    });
-    // 还原配置
-    hiprint.setConfig();
-    let panels = {
-      ...tempData,
-    };
-
-    hiprintTemplate = new hiprint.PrintTemplate({
-      template: panels,
+    hiprintTemplate = new window.hiprint.PrintTemplate({
+      template: {
+        ...tempData,
+      },
     });
   }
 
-  function paperConfig(config) {
-
-  }
+  function paperConfig(config) {}
 
   function onTreeSelect(o) {
     curTemplate.value = {

@@ -179,7 +179,7 @@
       }
 
       function loginSelectOk() {
-        console.log('成功。。。。。');
+        // console.log('成功。。。。。');
       }
 
       onMounted(() => {
@@ -223,7 +223,7 @@
   //update-begin---author:scott ---date:2022-09-30  for：默认隐藏顶部菜单面包屑-----------
   //顶部欢迎语展示样式
   @prefix-cls: ~'@{namespace}-layout-header';
-  
+
   .ant-layout .@{prefix-cls} {
     display: flex;
     padding: 0 8px;

@@ -102,7 +102,6 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
   import { getTemplateData2, roil } from '@/views/template/view/index.api';
-  import * as vuePluginHiprint from '@/views/template/components';
 
   const userStore = useUserStore();
   const hasPan = ref(true);
@@ -251,8 +250,6 @@
     debtAmountTotal.value = extraInfo.debtAmount || 0;
   }
 
-  // vuePluginHiprint.disAutoConnect();
-  var hiprint, defaultElementTypeProvider;
   let printTemplate;
   const printData = ref();
   const tempData = ref();
@@ -268,21 +265,12 @@
     });
   }
   async function init(tempData) {
-    hiprint = vuePluginHiprint.hiprint;
-    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+    window.hiprint.setConfig();
 
-    hiprint.init({
-      providers: [new defaultElementTypeProvider()],
-      lang: 'cn',
-    });
-    // 还原配置
-    hiprint.setConfig();
-    let panels = {
-      ...tempData,
-    };
-
-    printTemplate = new hiprint.PrintTemplate({
-      template: panels,
+    printTemplate = new window.hiprint.PrintTemplate({
+      template: {
+        ...tempData,
+      },
     });
   }
 

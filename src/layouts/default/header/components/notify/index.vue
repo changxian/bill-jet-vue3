@@ -64,7 +64,7 @@
       });
 
       const [registerMessageModal, { openModal: openMessageModal }] = useModal();
-      function clickBadge(){
+      function clickBadge() {
         //消息列表弹窗前去除角标
         for (let i = 0; i < listData.value.length; i++) {
           listData.value[i].count = 0;
@@ -138,6 +138,7 @@
       function doOperationWhenClientConnected(operation) {
         if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
           operation?.();
+          console.log('小程序打印，hiwebSocket连接成功。。。。。。。。。。。。。。。。');
           return;
         }
         createMessage.error({
@@ -146,50 +147,45 @@
         });
       }
 
-      let hiprintTemplate, hiprint, defaultElementTypeProvider;
+      let hiprintTemplate;
       function init(tempData) {
-        hiprint = vuePluginHiprint.hiprint;
-        defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+        window.hiprint.setConfig();
 
-        hiprint.init({
-          providers: [new defaultElementTypeProvider()],
-          lang: 'cn',
-        });
-        // 还原配置
-        hiprint.setConfig();
-
-        hiprintTemplate = new hiprint.PrintTemplate({
+        hiprintTemplate = new window.hiprint.PrintTemplate({
           template: {
             ...tempData,
           },
         });
+        vuePluginHiprint.autoConnect();
       }
       function print(data) {
         const printData = data.printData;
         roil(printData['table'], 1);
 
-        if (null == hiprintTemplate) {
-          init(data['tempData']);
-        }
+        init(JSON.parse(data['tempData']));
 
-        doOperationWhenClientConnected(() => {
-          const printerList = hiprintTemplate.getPrinterList();
-          console.log(printerList);
+        // 小程序发起打印请求
+        console.info(data);
+        setTimeout(function () {
+          doOperationWhenClientConnected(() => {
+            const printerList = hiprintTemplate.getPrinterList();
+            console.log(printerList);
 
-          let printer,
-            printSetting = userStore.getPrintSetting;
+            let printer,
+              printSetting = userStore.getPrintSetting;
 
-          if (null != printSetting) {
-            printer = printSetting.printer;
-          }
+            if (null != printSetting) {
+              printer = printSetting.printer;
+            }
 
-          hiprintTemplate.print2(printData, {
-            printer: {
-              name: printer || '',
-            },
-            title: '票据打印' + (data['id'] || ''),
+            hiprintTemplate.print2(printData, {
+              printer: {
+                name: printer || '',
+              },
+              title: '票据打印' + (data['id'] || ''),
+            });
           });
-        });
+        }, 200);
       }
 
       function onWebSocketMessage(data) {
@@ -201,9 +197,6 @@
           }, 1000);
           //update-end-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
         } else if (data.cmd === 'print') {
-          // 小程序发起打印请求
-          console.error('小程序发起打印请求。。。。。。。。。。。。。。。。');
-          console.info(data);
           // 打印数据
           print(data);
         }
@@ -214,7 +207,7 @@
         popoverVisible.value = false;
         readAllMsg({}, loadData);
       }
-      async function reloadCount(id){
+      async function reloadCount(id) {
         try {
           await editCementSend(id);
           await loadData();

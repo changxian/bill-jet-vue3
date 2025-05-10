@@ -259,7 +259,6 @@
 <script defer>
   import '../public/css/bootstrap.min.css';
   import '../public/css/print-lock.css';
-  import * as vuePluginHiprint from './index';
   import panel from './panel.empty';
   import printData from './print-data';
   import printPreview from './TemplatePreview.vue';
@@ -271,8 +270,6 @@
   import { useUserStore } from '/@/store/modules/user';
   const userStore = useUserStore();
 
-  // vuePluginHiprint.disAutoConnect();
-  var hiprint, defaultElementTypeProvider;
   let hiprintTemplate;
 
   export default {
@@ -389,20 +386,14 @@
       },
     },
     mounted() {
-      hiprint = vuePluginHiprint.hiprint;
-      defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
       this.init();
     },
     methods: {
       init() {
-        hiprint.init({
-          providers: [new defaultElementTypeProvider()],
-          lang: 'cn',
-        });
         // 还原配置
-        hiprint.setConfig();
+        window.hiprint.setConfig();
         // 设置左侧拖拽事件
-        hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
+        window.hiprint.PrintElementTypeManager.buildByHtml($('.ep-draggable-item'));
 
         this.form = {
           ...this.formData,
@@ -415,7 +406,7 @@
           panels = panel;
         }
         $('#hiprint-printTemplate').empty();
-        this.template = hiprintTemplate = new hiprint.PrintTemplate({
+        this.template = hiprintTemplate = new window.hiprint.PrintTemplate({
           template: panels,
           // 图片选择功能
           onImageChooseClick: (target) => {
@@ -511,12 +502,12 @@
       },
       preView() {
         // 测试, 点预览更新拖拽元素
-        hiprint.updateElementType('defaultModule.text', (type) => {
+        window.hiprint.updateElementType('defaultModule.text', (type) => {
           type.title = '这是更新后的元素';
           return type;
         });
         // 测试, 通过socket刷新打印机列表； 默认只有连接的时候才会获取到最新的打印机列表
-        hiprint.refreshPrinterList((list) => {
+        window.hiprint.refreshPrinterList((list) => {
           console.log('refreshPrinterList');
           console.log(list);
         });
@@ -525,28 +516,28 @@
         // 1. 类型（ip、ipv6、mac、dns、all、interface、vboxnet）
         // 2. 回调 data => {addr, e}  addr: 返回的数据 e:错误信息
         // 3. 其他参数 ...args
-        hiprint.getAddress('ip', (data) => {
+        window.hiprint.getAddress('ip', (data) => {
           console.log('ip');
           console.log(data);
         });
-        hiprint.getAddress('ipv6', (data) => {
+        window.hiprint.getAddress('ipv6', (data) => {
           console.log('ipv6');
           console.log(data);
         });
-        hiprint.getAddress('mac', (data) => {
+        window.hiprint.getAddress('mac', (data) => {
           console.log('mac');
           console.log(data);
         });
-        hiprint.getAddress('dns', (data) => {
+        window.hiprint.getAddress('dns', (data) => {
           console.log('dns');
           console.log(data);
         });
-        hiprint.getAddress('all', (data) => {
+        window.hiprint.getAddress('all', (data) => {
           console.log('all');
           console.log(data);
         });
         // 各个平台不一样, 用法见: https://www.npmjs.com/package/address
-        hiprint.getAddress(
+        window.hiprint.getAddress(
           'interface',
           (data) => {
             console.log('interface');

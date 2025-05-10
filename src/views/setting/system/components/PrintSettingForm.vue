@@ -129,7 +129,6 @@
   import { useModal } from '/@/components/Modal';
   import ViewModal from '@/views/template/view/ViewModal.vue';
   import { useUserStore } from '@/store/modules/user';
-  import * as vuePluginHiprint from '@/views/template/components';
   const [registerModal, { openModal }] = useModal();
   const { createMessage } = useMessage();
 
@@ -250,20 +249,10 @@
       });
   }
 
-  var defaultElementTypeProvider;
-
   function init() {
-    let hiprint = vuePluginHiprint.hiprint;
-    defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+    window.hiprint.setConfig();
 
-    hiprint.init({
-      providers: [new defaultElementTypeProvider()],
-      lang: 'cn',
-    });
-    // 还原配置
-    hiprint.setConfig();
-
-    return new hiprint.PrintTemplate({
+    return new window.hiprint.PrintTemplate({
       template: {},
     });
   }
