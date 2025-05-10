@@ -22,7 +22,7 @@ export function connectWebSocket(url: string) {
     // 心跳检测
     heartbeat: {
       message: 'ping',
-      interval: 55000,
+      interval: 5000,
     },
     protocols: [token],
     // update-begin--author:liaozhiyang---date:20240726---for：[issues/6662] 演示系统socket总断，换一个写法

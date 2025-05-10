@@ -128,10 +128,10 @@
         let token = getToken();
         //将登录token生成一个短的标识
         let wsClientId = md5(token);
-        let userId = unref(userStore.getUserInfo).id + "_" + wsClientId;
+        let userId = unref(userStore.getUserInfo).id + '_' + wsClientId;
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
-        debugger;
-        let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
+        console.info('glob信息', glob);
+        let url = glob.domainUrl?.replace(glob.apiUrl, '/ws').replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
         connectWebSocket(url);
         onWebSocket(onWebSocketMessage);
       }
