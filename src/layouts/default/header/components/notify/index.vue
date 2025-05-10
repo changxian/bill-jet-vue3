@@ -130,6 +130,7 @@
         let wsClientId = md5(token);
         let userId = unref(userStore.getUserInfo).id + "_" + wsClientId;
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
+        debugger;
         let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
         connectWebSocket(url);
         onWebSocket(onWebSocketMessage);
