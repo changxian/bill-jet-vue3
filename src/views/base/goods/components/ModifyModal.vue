@@ -126,7 +126,7 @@
     //   disableSubmit.value = true;
     // }
     if (data) {
-      goodsName.value = data.name;
+      goodsName.value = data.goodsName;
       row = data;
     }
     visible.value = true;
