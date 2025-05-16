@@ -42,7 +42,8 @@ export const getCustomerList = (params) => defHttp.get({ url: Api.customerList, 
 /**
  * 上传父路径
  */
-export const uploadUrl = `${baseUploadUrl}/bill/sys/common/upload`;
+export const uploadUrl = `${baseUploadUrl}/sys/common/upload`;
+export const uploadPdfUrl = `${baseUploadUrl}/bill/template/upload/pdf`;
 
 /**
  * 职务列表
@@ -121,6 +122,12 @@ export const loadCategoryData = (params) => {
  */
 export const uploadFile = (params, success) => {
   return defHttp.uploadFile({ url: uploadUrl }, params, { success });
+};
+/**
+ * 文件上传
+ */
+export const uploadPdfFile = (params, success) => {
+  return defHttp.uploadFile({ url: uploadPdfUrl }, params, { success });
 };
 /**
  * 下载文件

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { uploadPdfFile } from "/@/api/common/api";
   import { getPrintInfo } from '/@/api/common/api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
@@ -47,6 +48,19 @@
       this.enableZoom();
     },
     methods: {
+      printPdf(printData, params) {
+        // 生成blob文件
+        this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
+          console.log(res);
+          params.file = res;
+          params.filename = params.id + '.pdf';
+
+          // 生成pdf文件
+          uploadPdfFile(params, function (res) {
+            console.log(res);
+          });
+        });
+      },
       // 获取模板数据和打印预览数据
       loadPrintInfo(params) {
         this.printData = printData;
@@ -59,6 +73,8 @@
 
             this.init(this.template);
             roil(this.printData['table'], 1);
+
+            this.printPdf(this.printData, params);
             this.show(this.printData, this.template);
           })
           .catch((e) => {
