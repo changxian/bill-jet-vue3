@@ -3,6 +3,10 @@
     <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
+    <div class="s-bottom">
+      <a class="s-link" :href="copyText">{{copyText}}</a>
+      <a-button @click="copy">复制</a-button>
+    </div>
   </div>
 </template>
 
@@ -18,6 +22,8 @@ import { uploadPdfFile } from "/@/api/common/api";
   import printData from '../print-data';
   import { roil } from '@/views/template/view/index.api';
 
+import useClipboard from 'vue-clipboard3';
+const {toClipboard}=useClipboard()
   let hiprint, defaultElementTypeProvider;
 
   export default {
@@ -37,6 +43,7 @@ import { uploadPdfFile } from "/@/api/common/api";
         printData: null,
         // 渲染的模板
         template: {},
+        copyText:""
       };
     },
     computed: {},
@@ -48,6 +55,10 @@ import { uploadPdfFile } from "/@/api/common/api";
       this.enableZoom();
     },
     methods: {
+      async copy(){
+      await toClipboard(this.copyText)
+       createMessage.success("复制成功");
+      },
       printPdf(printData, params) {
         // 生成blob文件
         this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
@@ -56,8 +67,8 @@ import { uploadPdfFile } from "/@/api/common/api";
           params.filename = params.id + '.pdf';
 
           // 生成pdf文件
-          uploadPdfFile(params, function (res) {
-            console.log(res);
+          uploadPdfFile(params,  (res)=> {
+            this.copyText=res.result
           });
         });
       },
@@ -211,5 +222,17 @@ import { uploadPdfFile } from "/@/api/common/api";
     :deep(.ant-input-number) {
       width: 100%;
     }
+  }
+  .s-bottom{
+position: fixed;
+bottom:0;
+left:0;
+right:0;
+padding:15px;
+box-shadow: -1px -1px 5px 5px #eeeeee;
+  }
+  .s-link{
+    word-wrap: break-word;
+    margin-right: 15px;
   }
 </style>
