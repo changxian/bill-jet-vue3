@@ -2,7 +2,7 @@
   <PageWrapper title="手机端">
     <template #headerContent>
       <div class="flex justify-between items-center">
-        <div class="ant-result-title">手机端小程序请在微信里搜索“鑫泓软件”开始应用，或者打开微信扫描二维码开始使用。</div>
+        <div class="ant-result-title">手机端小程序请在微信里搜索“鑫泓软件”开始s使用，或者打开微信扫描二维码开始使用。新用户请先注册账户，已注册帐户直接登录使用。</div>
       </div>
       <div class="flex items-center ant-result" style="padding: 48px 32px">
         <!--<div class="ant-result-icon">
@@ -10,6 +10,18 @@
         </div>-->
         <div class="ant-result-icon" style="margin-left: 80px">
           <img style="height: 400px" src="/src/assets/images/mobile/qrcode.jpg" />
+        </div>
+        <div class="ant-result-icon" style="margin-left: 50px">
+          <img style="height: 400px" src="/src/assets/images/mobile/search.jpg" />
+        </div>
+        <div class="ant-result-icon" style="margin-left: 50px">
+          <img style="height: 400px" src="/src/assets/images/mobile/reg.jpg" />
+        </div>
+        <div class="ant-result-icon" style="margin-left: 50px">
+          <img style="height: 400px" src="/src/assets/images/mobile/login.jpg" />
+        </div>
+        <div class="ant-result-icon" style="margin-left: 50px">
+          <img style="height: 400px" src="/src/assets/images/mobile/home.jpg" />
         </div>
       </div>
     </template>
