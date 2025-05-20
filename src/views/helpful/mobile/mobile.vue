@@ -15,10 +15,10 @@
           <img style="height: 400px" src="/src/assets/images/mobile/search.jpg" />
         </div>
         <div class="ant-result-icon" style="margin-left: 50px">
-          <img style="height: 400px" src="/src/assets/images/mobile/reg.jpg" />
+          <img style="height: 400px" src="/src/assets/images/mobile/login.jpg" />
         </div>
         <div class="ant-result-icon" style="margin-left: 50px">
-          <img style="height: 400px" src="/src/assets/images/mobile/login.jpg" />
+          <img style="height: 400px" src="/src/assets/images/mobile/reg.jpg" />
         </div>
         <div class="ant-result-icon" style="margin-left: 50px">
           <img style="height: 400px" src="/src/assets/images/mobile/home.jpg" />

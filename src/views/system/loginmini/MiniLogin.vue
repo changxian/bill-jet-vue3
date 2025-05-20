@@ -24,7 +24,7 @@
                 <div style="margin-top: 20px; padding-left: 15px; padding-right: 15px; font-size: 14px">
                   <p style="color: white; text-indent: 2em; margin-top: 10px">贵州鑫泓瀛科技有限公司</p>
                   <p style="color: white; text-indent: 2em; margin-top: 10px">鑫泓软件《前身始于2016年、深耕行业8年》专注云端智能管理软件研发，其核心进销存管理系统由送货单打印软件升级迭代而来。新增智能数据存储及供应链协同功能、通过浏览器+小程序实现采购-库存-销售全链路数字化管控。系统采用银行级云存储及智能备份机制，支持多终端实时数据同步与批量数据导入、赋能中小企业运营效率高速提升、现持有35类、42类2项商标及多项原研软著，累计服务超10万+企业、客户转介率达63.8%、年新增客户增速57.5%、口碑见证，值得托付、以“免费试用+全周期服务”助力企业降本增效。 </p>
-                  <p style="color: white; margin-top: 18px">硬核优势：</p>1
+                  <p style="color: white; margin-top: 18px">硬核优势：</p>
                   <p style="color: white; text-indent: 2em; margin-top: 10px">✓ 零安装云端系统：全平台即开即用、数据实时同步</p>
                   <p style="color: white; text-indent: 2em">✓ 极速数据引擎：&nbsp;&nbsp;&nbsp;批量导入功能节省90%人工耗时</p>
                   <p style="color: white; text-indent: 2em">✓ 军工级数据盾：&nbsp;&nbsp;&nbsp;智能备份+多重加密防护</p>
