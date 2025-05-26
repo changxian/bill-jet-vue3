@@ -18,6 +18,8 @@
           <CardItem title="销售金额" path="/deliver/bill/deliverBillList" :num="deliver.amount" color="#c44e52" :timeType="queryTime" :imgSrc="imgSrc1"/>
           <CardItem title="销售欠款" path="/deliver/bill/deliverBillList" :num="deliver.debtAmount" color="#8172b3" :timeType="queryTime" :imgSrc="imgSrc2"/>
           <CardItem title="销售数量" path="/deliver/bill/deliverBillList" :num="deliver.count" color="#55a868" :timeType="queryTime" :imgSrc="imgSrc3"/>
+          <CardItem title="销售利润" path="/deliver/bill/deliverBillList" :num="deliver.profitAmount" color="#ff0000" :timeType="queryTime" :imgSrc="imgSrc8"/>
+          <CardItem title="商品利润" path="/deliver/bill/deliverBillList" :num="deliver.profit" color="#ff0000" :timeType="queryTime" :imgSrc="imgSrc9"/>
           <CardItem v-if="showWeightCol" title="销售重量" path="/deliver/bill/deliverBillList" :num="deliver.weight" color="#8c6245" :timeType="queryTime" :imgSrc="imgSrc4"/>
           <CardItem v-if="showAreaCol" title="销售面积" path="/deliver/bill/deliverBillList" :num="deliver.area" color="#d5bb67" :timeType="queryTime" :imgSrc="imgSrc5"/>
           <CardItem v-if="showVolumeCol" title="销售体积" path="/deliver/bill/deliverBillList" :num="deliver.volume" color="#4878d0" :timeType="queryTime" :imgSrc="imgSrc6"/>
@@ -48,6 +50,8 @@
   import imgSrc5 from '../../../assets/images/statistics/5.png';
   import imgSrc6 from '../../../assets/images/statistics/6.png';
   import imgSrc7 from '../../../assets/images/statistics/7.png';
+  import imgSrc8 from '../../../assets/images/statistics/8.png';
+  import imgSrc9 from '../../../assets/images/statistics/9.png';
   import { moduleTotal } from '@/views/statistics/statistics/Statistics.api';
   import { useUserStore } from '@/store/modules/user';
 
@@ -65,7 +69,7 @@
     showAreaCol.value = !!billSetting.showAreaCol;
     showVolumeCol.value = !!billSetting.showVolumeCol;
   }
-  const deliver = ref({ amount: 0, debtAmount: 0, count: 0, weight: 0, area: 0, volume: 0, amountReturn: 0 });
+  const deliver = ref({ amount: 0, debtAmount: 0, count: 0, weight: 0, area: 0, volume: 0, profitAmount: 0, profit: 0, amountReturn: 0 });
   const purchase = ref({ amount: 0, debtAmount: 0, count: 0, weight: 0, area: 0, volume: 0, amountReturn: 0 });
   const queryTime = ref('today');
   function changeQueryTime() {

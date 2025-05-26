@@ -26,6 +26,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicTree } from '/@/components/Tree';
   import { queryGoodsCategoryList, searchByKeywords } from '../goods.list.api';
+  import { loadTreeData } from '@/views/base/category/category.api';
 
   const emit = defineEmits(['select']);
   const { createMessage } = useMessage();
@@ -48,6 +49,7 @@
   function loadCategoryTreeData() {
     loading.value = true;
     treeData.value = [];
+    // loadTreeData({ async: false, parentId: '' })
     queryGoodsCategoryList()
       .then((res) => {
         if (res.success) {
@@ -116,12 +118,13 @@
         })
         .finally(() => (loading.value = false));
     } else {
-      loadDepartTreeData();
+      loadCategoryTreeData();
     }
   }
 
   // 树选择事件
   function onSelect(selKeys, event) {
+    debugger;
     if (selKeys.length > 0 && selectedKeys.value[0] !== selKeys[0]) {
       setSelectedKey(selKeys[0], event.selectedNodes[0]);
     } else {

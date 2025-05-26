@@ -259,7 +259,7 @@
     }
     console.log(selectedRowKeys.value, selectedRows.value[0]);
     custPriceModal(true, {
-      goodsName: unref(selectedRows.value[0].name),
+      goodsName: unref(selectedRows.value[0].goodsName),
       row: selectedRows.value[0],
     });
   }
@@ -279,7 +279,7 @@
   function handleStockDetail() {
     let goodsName = '';
     if (unref(selectedRowKeys).length > 0) {
-      goodsName = selectedRows.value[0].name;
+      goodsName = selectedRows.value[0].goodsName;
     }
     recordModal(true, {
       goodsName: unref(goodsName),

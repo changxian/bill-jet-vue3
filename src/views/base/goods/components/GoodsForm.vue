@@ -4,7 +4,7 @@
       <template #detail>
         <a-form ref="formRef" class="antd-modal-form" :labelCol="labelCol" :wrapperCol="wrapperCol" name="GoodsForm">
           <a-row>
-            <a-col :span="8">
+            <!--<a-col :span="8">
               <a-form-item label="商品类别" v-bind="validateInfos.categoryId" id="GoodsForm-categoryId" name="categoryId">
                 <JDictSelectTag
                   v-model:value="formData.categoryId"
@@ -12,6 +12,22 @@
                   dictCode="jxc_goods_category,name,id,status=1 and del_flag=0 order by sort desc"
                   :showChooseOption="false"
                 />
+              </a-form-item>
+            </a-col>-->
+            <a-col :span="8">
+              <a-form-item label="商品类别" v-bind="validateInfos.categoryId" id="GoodsForm-categoryId" name="categoryId">
+                <a-tree-select
+                  v-model:value="formData.categoryId"
+                  placeholder="请选择类别"
+                  :tree-line="true"
+                  :tree-data="treeData"
+                  tree-node-filter-prop="title"
+                >
+                  <!--<template #title="{ value: val, title }">
+                    <b v-if="val === 'parent 1-1'" style="color: #08c">sss</b>
+                    <template v-else>{{ title }}</template>
+                  </template>-->
+                </a-tree-select>
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -187,11 +203,12 @@
   import { ref, reactive, defineExpose, nextTick, defineProps, watch } from 'vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { saveOrUpdate, tenantGoodsNameNum } from './goods.api';
-  import { Form } from 'ant-design-vue';
+  import { Form, TreeSelectProps } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getAllGoodsUnitsList } from '@/views/units/GoodsUnits.api';
   import { useUserStore } from '@/store/modules/user';
+  import { queryGoodsCategoryList } from '@/views/base/goods/goods.list.api';
 
   const userStore = useUserStore();
   const billSetting = userStore.getBillSetting;
@@ -202,6 +219,7 @@
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  const treeData = ref<TreeSelectProps['treeData']>([]);
   // eslint-disable-next-line vue/no-dupe-keys
   const formData = reactive<Record<string, any>>({
     id: '',
@@ -263,6 +281,24 @@
     stock: [{ required: true, message: '请输入当前库存数量!' }],
   });
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: false });
+
+  // 加载类别信息
+  function onLoadData() {
+    treeData.value = [];
+    queryGoodsCategoryList()
+      // loadTreeData({ async: false, parentId: '' })
+      .then((res) => {
+        if (res.success) {
+          if (Array.isArray(res.result)) {
+            treeData.value = res.result;
+          }
+        } else {
+          createMessage.warning(res.message);
+        }
+      });
+      // .finally(() => (loading.value = false));
+  }
+  onLoadData();
 
   // 计算商品面积和体积
   function computeAreaVolume() {

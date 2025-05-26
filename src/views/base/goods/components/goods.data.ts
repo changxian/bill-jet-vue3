@@ -158,7 +158,7 @@ export function getGoodsColumns(billType){
     {
       title: '类别',
       align: 'center',
-      dataIndex: 'categoryId_dictText',
+      dataIndex: 'categoryName',
       width: 100,
       resizable: true,
     },

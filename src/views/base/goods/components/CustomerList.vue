@@ -119,10 +119,10 @@
       data.goodsId = row.id;
     }
     if (!data.goodsName) {
-      data.goodsName = row.name;
+      data.goodsName = row.goodsName;
     }
     if (!data.goodsType) {
-      data.goodsType = row.type;
+      data.goodsType = row.goodsType;
     }
     if (!data.price) {
       data.price = row.price;

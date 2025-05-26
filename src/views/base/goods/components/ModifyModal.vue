@@ -2,10 +2,18 @@
   <j-modal :title="title" :width="width" :maxHeight="400" :visible="visible" @ok="handleOk" :okButtonProps="{ class: { 'jee-hidden': disableSubmit } }" @cancel="handleCancel"
            cancelText="关闭">
     <div style="padding: 20px 30px">
-      <!-- 改状态 -->
+      <!-- 改类别 -->
       <div v-if="modifyType === 'category'">
-        <p style="margin: 40px 0 20px 10px">单号：{{ goodsName }}</p>
-        <p style="margin: 0 0 0 10px">类别：<j-dict-select-tag
+        <p style="margin: 40px 0 20px 10px">商品名称：{{ goodsName }}</p>
+        <p style="margin: 0 0 0 10px">商品类别：<a-tree-select
+            style="width: 300px"
+            v-model:value="category"
+            placeholder="请选择类别"
+            :tree-line="true"
+            :tree-data="treeData"
+            tree-node-filter-prop="title"
+          >
+<!--          <j-dict-select-tag
                   style="width:300px"
                   v-model:value="category"
                   :url="allList"
@@ -13,7 +21,9 @@
                   value-field="id"
                   placeholder="请选择类别"
                   allow-clear
-                /> </p>
+                />-->
+          </a-tree-select>
+        </p>
       </div>
 
       <!-- 更新成本价 -->
@@ -53,7 +63,7 @@
 
       <!-- 变动库存 antdesign vue 两个下拉框级联默认选第1个 ??????????????????????????? -->
       <div v-if="modifyType === 'updateStocks'">
-        <p style="margin: 40px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">商品名：</span> {{goodsName}}</p>
+        <p style="margin: 40px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">商品名：</span> {{ goodsName }}</p>
         <p style="margin: 18px 0 10px 10px"><span style="text-align: right; display: inline-block; width: 100px">变动方式：</span>
           <a-select
             style="width: 400px"
@@ -90,10 +100,12 @@
   import { ref, defineExpose } from 'vue';
   import JModal from '/@/components/Modal/src/JModal/JModal.vue';
   import { allList } from '../category.api';
+  import { queryGoodsCategoryList } from '@/views/base/goods/goods.list.api';
   import { editCategory, addStockRecord, updateBillCostByGoodsId, updateAllBillCost } from '../goods.list.api';
   import { stockOptions } from '../goods.list.data';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { TreeSelectProps } from 'ant-design-vue';
 
   const { createMessage } = useMessage();
 
@@ -102,7 +114,7 @@
   const visible = ref<boolean>(false);
   const disableSubmit = ref<boolean>(false);
   const emit = defineEmits(['refresh']);
-
+  const treeData = ref<TreeSelectProps['treeData']>([]);
   const category = ref('');
   const goodsName = ref('');
   const mode1 = ref('');
@@ -131,6 +143,21 @@
     }
     visible.value = true;
   }
+  // 加载类别信息
+  function onLoadData() {
+    treeData.value = [];
+    queryGoodsCategoryList()
+    .then((res) => {
+      if (res.success) {
+        if (Array.isArray(res.result)) {
+          treeData.value = res.result;
+        }
+      } else {
+        createMessage.warning(res.message);
+      }
+    });
+  }
+  onLoadData();
 
   function handleMode1Change(value) {
     stockOptions.mode2 = stockOptions.mode1Map[value] || [];
@@ -161,7 +188,7 @@
    */
   async function handleUpdateCheckedBillCost() {
     if (row.id) {
-      updateBillCostByGoodsId({ goodsId: row.id }).then(res => {
+      updateBillCostByGoodsId({ goodsId: row.id }).then((res) => {
         createMessage.success('更新成功！');
       });
     } else {

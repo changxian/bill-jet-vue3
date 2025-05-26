@@ -178,7 +178,7 @@
   import JSelectInputCustomer from '@/components/Form/src/jeecg/components/JSelectInputCustomer.vue';
   import { statusList } from '@/views/deliver/bill/DeliverBill.data';
   import type { Rule } from 'ant-design-vue/es/form';
-  import { defaultCom, queryNewNo, billDetail, getCustPrices } from '@/views/deliver/bill/DeliverBill.api';
+  import { defaultCom, queryNewNo, billDetail, getCustPrices, getGoodsPrices } from '@/views/deliver/bill/DeliverBill.api';
   import BillGoodsList from './BillGoodsList.vue';
   import { useUserStore } from '@/store/modules/user';
   import { fieldsList, getDynamicFieldsAndValue } from '@/views/setting/system/index.api';
@@ -345,13 +345,15 @@
       customerId.value = selectRows[0].id;
       console.log(' customerId val', customerId.value);
       // 获取客户往期欠款金额
-      if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
-        byDeliverId({ custId: selectRows[0].id }).then((res) => {
-          if (res) {
-            formData.hisDebtAmount = res.deliverDebtAmount;
-          }
-        });
-      }
+      // if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
+      byDeliverId({ custId: selectRows[0].id }).then((res) => {
+        if (res == null) {
+          formData.hisDebtAmount = 0;
+        } else {
+          formData.hisDebtAmount = res.deliverDebtAmount;
+        }
+      });
+      // }
       formData.custId = selectRows[0].id;
       formData.custName = selectRows[0].orgName;
       if (selectRows[0].discount) {
@@ -375,18 +377,37 @@
               goodsIds += item.goodsId + ',';
             }
           });
-          getCustPrices({ custId: selectRows[0].id, goodsIds: goodsIds }).then((res) => {
+          // 在设置商品客户价之前先还原商品的单价【因为变更客户的时候已经设置上一个客户的客户价无法还原】
+          getGoodsPrices({ goodsIds: goodsIds }).then((res) => {
             console.log(res);
             if (res) {
               res.forEach((item) => {
                 goods.forEach((g) => {
-                  if (item.goodsId == g.id) {
+                  if (item.id == g.id) {
                     g.price = item.price;
+                    g.amount = item.price * g.count;
                   }
                 });
               });
               goodsRef.value.setValue([...goods]);
+              changeGoods(goods);
             }
+            // 查询并设置商品客户价
+            getCustPrices({ custId: selectRows[0].id, goodsIds: goodsIds }).then((res) => {
+              console.log(res);
+              if (res) {
+                res.forEach((item) => {
+                  goods.forEach((g) => {
+                    if (item.goodsId == g.id) {
+                      g.price = item.price;
+                      g.amount = item.price * g.count;
+                    }
+                  });
+                });
+                goodsRef.value.setValue([...goods]);
+                changeGoods(goods);
+              }
+            });
           });
         }
       }
@@ -424,6 +445,9 @@
       if (item.costAmount != null) {
         cost = parseFloat(cost) + parseFloat(item.costAmount);
       }
+      // 计算商品利润【已改为后台计算】
+      // let profit = amount - cost;
+      // item.profit = profit;
     });
     goodsIds.value = ids;
     console.log('goodsIds ', goodsIds.value);
