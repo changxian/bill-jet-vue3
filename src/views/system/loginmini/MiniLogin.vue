@@ -481,7 +481,7 @@
       return;
     }
     //update-begin---author:wangshuai---date:2024-04-18---for:【QQYUN-9005】同一个IP，1分钟超过5次短信，则提示需要验证码---
-    const result = await getCaptcha({ mobile: phoneFormData.mobile, smsmode: SmsEnum.FORGET_PASSWORD }).catch((res) => {
+    const result = await getCaptcha({ mobile: phoneFormData.mobile, smsmode: SmsEnum.LOGIN }).catch((res) => {
       if (res && res.code === ExceptionEnum.PHONE_SMS_FAIL_CODE) {
         openCaptchaModal(true, {});
       }
