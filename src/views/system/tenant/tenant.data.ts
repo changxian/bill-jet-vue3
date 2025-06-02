@@ -413,7 +413,7 @@ export const packColumns: BasicColumn[] = [
       if (text === 1) {
         return '销售单';
       } else if (text === 2) {
-        return '销售单';
+        return '进销存';
       } else {
         return '运营商';
       }
