@@ -3,15 +3,15 @@
     <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
-    <div class="s-bottom">
-      <a class="s-link" :href="copyText">{{copyText}}</a>
-      <a-button @click="copy">复制</a-button>
+    <div class="s-bottom" v-if="copyText !== ''">
+      <a class="s-link" :href="copyText">{{ copyName }}</a>
+      <a-button @click="copy">复制分享</a-button>
     </div>
   </div>
 </template>
 
 <script>
-import { uploadPdfFile } from "/@/api/common/api";
+  import { uploadPdfFile } from '/@/api/common/api';
   import { getPrintInfo } from '/@/api/common/api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
@@ -22,8 +22,8 @@ import { uploadPdfFile } from "/@/api/common/api";
   import printData from '../print-data';
   import { roil } from '@/views/template/view/index.api';
 
-import useClipboard from 'vue-clipboard3';
-const {toClipboard}=useClipboard()
+  import useClipboard from 'vue-clipboard3';
+  const { toClipboard } = useClipboard();
   let hiprint, defaultElementTypeProvider;
 
   export default {
@@ -43,7 +43,8 @@ const {toClipboard}=useClipboard()
         printData: null,
         // 渲染的模板
         template: {},
-        copyText:""
+        copyText: '',
+        copyName: '',
       };
     },
     computed: {},
@@ -55,9 +56,9 @@ const {toClipboard}=useClipboard()
       this.enableZoom();
     },
     methods: {
-      async copy(){
-      await toClipboard(this.copyText)
-       createMessage.success("复制成功");
+      async copy() {
+        await toClipboard(this.copyText);
+        createMessage.success('复制成功');
       },
       printPdf(printData, params) {
         // 生成blob文件
@@ -67,8 +68,9 @@ const {toClipboard}=useClipboard()
           params.filename = params.id + '.pdf';
 
           // 生成pdf文件
-          uploadPdfFile(params,  (res)=> {
-            this.copyText=res.result
+          uploadPdfFile(params, (res) => {
+            this.copyText = res.result;
+            this.copyName = params.filename;
           });
         });
       },
@@ -223,15 +225,15 @@ const {toClipboard}=useClipboard()
       width: 100%;
     }
   }
-  .s-bottom{
-position: fixed;
-bottom:0;
-left:0;
-right:0;
-padding:15px;
-box-shadow: -1px -1px 5px 5px #eeeeee;
+  .s-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    box-shadow: -1px -1px 5px 5px #eeeeee;
   }
-  .s-link{
+  .s-link {
     word-wrap: break-word;
     margin-right: 15px;
   }
