@@ -172,7 +172,7 @@ table.hiprint-printElement-tableTarget {
   border-color: rgb(0, 0, 0);
   /*border-style: none;*/
   /*border: 1px solid rgb(0, 0, 0);*/
-  font-weight: normal;
+  font-weight: 300;
   direction: ltr;
   padding-bottom: 0pt;
   padding-left: 4pt;
@@ -250,7 +250,7 @@ table.hiprint-printElement-tableTarget {
 .hiprint-printPaper .hiprint-paperNumber-disabled {
   float: right !important;
   right: 0 !important;
-  color: gainsboro !important;
+  color: #000000 !important;
 }
 
 .hiprint-printElement-vline, .hiprint-printElement-hline {
