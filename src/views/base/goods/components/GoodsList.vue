@@ -355,7 +355,7 @@
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
-          placement: 'topLeft',
+          // placement: 'topLeft',
         },
         auth: 'bill:jxc_goods:delete', // 权限控制
       },

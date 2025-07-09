@@ -319,8 +319,10 @@
       if (item.volume) {
         item.volumeSubtotal = (item.volume * item.count).toFixed(decimalPlaces);
       }
-      // num = parseFloat(num) + parseFloat(item.costAmount);
-      amount += parseFloat(item.costAmount);
+      // debugger;
+      let num = parseFloat(item.costAmount);
+      item.costAmount = Number(num.toFixed(decimalPlaces));
+      amount += num;
     });
     // amount = (num).toFixed(decimalPlaces);
     // amount = num;

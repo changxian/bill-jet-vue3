@@ -35,7 +35,7 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * 列表接口
  * @param params
  */
-export const getAllGoodsUnitsList =  Api.allGoodsUnitsList;
+export const getAllGoodsUnitsList = Api.allGoodsUnitsList;
 
 /**
  * 删除单个
