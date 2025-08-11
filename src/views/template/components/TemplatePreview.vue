@@ -17,6 +17,8 @@
 </template>
 
 <script>
+  import { roil } from "@/views/template/view/index.api";
+
   export default {
     name: 'PrintPreview',
     props: {},
@@ -46,6 +48,8 @@
         this.spinning = true;
         this.width = hiprintTemplate.editingPanel ? hiprintTemplate.editingPanel.width : width;
         this.hiprintTemplate = hiprintTemplate;
+
+        roil(printData['table'], 1);
         this.printData = printData;
         setTimeout(() => {
           // eslint-disable-next-line no-undef

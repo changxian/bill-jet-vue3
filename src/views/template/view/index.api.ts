@@ -57,16 +57,20 @@ function find(obj, name) {
 /**
  * 加工打印的数据
  */
-export const roil = (o: any, n) => {
+export const roil = (o: any, n, s = 1) => {
   if (n > 2) {
     // 防止死循环
     return;
   }
   if (o instanceof Array) {
     for (let i = 0; i < o.length; i++) {
-      roil(o[i], n + 1);
+      roil(o[i], n + 1, i + 1);
     }
   } else {
+    if (!!o && !o['seq']) {
+      o['seq'] = s;
+    }
+
     for (const a in o) {
       const attrArray = find(fieldConfig, a);
       if (null != attrArray) {
