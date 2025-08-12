@@ -10833,6 +10833,8 @@ var hiprint = function (t) {
           height: this.printPanels[0].height * 1000,
           width: this.printPanels[0].width * 1000
         }
+        // 不打印背景色
+        i.printBackground = false;
 
         console.log('打印配置信息');
         console.info(i);

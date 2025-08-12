@@ -6,7 +6,7 @@
           <FastDate v-model:modelValue="fastDateParam" />
           <a-col :lg="6">
             <a-form-item label="单类型" name="type">
-              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择" >
+              <a-select v-model:value="queryParam.type" allow-clear placeholder="请选择">
                 <a-select-option value="">所有</a-select-option>
                 <a-select-option value="1">进货开单</a-select-option>
                 <a-select-option value="2">退货开单</a-select-option>
@@ -35,12 +35,12 @@
             </a-col>
             <a-col :lg="6">
               <a-form-item label="联系人" id="PurchaseBillForm-supplierContact" name="supplierContact">
-                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入联系人" allow-clear></a-input>
+                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入联系人" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :lg="6">
               <a-form-item label="手机" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
-                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入手机" allow-clear></a-input>
+                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入手机" allow-clear />
               </a-form-item>
             </a-col>
           </template>
@@ -63,20 +63,42 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined">打印</a-button>
-        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="onExportXls" preIcon="ant-design:export-outlined">导出</a-button>
+        <a-button
+          type="primary"
+          v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'"
+          @click="printPreview"
+          preIcon="ant-design:printer-outlined"
+          >打印预览</a-button
+        >
+        <a-button type="primary" v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'" @click="print" preIcon="ant-design:printer-outlined"
+          >打印</a-button
+        >
+        <a-button
+          type="primary"
+          v-auth="'purchase.checkBill:jxc_purchase_checkBill:exportXls'"
+          @click="onExportXls"
+          preIcon="ant-design:export-outlined"
+          >导出</a-button
+        >
       </template>
       <template #type_dictText="{ record }">
-        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span><span v-else  >{{ record.type_dictText }}</span>
+        <span v-if="2 == record.type" style="color: red">{{ record.type_dictText }}</span
+        ><span v-else>{{ record.type_dictText }}</span>
       </template>
     </BasicTable>
     <div style="position: relative; height: 20px; padding: 0 0 0 18px">
-      <p :class="{'p_san': hasPan }">总计
+      <p :class="{ p_san: hasPan }"
+        >总计
         <span class="total_span">数量：{{ countTotal }}</span>
-        <span class="total_span" v-if="showWeightCol">重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span>
-        <span class="total_span" v-if="showAreaCol">面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span>
-        <span class="total_span" v-if="showVolumeCol">体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span>
+        <span class="total_span" v-if="showWeightCol"
+          >重量<span v-if="weightColTitle">({{ weightColTitle }})</span>：{{ weightTotal }}</span
+        >
+        <span class="total_span" v-if="showAreaCol"
+          >面积<span v-if="areaColTitle">({{ areaColTitle }})</span>：{{ areaTotal }}</span
+        >
+        <span class="total_span" v-if="showVolumeCol"
+          >体积<span v-if="volumeColTitle">({{ volumeColTitle }})</span>：{{ volumeTotal }}</span
+        >
         <span class="total_span">金额：{{ amountTotal }}</span>
         <span class="total_span">已付款：{{ paymentAmountTotal }}</span>
         <span class="total_span">优惠：{{ discountAmountTotal }}</span>
@@ -135,7 +157,7 @@
   const showVolumeCol = ref(false);
   const volumeColTitle = ref('');
 
-  const queryParam = reactive<any>({ companyId: '', companyName: ''});
+  const queryParam = reactive<any>({ companyId: '', companyName: '' });
   const fastDateParam = reactive<any>({ timeType: 'thisMonth', startDate: '', endDate: '' });
   const formRef = ref();
   const preView = ref();
@@ -275,8 +297,9 @@
   }
 
   async function initPrint() {
+    let param = Object.assign(queryParam, fastDateParam, { category: 2 });
     // 获取模板信息 和 获取打印预览的数据信息
-    const loadData = await getTemplateData2({ category: 2 });
+    const loadData = await getTemplateData2(param);
     let template = loadData['template'];
     printData.value = loadData['printData'];
 
@@ -343,22 +366,21 @@
     reload();
   }
 
-    defineExpose({
-
-    })
-
+  defineExpose({});
 </script>
 
 <style lang="less" scoped>
-     .table-page-search-submitButtons {
-      display: block;
-      margin-bottom: 24px;
-      white-space: nowrap;
-    }
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
 
-     .total_span{margin: 0 5px}
-     .p_san{
-       position: absolute;
-       top: -50px;
-     }
+  .total_span {
+    margin: 0 5px;
+  }
+  .p_san {
+    position: absolute;
+    top: -50px;
+  }
 </style>

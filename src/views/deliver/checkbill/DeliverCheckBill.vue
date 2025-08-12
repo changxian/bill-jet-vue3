@@ -295,8 +295,9 @@
   }
 
   async function initPrint() {
+    let param = Object.assign(queryParam, fastDateParam, { category: 1 });
     // 获取模板信息 和 获取打印预览的数据信息
-    const loadData = await getTemplateData2({ category: 1 });
+    const loadData = await getTemplateData2(param);
     let template = loadData['template'];
     printData.value = loadData['printData'];
 
