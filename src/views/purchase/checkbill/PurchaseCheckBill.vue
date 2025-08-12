@@ -33,16 +33,6 @@
                 <j-select-supplier v-model:value="queryParam.supplierId" @change="changeSupplier" allow-clear />
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
-              <a-form-item label="联系人" id="PurchaseBillForm-supplierContact" name="supplierContact">
-                <a-input v-model:value="queryParam.supplierContact" placeholder="请输入联系人" allow-clear />
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item label="手机" id="PurchaseBillForm-supplierPhone" name="supplierPhone">
-                <a-input v-model:value="queryParam.supplierPhone" placeholder="请输入手机" allow-clear />
-              </a-form-item>
-            </a-col>
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">

@@ -33,16 +33,6 @@
                 <j-select-cust v-model:value="queryParam.custId" @change="changeCust" allow-clear />
               </a-form-item>
             </a-col>
-            <a-col :lg="6">
-              <a-form-item label="手机" id="DeliverBillForm-custPhone" name="custPhone">
-                <a-input v-model:value="queryParam.custPhone" placeholder="请输入客户手机" allow-clear />
-              </a-form-item>
-            </a-col>
-            <a-col :lg="6">
-              <a-form-item label="联系人" id="DeliverBillForm-custContact" name="custContact">
-                <a-input v-model:value="queryParam.custContact" placeholder="请输入客户联系人" allow-clear />
-              </a-form-item>
-            </a-col>
           </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
