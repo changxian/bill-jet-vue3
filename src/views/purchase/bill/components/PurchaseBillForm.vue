@@ -145,7 +145,7 @@
   import JSelectInputSupplier from '/@/components/Form/src/jeecg/components/JSelectInputSupplier.vue';
   import goods from './goods.vue';
   import { getValueType } from '/@/utils';
-  import { billDetail, saveOrUpdate } from '../PurchaseBill.api';
+  import { billDetail, saveOrUpdate, querySupByOrgName } from '../PurchaseBill.api';
   import { statusList } from '../PurchaseBill.data';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
@@ -280,23 +280,36 @@
   function changeSupplier(val, selectRows) {
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      supplierId.value = selectRows[0].id;
-      // debugger;
-      // 获取供应商往期欠款金额
-      if (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) {
-        byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
-          if (res) {
-            formData.hisDebtAmount = res.purchaseDebtAmount;
-          }
-        });
-      }
-      formData.supplierId = selectRows[0].id;
-      formData.supplierName = selectRows[0].orgName;
-      formData.supplierPhone = selectRows[0].phone;
-      formData.supplierContact = selectRows[0].contact;
-      formData.supplierAddress = selectRows[0].address;
-      if (selectRows[0].dynamicFields) {
-        formData.dynamicSupFields = selectRows[0].dynamicFields;
+      if (selectRows[0].id == '0') {
+        selectRows[0].id = null;
+        if (selectRows[0].orgName) {
+          // 判断机构名称是否存在
+          querySupByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
+            debugger;
+            if (res.id != null) {
+              selectRows[0].id = res.id;
+            }
+            supplierId.value = selectRows[0].id;
+            console.log(' supplierId val', supplierId.value);
+            formData.supplierId = selectRows[0].id;
+            formData.supplierName = selectRows[0].orgName;
+            debugger;
+            // 获取供应商往期欠款金额 (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) &&
+            if (selectRows[0].id != null) {
+              byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
+                if (res) {
+                  formData.hisDebtAmount = res.purchaseDebtAmount;
+                }
+              });
+            }
+            formData.supplierPhone = selectRows[0].phone;
+            formData.supplierContact = selectRows[0].contact;
+            formData.supplierAddress = selectRows[0].address;
+            if (selectRows[0].dynamicFields) {
+              formData.dynamicSupFields = selectRows[0].dynamicFields;
+            }
+          });
+        }
       }
     }
   }
@@ -467,8 +480,8 @@
           delete obj.editValueRefs;
         }
       });
-      // 如果公司数量小于套餐内规定数量，则可以继续添加
-      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum) {
+      // 如果商品数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum && gNum > 0) {
         createMessage.warning('商品数量已达上限！如果还想添加更多商品，请联系运营商扩容！');
         return;
       }

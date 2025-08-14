@@ -7,6 +7,7 @@ enum Api {
   list = '/deliver/customer/customer/list',
   save = '/deliver/customer/customer/add',
   edit = '/deliver/customer/customer/edit',
+  queryByOrgName = '/deliver/customer/customer/queryByOrgName',
   customerNum = '/deliver/customer/customer/customerNum',
   deleteOne = '/deliver/customer/customer/delete',
   deleteBatch = '/deliver/customer/customer/deleteBatch',
@@ -76,3 +77,9 @@ export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
+
+/**
+ * 根据客户名称查询客户api
+ * @param params
+ */
+export const validOrgName = (params) => defHttp.get({ url: Api.queryByOrgName, params });

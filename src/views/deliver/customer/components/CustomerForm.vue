@@ -98,7 +98,7 @@
   } from "vue";
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
-  import { saveOrUpdate } from '../Customer.api';
+  import { saveOrUpdate, validOrgName } from '../Customer.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import { useUserStore } from '@/store/modules/user';
@@ -165,7 +165,6 @@
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */
@@ -213,29 +212,26 @@
     if (model.id) {
       isUpdate.value = true;
     }
-    //循环数据
-    // for (let data in model) {
-    //   //如果该数据是数组并且是字符串类型
-    //   if (model[data] instanceof Array) {
-    //     let valueType = getValueType(formRef.value.getProps, data);
-    //     //如果是字符串类型的需要变成以逗号分割的字符串
-    //     if (valueType === 'string') {
-    //       model[data] = model[data].join(',');
-    //     }
-    //   }
-    // }
-    await saveOrUpdate(model, isUpdate.value)
-      .then((res) => {
-        if (res.success) {
-          createMessage.success(res.message);
-          emit('ok');
-        } else {
-          createMessage.warning(res.message);
-        }
-      })
-      .finally(() => {
-        confirmLoading.value = false;
-      });
+    // 判断机构名称是否存在
+    await validOrgName({ orgName: formData.orgName }).then((res) => {
+      if (res.id == null) {
+        saveOrUpdate(model, isUpdate.value)
+          .then((res) => {
+            if (res.success) {
+              createMessage.success(res.message);
+              emit('ok');
+            } else {
+              createMessage.warning(res.message);
+            }
+          })
+          .finally(() => {
+            confirmLoading.value = false;
+          });
+      } else {
+        createMessage.warning('客户已经存在，请不要重复添加！');
+      }
+      confirmLoading.value = false;
+    });
   }
 
 
