@@ -1,5 +1,4 @@
 // token key
-import {getAuthCache} from "@/utils/auth";
 
 export const TOKEN_KEY = 'TOKEN__';
 
@@ -21,8 +20,6 @@ export const SYSTEM_SETTING_DATA = 'SYSTEM_SETTING_DATA__';
 export const BILL_SETTING_DATA = 'BILL_SETTING_DATA__';
 export const DEFAULT_COMPANY_DATA = 'DEFAULT_COMPANY_DATA__';
 export const TENANT_PACK_DATA = 'TENANT_PACK_DATA__';
-
-
 
 // dict info key
 export const DB_DICT_DATA_KEY = 'UI_CACHE_DB_DICT_DATA';
@@ -62,7 +59,7 @@ export const JEECG_CHAT_KEY = 'JEECG-CHAT-KEY';
 // 【QQYUN-8925】系统主题颜色（供页面加载使用）
 export const APP__THEME__COLOR = '__APP__THEME__COLOR__';
 
-// 
+//
 export const ROLE_AUTH_CONFIG_KEY = 'ROLE__AUTH__CONFIG__KEY__';
 // 部门角色权限
 export const DEPART_ROLE_AUTH_CONFIG_KEY = 'DEPART__ROLE__AUTH__CONFIG__KEY__';

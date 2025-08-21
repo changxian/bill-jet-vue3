@@ -139,6 +139,7 @@ export interface ProjectConfig {
   closeMessageOnSwitch: boolean;
   // Whether to cancel the http request that has been sent but not responded when switching the interface.
   removeAllHttpPending: boolean;
+  aiIconShow: boolean;
 }
 
 export interface GlobConfig {
@@ -160,6 +161,8 @@ export interface GlobConfig {
   shortName: string;
   // 短标题
   shortTitle: string;
+  // 当前是否运行在 electron 平台
+  isElectronPlatform: boolean;
 }
 export interface GlobEnvConfig {
   // Site title
@@ -182,4 +185,9 @@ export interface GlobEnvConfig {
   VITE_GLOB_UPLOAD_URL?: string;
   // view url
   VITE_GLOB_ONLINE_VIEW_URL?: string;
+
+  //在线文档编辑版本。可选属性：wps, onlyoffice
+  VITE_GLOB_ONLINE_DOCUMENT_VERSION?: string;
+  // 当前运行在什么平台
+  VITE_GLOB_RUN_PLATFORM?: 'web' | 'electron';
 }

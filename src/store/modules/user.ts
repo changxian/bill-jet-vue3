@@ -105,18 +105,21 @@ export const useUserStore = defineStore({
       if (0 < this.cols.length) {
         return this.cols;
       }
+      // @ts-ignore
       return getAuthCache(COLS_DATA);
     },
     getDynamicCols(): Object {
       if (null != this.dynamicCols) {
         return this.dynamicCols;
       }
+      // @ts-ignore
       return getAuthCache(DYNAMIC_COLS_DATA);
     },
     getPrintSetting() {
       if (null != this.printSetting) {
         return this.printSetting;
       }
+      // @ts-ignore
       return getAuthCache(PRINT_SETTING_DATA);
     },
 
@@ -124,24 +127,28 @@ export const useUserStore = defineStore({
       if (null != this.systemSetting) {
         return this.systemSetting;
       }
+      // @ts-ignore
       return getAuthCache(SYSTEM_SETTING_DATA);
     },
     getBillSetting() {
       if (null != this.billSetting) {
         return this.billSetting;
       }
+      // @ts-ignore
       return getAuthCache(BILL_SETTING_DATA);
     },
     getDefaultCompany() {
       if (null != this.defaultCompany) {
         return this.defaultCompany;
       }
+      // @ts-ignore
       return getAuthCache(DEFAULT_COMPANY_DATA);
     },
     getTenantPack() {
       if (null != this.tenantPack) {
         return this.tenantPack;
       }
+      // @ts-ignore
       return getAuthCache(TENANT_PACK_DATA);
     },
 
@@ -248,7 +255,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       }
-    ): Promise<GetUserInfoModel | null> {
+    ): Promise<GetUserInfoModel | null>  {
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);

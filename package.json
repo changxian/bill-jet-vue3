@@ -6,7 +6,12 @@
     "email": "jeecgos@163.com",
     "url": "https://www.jeecg.com"
   },
+  "main": "dist/electron/main.js",
   "scripts": {
+    "electron:dev": "cross-env VITE_GLOB_RUN_PLATFORM=electron npm run dev",
+    "electron:build-all": "npm run electron:build-web && npm run electron:build-app",
+    "electron:build-web": "cross-env VITE_GLOB_RUN_PLATFORM=electron NODE_ENV=production NODE_OPTIONS=--max-old-space-size=8192 vite build --mode prod_electron && cross-env VITE_GLOB_RUN_PLATFORM=electron esno ./build/script/postBuild.ts",
+    "electron:build-app": "esno ./electron/script/buildBefore.ts && electron-builder && esno ./electron/script/buildAfter.ts",
     "pinstall": "pnpm install",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "dev": "vite",
@@ -169,7 +174,10 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-vue-setup-extend-plus": "^0.1.0",
     "vue-eslint-parser": "^9.4.3",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^1.8.27",
+    "electron": "35.1.4",
+    "electron-builder": "^26.0.12",
+    "vite-plugin-electron": "^0.29.0"
   },
   "repository": {
     "type": "git",

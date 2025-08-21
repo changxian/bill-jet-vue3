@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
+import { $electron } from '@/electron';
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import { basicRoutes } from './routes';
 
@@ -15,13 +16,14 @@ getRouteNames(basicRoutes);
 
 // app router
 export const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+  history: $electron.isElectron() ? createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH) : createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
   routes: basicRoutes as unknown as RouteRecordRaw[],
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
 // TODO 【QQYUN-4517】【表单设计器】记录分享路由守卫测试
+//@ts-ignore
 router.beforeEach(async (to, from, next) => {
   //console.group('【QQYUN-4517】beforeEach');
   //console.warn('from', from);

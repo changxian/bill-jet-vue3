@@ -17,7 +17,7 @@ declare global {
 
   // vue
   declare type PropType<T> = VuePropType<T>;
-  declare type VueNode = VNodeChild | JSX.Element;
+  declare type VueNode = VNodeChild | JSX.Element | JSX.IntrinsicElements;
 
   export type Writable<T> = {
     -readonly [P in keyof T]: T[P];
@@ -59,6 +59,8 @@ declare global {
     VITE_USE_CDN: boolean;
     VITE_BUILD_COMPRESS: 'gzip' | 'brotli' | 'none';
     VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean;
+    // 当前运行在什么平台
+    VITE_GLOB_RUN_PLATFORM?: 'web' | 'electron';
   }
 
   declare function parseInt(s: string | number, radix?: number): number;
