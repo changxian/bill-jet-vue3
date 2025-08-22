@@ -16,13 +16,14 @@ export const getDictItemsByCode = (code) => {
   }
   //update-begin-author:liusq---date:2023-10-13--for: 【issues/777】列表 分类字典不显示
   //兼容以前的旧写法
-  if (getAuthCache(DB_DICT_DATA_KEY) && getAuthCache(DB_DICT_DATA_KEY)[code]) {
+  if (getAuthCache(DB_DICT_DATA_KEY)) {
+    // @ts-ignore
     return getAuthCache(DB_DICT_DATA_KEY)[code];
   }
+  return null;
   //update-end-author:liusq---date:2023-10-13--for:【issues/777】列表 分类字典不显示
 
   // update-end--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
-
 };
 /**
  * 获取字典数组
@@ -32,7 +33,7 @@ export const getDictItemsByCode = (code) => {
 export const initDictOptions = (code) => {
   //1.优先从缓存中读取字典配置
   if (getDictItemsByCode(code)) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve(getDictItemsByCode(code));
     });
   }
@@ -45,7 +46,6 @@ export const initDictOptions = (code) => {
   //update-end-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
   return defHttp.get({ url: `/sys/dict/getDictItems/${code}` });
 };
-
 
 /**
  * 获取字典数组

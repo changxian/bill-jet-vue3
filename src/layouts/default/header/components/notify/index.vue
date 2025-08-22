@@ -131,7 +131,7 @@
         let userId = unref(userStore.getUserInfo).id + '_' + wsClientId;
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
         console.info('glob信息', glob);
-        let url = glob.domainUrl?.replace(glob.apiUrl, '/ws').replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
+        let url = glob.domainUrl?.replace(glob.apiUrl, '/ws').replace('https://', 'ws://').replace('http://', 'ws://') + '/websocket/' + userId;
         connectWebSocket(url);
         onWebSocket(onWebSocketMessage);
       }

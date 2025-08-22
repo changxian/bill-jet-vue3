@@ -1,5 +1,5 @@
 // tray = 系统托盘
-import path from 'path';
+const path = require('path');
 import { Tray, Menu, app, dialog, nativeImage, BrowserWindow, Notification, ipcMain } from 'electron';
 import { _PATHS } from '../paths';
 import { $env, isDev } from '../env';

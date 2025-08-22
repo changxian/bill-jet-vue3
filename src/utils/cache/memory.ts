@@ -1,4 +1,19 @@
-import { TOKEN_KEY, ROLES_KEY, USER_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID, LOGIN_INFO_KEY, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import {
+  TOKEN_KEY,
+  ROLES_KEY,
+  USER_INFO_KEY,
+  DB_DICT_DATA_KEY,
+  DYNAMIC_COLS_DATA,
+  PRINT_SETTING_DATA,
+  SYSTEM_SETTING_DATA,
+  BILL_SETTING_DATA,
+  DEFAULT_COMPANY_DATA,
+  TENANT_PACK_DATA,
+  COLS_DATA,
+  TENANT_ID,
+  LOGIN_INFO_KEY,
+  PROJ_CFG_KEY,
+} from '/@/enums/cacheEnum';
 import { omit } from 'lodash-es';
 
 export interface Cache<V = any> {
@@ -26,15 +41,6 @@ export class Memory<T = any, V = any> {
   setCache(cache) {
     this.cache = cache;
   }
-
-  // get<K extends keyof T>(key: K) {
-  //   const item = this.getItem(key);
-  //   const time = item?.time;
-  //   if (!isNullOrUnDef(time) && time < new Date().getTime()) {
-  //     this.remove(key);
-  //   }
-  //   return item?.value ?? undefined;
-  // }
 
   get<K extends keyof T>(key: K) {
     return this.cache[key];
@@ -103,7 +109,22 @@ export class Memory<T = any, V = any> {
     });
     //update-begin---author:liusq  Date:20220108  for：不删除登录用户的企业id，其他缓存信息都清除----
     this.cache = {
-      ...omit(this.cache, [TOKEN_KEY, USER_INFO_KEY, ROLES_KEY, DB_DICT_DATA_KEY, TENANT_ID, LOGIN_INFO_KEY, PROJ_CFG_KEY]),
+      ...omit(this.cache, [
+        TOKEN_KEY,
+        USER_INFO_KEY,
+        ROLES_KEY,
+        DB_DICT_DATA_KEY,
+        PRINT_SETTING_DATA,
+        SYSTEM_SETTING_DATA,
+        BILL_SETTING_DATA,
+        DEFAULT_COMPANY_DATA,
+        TENANT_PACK_DATA,
+        COLS_DATA,
+        DYNAMIC_COLS_DATA,
+        TENANT_ID,
+        LOGIN_INFO_KEY,
+        PROJ_CFG_KEY,
+      ]),
     };
     //update-end---author:liusq  Date:20220108  for：不删除登录用户的企业id，其他缓存信息都清除----
   }

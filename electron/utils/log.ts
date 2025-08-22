@@ -2,7 +2,6 @@
  * @Date: 2024-03-08 13:05:10
  * @LastEditors: admin@54xavier.cn
  * @LastEditTime: 2024-03-09 12:53:03
- * @FilePath: \electron-hiprint\tools\log.js
  */
 const { app } = require('electron');
 const { access, appendFile, constants, writeFile } = require('node:fs');
@@ -28,11 +27,11 @@ function checkLogFile() {
           if (err) {
             reject(err);
           } else {
-            resolve();
+            resolve(1);
           }
         });
       } else {
-        resolve();
+        resolve(1);
       }
     });
   });
@@ -43,7 +42,7 @@ function checkLogFile() {
  * @param {string} message - The log message to be written.
  * @returns {Promise} - A Promise object that resolves when writing is successful, or rejects when writing fails.
  */
-function log(message) {
+export function log(message) {
   const filePath = `${logs}/${dayjs().format('YYYY-MM-DD')}.log`;
   return new Promise((resolve, reject) => {
     checkLogFile()
@@ -53,7 +52,7 @@ function log(message) {
           if (err) {
             reject(err);
           } else {
-            resolve();
+            resolve(1);
           }
         });
       })
@@ -62,5 +61,3 @@ function log(message) {
       });
   });
 }
-
-module.exports = log;

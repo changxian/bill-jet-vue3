@@ -11,7 +11,6 @@ import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
 import { useMultipleTabSetting } from '/@/hooks/setting/useMultipleTabSetting';
-import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting';
 import { useI18n } from '/@/hooks/web/useI18n';
 
 import { layoutHandler } from './handler';
@@ -21,9 +20,7 @@ import {
   contentModeOptions,
   topMenuAlignOptions,
   getMenuTriggerOptions,
-  routerTransitionOptions,
   menuTypeList,
-  mixSidebarTriggerOptions,
   tabsThemeOptions,
 } from './enum';
 
@@ -34,22 +31,8 @@ const { t } = useI18n();
 export default defineComponent({
   name: 'SettingDrawer',
   setup(_, { attrs }) {
-    const {
-      getContentMode,
-      getShowFooter,
-      getShowBreadCrumb,
-      getShowBreadCrumbIcon,
-      getShowLogo,
-      getFullContent,
-      getColorWeak,
-      getGrayMode,
-      getLockTime,
-      getShowDarkModeToggle,
-      getThemeColor,
-      getAiIconShow,
-    } = useRootSetting();
-
-    const { getOpenPageLoading, getBasicTransition, getEnableTransition, getOpenNProgress } = useTransitionSetting();
+    const { getContentMode, getShowFooter, getShowBreadCrumb, getColorWeak, getGrayMode, getLockTime, getShowDarkModeToggle, getThemeColor } =
+      useRootSetting();
 
     const {
       getIsHorizontal,
@@ -57,24 +40,19 @@ export default defineComponent({
       getMenuType,
       getTrigger,
       getCollapsedShowTitle,
-      getMenuFixed,
       getCollapsed,
       getCanDrag,
       getTopMenuAlign,
-      getAccordion,
       getMenuWidth,
       getMenuBgColor,
       getIsTopMenu,
       getSplit,
       getIsMixSidebar,
-      getCloseMixSidebarOnChange,
-      getMixSideTrigger,
-      getMixSideFixed,
     } = useMenuSetting();
 
-    const { getShowHeader, getFixed: getHeaderFixed, getHeaderBgColor, getShowSearch } = useHeaderSetting();
+    const { getShowHeader, getHeaderBgColor } = useHeaderSetting();
 
-    const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold, getTabsTheme } = useMultipleTabSetting();
+    const { getShowMultipleTab, getTabsTheme } = useMultipleTabSetting();
 
     const getShowMenuRef = computed(() => {
       return unref(getShowMenu) && !unref(getIsHorizontal);
@@ -320,25 +298,6 @@ export default defineComponent({
       );
     }
 
-    function renderTransition() {
-      return (
-        <>
-          <SwitchItem title={t('layout.setting.progress')} event={HandlerEnum.OPEN_PROGRESS} def={unref(getOpenNProgress)} />
-          <SwitchItem title={t('layout.setting.switchLoading')} event={HandlerEnum.OPEN_PAGE_LOADING} def={unref(getOpenPageLoading)} />
-
-          <SwitchItem title={t('layout.setting.switchAnimation')} event={HandlerEnum.OPEN_ROUTE_TRANSITION} def={unref(getEnableTransition)} />
-
-          <SelectItem
-            title={t('layout.setting.animationType')}
-            event={HandlerEnum.ROUTER_TRANSITION}
-            def={unref(getBasicTransition)}
-            options={routerTransitionOptions}
-            disabled={!unref(getEnableTransition)}
-          />
-        </>
-      );
-    }
-
     return () => (
       <BasicDrawer {...attrs} title={t('layout.setting.drawerTitle')} width={330} class="setting-drawer">
         {unref(getShowDarkModeToggle) && <Divider>{() => t('layout.setting.darkMode')}</Divider>}
@@ -356,7 +315,7 @@ export default defineComponent({
         {/*<Divider>{() => t('layout.setting.interfaceDisplay')}</Divider>*/}
         {renderContent()}
         {/*<Divider>{() => t('layout.setting.animation')}</Divider>*/}
-        {/*{renderTransition()}*/}
+        {}
         <Divider />
         <SettingFooter />
       </BasicDrawer>

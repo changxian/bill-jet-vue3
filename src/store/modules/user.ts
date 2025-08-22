@@ -69,6 +69,7 @@ export const useUserStore = defineStore({
     cols: [],
     // 扩展列
     dynamicCols: null,
+    printSetting: null,
     systemSetting: null,
     billSetting: null,
     defaultCompany: null,
@@ -105,50 +106,48 @@ export const useUserStore = defineStore({
       if (0 < this.cols.length) {
         return this.cols;
       }
-      // @ts-ignore
       return getAuthCache(COLS_DATA);
     },
     getDynamicCols(): Object {
       if (null != this.dynamicCols) {
         return this.dynamicCols;
       }
-      // @ts-ignore
       return getAuthCache(DYNAMIC_COLS_DATA);
     },
     getPrintSetting() {
       if (null != this.printSetting) {
+        // @ts-ignore
         return this.printSetting;
       }
-      // @ts-ignore
       return getAuthCache(PRINT_SETTING_DATA);
     },
 
     getSystemSetting() {
       if (null != this.systemSetting) {
+        // @ts-ignore
         return this.systemSetting;
       }
-      // @ts-ignore
       return getAuthCache(SYSTEM_SETTING_DATA);
     },
     getBillSetting() {
       if (null != this.billSetting) {
+        // @ts-ignore
         return this.billSetting;
       }
-      // @ts-ignore
       return getAuthCache(BILL_SETTING_DATA);
     },
     getDefaultCompany() {
       if (null != this.defaultCompany) {
+        // @ts-ignore
         return this.defaultCompany;
       }
-      // @ts-ignore
       return getAuthCache(DEFAULT_COMPANY_DATA);
     },
     getTenantPack() {
       if (null != this.tenantPack) {
+        // @ts-ignore
         return this.tenantPack;
       }
-      // @ts-ignore
       return getAuthCache(TENANT_PACK_DATA);
     },
 
@@ -199,9 +198,9 @@ export const useUserStore = defineStore({
       this.dynamicCols = dynamicCols;
       setAuthCache(DYNAMIC_COLS_DATA, dynamicCols);
     },
-    setPrintSetting(pringSetting) {
-      this.printSetting = pringSetting;
-      setAuthCache(PRINT_SETTING_DATA, pringSetting);
+    setPrintSetting(printSetting) {
+      this.printSetting = printSetting;
+      setAuthCache(PRINT_SETTING_DATA, printSetting);
     },
     setSystemSetting(systemSetting) {
       this.systemSetting = systemSetting;
@@ -234,7 +233,7 @@ export const useUserStore = defineStore({
       this.tenantid = id;
       setAuthCache(TENANT_ID, id);
     },
-    setShareTenantId(id: NonNullable<typeof this.shareTenantId>) {
+    setShareTenantId(id: any) {
       this.shareTenantId = id;
     },
     setSessionTimeout(flag: boolean) {
@@ -255,7 +254,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       }
-    ): Promise<GetUserInfoModel | null>  {
+    ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
@@ -263,8 +262,9 @@ export const useUserStore = defineStore({
         // save token
         this.setToken(token);
         this.setTenant(userInfo.loginTenantId);
-        console.log(data.extraInfo);
-        if (data && data.extraInfo && data.extraInfo.showTenantPackDialog) {
+        console.log('login invoke data', data);
+        if (data && data['extraInfo'] && data['extraInfo'].showTenantPackDialog) {
+          // @ts-ignore
           return data;
         }
         return this.afterLoginAction(goHome, data);
@@ -375,6 +375,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
+      // @ts-ignore
       const { userInfo, sysAllDictItems, cols, dynamicCols, printSetting, systemSetting, billSetting, defaultCompany, tenantPack } =
         await getUserInfo();
 
@@ -405,7 +406,6 @@ export const useUserStore = defineStore({
       if (dynamicCols) {
         this.setDynamicCols(dynamicCols);
       }
-
       // 添加系统设置信息到缓存
       if (printSetting) {
         this.setPrintSetting(printSetting);
@@ -470,6 +470,7 @@ export const useUserStore = defineStore({
       if (isOAuth2AppEnv()) {
         const tenantId = getAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
         removeAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
+        // @ts-ignore
         goLogin && (await router.push({ name: 'Login', query: { tenantId: tenantId } }));
       } else {
         // update-begin-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题

@@ -49,6 +49,11 @@ export interface GetUserInfoModel {
   cols?: any;
   // 扩展列
   dynamicCols?: any;
+  printSetting?: any;
+  systemSetting?: any;
+  billSetting?: any;
+  defaultCompany?: any;
+  tenantPack?: any;
 }
 
 /**

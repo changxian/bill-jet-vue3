@@ -17,6 +17,13 @@ import {
   TENANT_ID,
   LOGIN_INFO_KEY,
   OAUTH2_THIRD_LOGIN_TENANT_ID,
+  COLS_DATA,
+  DYNAMIC_COLS_DATA,
+  PRINT_SETTING_DATA,
+  SYSTEM_SETTING_DATA,
+  BILL_SETTING_DATA,
+  DEFAULT_COMPANY_DATA,
+  TENANT_PACK_DATA,
 } from '/@/enums/cacheEnum';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
@@ -30,6 +37,13 @@ interface BasicStore {
   [PROJ_CFG_KEY]: ProjectConfig;
   [MULTIPLE_TABS_KEY]: RouteLocationNormalized[];
   [DB_DICT_DATA_KEY]: string;
+  [COLS_DATA]: string;
+  [DYNAMIC_COLS_DATA]: string;
+  [PRINT_SETTING_DATA]: string;
+  [SYSTEM_SETTING_DATA]: string;
+  [BILL_SETTING_DATA]: string;
+  [DEFAULT_COMPANY_DATA]: string;
+  [TENANT_PACK_DATA]: string;
   [TENANT_ID]: string;
   [LOGIN_INFO_KEY]: LoginInfo;
   [OAUTH2_THIRD_LOGIN_TENANT_ID]: string;
@@ -60,7 +74,7 @@ export class Persistent {
   static getLocal<T>(key: LocalKeys) {
     //update-begin---author:scott ---date:2022-10-27  for：token过期退出重新登录，online菜单还是提示token过期----------
     const globalCache = ls.get(APP_LOCAL_CACHE_KEY);
-    if(globalCache){
+    if (globalCache) {
       localMemory.setCache(globalCache);
     }
     //update-end---author:scott ---date::2022-10-27  for：token过期退出重新登录，online菜单还是提示token过期----------
