@@ -20,6 +20,7 @@ enum Api {
   queryNewNo = '/bill/no/newNo',
   getCustPrices = '/deliver/custprice/goodsCustPrice/getCustPrices',
   getGoodsPrices = '/bill/goods/getGoodsPrices',
+  queryCustByOrgName = '/deliver/customer/customer/queryByOrgName',
 }
 
 /**
@@ -131,3 +132,9 @@ export const getGoodsPrices = (params) => defHttp.get({ url: Api.getGoodsPrices,
  * @param params
  */
 export const getCustPrices = (params) => defHttp.get({ url: Api.getCustPrices, params });
+
+/**
+ * 根据客户名称查询客户api
+ * @param params
+ */
+export const queryCustByOrgName = (params) => defHttp.get({ url: Api.queryCustByOrgName, params });

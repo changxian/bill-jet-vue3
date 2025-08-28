@@ -16,6 +16,7 @@ enum Api {
   editInvoiceStatus = '/purchase/bill/purchaseBill/editInvoiceStatus',
   editInfo = '/purchase/bill/purchaseBill/editInfo',
   queryById = '/purchase/bill/purchaseBill/queryById',
+  querySupByOrgName = '/purchase/supplier/supplier/queryByOrgName',
 }
 
 export const editStatus = (params) => {
@@ -86,3 +87,9 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params) => {
   return defHttp.post({ url: Api.save, params }, { isTransformResponse: false });
 };
+
+/**
+ * 根据供应商名称查询客户api
+ * @param params
+ */
+export const querySupByOrgName = (params) => defHttp.get({ url: Api.querySupByOrgName, params });

@@ -107,160 +107,149 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted} from 'vue';
-import {defHttp} from '/@/utils/http/axios';
-import {useMessage} from '/@/hooks/web/useMessage';
-import {getValueType} from '/@/utils';
-import {saveOrUpdate} from '../Supplier.api';
-import {Form} from 'ant-design-vue';
-import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
-import {JInput} from "@/components/Form";
-import {listTenantUser} from '@/views/system/user/user.api';
-import JDictSelectTag from "../../../../components/Form/src/jeecg/components/JDictSelectTag.vue";
+  import { ref, reactive, defineExpose, nextTick, defineProps, computed } from 'vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { validOrgName, saveOrUpdate } from '../Supplier.api';
+  import { Form } from 'ant-design-vue';
+  import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
+  import { useUserStore } from '/@/store/modules/user';
 
-import {useUserStore} from '/@/store/modules/user';
+  const userStore = useUserStore();
 
-const userStore = useUserStore();
-
-const props = defineProps({
-  formDisabled: {type: Boolean, default: false},
-  formData: {type: Object, default: () => ({})},
-  formBpm: {type: Boolean, default: true}
-});
-const formRef = ref();
-const useForm = Form.useForm;
-const emit = defineEmits(['register', 'ok']);
-const dynamicFields = userStore.getDynamicCols['jxc_supplier'];
-const formData = reactive<Record<string, any>>({
-  id: '',
-  orgName: '',
-  cellPhone: '',
-  phone: '',
-  discount: undefined,
-  contact: '',
-  address: '',
-  faxes: '',
-  qq: '',
-  wechat: '',
-  email: '',
-  userId: '',
-  userName: '',
-  remark: '',
-  dynamicFields: dynamicFields,
-
-});
-const {createMessage} = useMessage();
-const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
-const wrapperCol = ref<any>({xs: {span: 24}, sm: {span: 16}});
-const confirmLoading = ref<boolean>(false);
-//表单验证
-const validatorRules = reactive({
-  orgName: [{required: true, message: '请输入供应商名称!'},],
-  // cellPhone: [{ required: false}, { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号码!'},],
-  // qq: [{ required: false}, { pattern: /^-?\d+\.?\d*$/, message: '请输入数字!'},],
-  // email: [{ required: false}, { pattern: /^([\w]+\.*)([\w]+)@[\w]+\.\w{3}(\.\w{2}|)$/, message: '请输入正确的电子邮件!'},],
-});
-const {
-  resetFields,
-  validate,
-  validateInfos
-} = useForm(formData, validatorRules, {immediate: false});
-
-// 表单禁用
-const disabled = computed(() => {
-  if (props.formBpm === true) {
-    if (props.formData.disabled === false) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-  return props.formDisabled;
-});
-
-
-/**
- * 新增
- */
-function add() {
-  edit({});
-}
-
-/**
- * 编辑
- */
-function edit(record) {
-  nextTick(() => {
-    resetFields();
-    const tmpData = {};
-    Object.keys(formData).forEach((key) => {
-      if (record.hasOwnProperty(key)) {
-        tmpData[key] = record[key]
-      }
-    })
-    //赋值
-    Object.assign(formData, tmpData);
+  const props = defineProps({
+    formDisabled: { type: Boolean, default: false },
+    formData: { type: Object, default: () => ({}) },
+    formBpm: { type: Boolean, default: true },
   });
-}
+  const formRef = ref();
+  const useForm = Form.useForm;
+  const emit = defineEmits(['register', 'ok']);
+  const dynamicFields = userStore.getDynamicCols['jxc_supplier'];
+  const formData = reactive<Record<string, any>>({
+    id: '',
+    orgName: '',
+    cellPhone: '',
+    phone: '',
+    discount: undefined,
+    contact: '',
+    address: '',
+    faxes: '',
+    qq: '',
+    wechat: '',
+    email: '',
+    userId: '',
+    userName: '',
+    remark: '',
+    dynamicFields: dynamicFields,
+  });
+  const { createMessage } = useMessage();
+  const labelCol = ref<any>({xs: {span: 24}, sm: {span: 5}});
+  const wrapperCol = ref<any>({xs: {span: 24}, sm: {span: 16}});
+  const confirmLoading = ref<boolean>(false);
+  //表单验证
+  const validatorRules = reactive({
+    orgName: [{required: true, message: '请输入供应商名称!'},],
+    // cellPhone: [{ required: false}, { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号码!'},],
+    // qq: [{ required: false}, { pattern: /^-?\d+\.?\d*$/, message: '请输入数字!'},],
+    // email: [{ required: false}, { pattern: /^([\w]+\.*)([\w]+)@[\w]+\.\w{3}(\.\w{2}|)$/, message: '请输入正确的电子邮件!'},],
+  });
+  const {
+    resetFields,
+    validate,
+    validateInfos
+  } = useForm(formData, validatorRules, {immediate: false});
 
-/**
- * 提交数据
- */
-async function submitForm() {
-  try {
-    // 触发表单验证
-    await validate();
-  } catch ({errorFields}) {
-    if (errorFields) {
-      const firstField = errorFields[0];
-      if (firstField) {
-        formRef.value.scrollToField(firstField.name, {behavior: 'smooth', block: 'center'});
+  // 表单禁用
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      if (props.formData.disabled === false) {
+        return false;
+      } else {
+        return true;
       }
     }
-    return Promise.reject(errorFields);
+    return props.formDisabled;
+  });
+
+
+  /**
+   * 新增
+   */
+  function add() {
+    edit({});
   }
-  confirmLoading.value = true;
-  const isUpdate = ref<boolean>(false);
-  //时间格式化
-  let model = formData;
-  if (model.id) {
-    isUpdate.value = true;
+
+  /**
+   * 编辑
+   */
+  function edit(record) {
+    nextTick(() => {
+      resetFields();
+      const tmpData = {};
+      Object.keys(formData).forEach((key) => {
+        if (record.hasOwnProperty(key)) {
+          tmpData[key] = record[key];
+        }
+      });
+      //赋值
+      Object.assign(formData, tmpData);
+    });
   }
-  // //循环数据
-  // for (let data in model) {
-  //   //如果该数据是数组并且是字符串类型
-  //   if (model[data] instanceof Array) {
-  //     let valueType = getValueType(formRef.value.getProps, data);
-  //     //如果是字符串类型的需要变成以逗号分割的字符串
-  //     if (valueType === 'string') {
-  //       model[data] = model[data].join(',');
-  //     }
-  //   }
-  // }
-  await saveOrUpdate(model, isUpdate.value)
-    .then((res) => {
-      if (res.success) {
-        createMessage.success(res.message);
-        emit('ok');
-      } else {
-        createMessage.warning(res.message);
+
+  /**
+   * 提交数据
+   */
+  async function submitForm() {
+    try {
+      // 触发表单验证
+      await validate();
+    } catch ({errorFields}) {
+      if (errorFields) {
+        const firstField = errorFields[0];
+        if (firstField) {
+          formRef.value.scrollToField(firstField.name, {behavior: 'smooth', block: 'center'});
+        }
       }
-    })
-    .finally(() => {
+      return Promise.reject(errorFields);
+    }
+    confirmLoading.value = true;
+    const isUpdate = ref<boolean>(false);
+    //时间格式化
+    let model = formData;
+    if (model.id) {
+      isUpdate.value = true;
+    }
+    // 判断机构名称是否存在
+    await validOrgName({ orgName: formData.orgName }).then((res) => {
+      if (res.id == null) {
+        saveOrUpdate(model, isUpdate.value)
+          .then((res) => {
+            if (res.success) {
+              createMessage.success(res.message);
+              emit('ok');
+            } else {
+              createMessage.warning(res.message);
+            }
+          })
+          .finally(() => {
+            confirmLoading.value = false;
+          });
+      } else {
+        createMessage.warning('供应商已经存在，请不要重复添加！');
+      }
       confirmLoading.value = false;
     });
-}
+  }
 
-
-defineExpose({
-  add,
-  edit,
-  submitForm,
-});
+  defineExpose({
+    add,
+    edit,
+    submitForm,
+  });
 </script>
 
 <style lang="less" scoped>
-.antd-modal-form {
-  padding: 14px;
-}
+  .antd-modal-form {
+    padding: 14px;
+  }
 </style>

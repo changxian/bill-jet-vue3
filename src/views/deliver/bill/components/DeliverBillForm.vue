@@ -171,7 +171,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
-  import { saveOrUpdate } from '../DeliverBill.api';
+  import { queryCustByOrgName, saveOrUpdate } from '../DeliverBill.api';
   import { Form } from 'ant-design-vue';
   import JFormContainer from '/@/components/Form/src/container/JFormContainer.vue';
   import JSelectCompany from '@/components/Form/src/jeecg/components/JSelectCompany.vue';
@@ -340,30 +340,43 @@
   // }
   // 选择开单客户
   function changeCustomer(val, selectRows) {
+    debugger;
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      customerId.value = selectRows[0].id;
-      console.log(' customerId val', customerId.value);
-      // 获取客户往期欠款金额
-      // if (formData.hisDebtAmount == 0 || formData.custId != selectRows[0].id) {
-      byDeliverId({ custId: selectRows[0].id }).then((res) => {
-        if (res == null) {
-          formData.hisDebtAmount = 0;
-        } else {
-          formData.hisDebtAmount = res.deliverDebtAmount;
+      if (selectRows[0].id == '0') {
+        selectRows[0].id = null;
+        if (selectRows[0].orgName) {
+          // 判断机构名称是否存在
+          queryCustByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
+            debugger;
+            if (res.id != null) {
+              selectRows[0].id = res.id;
+            }
+            customerId.value = selectRows[0].id;
+            console.log(' customerId val', customerId.value);
+            formData.custId = selectRows[0].id;
+            formData.custName = selectRows[0].orgName;
+            // 获取客户往期欠款金额
+            if (selectRows[0].id != null) {
+              byDeliverId({ custId: selectRows[0].id }).then((res) => {
+                if (res == null) {
+                  formData.hisDebtAmount = 0;
+                } else {
+                  formData.hisDebtAmount = res.deliverDebtAmount;
+                }
+              });
+            }
+            if (selectRows[0].discount) {
+              formData.discount = selectRows[0].discount;
+            }
+            formData.custPhone = selectRows[0].phone;
+            formData.custContact = selectRows[0].contact;
+            formData.custAddress = selectRows[0].address;
+            if (selectRows[0].dynamicFields) {
+              formData.dynamicCustFields = selectRows[0].dynamicFields;
+            }
+          });
         }
-      });
-      // }
-      formData.custId = selectRows[0].id;
-      formData.custName = selectRows[0].orgName;
-      if (selectRows[0].discount) {
-        formData.discount = selectRows[0].discount;
-      }
-      formData.custPhone = selectRows[0].phone;
-      formData.custContact = selectRows[0].contact;
-      formData.custAddress = selectRows[0].address;
-      if (selectRows[0].dynamicFields) {
-        formData.dynamicCustFields = selectRows[0].dynamicFields;
       }
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
       // 是否启用一客一价
@@ -599,6 +612,7 @@
     if (!validateForm()) {
       return;
     }
+    debugger;
     console.log('formData:', formData);
     // 判断新增客户判断
     if (formData.custId) {
@@ -628,8 +642,8 @@
           delete obj.editValueRefs;
         }
       });
-      // 如果公司数量小于套餐内规定数量，则可以继续添加
-      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum) {
+      // 如果商品数量小于套餐内规定数量，则可以继续添加
+      if (tenantPack.goodsNum != null && tenantPack.goodsNum < totalGoodsNum.value + gNum && gNum > 0) {
         createMessage.warning('商品数量已达上限！如果还想添加更多商品，请联系运营商扩容！');
         return;
       }

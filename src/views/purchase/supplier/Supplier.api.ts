@@ -7,6 +7,7 @@ enum Api {
   list = '/purchase/supplier/supplier/list',
   save = '/purchase/supplier/supplier/add',
   edit = '/purchase/supplier/supplier/edit',
+  queryByOrgName = '/purchase/supplier/supplier/queryByOrgName',
   deleteOne = '/purchase/supplier/supplier/delete',
   deleteBatch = '/purchase/supplier/supplier/deleteBatch',
   importExcel = '/purchase/supplier/supplier/importExcel',
@@ -70,3 +71,9 @@ export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 }
+
+/**
+ * 根据供应商名称查询客户api
+ * @param params
+ */
+export const validOrgName = (params) => defHttp.get({ url: Api.queryByOrgName, params });
