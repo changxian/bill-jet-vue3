@@ -71,6 +71,12 @@
           uploadPdfFile(params, (res) => {
             this.copyText = res.result;
             this.copyName = params.filename;
+
+            document.addEventListener('DOMContentLoaded', () => {
+              if (window.parent && window.parent.postMessage) {
+                window.parent.postMessage({ type: 'webViewLoaded' }, '*');
+              }
+            });
           });
         });
       },

@@ -160,8 +160,6 @@
     if (selectRows?.length > 0) {
       queryParam.custId = selectRows[0].id;
       queryParam.custName = selectRows[0].orgName;
-      queryParam.custPhone = selectRows[0].cellPhone;
-      queryParam.custContact = selectRows[0].contact;
     }
   }
 
