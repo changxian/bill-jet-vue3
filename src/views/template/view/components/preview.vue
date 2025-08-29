@@ -64,6 +64,10 @@
         // 生成blob文件
         this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
           console.log(res);
+          params.data = {
+            ...params['data'],
+            ...params,
+          };
           params.file = res;
           params.filename = params.id + '.pdf';
 
