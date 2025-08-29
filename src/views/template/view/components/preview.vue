@@ -94,6 +94,7 @@
       },
       // 获取模板数据和打印预览数据
       loadPrintInfo(params) {
+        let _this = this;
         this.printData = printData;
         getPrintInfo(params)
           .then((res) => {
@@ -105,7 +106,9 @@
             this.init(this.template);
             roil(this.printData['table'], 1);
 
-            this.printPdf(this.printData, params);
+            setTimeout(() => {
+              _this.printPdf(this.printData, params);
+            }, 1);
             this.show(this.printData, this.template);
           })
           .catch((e) => {
@@ -161,7 +164,7 @@
         setTimeout(() => {
           const html = this.hTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
-        }, 10);
+        }, 2);
       },
       enableZoom() {
         const viewport = document.querySelector('meta[name="viewport"]');
