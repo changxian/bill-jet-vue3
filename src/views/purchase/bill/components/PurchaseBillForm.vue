@@ -282,34 +282,34 @@
     if (selectRows?.length > 0) {
       if (selectRows[0].id == '0') {
         selectRows[0].id = null;
-        if (selectRows[0].orgName) {
-          // 判断机构名称是否存在
-          querySupByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
-            debugger;
-            if (res.id != null) {
-              selectRows[0].id = res.id;
-            }
-            supplierId.value = selectRows[0].id;
-            console.log(' supplierId val', supplierId.value);
-            formData.supplierId = selectRows[0].id;
-            formData.supplierName = selectRows[0].orgName;
-            debugger;
-            // 获取供应商往期欠款金额 (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) &&
-            if (selectRows[0].id != null) {
-              byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
-                if (res) {
-                  formData.hisDebtAmount = res.purchaseDebtAmount;
-                }
-              });
-            }
-            formData.supplierPhone = selectRows[0].phone;
-            formData.supplierContact = selectRows[0].contact;
-            formData.supplierAddress = selectRows[0].address;
-            if (selectRows[0].dynamicFields) {
-              formData.dynamicSupFields = selectRows[0].dynamicFields;
-            }
-          });
-        }
+      }
+      if (selectRows[0].orgName) {
+        // 判断机构名称是否存在
+        querySupByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
+          debugger;
+          if (res.id != null) {
+            selectRows[0].id = res.id;
+          }
+          supplierId.value = selectRows[0].id;
+          console.log(' supplierId val', supplierId.value);
+          formData.supplierId = selectRows[0].id;
+          formData.supplierName = selectRows[0].orgName;
+          debugger;
+          // 获取供应商往期欠款金额 (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) &&
+          if (selectRows[0].id != null) {
+            byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
+              if (res) {
+                formData.hisDebtAmount = res.purchaseDebtAmount;
+              }
+            });
+          }
+          formData.supplierPhone = selectRows[0].phone;
+          formData.supplierContact = selectRows[0].contact;
+          formData.supplierAddress = selectRows[0].address;
+          if (selectRows[0].dynamicFields) {
+            formData.dynamicSupFields = selectRows[0].dynamicFields;
+          }
+        });
       }
     }
   }
