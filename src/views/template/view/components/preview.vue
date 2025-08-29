@@ -3,10 +3,10 @@
     <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
-    <div class="s-bottom" v-if="copyText !== ''">
-      <a class="s-link" :href="copyText">{{ copyName }}</a>
-      <a-button @click="copy">复制分享</a-button>
-    </div>
+    <!--<div class="s-bottom" v-if="copyText !== ''">-->
+    <!--  <a class="s-link" :href="copyText">{{ copyName }}</a>-->
+    <!--  <a-button @click="copy">复制分享</a-button>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -64,6 +64,10 @@
         // 生成blob文件
         this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
           console.log(res);
+          params.data = {
+            ...params['data'],
+            ...params,
+          };
           params.file = res;
           params.filename = params.id + '.pdf';
 
@@ -71,6 +75,23 @@
           uploadPdfFile(params, (res) => {
             this.copyText = res.result;
             this.copyName = params.filename;
+
+            console.info(window.parent);
+            // 检查是否在 web-view 环境中
+            if (window.parent && window.parent.postMessage) {
+              // 发送消息给小程序
+              window.parent.postMessage(
+                {
+                  data: {
+                    type: 'postMessage', // 可选：标识消息类型
+                    result: res.result, // 实际数据
+                  },
+                },
+                '*'
+              ); // 第二个参数是目标域名，'*' 表示不限制
+            } else {
+              console.warn('当前不在 web-view 环境中');
+            }
           });
         });
       },
