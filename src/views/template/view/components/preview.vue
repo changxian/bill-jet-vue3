@@ -85,7 +85,7 @@
 
             try {
               console.info(wx);
-              wx.miniProgram.postMessage({ data: { pdfUrl: res.result } });
+              wx.miniProgram.postMessage({ data: { type: 'pdf', pdfUrl: res.result } });
             } catch (e) {
               console.info(JSON.stringify(e));
             }
@@ -119,6 +119,7 @@
         const category = urlParams.get('category');
         const id = urlParams.get('id');
         const tenantId = urlParams.get('txId');
+        const userId = urlParams.get('userId');
 
         userStore.setTenant(tenantId);
         console.log(templateId, '模板id'); // 输出: 123
@@ -129,7 +130,7 @@
           return createMessage.warning('模板id不能为空！');
         }
 
-        this.loadPrintInfo({ templateId: templateId, category: category, id: id });
+        this.loadPrintInfo({ templateId: templateId, category: category, id: id, userId: userId });
       },
       init(_tempData) {
         hiprint = vuePluginHiprint.hiprint;

@@ -10,6 +10,16 @@
 </template>
 
 <script>
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
+
+  (function () {
+    const script = document.createElement('script');
+    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.3.2.js';
+    script.async = true;
+    document.head.appendChild(script);
+  })();
+
   export default {
     name: 'PostMessageTest',
     components: {},
@@ -39,32 +49,36 @@
     },
     methods: {
       async copy() {
-        console.info(window.__wxjs_environment);
         try {
-          window.postMessage({ data: { action: 'fromH5', value: 'window.postMessage! copy try1.', env: window.__wxjs_environment } }, '*');
+          createMessage.success('开始发 wx.miniProgram.postMessage');
+          wx.miniProgram.postMessage({ data: { foo: 'bar' } });
+          createMessage.success('已发 wx.miniProgram.postMessage');
         } catch (e) {
-          console.info(e);
+          createMessage.error(JSON.stringify(e));
         }
         try {
-          window.parent.postMessage({ data: { action: 'fromH5', value: 'window.parent.postMessage! copy try2.', env: window.__wxjs_environment } }, '*');
+          window.parent.postMessage(
+            { data: { action: 'fromH5', value: 'window.parent.postMessage! copy try2.', env: window.__wxjs_environment } },
+            '*'
+          );
         } catch (e) {
-          console.info(e);
+          createMessage.error(JSON.stringify(e));
         }
       },
       autoInvoke() {
         try {
           window.postMessage({ data: { action: 'fromH5', value: 'window.postMessage! autoInvoke1. ', env: window.__wxjs_environment } }, '*');
         } catch (e) {
-          console.info(e);
+          createMessage.error(JSON.stringify(e));
         }
         try {
           if (window.__wxjs_environment === 'miniprogram') {
             window.parent.postMessage({ data: { action: 'fromH5', value: 'window.parent.postMessage! autoInvoke2. ', env: window.__wxjs_environment } }, '*');
           } else {
-            alert('不在小程序环境中');
+            createMessage.warn('不在小程序环境中');
           }
         } catch (e) {
-          console.info(e);
+          createMessage.error(JSON.stringify(e));
         }
       },
     },
