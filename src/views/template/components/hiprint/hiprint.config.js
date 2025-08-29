@@ -1035,6 +1035,10 @@
               hidden: false,
             },
             {
+              name: 'groupSequenceContinue',
+              hidden: false,
+            },
+            {
               name: 'groupFieldsFormatter',
               hidden: false,
             },
@@ -1180,6 +1184,14 @@
         },
         {
           name: 'rowsColumnsMerge',
+          hidden: false,
+        },
+        {
+          name: 'rowsColumnsMergeClean',
+          hidden: false,
+        },
+        {
+          name: 'groupSequenceContinue',
           hidden: false,
         },
         {
