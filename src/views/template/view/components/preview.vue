@@ -26,6 +26,13 @@
   const { toClipboard } = useClipboard();
   let hiprint, defaultElementTypeProvider;
 
+  (function () {
+    const script = document.createElement('script');
+    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.3.2.js';
+    script.async = true;
+    document.head.appendChild(script);
+  })();
+
   export default {
     name: 'PrintView',
     components: {},
@@ -76,21 +83,11 @@
             this.copyText = res.result;
             this.copyName = params.filename;
 
-            console.info(window.parent);
-            // 检查是否在 web-view 环境中
-            if (window.parent && window.parent.postMessage) {
-              // 发送消息给小程序
-              window.parent.postMessage(
-                {
-                  data: {
-                    type: 'postMessage', // 可选：标识消息类型
-                    result: res.result, // 实际数据
-                  },
-                },
-                '*'
-              ); // 第二个参数是目标域名，'*' 表示不限制
-            } else {
-              console.warn('当前不在 web-view 环境中');
+            try {
+              console.info(wx);
+              wx.miniProgram.postMessage({ data: { pdfUrl: res.result } });
+            } catch (e) {
+              console.info(JSON.stringify(e));
             }
           });
         });

@@ -49,7 +49,7 @@ export const PreviewRoute: AppRouteRecordRaw = {
 };
 export const PostMessageTest: AppRouteRecordRaw = {
   path: '/template/view/components/post/message',
-  name: 'Preview',
+  name: 'PostMessageTest',
   component: () => import('/@/views/template/view/components/PostMessageTest.vue'),
   meta: {
     title: '测试',

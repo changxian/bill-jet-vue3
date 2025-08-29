@@ -127,8 +127,7 @@ export const uploadFile = (params, success) => {
  * 文件上传
  */
 export const uploadPdfFile = (params, success) => {
-  const url = uploadPdfUrl + '?templateId=' + params.templateId + '&category=' + params.category + '&id=' + params.id;
-  return defHttp.uploadFile({ url: url }, params, { success });
+  return defHttp.uploadFile({ url: uploadPdfUrl }, params, { success });
 };
 /**
  * 下载文件
