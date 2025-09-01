@@ -100,6 +100,7 @@ function initServeEvent(server) {
   /**
    * @description: 校验 token
    */
+  // @ts-ignore
   server.use((socket, next) => {
     next();
   });
@@ -230,7 +231,7 @@ function loadingView(windowOptions) {
     height: windowOptions.height,
   });
 
-  const loadingHtml = path.join('file://', app.getAppPath(), 'assets/loading.html');
+  const loadingHtml = path.join('file://', app.getAppPath(), 'src/assets/loading.html');
   loadingBrowserView.webContents.loadURL(loadingHtml);
 
   return loadingBrowserView;
@@ -260,19 +261,19 @@ export async function createMainWindow() {
   }));
 
   const windowOptions = {
-    width: 2500, // 窗口宽度
-    height: 1300, // 窗口高度
+    width: 1500, // 窗口宽度
+    height: 1000, // 窗口高度
     title: $env.VITE_GLOB_APP_TITLE!,
     useContentSize: true, // 窗口大小不包含边框
     center: true, // 居中
-    resizable: false, // false不可缩放, true: 可缩放
+    resizable: true, // false不可缩放, true: 可缩放
     show: true, // 显示
     webPreferences: {
       // 设置此项为false后，才可在渲染进程中使用 electron api
       contextIsolation: false,
       nodeIntegration: true,
     },
-    icon: path.join(__dirname, 'build/icons/256x256.png'), // 窗口左上角图标
+    icon: path.join(__dirname, 'src/assets/images/logo.png'), // 窗口左上角图标
   };
 
   global.MAIN_WINDOW = createBrowserWindow(windowOptions);

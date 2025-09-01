@@ -45,6 +45,7 @@ async function createWindow() {
   });
 
   // 允许渲染进程创建通知
+  // @ts-ignore
   ipcMain.on('notification', (event, data) => {
     const notification = new Notification(data);
     // 显示通知

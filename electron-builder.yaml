@@ -5,7 +5,7 @@ files:
   # 仅包含 dist 目录下所有文件
   - 'dist/**/*'
   # 特别排除 node_modules 目录
-  - '!node_modules'
+  # - '!node_modules'
 directories:
   # 输出目录
   output: 'dist-electron'
