@@ -345,38 +345,38 @@
     if (selectRows?.length > 0) {
       if (selectRows[0].id == '0') {
         selectRows[0].id = null;
-        if (selectRows[0].orgName) {
-          // 判断机构名称是否存在
-          queryCustByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
-            debugger;
-            if (res.id != null) {
-              selectRows[0].id = res.id;
-            }
-            customerId.value = selectRows[0].id;
-            console.log(' customerId val', customerId.value);
-            formData.custId = selectRows[0].id;
-            formData.custName = selectRows[0].orgName;
-            // 获取客户往期欠款金额
-            if (selectRows[0].id != null) {
-              byDeliverId({ custId: selectRows[0].id }).then((res) => {
-                if (res == null) {
-                  formData.hisDebtAmount = 0;
-                } else {
-                  formData.hisDebtAmount = res.deliverDebtAmount;
-                }
-              });
-            }
-            if (selectRows[0].discount) {
-              formData.discount = selectRows[0].discount;
-            }
-            formData.custPhone = selectRows[0].phone;
-            formData.custContact = selectRows[0].contact;
-            formData.custAddress = selectRows[0].address;
-            if (selectRows[0].dynamicFields) {
-              formData.dynamicCustFields = selectRows[0].dynamicFields;
-            }
-          });
-        }
+      }
+      if (selectRows[0].orgName) {
+        // 判断机构名称是否存在
+        queryCustByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
+          debugger;
+          if (res.id != null) {
+            selectRows[0].id = res.id;
+          }
+          customerId.value = selectRows[0].id;
+          console.log(' customerId val', customerId.value);
+          formData.custId = selectRows[0].id;
+          formData.custName = selectRows[0].orgName;
+          // 获取客户往期欠款金额
+          if (selectRows[0].id != null) {
+            byDeliverId({ custId: selectRows[0].id }).then((res) => {
+              if (res == null) {
+                formData.hisDebtAmount = 0;
+              } else {
+                formData.hisDebtAmount = res.deliverDebtAmount;
+              }
+            });
+          }
+          if (selectRows[0].discount) {
+            formData.discount = selectRows[0].discount;
+          }
+          formData.custPhone = selectRows[0].phone;
+          formData.custContact = selectRows[0].contact;
+          formData.custAddress = selectRows[0].address;
+          if (selectRows[0].dynamicFields) {
+            formData.dynamicCustFields = selectRows[0].dynamicFields;
+          }
+        });
       }
       // 如果已经选择了商品，则根据客户ID去查询商品是否有客户价，如果有则更新列表里的客户价
       // 是否启用一客一价

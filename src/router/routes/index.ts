@@ -47,6 +47,15 @@ export const PreviewRoute: AppRouteRecordRaw = {
     ignoreAuth: true,
   },
 };
+export const PostMessageTest: AppRouteRecordRaw = {
+  path: '/template/view/components/post/message',
+  name: 'PostMessageTest',
+  component: () => import('/@/views/template/view/components/PostMessageTest.vue'),
+  meta: {
+    title: '测试',
+    ignoreAuth: true,
+  },
+};
 
 //update-begin---author:wangshuai ---date:20220629  for：auth2登录页面路由------------
 export const Oauth2LoginRoute: AppRouteRecordRaw = {
@@ -77,6 +86,7 @@ export const TokenLoginRoute: AppRouteRecordRaw = {
 export const basicRoutes = [
   LoginRoute,
   PreviewRoute,
+  PostMessageTest,
   RootRoute,
   ...mainOutRoutes,
   REDIRECT_ROUTE,

@@ -163,8 +163,6 @@
     if (selectRows?.length > 0) {
       queryParam.supplierId = selectRows[0].id;
       queryParam.supplierName = selectRows[0].orgName;
-      queryParam.supplierPhone = selectRows[0].phone;
-      queryParam.supplierContact = selectRows[0].contact;
     }
   }
 

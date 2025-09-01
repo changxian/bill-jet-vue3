@@ -3,10 +3,10 @@
     <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
     </a-card>
-    <div class="s-bottom" v-if="copyText !== ''">
-      <a class="s-link" :href="copyText">{{ copyName }}</a>
-      <a-button @click="copy">复制分享</a-button>
-    </div>
+    <!--<div class="s-bottom" v-if="copyText !== ''">-->
+    <!--  <a class="s-link" :href="copyText">{{ copyName }}</a>-->
+    <!--  <a-button @click="copy">复制分享</a-button>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -25,6 +25,13 @@
   import useClipboard from 'vue-clipboard3';
   const { toClipboard } = useClipboard();
   let hiprint, defaultElementTypeProvider;
+
+  (function () {
+    const script = document.createElement('script');
+    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.3.2.js';
+    script.async = true;
+    document.head.appendChild(script);
+  })();
 
   export default {
     name: 'PrintView',
@@ -64,6 +71,10 @@
         // 生成blob文件
         this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
           console.log(res);
+          params.data = {
+            ...params['data'],
+            ...params,
+          };
           params.file = res;
           params.filename = params.id + '.pdf';
 
@@ -71,11 +82,19 @@
           uploadPdfFile(params, (res) => {
             this.copyText = res.result;
             this.copyName = params.filename;
+
+            try {
+              console.info(wx);
+              wx.miniProgram.postMessage({ data: { type: 'pdf', pdfUrl: res.result } });
+            } catch (e) {
+              console.info(JSON.stringify(e));
+            }
           });
         });
       },
       // 获取模板数据和打印预览数据
       loadPrintInfo(params) {
+        let _this = this;
         this.printData = printData;
         getPrintInfo(params)
           .then((res) => {
@@ -87,7 +106,9 @@
             this.init(this.template);
             roil(this.printData['table'], 1);
 
-            this.printPdf(this.printData, params);
+            setTimeout(() => {
+              _this.printPdf(this.printData, params);
+            }, 1);
             this.show(this.printData, this.template);
           })
           .catch((e) => {
@@ -101,6 +122,7 @@
         const category = urlParams.get('category');
         const id = urlParams.get('id');
         const tenantId = urlParams.get('txId');
+        const userId = urlParams.get('userId');
 
         userStore.setTenant(tenantId);
         console.log(templateId, '模板id'); // 输出: 123
@@ -111,7 +133,7 @@
           return createMessage.warning('模板id不能为空！');
         }
 
-        this.loadPrintInfo({ templateId: templateId, category: category, id: id });
+        this.loadPrintInfo({ templateId: templateId, category: category, id: id, userId: userId });
       },
       init(_tempData) {
         hiprint = vuePluginHiprint.hiprint;
@@ -142,7 +164,7 @@
         setTimeout(() => {
           const html = this.hTemplate.getHtml(printData);
           document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
-        }, 10);
+        }, 2);
       },
       enableZoom() {
         const viewport = document.querySelector('meta[name="viewport"]');
