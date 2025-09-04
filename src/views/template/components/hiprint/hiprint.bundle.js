@@ -1046,7 +1046,8 @@ var hiprint = function (t) {
           target: void 0,
           printLine: void 0
         })), r = t.paperHeader, i++ , a = t.getPaperFooter(i)));
-        var p = this.getData(e),
+        // 属性加_paperNo处理（getData传入当前页值t.index + 1
+        var p = this.getData(e, t.index + 1),
           s = this.createTarget(this.getTitle(), p);
         if ("none" == t.panelPageRule && (r + this.options.getHeight()) > a) this.updatePanelHeight(r + this.options.getHeight(), t);
         this.updateTargetSize(s), this.css(s, p), s.css("position", "absolute"), s.css("left", this.options.displayLeft()), s.css("top", r + "pt"), o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
@@ -8982,9 +8983,16 @@ var hiprint = function (t) {
       }, e.prototype.getTitle = function () {
         var t = this.options.title || this.printElementType.title || "";
         return t && (t = x.replaceEnterAndNewlineAndTab(t, "")), t;
-      }, e.prototype.getData = function (t) {
+      }, e.prototype.getData = function (t, paperNo) {
         var e = void 0;
         var f = this.getField();
+
+        // 属性加_paperNo处理（属性有_papgerNo的属性对应的值后加'-{paperNo}'）
+        var suffix = '';
+        if (paperNo && f && 0 < f.indexOf('_paperNo')) {
+          suffix = '-' + paperNo;
+          f = f.substring(0, f.indexOf("_paperNo"));
+        }
         if (e = t ? f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "", this.options.format) {
           if ("datetime" == this.options.dataType) return o.a.dateFormat(e, this.options.format);
 
@@ -8993,7 +9001,7 @@ var hiprint = function (t) {
             if (n.length > 0) return !0 === e || "true" === e ? n[0] : n[1];
           }
         }
-        return e;
+        return e + suffix;
       }, e.prototype.updateTargetText = function (t, e, n, i, rowIndex) {
         var r = this.getFormatter(),
           a = t.find(".hiprint-printElement-text-content"),
@@ -9073,7 +9081,7 @@ var hiprint = function (t) {
         var i = $('<div tabindex="1" class="hiprint-printElement hiprint-printElement-text" style="position: absolute;"><div class="hiprint-printElement-text-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
         return this.updateTargetText(i, t, e, n), i;
       }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
+        return this.getHtml2(t, e, n); // 1035
       }, e;
     }(f.a),
     I = function () {
@@ -9898,6 +9906,7 @@ var hiprint = function (t) {
       }, t.prototype.getConfig = function () {
         return p.a.instance;
       }, t.prototype.getHtml = function (t, e, n, i, o) {
+        // 打印预览入口
         var r = this;
         this.orderPrintElements();
         let config = r.getConfig();
@@ -9973,6 +9982,7 @@ var hiprint = function (t) {
           // 这里是处理奇偶页设置
           this.panelPaperRule && ("odd" == this.panelPaperRule && p.length % 2 == 0 && (l = s.createNewPage(p.length, l.referenceElement), p.push(l), a.append(l.getTarget())), "even" == this.panelPaperRule && p.length % 2 == 1 && (l = s.createNewPage(p.length, l.referenceElement), p.push(l), a.append(l.getTarget())));
           p.forEach(function (n) {
+            // 属性加_paperNo处理: r.fillPaperHeaderAndFooter填充表头和表尾
             n.updatePaperNumber(n.index + 1, p.length, e.paperNumberToggleInEven), r.fillPaperHeaderAndFooter(n, t, p.length), e && (null != e.leftOffset && n.setLeftOffset(e.leftOffset), null != e.topOffset && n.setTopOffset(e.topOffset));
           });
           a.prepend(this.getPrintStyle());
@@ -10093,6 +10103,7 @@ var hiprint = function (t) {
           return t.isFixed() || t.isHeaderOrFooter();
         }).forEach(function (i) {
           if (i.isFixed(), i.showInPage(t.index, n)) {
+            // 每个元素填充值后的 html -> this.getHtml2(t, e, n);9084 -> 1035
             var o = i.getHtml(t, e);
             o.length && t.append(o[0].target);
           }
