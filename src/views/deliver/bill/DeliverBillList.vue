@@ -107,7 +107,6 @@
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('invoiceStatus')" preIcon="ant-design:edit-outlined">改开票</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="handleModify('info')" preIcon="ant-design:edit-outlined">改信息</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined">打印预览</a-button>
-        <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined">还款明细</a-button>
         <a-button type="primary" v-auth="'deliver.bill:jxc_deliver_bill:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
 <!--        <j-upload-button
