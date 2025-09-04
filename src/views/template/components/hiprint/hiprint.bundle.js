@@ -1808,6 +1808,7 @@ var hiprint = function (t) {
         }
         return TableExcelHelper.syncTargetWidthToOption(t), [i, colgroup];
       }, TableExcelHelper.createTableFooter = function (t, e, n, i, o, r, pageIndex) {
+        // 函数新增 pageIndex 参数，处理自定义的表格内的显示的页码信息（需要配合表格角函数一块实现）
         // n=>options e=>表格所有数据 o=>所有打印数据 r=>表格每页数据
         var a = $("<tfoot></tfoot>"), p = this.getFooterFormatter(n, i);
         var tst = this.tableSummaryTitle;
@@ -1886,6 +1887,7 @@ var hiprint = function (t) {
           a.append(tableFooter);
         }
         if (p) {
+          // 函数新增 pageIndex 参数，处理自定义的表格内的显示的页码信息（需要配合表格角函数一块实现）
           // pageIndex: 当前页码(0开始) 如果表格脚最后页显示,则中间回调 undefined
           a.append(p(n, e, o, r, pageIndex));
         }
@@ -1898,6 +1900,7 @@ var hiprint = function (t) {
         var o = TableExcelHelper.reconsitutionTableColumnTree(t),
           r = $("<tbody></tbody>");
         var gff = h.getGroupFieldsFormatter(n, i);
+        // 处理表格每行的序号
         var groupRowIndex = 0;
         var groupFields = gff ? (n.groupFields = gff(i, n, e)) : i.groupFields ? i.groupFields : [];
         (e || (e = []), groupFields.length) ? _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__.a.groupBy(e, groupFields, function (t) {
@@ -5110,6 +5113,7 @@ var hiprint = function (t) {
       }
 
       return t.prototype.createTarget = function () {
+        // // 函数新增 pageIndex 参数，处理自定义的表格内的显示的页码信息（需要配合表格角函数一块实现）
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格脚函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(options,rows,data,pageData,pageIndex){ return \'<tr></tr>\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
       }, t.prototype.getValue = function () {
         var t = this.target.find("textarea").val();
