@@ -280,9 +280,9 @@
   function changeSupplier(val, selectRows) {
     console.log(' changeSupplier val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      if (selectRows[0].id == '0') {
-        selectRows[0].id = null;
-      }
+      // if (selectRows[0].id == '0') {
+      //   selectRows[0].id = null;
+      // }
       if (selectRows[0].orgName) {
         // 判断机构名称是否存在
         querySupByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
@@ -297,15 +297,15 @@
           debugger;
           // 获取供应商往期欠款金额 (formData.hisDebtAmount == 0 || formData.supplierId != selectRows[0].id) &&
           if (selectRows[0].id != null) {
+            formData.supplierPhone = selectRows[0].phone;
+            formData.supplierContact = selectRows[0].contact;
+            formData.supplierAddress = selectRows[0].address;
             byPurchaseId({ supplierId: selectRows[0].id }).then((res) => {
               if (res) {
                 formData.hisDebtAmount = res.purchaseDebtAmount;
               }
             });
           }
-          formData.supplierPhone = selectRows[0].phone;
-          formData.supplierContact = selectRows[0].contact;
-          formData.supplierAddress = selectRows[0].address;
           if (selectRows[0].dynamicFields) {
             formData.dynamicSupFields = selectRows[0].dynamicFields;
           }
@@ -409,6 +409,10 @@
     }
     if (!formData.companyId) {
       createMessage.warning('请选择公司');
+      return false;
+    }
+    if (!formData.billDate) {
+      createMessage.warning('请选择开单日期');
       return false;
     }
     const goods = goodsRef.value.getData().details;
