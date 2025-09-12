@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import { roil } from "@/views/template/view/index.api";
+  import { roil } from '@/views/template/view/index.api';
 
   export default {
     name: 'PrintPreview',

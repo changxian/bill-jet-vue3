@@ -2,15 +2,16 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为销售模板</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为销售退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport"
+      <a-button type="primary" style="margin-left: 15px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
+      <a-button type="primary" style="margin-left: 15px" preIcon="ant-design:printer-outlined" @click="printPdf('pdfobjectnewwindow')">导出PDF打印</a-button>
+      <a-button type="primary" style="margin-left: 15px" preIcon="ant-design:setting-filled" @click="setting(1)">设为销售模板</a-button>
+      <a-button type="primary" style="margin-left: 15px" preIcon="ant-design:setting-filled" @click="setting(2)">设为销售退货模板</a-button>
+      <a-button type="primary" style="margin-left: 15px; margin-right: 15px" preIcon="ant-design:export-outlined" @click="onExport"
         >导出模板</a-button
       >
       <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
+      <a-button type="primary" style="margin-left: 15px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
+      <a-button type="primary" style="margin-left: 15px; margin-top: 5px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
       <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone" @click="setPaper">设置</a-button>-->
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
@@ -142,6 +143,12 @@
           transform: 'scale(' + scaleValue + ')',
         };
         this.scaleValue = scaleValue;
+      },
+      printPdf(type) {
+        this.hiprintTemplate.toPdf(this.printData, '导出pdf', { isDownload: false, type: type }).then((res) => {
+          console.log('type:', type);
+          console.log(res);
+        });
       },
       print() {
         this.doOperationWhenClientConnected(() => {
