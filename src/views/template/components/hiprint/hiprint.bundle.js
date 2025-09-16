@@ -3356,9 +3356,10 @@ var hiprint = function (t) {
       }, t.prototype.getValue = function () {
         var t = this.target.find("input").val();
         if (t) return t.toString();
+        return '#000000';
       }, t.prototype.setValue = function (t) {
         this.target.find("input").minicolors({
-          defaultValue: t || "",
+          defaultValue: t || "#000000",
           theme: "bootstrap"
         }), this.target.find("input").val(t);
       }, t.prototype.destroy = function () {
