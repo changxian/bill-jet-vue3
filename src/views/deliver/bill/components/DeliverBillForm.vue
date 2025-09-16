@@ -343,9 +343,9 @@
     debugger;
     console.log(' changeCustomer val', val, 'selectRows:', selectRows);
     if (selectRows?.length > 0) {
-      if (selectRows[0].id == '0') {
-        selectRows[0].id = null;
-      }
+      // if (selectRows[0].id == '0') {
+      //   selectRows[0].id = null;
+      // }
       if (selectRows[0].orgName) {
         // 判断机构名称是否存在
         queryCustByOrgName({ orgName: selectRows[0].orgName }).then((res) => {
@@ -359,6 +359,9 @@
           formData.custName = selectRows[0].orgName;
           // 获取客户往期欠款金额
           if (selectRows[0].id != null) {
+            formData.custPhone = selectRows[0].phone;
+            formData.custContact = selectRows[0].contact;
+            formData.custAddress = selectRows[0].address;
             byDeliverId({ custId: selectRows[0].id }).then((res) => {
               if (res == null) {
                 formData.hisDebtAmount = 0;
@@ -370,9 +373,6 @@
           if (selectRows[0].discount) {
             formData.discount = selectRows[0].discount;
           }
-          formData.custPhone = selectRows[0].phone;
-          formData.custContact = selectRows[0].contact;
-          formData.custAddress = selectRows[0].address;
           if (selectRows[0].dynamicFields) {
             formData.dynamicCustFields = selectRows[0].dynamicFields;
           }

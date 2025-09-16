@@ -101,14 +101,14 @@
       // });
 
       const excludeCustomerIdList = ref<any>([]);
-      
+
       /**
        * 需要监听一下excludeUserIdList，否则modal获取不到
        */
       watch(()=>props.excludeCustomerIdList,(data)=>{
         excludeCustomerIdList.value = data;
       },{ immediate: true });
-      
+
       /**
        * 打开弹出框
        */
@@ -134,8 +134,8 @@
         }
       }
 
-      function inputChange(options, values, selectRows){
-        setValue(options, values, selectRows)
+      function inputChange(options, values, selectRows) {
+        setValue(options, values, selectRows);
       }
       /**
        * 设置下拉框的值
