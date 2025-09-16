@@ -2,7 +2,14 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
+      <a-button
+        type="primary"
+        :disabled="isButtonDisabled"
+        style="margin-left: 10px; margin-right: 10px"
+        preIcon="ant-design:printer-outlined"
+        @click="print"
+        >打印</a-button
+      >
       <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="printPdf()">导出PDF</a-button>-->
       <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="toImage()">导出图片</a-button>-->
       <a-dropdown>
@@ -65,6 +72,7 @@
     emits: ['setting'],
     data() {
       return {
+        isButtonDisabled: false,
         previewContentStyle: {},
         hiprintTemplate: null,
         printData: null,
@@ -235,6 +243,19 @@
         });
       },
       print() {
+        if (this.isButtonDisabled) {
+          return;
+        }
+        console.log('这是一条测试日志');
+
+        // 设置为已点击，打印按钮置灰
+        let self = this;
+        this.isButtonDisabled = true;
+        let timeout = setTimeout(() => {
+          // 10秒后 恢复打印按钮
+          self.isButtonDisabled = false;
+        }, 10000);
+
         this.doOperationWhenClientConnected(() => {
           const printerList = this.hiprintTemplate.getPrinterList();
           console.log(printerList);
@@ -252,19 +273,7 @@
             },
             title: 'print打印',
           });
-        });
-        //
-        // this.waitShowPrinter = true;
-        // this.hiprintTemplate.print(
-        //   this.printData,
-        //   {},
-        //   {
-        //     callback: () => {
-        //       console.log('callback');
-        //       this.waitShowPrinter = false;
-        //     },
-        //   }
-        // );
+        }, timeout);
       },
       handleMenuClick(e) {
         if ('1' === e.key) {
@@ -273,14 +282,17 @@
           this.toImage();
         }
       },
-      doOperationWhenClientConnected(operation) {
+      doOperationWhenClientConnected(operation, timeout) {
         if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
           operation?.();
           return;
         }
+        clearTimeout(timeout);
+        this.isButtonDisabled = false;
+
         createMessage.error({
           content: '请先安装连接打印客户端。（下载位置：信息分享->打印客户端，选择电脑对应的文件下载）',
-          duration: 20,
+          duration: 3,
         });
       },
       toPdf() {
