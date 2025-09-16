@@ -2,9 +2,27 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="printPdf()">导出PDF</a-button>
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="toImage()">导出图片</a-button>
+      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
+      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="printPdf()">导出PDF</a-button>-->
+      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="toImage()">导出图片</a-button>-->
+      <a-dropdown>
+        <template #overlay>
+          <a-menu @click="handleMenuClick">
+            <a-menu-item key="1">
+              <FilePdfOutlined />
+              PDF
+            </a-menu-item>
+            <a-menu-item key="2">
+              <PictureOutlined />
+              图片
+            </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button>
+          导出
+          <DownOutlined />
+        </a-button>
+      </a-dropdown>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为销售模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为销售退货模板</a-button>
       <!--<a-button type="primary" style="margin-left: 15px; margin-right: 15px" preIcon="ant-design:export-outlined" @click="onExport"-->
@@ -21,11 +39,12 @@
 </template>
 
 <script>
+  import { DownOutlined, FilePdfOutlined, PictureOutlined } from '@ant-design/icons-vue';
   import { printLimit } from '../index.api';
   import { selectiveSaveOrUpdatePrint, getBillExportUrl, getImportUrl } from '@/views/setting/system/index.api';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
-  // import JUploadButton from '@/components/Button/src/JUploadButton.vue';
+  import JUploadButton from '@/components/Button/src/JUploadButton.vue';
   const { createMessage } = useMessage();
   import { useUserStore } from '/@/store/modules/user';
   import html2canvas from 'html2canvas';
@@ -36,7 +55,7 @@
 
   export default {
     name: 'PrintView',
-    // components: { JUploadButton },
+    components: { JUploadButton, DownOutlined, FilePdfOutlined, PictureOutlined },
     props: {
       printSetting: {
         type: Object,
@@ -246,6 +265,13 @@
         //     },
         //   }
         // );
+      },
+      handleMenuClick(e) {
+        if ('1' === e.key) {
+          this.printPdf();
+        } else {
+          this.toImage();
+        }
       },
       doOperationWhenClientConnected(operation) {
         if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
