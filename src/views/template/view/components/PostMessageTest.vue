@@ -1,17 +1,30 @@
 <template>
   <div style="overflow: hidden; height: 100%">
-    <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll"> 测试页面 </a-card>
-    <div class="s-bottom">
-      <a class="s-link">主动发postMessage</a>
-      <a-button @click="copy">主动发window.parent.postMessage</a-button>
-      <a-button @click="copy">主动发window.postMessage</a-button>
-    </div>
+    <a-card style="width: 100%; margin-top: 5px; height: 100%; overflow-y: scroll">
+      <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
+    </a-card>
+    <!--<div class="s-bottom" v-if="copyText !== ''">-->
+    <!--  <a class="s-link" :href="copyText">{{ copyName }}</a>-->
+    <!--  <a-button @click="copy">复制分享</a-button>-->
+    <!--</div>-->
   </div>
 </template>
 
 <script>
+  import { uploadPdfFile } from '/@/api/common/api';
+  import { getPrintInfo } from '/@/api/common/api';
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
+
+  import * as vuePluginHiprint from '@/views/template/components';
+  import printData from '../print-data';
+  import { roil } from '@/views/template/view/index.api';
+
+  import useClipboard from 'vue-clipboard3';
+  const { toClipboard } = useClipboard();
+  let hiprint, defaultElementTypeProvider;
 
   (function () {
     const script = document.createElement('script');
@@ -21,7 +34,7 @@
   })();
 
   export default {
-    name: 'PostMessageTest',
+    name: 'PrintView',
     components: {},
     props: {
       printSetting: {
@@ -45,40 +58,123 @@
     watch: {},
     created() {},
     mounted() {
-      this.autoInvoke();
+      window.autoConnect = false;
+      this.templateGet();
+      this.enableZoom();
     },
     methods: {
       async copy() {
-        try {
-          createMessage.success('开始发 wx.miniProgram.postMessage');
-          wx.miniProgram.postMessage({ data: { foo: 'bar' } });
-          createMessage.success('已发 wx.miniProgram.postMessage');
-        } catch (e) {
-          createMessage.error(JSON.stringify(e));
-        }
-        try {
-          window.parent.postMessage(
-            { data: { action: 'fromH5', value: 'window.parent.postMessage! copy try2.', env: window.__wxjs_environment } },
-            '*'
-          );
-        } catch (e) {
-          createMessage.error(JSON.stringify(e));
-        }
+        await toClipboard(this.copyText);
+        createMessage.success('复制成功');
       },
-      autoInvoke() {
-        try {
-          window.postMessage({ data: { action: 'fromH5', value: 'window.postMessage! autoInvoke1. ', env: window.__wxjs_environment } }, '*');
-        } catch (e) {
-          createMessage.error(JSON.stringify(e));
+      printPdf(printData, params) {
+        // 生成blob文件
+        this.hTemplate.toPdf(printData, '测试导出pdf', { isDownload: false, type: '' }).then((res) => {
+          console.log(res);
+          params.data = {
+            ...params['data'],
+            ...params,
+          };
+          params.file = res;
+          params.filename = params.id + '.pdf';
+
+          // 生成pdf文件
+          uploadPdfFile(params, (res) => {
+            this.copyText = res.result;
+            this.copyName = params.filename;
+
+            try {
+              console.info(wx);
+              wx.miniProgram.postMessage({ data: { type: 'pdf', pdfUrl: res.result } });
+            } catch (e) {
+              console.info(JSON.stringify(e));
+            }
+          });
+        });
+      },
+      // 获取模板数据和打印预览数据
+      loadPrintInfo(params) {
+        let _this = this;
+        this.printData = printData;
+        getPrintInfo(params)
+          .then((res) => {
+            console.log('预览数据', res);
+
+            this.template = JSON.parse(res.template.data);
+            this.printData = res.printData || printData;
+
+            this.init(this.template);
+            roil(this.printData['table'], 1);
+
+            setTimeout(() => {
+              _this.printPdf(this.printData, params);
+            }, 1);
+            this.show(this.printData, this.template);
+          })
+          .catch((e) => {
+            createMessage.warning(e);
+          });
+      },
+      templateGet() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const templateId = urlParams.get('templateId');
+        const category = urlParams.get('category');
+        const id = urlParams.get('id');
+        const tenantId = urlParams.get('txId');
+        const userId = urlParams.get('userId');
+
+        userStore.setTenant(tenantId);
+        console.log(templateId, '模板id'); // 输出: 123
+        console.log(category, '类型（1：送货单，2：进货单'); // 输出: 123
+        console.log(id, '业务id'); // 输出: 123
+
+        if (!templateId) {
+          return createMessage.warning('模板id不能为空！');
         }
-        try {
-          if (window.__wxjs_environment === 'miniprogram') {
-            window.parent.postMessage({ data: { action: 'fromH5', value: 'window.parent.postMessage! autoInvoke2. ', env: window.__wxjs_environment } }, '*');
-          } else {
-            createMessage.warn('不在小程序环境中');
-          }
-        } catch (e) {
-          createMessage.error(JSON.stringify(e));
+
+        this.loadPrintInfo({ templateId: templateId, category: category, id: id, userId: userId });
+      },
+      init(_tempData) {
+        hiprint = vuePluginHiprint.hiprint;
+        defaultElementTypeProvider = vuePluginHiprint.defaultElementTypeProvider;
+
+        hiprint.init({
+          providers: [new defaultElementTypeProvider()],
+          lang: 'cn',
+        });
+        // 还原配置
+        hiprint.setConfig();
+        let panels = {
+          ..._tempData,
+        };
+
+        this.hTemplate = new hiprint.PrintTemplate({
+          template: panels,
+        });
+      },
+      show(printData, template, bool = true) {
+        this.template = {
+          ...template,
+        };
+        if (bool) {
+          this.printData = printData;
+        }
+
+        setTimeout(() => {
+          const html = this.hTemplate.getHtml(printData);
+          document.getElementById('preview_content_design').innerHTML = html[0].innerHTML;
+        }, 2);
+      },
+      enableZoom() {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes');
+        } else {
+          const meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=yes';
+          document.getElementsByTagName('head')[0].appendChild(meta);
         }
       },
     },

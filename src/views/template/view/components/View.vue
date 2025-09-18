@@ -2,16 +2,42 @@
   <div style="overflow: hidden; height: 750px">
     <!--查询区域-->
     <div class="jcx-card">
-      <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="print">打印</a-button>
+      <a-button
+        type="primary"
+        :disabled="isButtonDisabled"
+        style="margin-left: 10px; margin-right: 10px"
+        preIcon="ant-design:printer-outlined"
+        @click="print"
+        >打印</a-button
+      >
+      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="printPdf()">导出PDF</a-button>-->
+      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:printer-outlined" @click="toImage()">导出图片</a-button>-->
+      <a-dropdown>
+        <template #overlay>
+          <a-menu @click="handleMenuClick">
+            <a-menu-item key="1">
+              <FilePdfOutlined />
+              PDF
+            </a-menu-item>
+            <a-menu-item key="2">
+              <PictureOutlined />
+              图片
+            </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button>
+          导出
+          <DownOutlined />
+        </a-button>
+      </a-dropdown>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(1)">设为销售模板</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-filled" @click="setting(2)">设为销售退货模板</a-button>
-      <a-button type="primary" style="margin-left: 10px; margin-right: 10px" preIcon="ant-design:export-outlined" @click="onExport"
-        >导出模板</a-button
-      >
-      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>
+      <!--<a-button type="primary" style="margin-left: 15px; margin-right: 15px" preIcon="ant-design:export-outlined" @click="onExport"-->
+      <!--  >导出模板</a-button-->
+      <!--&gt;-->
+      <!--<j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="billInportXls">导入模板</j-upload-button>-->
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:minus-outlined" @click="changeScale(false)">缩小</a-button>
       <a-button type="primary" style="margin-left: 10px" preIcon="ant-design:plus-outlined" @click="changeScale(true)">放大</a-button>
-      <!--<a-button type="primary" style="margin-left: 10px" preIcon="ant-design:setting-twotone" @click="setPaper">设置</a-button>-->
     </div>
     <a-card style="width: 100%; margin-top: 5px; height: 730px; overflow-y: scroll">
       <div id="preview_content_design" :style="previewContentStyle" style="overflow: auto"></div>
@@ -20,6 +46,7 @@
 </template>
 
 <script>
+  import { DownOutlined, FilePdfOutlined, PictureOutlined } from '@ant-design/icons-vue';
   import { printLimit } from '../index.api';
   import { selectiveSaveOrUpdatePrint, getBillExportUrl, getImportUrl } from '@/views/setting/system/index.api';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -27,11 +54,15 @@
   import JUploadButton from '@/components/Button/src/JUploadButton.vue';
   const { createMessage } = useMessage();
   import { useUserStore } from '/@/store/modules/user';
+  import html2canvas from 'html2canvas';
+  import JSZip from 'jszip';
+  import FileSaver from 'file-saver';
+
   const userStore = useUserStore();
 
   export default {
     name: 'PrintView',
-    components: { JUploadButton },
+    components: { JUploadButton, DownOutlined, FilePdfOutlined, PictureOutlined },
     props: {
       printSetting: {
         type: Object,
@@ -41,6 +72,7 @@
     emits: ['setting'],
     data() {
       return {
+        isButtonDisabled: false,
         previewContentStyle: {},
         hiprintTemplate: null,
         printData: null,
@@ -143,7 +175,87 @@
         };
         this.scaleValue = scaleValue;
       },
+      printPdf(type = 'pdfobjectnewwindow') {
+        this.hiprintTemplate.toPdf(this.printData, '导出pdf', { isDownload: false, type: type }).then((res) => {
+          console.log('type:', type);
+          console.log(res);
+        });
+      },
+      filesToRar(arrImages, filename) {
+        let _this = this;
+        let zip = new JSZip();
+        let cache = {};
+        let promises = [];
+        _this.title = '正在加载压缩文件';
+        for (let item of arrImages) {
+          const promise = _this.dataURLtoBlob(item.fileUrl).then((data) => {
+            // 下载文件, 并存成ArrayBuffer对象(blob)
+            zip.file(item.renameFileName, data, { binary: true }); // 逐个添加文件
+            cache[item.renameFileName] = data;
+          });
+          promises.push(promise);
+        }
+        Promise.all(promises)
+          .then(() => {
+            zip.generateAsync({ type: 'blob' }).then((content) => {
+              _this.title = '正在压缩';
+              // 生成二进制流
+              console.dir(new Date());
+              FileSaver.saveAs(content, filename); // 利用file-saver保存文件 自定义文件名
+              _this.title = '压缩完成';
+            });
+          })
+          .catch((res) => {
+            _this.$message.error('文件压缩失败');
+          });
+      },
+      toImage() {
+        var _this = this;
+        var objs = document.querySelectorAll('.hiprint-printPaper');
+        //多个文件夹里面包含png文件
+        var srcs = [];
+        objs.forEach(function (item, n) {
+          //整个图片转换完并赋值给图片容器
+          html2canvas(item, {
+            useCORS: true, // 开启跨域配置
+            height: item.scrollHeight, //canvas高
+            width: item.scrollWidth, //canvas宽
+            scale: 4, //按比例增加分辨率 (2=双倍).
+            dpi: window.devicePixelRatio * 4, //设备像素比
+          }).then((canvas) => {
+            const base64 = canvas.toDataURL('image/png');
+            if (objs.length === 1) {
+              const link = document.createElement('a');
+              link.href = base64;
+              link.setAttribute('download', '导出图片');
+              link.click();
+            } else {
+              var img = {
+                renameFileName: '导出图片' + (n + 1) + '.jpg',
+                fileUrl: base64,
+              };
+              srcs.push(img);
+              if (srcs.length === objs.length) {
+                _this.filesToRar(srcs, _this.fileName);
+              }
+            }
+          });
+        });
+      },
       print() {
+        if (this.isButtonDisabled) {
+          return;
+        }
+        console.log('这是一条测试日志');
+
+        // 设置为已点击，打印按钮置灰
+        let self = this;
+        this.isButtonDisabled = true;
+        let timeout = setTimeout(() => {
+          // 10秒后 恢复打印按钮
+          self.isButtonDisabled = false;
+        }, 10000);
+
         this.doOperationWhenClientConnected(() => {
           const printerList = this.hiprintTemplate.getPrinterList();
           console.log(printerList);
@@ -161,28 +273,26 @@
             },
             title: 'print打印',
           });
-        });
-        //
-        // this.waitShowPrinter = true;
-        // this.hiprintTemplate.print(
-        //   this.printData,
-        //   {},
-        //   {
-        //     callback: () => {
-        //       console.log('callback');
-        //       this.waitShowPrinter = false;
-        //     },
-        //   }
-        // );
+        }, timeout);
       },
-      doOperationWhenClientConnected(operation) {
+      handleMenuClick(e) {
+        if ('1' === e.key) {
+          this.printPdf();
+        } else {
+          this.toImage();
+        }
+      },
+      doOperationWhenClientConnected(operation, timeout) {
         if (window['hiwebSocket'] && window['hiwebSocket'].opened) {
           operation?.();
           return;
         }
+        clearTimeout(timeout);
+        this.isButtonDisabled = false;
+
         createMessage.error({
           content: '请先安装连接打印客户端。（下载位置：信息分享->打印客户端，选择电脑对应的文件下载）',
-          duration: 20,
+          duration: 3,
         });
       },
       toPdf() {

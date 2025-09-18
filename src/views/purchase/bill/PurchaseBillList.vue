@@ -121,7 +121,6 @@
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="printPreview" preIcon="ant-design:printer-outlined">
           打印预览</a-button
         >
-        <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="print" preIcon="ant-design:printer-outlined"> 打印</a-button>
         <a-button type="primary" v-auth="'purchase.bill:jxc_purchase_bill:add'" @click="debtDetailHandle" preIcon="ant-design:ordered-list-outlined">
           还款明细</a-button
         >
