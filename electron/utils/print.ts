@@ -34,8 +34,8 @@ async function createPrintWindow() {
   global.PRINT_WINDOW = new BrowserWindow(windowOptions);
 
   // 加载打印渲染进程页面
-  const printHtml = path.join('file://', app.getAppPath(), '/assets/print.html');
-  await global.PRINT_WINDOW.webContents.loadURL(printHtml);
+  // const printHtml = path.join('file://', app.getAppPath(), '/assets/print.html');
+  // await global.PRINT_WINDOW.webContents.loadURL(printHtml);
 
   // 绑定窗口事件
   initPrintEvent();
