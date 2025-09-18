@@ -1943,6 +1943,7 @@ var hiprint = function (t) {
         });
         return r;
       }, TableExcelHelper.createRowTarget = function (t, e, n, i, rowIndex, tableData, printData) {
+        // debugger; 创建表格数据行
         var o = $("<tr></tr>");
         var columns = t.rowColumns.filter(function (t) {
           return t.checked;
@@ -1954,6 +1955,7 @@ var hiprint = function (t) {
           var rowsColumnsMerge = ''
           if (n.rowsColumnsMerge) {
             eval('rowsColumnsMerge=' + n.rowsColumnsMerge)
+            // 调行列合并
             var rowsColumnsArr = rowsColumnsMerge(e, t, i, rowIndex, tableData, printData) || [1, 1]
             var r = $(`<td style = 'display:${!(rowsColumnsArr[0] && rowsColumnsArr[1]) ? "none" : ""}' rowspan = '${rowsColumnsArr[0]}' colspan = '${rowsColumnsArr[1]}'></td>`);
           } else {
@@ -2073,13 +2075,22 @@ var hiprint = function (t) {
         }
 
         return o;
-      }, TableExcelHelper.createEmptyRowTarget = function (t, tableElement) {
+      }, TableExcelHelper.createEmptyRowTarget = function (t, o, tableElement, rowIndex) {
+        // debugger; 创建表格自动补全空行
         var e = TableExcelHelper.reconsitutionTableColumnTree(t),
             n = $("<tr></tr>");
         e.rowColumns.filter(function (t) {
           return t.checked;
         }).forEach(function (t, e) {
-          var i = $("<td></td>");
+          var rowsColumnsMerge = ''
+          if (o.rowsColumnsMerge) {
+            eval('rowsColumnsMerge=' + o.rowsColumnsMerge)
+            // 调行列合并
+            var rowsColumnsArr = rowsColumnsMerge(null, null, e, rowIndex) || [1, 1]
+            var i = $(`<td style = 'display:${!(rowsColumnsArr[0] && rowsColumnsArr[1]) ? "none" : ""}' rowspan = '${rowsColumnsArr[0]}' colspan = '${rowsColumnsArr[1]}'></td>`);
+          } else {
+            var i = $("<td></td>");
+          }
           t.field && i.attr("field", t.field), t.align && i.css("text-align", t.align), t.vAlign && i.css("vertical-align", t.vAlign), n.append(i);
         });
         if (tableElement && tableElement.options.tableBodyRowHeight) {
@@ -5719,7 +5730,7 @@ var hiprint = function (t) {
         let headerList = _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableHead(this.getColumns(), this.options.getWidth() / this.options.getGridColumns());
         return this.isNotDesign ? o.append(headerList) : o.append(headerList[0]), o.append(_table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableRow(this.getColumns(), t, e, this.options, this.printElementType)), "no" == this.options.tableFooterRepeat || _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, t, this.options, this.printElementType, e, t).insertBefore(o.find("tbody")), o;
       }, TablePrintElement.prototype.getEmptyRowTarget = function () {
-        return _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createEmptyRowTarget(this.getColumns(), this);
+        return _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createEmptyRowTarget(this.getColumns(), this.options, this);
       }, TablePrintElement.prototype.getHtml = function (t, e) {
         this.createTempContainer();
         this.isNotDesign = e != void 0;
