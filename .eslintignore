@@ -1,15 +1,43 @@
-
-*.sh
 node_modules
-*.md
-*.woff
-*.ttf
-.vscode
-.idea
+.DS_Store
+.github
 dist
-/public
-/docs
-.husky
+dist-electron
+.npmrc
+.cache
+
+tests/server/static
+tests/server/static/upload
+
 .local
-/bin
-Dockerfile
+# local env files
+.env.local
+.env.*.local
+.eslintcache
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.svn
+# .vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/os_del.cmd
+os_del.cmd
+/.vscode/
+/.history/
+/svn clear.bat
+/.settings/
+/.settings/*
+/.project
+*.baiduyun.uploading.cfg
+*.bcmap
+/**/*.bcmap
