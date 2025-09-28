@@ -25,6 +25,21 @@
     "upgrade:log": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "husky:install": "husky install"
   },
+  "build": {
+    "extraResources": [
+      {
+        "from": "data",
+        "to": "data"
+      },
+      {
+        "from": "app.jar",
+        "to": "app.jar"
+      }
+    ],
+    "asarUnpack": [
+      "dist/electron/main.js"
+    ]
+  },
   "dependencies": {
     "@ant-design/colors": "^7.1.0",
     "@ant-design/icons-vue": "^7.0.1",

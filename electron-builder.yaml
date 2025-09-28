@@ -1,10 +1,13 @@
 appId: 'com.jeecg.boot3'
 # 产品名称
-productName: 'jeecgboot'
+productName: 'jeecgboot'# 明确指定主入口文件路径（与 package.json 的 main 字段一致）
+main: 'dist/electron/main.js'
 files:
   # 仅包含 dist 目录下所有文件
   - 'dist/**/*'
-  - 'jdk1.8/**/*'
+  # 强制包含主进程文件（关键：确保 main.js 被打包）
+  - 'dist/electron/main.js'
+  - 'dist/electron/preload/**/*'  # 包含预加载脚本
   - 'data/**/*'
   - 'app.jar'
   # 特别排除 node_modules 目录
@@ -25,3 +28,5 @@ nsis:
   createDesktopShortcut: true
   # 安装程序的图标
   installerIcon: 'electron/icons/installer.ico'
+  # 可选：添加安装完成页的Java环境提示
+  include: 'electron/installer.nsh'

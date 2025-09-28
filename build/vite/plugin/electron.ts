@@ -9,6 +9,12 @@ export function configElectronPlugin(_viteEnv: ViteEnv, isBuild: boolean) {
         build: {
           sourcemap: !isBuild,
           outDir: 'dist/electron',
+          // 添加入口文件名配置
+          rollupOptions: {
+            output: {
+              entryFileNames: 'main.js',
+            },
+          },
         },
       },
       onstart: ({ startup }) => {

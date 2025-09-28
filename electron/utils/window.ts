@@ -10,6 +10,7 @@ import { createTray } from './tray';
 import { log } from './log';
 import { printSetup } from './print';
 const { v7: uuIdv7 } = require('uuid');
+import { checkJavaEnv, startBackendService, stopBackendService } from './backend';
 
 // socket.io 服务端
 global.SOCKET_SERVER = null;
@@ -297,6 +298,8 @@ export async function createMainWindow() {
   global.MAIN_WINDOW.on('close', (event) => {
     // 阻止窗口关闭
     event.preventDefault();
+    // 停止后端服务
+    stopBackendService();
     // 隐藏任务栏
     global.MAIN_WINDOW.setSkipTaskbar(true);
     // 最小化到托盘
@@ -307,6 +310,8 @@ export async function createMainWindow() {
   global.MAIN_WINDOW.on('closed', () => {
     global.MAIN_WINDOW = null;
     httpServer.close();
+    // 确保后端服务停止
+    stopBackendService();
   });
 
   // 主窗口 Dom 加载完毕
