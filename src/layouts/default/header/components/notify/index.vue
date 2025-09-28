@@ -180,9 +180,7 @@
             }
 
             hiprintTemplate.print2(printData, {
-              printer: {
-                name: printer || '',
-              },
+              printer: printer || '',
               title: '票据打印' + (data['id'] || ''),
             });
           });

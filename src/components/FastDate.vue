@@ -48,6 +48,8 @@
     { label: '最近三月', value: 'month3' },
     { label: '最近六月', value: 'month6' },
     { label: '最近一年', value: 'month12' },
+    { label: '今年', value: 'thisYear' },
+    { label: '去年', value: 'lastYear' },
   ];
   const options = ref(dateOptions);
 
@@ -96,6 +98,16 @@
         return [s, d];
         // const s = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
         // return [s, s];
+      },
+      thisYear: function () {
+        const s = dayjs().startOf('year').format('YYYY-MM-DD');
+        const d = dayjs().endOf('year').format('YYYY-MM-DD');
+        return [s, d];
+      },
+      lastYear: function () {
+        const s = dayjs().subtract(1, 'year').startOf('year').format('YYYY-MM-DD');
+        const d = dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD');
+        return [s, d];
       },
     };
     return obj[val] ? obj[val]() : ['', ''];

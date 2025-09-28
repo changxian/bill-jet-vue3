@@ -43,7 +43,7 @@ export default {
   deliverDate: '2024/10/07', // 出库仓库
 
   deliveryNo: 'B0933jjsd', // 销售车号
-  deliveryDate: '2024/10/07', // 销售日期
+  deliveryDate: '2024年10月07日', // 销售日期
   deliveryBy: '宋某某', // 送货人
   deliveryTel: '宋某某', // 送货人
   deliveryCompany: '宋某某******公司', // 送货人物流公司

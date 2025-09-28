@@ -37,7 +37,7 @@ export default {
   enName: 'abcdefg',
   custId: '1860649841614258178',
   allowLoginClient: null,
-  deliveryDate: '2025-01-15',
+  deliveryDate: '2024年10月07日',
   email: '1216202141@qq.com',
   table: [
     {

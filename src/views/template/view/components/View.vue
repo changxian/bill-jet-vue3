@@ -268,9 +268,7 @@
           }
 
           this.hiprintTemplate.print2(this.printData, {
-            printer: {
-              name: printer || '',
-            },
+            printer: printer || '',
             title: 'print打印',
           });
         }, timeout);

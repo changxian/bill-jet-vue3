@@ -1,5 +1,4 @@
 import { computed, nextTick, unref, watchEffect } from 'vue';
-import { router } from '/@/router';
 import { useRoute } from 'vue-router';
 import { createLocalStorage } from '/@/utils/cache';
 import { useTableContext } from './useTableContext';
@@ -20,7 +19,7 @@ export function useColumnsCache(opt, setColumns, handleColumnFixed) {
     const path = route.path;
     let key = path.replace(/[\/\\]/g, '_');
     // update-end--author:liaozhiyang---date:20240226---for：【QQYUN-8367】online报表配置列展示保存，影响到其他页面的table字段的显示隐藏（开发环境热更新会有此问题，生产环境无问题）
-    let cacheKey = table.getBindValues.value.tableSetting?.cacheKey;
+    const cacheKey = table.getBindValues.value.tableSetting?.cacheKey;
     if (cacheKey) {
       key += ':' + cacheKey;
     }
@@ -39,7 +38,7 @@ export function useColumnsCache(opt, setColumns, handleColumnFixed) {
       return;
     }
     isInit = true;
-    let columnCache = $ls.get(cacheKey.value);
+    const columnCache = $ls.get(cacheKey.value);
     if (columnCache && columnCache.checkedList) {
       const { checkedList, sortedList, sortableOrder, checkIndex } = columnCache;
       await nextTick();

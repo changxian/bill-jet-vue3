@@ -3,6 +3,7 @@
 export const TOKEN_KEY = 'TOKEN__';
 
 export const LOCALE_KEY = 'LOCALE__';
+export const CURRENT_PATH_KEY = 'CURRENT_PATH__';
 
 // user info key
 export const USER_INFO_KEY = 'USER__INFO__';
@@ -15,6 +16,7 @@ export const COLS_DATA = 'COLS_DATA__';
 
 // dynamic cols
 export const DYNAMIC_COLS_DATA = 'DYNAMIC_COLS_DATA__';
+export const COLS_SORT_DATA = 'COLS_SORT_DATA__';
 export const PRINT_SETTING_DATA = 'PRINT_SETTING_DATA__';
 export const SYSTEM_SETTING_DATA = 'SYSTEM_SETTING_DATA__';
 export const BILL_SETTING_DATA = 'BILL_SETTING_DATA__';

@@ -38,7 +38,7 @@
             </a-col>
             <a-col :span="span">
               <a-form-item label="开单日期" v-bind="validateInfos.billDate" id="PurchaseBillForm-billDate" name="billDate">
-                <a-date-picker placeholder="请选择开单日期" v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" allow-clear />
+                <a-date-picker placeholder="请选择开单日期" v-model:value="formData.billDate" showTime value-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" @change="changeBillNo" allow-clear />
               </a-form-item>
             </a-col>
           </a-row>
@@ -252,7 +252,7 @@
       formData.dynamicSupFields = res['5'].filter((item) => item.id != null);
       formData.dynamicFields = res['6'].filter((item) => item.id != null);
     });
-    queryNewNo({ category: 1 }).then((res) => {
+    queryNewNo({ category: 1, billDate: formData.billDate }).then((res) => {
       if (formData.billNo == '') {
         formData.billNo = res.newNo;
       }
@@ -268,6 +268,14 @@
     });
   }
   init();
+
+  // 日期选择以后更新单号信息【yyyyMMdd-序号：需要更新】
+  function changeBillNo(val) {
+    console.log(' changeBillDate val', val);
+    queryNewNo({ category: 1, billDate: val }).then((res) => {
+      formData.billNo = res.newNo;
+    });
+  }
   // 选择开单公司信息
   function changeCompany(val, selectRows) {
     console.log(' changeCompany val', val, 'selectRows:', selectRows);

@@ -22,6 +22,8 @@
           <a-button type="primary" preIcon="ant-design:plus-outlined" @click="addRow" v-if="!onlyChooseGoods" v-auth="'deliver.bill:jxc_deliver_bill:add'">插入行</a-button>
           <a-button type="primary" preIcon="ant-design:delete-outlined" @click="delRow" v-auth="'deliver.bill:jxc_deliver_bill:add'">删除</a-button>
           <a-button type="primary" preIcon="ant-design:delete-outlined" @click="handlePaste" v-auth="'deliver.bill:jxc_deliver_bill:add'">粘贴Excel数据</a-button>
+          <a-button type="primary" preIcon="ant-design:edit-outlined" @click="handlePriceZero" v-auth="'deliver.bill:jxc_deliver_bill:add'">单价置0</a-button>
+          <a-button type="primary" preIcon="ant-design:edit-outlined" @click="handleCountZero" v-auth="'deliver.bill:jxc_deliver_bill:add'">数量置0</a-button>
           <p style="font-size: 15px; margin-left: 10px; padding-top: 10px">
             <span style="">请注意：为了数据能正确粘贴到下面的表格里，请将Excel表格按照下表各列来准备，然后先复制Excel表格里的数据，再点击【粘贴Excel数据】按钮才能将数据正确粘贴进来。</span>
           </p>
@@ -156,6 +158,42 @@
       }
     }
     selectedGoods = [...rows];
+  }
+
+  // 将单据所有商品单价置为0
+  function handlePriceZero() {
+    console.log(selectedGoods);
+    if (selectedGoods.length > 0) {
+      selectedGoods.forEach((item) => {
+        item.price = 0;
+        item.amount = 0;
+      });
+    }
+    selectedGoods = [...selectedGoods];
+    if (dataSource.value.length) {
+      dataSource.value.forEach((item) => {
+        item.price = 0;
+        item.amount = 0;
+      });
+    }
+  }
+
+  // 将单据所有商品数量置为0
+  function handleCountZero() {
+    console.log(selectedGoods);
+    if (selectedGoods.length > 0) {
+      selectedGoods.forEach((item) => {
+        item.count = 0;
+        item.amount = 0;
+      });
+    }
+    selectedGoods = [...selectedGoods];
+    if (dataSource.value.length) {
+      dataSource.value.forEach((item) => {
+        item.count = 0;
+        item.amount = 0;
+      });
+    }
   }
 
   const { createMessage } = useMessage();

@@ -1,5 +1,5 @@
 <template>
-  <Tooltip placement="top" v-bind="getBindProps" >
+  <Tooltip placement="top" v-bind="getBindProps">
     <template #title>
       <span>{{ t('component.table.settingColumn') }}</span>
     </template>
@@ -108,6 +108,10 @@
   import Sortablejs from 'sortablejs';
   import type Sortable from 'sortablejs';
   import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+  import { defHttp } from '/@/utils/http/axios';
+  import { createLocalStorage } from '/@/utils/cache';
+  import { CURRENT_PATH_KEY } from '/@/enums/cacheEnum';
+  import { useUserStore } from '/@/store/modules/user';
 
   interface State {
     checkAll: boolean;
@@ -124,9 +128,6 @@
 
   export default defineComponent({
     name: 'ColumnSetting',
-    props: {
-      isMobile: Boolean,
-    },
     components: {
       SettingOutlined,
       Popover,
@@ -137,6 +138,9 @@
       ScrollContainer,
       Divider,
       Icon,
+    },
+    props: {
+      isMobile: Boolean,
     },
     emits: ['columns-change'],
 
@@ -184,6 +188,8 @@
         return obj;
       });
 
+      const userStore = useUserStore();
+      const $ls = createLocalStorage();
       let sortable: Sortable;
       const sortableOrder = ref<string[]>();
       const localeStore = useLocaleStoreWithOut();
@@ -205,6 +211,7 @@
       watchEffect(() => {
         setTimeout(() => {
           const columns = table.getColumns();
+          debugger;
           if (columns.length && !state.isInit) {
             init();
           }
@@ -225,8 +232,42 @@
       });
       // update-end--author:liaozhiyang---date:20240724---for：【issues/6908】多语言无刷新切换时，BasicColumn和FormSchema里面的值不能正常切换
 
+      function getCategory() {
+        const path = $ls.get(CURRENT_PATH_KEY);
+        const arr = ['deliverBillAdd', 'purchaseBillAdd'];
+        for (let i = 0; i < arr.length; i++) {
+          if (path.indexOf(arr[i]) >= 0) {
+            return i + 1;
+          }
+        }
+        return -1;
+      }
+
       function getColumns() {
         const ret: Options[] = [];
+        let ctg = getCategory();
+
+        const colsSortMap = userStore.getColsSortMap || {};
+        const cols = colsSortMap[ctg];
+        if (cols) {
+          let columns = cols.columns;
+          let checkedList = cols.checkedList;
+          if (-1 != ctg && null != columns && 0 < columns.length) {
+            if (checkedList) {
+              state.checkedList = checkedList;
+            }
+
+            columns.forEach((item) => {
+              ret.push({
+                label: (item.title as string) || (item.customTitle as string),
+                value: (item.dataIndex || item.title) as string,
+                ...item,
+              });
+            });
+            return ret;
+          }
+        }
+
         table.getColumns({ ignoreIndex: true, ignoreAction: true }).forEach((item) => {
           ret.push({
             label: (item.title as string) || (item.customTitle as string),
@@ -272,6 +313,9 @@
         // update-begin--author:liaozhiyang---date:20240612---for：【TV360X-105】列展示设置问题[列展示如果存在未勾选的列，保存并刷新后，列展示复选框样式会错乱]
         state.checkAll = columns.length === checkList.length;
         // update-end--author:liaozhiyang---date:20240612---for：【TV360X-105】列展示设置问题[列展示如果存在未勾选的列，保存并刷新后，列展示复选框样式会错乱]
+
+        const arr = columns.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem['value']));
+        setColumns(arr);
       }
 
       // checkAll change
@@ -279,7 +323,10 @@
         const checkList = plainOptions.value.map((item) => item.value);
         if (e.target.checked) {
           state.checkedList = checkList;
-          setColumns(checkList);
+
+          const columns = getColumns();
+          let arr = columns.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem['value']));
+          setColumns(arr);
         } else {
           state.checkedList = [];
           setColumns([]);
@@ -303,12 +350,23 @@
         checkedList.sort((prev, next) => {
           return sortList.indexOf(prev) - sortList.indexOf(next);
         });
-        setColumns(checkedList);
+
+        const columns = plainSortOptions.value;
+        let arr = columns.filter((cItem) => checkedList.find((lItem) => lItem === cItem['value']));
+        setColumns(arr);
+
+        saveCols({
+          cols: JSON.stringify({
+            columns: columns,
+            checkedList: checkedList,
+          }),
+        });
       }
 
       // reset columns
       function reset() {
         // update-begin--author:liaozhiyang---date:20240612---for：【TV360X-105】列展示设置问题[需要重置两次才回到初始状态]
+        debugger;
         setColumns(table.getCacheColumns());
         setTimeout(() => {
           const columns = getColumns();
@@ -333,6 +391,49 @@
         // update-end--author:liaozhiyang---date:20240612---for：【TV360X-105】列展示设置问题[需要重置两次才回到初始状态]
       }
 
+      function getShowDataIndex(arr, idx) {
+        let showIdx = 0;
+        for (let i = 0; i < arr.length; i++) {
+          const o = arr[i];
+          if (false === o.ifShow) {
+            continue;
+          }
+          if (showIdx >= idx) {
+            // 必走这个逻辑
+            return o.dataIndex;
+          }
+          showIdx++;
+        }
+        return '';
+      }
+      function roil(arr, idx) {
+        let inc = 0;
+        // 获取点击移动列的名称（唯一的）
+        let dataIndex = getShowDataIndex(arr, idx);
+        for (let i = 0; i < arr.length; i++) {
+          const o = arr[i];
+          if (false === o.ifShow) {
+            // 记录有多少个隐藏列
+            inc++;
+          }
+          if (o.dataIndex === dataIndex) {
+            break;
+          }
+        }
+
+        // 真实在下标 = 显示下标 + 前面的隐藏下标
+        return idx + inc;
+      }
+
+      function saveCols(params: any) {
+        params['category'] = getCategory();
+        defHttp.post({ url: '/sys/cols/edit', params }, { isTransformResponse: false }).then((res) => {
+          let obj = userStore.getColsSortMap;
+          obj[params['category']] = JSON.parse(params.cols);
+          userStore.setColsSortMap(obj);
+        });
+      }
+
       // Open the pop-up window for drag and drop initialization
       function handleVisibleChange() {
         if (inited) return;
@@ -350,29 +451,38 @@
             delayOnTouchOnly: true,
             handle: '.table-column-drag-icon ',
             onEnd: (evt) => {
+              // 列位置改变逻辑
+              // 这个只是获取显示的列的下标（隐藏的并没有算，而columns里面包括隐藏列）
               const { oldIndex, newIndex } = evt;
               if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
                 return;
               }
               // Sort column
               const columns = cloneDeep(plainSortOptions.value);
+              let oldIndex2 = roil(plainSortOptions.value, oldIndex);
+              let newIndex2 = roil(plainSortOptions.value, newIndex);
 
-              if (oldIndex > newIndex) {
-                columns.splice(newIndex, 0, columns[oldIndex]);
-                columns.splice(oldIndex + 1, 1);
+              if (oldIndex2 > newIndex2) {
+                columns.splice(newIndex2, 0, columns[oldIndex2]);
+                columns.splice(oldIndex2 + 1, 1);
               } else {
-                columns.splice(newIndex + 1, 0, columns[oldIndex]);
-                columns.splice(oldIndex, 1);
+                columns.splice(newIndex2 + 1, 0, columns[oldIndex2]);
+                columns.splice(oldIndex2, 1);
               }
+
+              saveCols({
+                cols: JSON.stringify({
+                  columns: columns,
+                  checkedList: state.checkedList,
+                }),
+              });
 
               plainSortOptions.value = columns;
               // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-6424】table字段列表设置不显示后，再拖拽字段顺序，原本不显示的，又显示了
               // update-begin--author:liaozhiyang---date:20240522---for：【TV360X-108】刷新后勾选之前未勾选的字段拖拽之后该字段对应的表格列消失了
-              const cols = columns.map((item) => item.value);
-              const arr = cols.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem));
+              let arr = columns.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem['value']));
               setColumns(arr);
               // 最开始的代码
-              // setColumns(columns);
               // update-end--author:liaozhiyang---date:20240522---for：【TV360X-108】刷新后勾选之前未勾选的字段拖拽之后该字段对应的表格列消失了
               // update-end--author:liaozhiyang---date:20230904---for：【QQYUN-6424】table字段列表设置不显示后，再拖拽字段顺序，原本不显示的，又显示了
               // update-begin--author:liaozhiyang---date:20240611---for：【TV360X-105】列展示设置问题[重置之后保存的顺序还是上次的]
@@ -417,7 +527,16 @@
           item.width = 100;
         }
         table.setCacheColumnsByField?.(item.dataIndex as string, { fixed: isFixed });
-        setColumns(columns);
+
+        let arr = columns.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem['value']));
+        setColumns(arr);
+
+        saveCols({
+          cols: JSON.stringify({
+            columns: columns,
+            checkedList: state.checkedList,
+          }),
+        });
       }
 
       function setColumns(columns: BasicColumn[] | string[]) {

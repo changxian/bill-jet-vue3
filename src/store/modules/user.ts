@@ -19,6 +19,7 @@ import {
   DEFAULT_COMPANY_DATA,
   TENANT_PACK_DATA,
   PRINT_SETTING_DATA,
+  COLS_SORT_DATA,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
@@ -42,6 +43,7 @@ interface UserState {
   dictItems?: dictType | null;
   cols: Object[];
   dynamicCols?: Object | null;
+  colsSortMap?: Object | null;
   printSetting?: Object | null;
   systemSetting?: Object | null;
   billSetting?: Object | null;
@@ -70,6 +72,7 @@ export const useUserStore = defineStore({
     // 扩展列
     dynamicCols: null,
     printSetting: null,
+    colsSortMap: null,
     systemSetting: null,
     billSetting: null,
     defaultCompany: null,
@@ -113,6 +116,12 @@ export const useUserStore = defineStore({
         return this.dynamicCols;
       }
       return getAuthCache(DYNAMIC_COLS_DATA);
+    },
+    getColsSortMap(): Object {
+      if (null != this.colsSortMap) {
+        return this.colsSortMap;
+      }
+      return getAuthCache(COLS_SORT_DATA);
     },
     getPrintSetting() {
       if (null != this.printSetting) {
@@ -198,9 +207,13 @@ export const useUserStore = defineStore({
       this.dynamicCols = dynamicCols;
       setAuthCache(DYNAMIC_COLS_DATA, dynamicCols);
     },
-    setPrintSetting(printSetting) {
-      this.printSetting = printSetting;
-      setAuthCache(PRINT_SETTING_DATA, printSetting);
+    setPrintSetting(pringSetting) {
+      this.printSetting = pringSetting;
+      setAuthCache(PRINT_SETTING_DATA, pringSetting);
+    },
+    setColsSortMap(colsSortMap) {
+      this.colsSortMap = colsSortMap;
+      setAuthCache(COLS_SORT_DATA, colsSortMap);
     },
     setSystemSetting(systemSetting) {
       this.systemSetting = systemSetting;
@@ -376,7 +389,7 @@ export const useUserStore = defineStore({
         return null;
       }
       // @ts-ignore
-      const { userInfo, sysAllDictItems, cols, dynamicCols, printSetting, systemSetting, billSetting, defaultCompany, tenantPack } =
+      const { userInfo, sysAllDictItems, cols, dynamicCols, colsSortList, printSetting, systemSetting, billSetting, defaultCompany, tenantPack } =
         await getUserInfo();
 
       if (userInfo) {
@@ -402,9 +415,19 @@ export const useUserStore = defineStore({
       if (cols) {
         this.setCols(cols);
       }
-      // 添加备注列信息到缓存
+      // 添加扩展列信息到缓存
       if (dynamicCols) {
         this.setDynamicCols(dynamicCols);
+      }
+      // 添加自定义排序列信息
+      debugger;
+      if (colsSortList) {
+        const obj = {};
+        for (let i = 0; i < colsSortList.length; i++) {
+          const o = colsSortList[i];
+          obj[o.category] = JSON.parse(o.cols);
+        }
+        this.setColsSortMap(obj);
       }
       // 添加系统设置信息到缓存
       if (printSetting) {

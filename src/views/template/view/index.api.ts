@@ -74,6 +74,12 @@ export const roil = (o: any, n, s = 1) => {
     for (const a in o) {
       const attrArray = find(fieldConfig, a);
       if (null != attrArray) {
+        // null 赋值为 '', 数量、单价 和 金额 若为0, 0.0  赋值为 ''
+        if (null == o[a] || a === 'count' || 'price' === a || 'amount' === a) {
+          if (!(1 * o[a])) {
+            o[a] = '';
+          }
+        }
         for (let i = 0; i < attrArray.length; i++) {
           o[attrArray[i]] = o[a];
         }

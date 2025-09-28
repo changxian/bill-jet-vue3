@@ -219,7 +219,7 @@ export default {
             width: 112.5,
             title: '销售日期',
             field: 'deliveryDate',
-            testData: '2024/10/03',
+            testData: '2024年10月07日',
             coordinateSync: false,
             widthHeightSync: false,
             qrCodeLevel: 0,

@@ -4,7 +4,10 @@ import type { App } from 'vue';
 import { $electron } from '@/electron';
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import { basicRoutes } from './routes';
+import { createLocalStorage } from '/@/utils/cache';
+import { CURRENT_PATH_KEY } from '/@/enums/cacheEnum';
 
+const $ls = createLocalStorage();
 // 白名单应该包含基本静态路由
 const WHITE_NAME_LIST: string[] = [];
 const getRouteNames = (array: any[]) =>
@@ -29,6 +32,7 @@ router.beforeEach(async (to, from, next) => {
   //console.warn('from', from);
   //console.warn('to', to);
   //console.groupEnd();
+  $ls.set(CURRENT_PATH_KEY, to.fullPath);
   next();
 });
 

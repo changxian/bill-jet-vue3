@@ -561,9 +561,7 @@
           }
 
           hiprintTemplate.print2(printData, {
-            printer: {
-              name: printer || '',
-            },
+            printer: printer || '',
             title: 'print测试打印',
           });
         });

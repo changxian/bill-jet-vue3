@@ -18,6 +18,7 @@ enum Api {
   editPackPermission = '/sys/tenant/editPackPermission',
   deleteTenantPack = '/sys/tenant/deleteTenantPack',
   tenantPackExpansion = '/sys/tenant/tenantPackExpansion',
+  tenantPackExtension = '/sys/tenant/tenantPackExtension',
   recycleBinPageList = '/sys/tenant/recycleBinPageList',
   deleteLogicDeleted = '/sys/tenant/deleteLogicDeleted',
   revertTenantLogic = '/sys/tenant/revertTenantLogic',
@@ -102,6 +103,14 @@ export const batchDeleteTenant = (params, handleSuccess) => {
  */
 export const tenantPackExpansion = (params) => {
   return defHttp.post({ url: Api.tenantPackExpansion, params }, { isTransformResponse: false });
+};
+
+/**
+ * 企业套餐延期奖励信息api
+ * @param params
+ */
+export const tenantPackExtension = (params) => {
+  return defHttp.post({ url: Api.tenantPackExtension, params }, { isTransformResponse: false });
 };
 
 /**

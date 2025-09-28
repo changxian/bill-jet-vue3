@@ -29,7 +29,13 @@
                 id="PrintSettingForm-deliveryReturnTemp"
                 name="deliveryReturnTemp"
               >
-                <a-input v-model:value="formData.deliveryReturnTemp" class="full-input" placeholder="请选择销售退货单模板" :bordered="false" disabled />
+                <a-input
+                  v-model:value="formData.deliveryReturnTemp"
+                  class="full-input"
+                  placeholder="请选择销售退货单模板"
+                  :bordered="false"
+                  disabled
+                />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -238,6 +244,13 @@
     await saveOrUpdatePrint(model.value, isUpdate.value)
       .then((res) => {
         if (res.success) {
+          // 更新缓存打印机信息
+          let printSetting = {
+            ...userStore.getPrintSetting,
+            ...formData.value,
+          };
+          userStore.setPrintSetting(printSetting);
+
           createMessage.success(res.message);
           emit('ok');
         } else {

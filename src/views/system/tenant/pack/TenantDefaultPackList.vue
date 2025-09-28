@@ -3,7 +3,8 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button type="primary" :disabled="selectedRowKeys.length != 1"  v-auth="'system:sys_tenant_pack_record:add'" @click="handleModify" preIcon="ant-design:edit-outlined">套餐扩容</a-button>
-        <a-button type="primary"  :disabled="selectedRowKeys.length != 1" v-auth="'activate:activate:activateCodeList'" @click="renewByCode" preIcon="ant-design:edit-outlined">套餐续费</a-button>
+        <a-button type="primary" :disabled="selectedRowKeys.length != 1" v-auth="'activate:activate:activateCodeList'" @click="renewByCode" preIcon="ant-design:edit-outlined">套餐续费</a-button>
+        <a-button type="primary" :disabled="selectedRowKeys.length != 1" v-auth="'system:sys_tenant_pack_record:add'" @click="handleExtension" preIcon="ant-design:edit-outlined">套餐延期奖励</a-button>
         <!--<a-button type="primary"  v-if="false" :disabled="selectedRowKeys.length != 1"  v-auth="'system:sys_tenant_pack_record:add'" @click="renew" preIcon="ant-design:edit-outlined">续费</a-button>-->
         <!--         <a-button preIcon="ant-design:user-add-outlined" type="primary" @click="handleAdd">新增</a-button>-->
         <!--        <a-button
@@ -31,6 +32,8 @@
     <SysTenantPackRecordListModal @register="registerSysTenantPackRecordListModal" @success="handleSuccess" />
     <!--  套餐扩容 -->
     <ModifyTenantPackModal @register="registerModifyTenantPackModal" @success="handleSuccess" />
+    <!--  套餐扩容 -->
+    <ExtensionTenantPackModal @register="registerExtensionTenantPackModal" @success="handleSuccess" />
   </div>
 </template>
 <!-- 该页面是【企业套餐管理页面】 -->
@@ -42,6 +45,7 @@
   import { packColumns, packFormSchema } from '../tenant.data';
   import TenantPackMenuModal from './TenantPackMenuModal.vue';
   import ModifyTenantPackModal from './ModifyTenantPackModal.vue';
+  import ExtensionTenantPackModal from './ExtensionTenantPackModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { Modal } from 'ant-design-vue';
@@ -59,6 +63,7 @@
   const [registerRenewModal, { openModal: renewModal }] = useModal();
   const [registerRenewByCodeModal, { openModal: renewByCodeModal }] = useModal();
   const [registerModifyTenantPackModal, { openModal: modifyTenantPackModal }] = useModal();
+  const [registerExtensionTenantPackModal, { openModal: extensionTenantPackModal }] = useModal();
 
   const { createMessage } = useMessage();
   // const [registerModal, { openModal }] = useModal();
@@ -239,6 +244,19 @@
     const row = selectedRows.value[0];
     // modifyModalRef.value.show(row);
     modifyTenantPackModal(true, {
+      record: row,
+      tenantPackId: row.id,
+      isUpdate: true,
+      showFooter: true,
+    });
+  }
+  // 套餐延期奖励
+  function handleExtension() {
+    if (selectedRowKeys.value.length === 0) {
+      return createMessage.warning('请先选择数据');
+    }
+    const row = selectedRows.value[0];
+    extensionTenantPackModal(true, {
       record: row,
       tenantPackId: row.id,
       isUpdate: true,
