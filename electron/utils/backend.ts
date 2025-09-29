@@ -32,8 +32,8 @@ export const startBackendService = async () => {
   return new Promise((resolve, reject) => {
     try {
       const installPath = getAppInstallPath();
-      const jarPath = path.join(installPath, 'app.jar');
-      const dataPath = path.join(installPath, 'data');
+      const jarPath = path.join(installPath, 'resources/app.jar');
+      const dataPath = path.join(installPath, 'resources/data');
 
       // 确保data目录存在
       fs.ensureDirSync(dataPath);
@@ -43,11 +43,11 @@ export const startBackendService = async () => {
         throw new Error(`未找到app.jar文件，路径: ${jarPath}`);
       }
 
-      console.log('启动后端服务:', `java -jar "${jarPath}"`);
+      console.log('启动后端服务:', `javaw -jar "${jarPath}"`);
 
       // 启动后端服务
       // @ts-ignore
-      backendProcess = spawn('java', ['-jar', jarPath], {
+      backendProcess = spawn('javaw', ['-jar', jarPath], {
         cwd: installPath,
         env: {
           ...process.env,
@@ -79,7 +79,21 @@ export const stopBackendService = () => {
   if (backendProcess) {
     console.log('停止后端服务');
     // @ts-ignore
-    backendProcess.kill();
+    // backendProcess.kill();
+    // backendProcess = null;
+
+    // 尝试优雅关闭
+    // @ts-ignore
+    backendProcess.kill('SIGINT');
+
+    // 5秒后强制终止
+    setTimeout(() => {
+      if (backendProcess) {
+        // @ts-ignore
+        backendProcess.kill('SIGKILL');
+      }
+    }, 5000);
+
     backendProcess = null;
   }
 };
