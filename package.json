@@ -7,6 +7,25 @@
     "url": "https://www.jeecg.com"
   },
   "main": "dist/electron/main.js",
+  "build": {
+    "asarUnpack": ["dist/electron/main.js"],
+    "files": [
+      "dist/**/*",
+      "dist/electron/main.js",
+      "data/**/*",
+      "app.jar"
+    ],
+    "extraResources": [
+      {
+        "from": "data",
+        "to": "data"
+      },
+      {
+        "from": "app.jar",
+        "to": "app.jar"
+      }
+    ]
+  },
   "scripts": {
     "electron:dev": "cross-env VITE_GLOB_RUN_PLATFORM=electron npm run dev",
     "electron:build-all": "npm run electron:build-web && npm run electron:build-app",
@@ -24,21 +43,6 @@
     "batch:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
     "upgrade:log": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "husky:install": "husky install"
-  },
-  "build": {
-    "extraResources": [
-      {
-        "from": "data",
-        "to": "data"
-      },
-      {
-        "from": "app.jar",
-        "to": "app.jar"
-      }
-    ],
-    "asarUnpack": [
-      "dist/electron/main.js"
-    ]
   },
   "dependencies": {
     "@ant-design/colors": "^7.1.0",

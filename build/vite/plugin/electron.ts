@@ -7,7 +7,7 @@ export function configElectronPlugin(_viteEnv: ViteEnv, isBuild: boolean) {
       entry: 'electron/main.ts',
       vite: {
         build: {
-          sourcemap: !isBuild,
+          // sourcemap: !isBuild,
           outDir: 'dist/electron',
           // 添加入口文件名配置
           rollupOptions: {

@@ -6,12 +6,23 @@ files:
   # 仅包含 dist 目录下所有文件
   - 'dist/**/*'
   # 强制包含主进程文件（关键：确保 main.js 被打包）
-  - 'dist/electron/main.js'
-  - 'dist/electron/preload/**/*'  # 包含预加载脚本
-  - 'data/**/*'
-  - 'app.jar'
+#  - 'dist/electron/main.js'
+#  - 'dist/electron/preload/**/*'  # 包含预加载脚本
+#  - 'data/**/*'
+#  - 'app.jar'  # 强制指定主进程文件（使用绝对路径模式，避免层级问题）
+  - from: dist/electron/main.js
+    to: dist/electron/main.js
+  - from: dist/electron/preload
+    to: dist/electron/preload
+  - from: data
+    to: data
+  - from: app.jar
+    to: app.jar
   # 特别排除 node_modules 目录
   # - '!node_modules'
+# 确保不排除必要文件
+exclude:
+  - node_modules/**/*
 directories:
   # 输出目录
   output: 'dist-electron'
