@@ -83,7 +83,7 @@ function emitClientInfo(socket) {
     mac: 'mac', // mac 地址
     ip: '_address.ip()', // ip 地址
     ipv6: '_address.ipv6()', // ipv6 地址
-    clientUrl: 'http://localhost:17521}', // 客户端地址
+    clientUrl: 'http://localhost:17525}', // 客户端地址
     machineId: 'machineIdSync({ original: true })', // 客户端唯一id
     nickName: 'store.get("nickName")', // 客户端昵称
   });
@@ -322,7 +322,7 @@ export async function createMainWindow() {
         global.MAIN_WINDOW.webContents.openDevTools();
       }
       // 本地服务开启端口监听
-      httpServer.listen(17521);
+      httpServer.listen(17525);
       // 初始化本地 服务端事件
       initServeEvent(ioServer);
     } catch (error) {

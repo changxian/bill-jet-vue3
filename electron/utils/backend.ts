@@ -33,7 +33,7 @@ export const startBackendService = async () => {
     try {
       const installPath = getAppInstallPath();
       const jarPath = path.join(installPath, 'resources/app.jar');
-      const dataPath = path.join(installPath, 'resources/data');
+      const dataPath = path.join(installPath, 'data');
 
       // 确保data目录存在
       fs.ensureDirSync(dataPath);

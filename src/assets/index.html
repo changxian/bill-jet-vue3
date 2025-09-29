@@ -94,7 +94,7 @@
           });
           ipc.send("getAddress");
           ipc.on("address", (event, arg) => {
-            this.ipAddress = `http://${arg.ip}:${arg.port || 17521}`;
+            this.ipAddress = `http://${arg.ip}:${arg.port || 17525}`;
             this.macAddress = arg.mac;
           });
           ipc.on("serverConnection", this.socketActive);
